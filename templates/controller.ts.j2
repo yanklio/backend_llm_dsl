@@ -9,7 +9,7 @@ import { Update{{ module | capitalize }}Dto } from './dto/update-{{ module | low
 @Controller('{{ module | lower }}s')
 export class {{ module | capitalize }}Controller {
   constructor(private readonly {{ module | lower }}Service: {{ module | capitalize }}Service) {}
-2
+
   @Post()
   create(@Body() create{{ module | capitalize }}Dto: Create{{ module | capitalize }}Dto) {
     return this.{{ module | lower }}Service.create(create{{ module | capitalize }}Dto);

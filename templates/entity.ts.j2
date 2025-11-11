@@ -7,10 +7,18 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export class {{ module | capitalize }} {
   @PrimaryGeneratedColumn()
   id: number;
-
+{% for field in entity.fields %}
+  {% if field.type == 'string' -%}
+  @Column({% if field.validation and field.validation.maxLength %}{ length: {{ field.validation.maxLength }} }{% endif %})
+  {%- elif field.type == 'number' -%}
+  @Column('decimal', { precision: 10, scale: 2 })
+  {%- elif field.type == 'boolean' -%}
+  @Column({% if field.default is defined %}{ default: {{ field.default | lower }} }{% endif %})
+  {%- else -%}
   @Column()
-  name: string;
-
+  {%- endif %}
+  {{ field.name }}: {{ field.type }};
+{% endfor %}
   @CreateDateColumn()
   createdAt: Date;
 

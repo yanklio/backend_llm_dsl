@@ -9,7 +9,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
-2
+
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
     return this.productService.create(createProductDto);

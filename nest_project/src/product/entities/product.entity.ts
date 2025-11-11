@@ -8,8 +8,14 @@ export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 100 })
   name: string;
+
+  @Column('decimal', { precision: 10, scale: 2 })
+  price: number;
+
+  @Column({ default: false })
+  isInStock: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
