@@ -1,0 +1,23 @@
+# This is the "blueprint" the LLM will generate.
+# It describes one complete Nest.JS module.
+module: Product
+generate: [controller, service, module, entity, dto]
+
+entity:
+  fields:
+    - name: name
+      type: string
+      required: true
+      validation: { minLength: 3, maxLength: 100 }
+
+    - name: price
+      type: number
+      required: true
+      validation: { min: 0 }
+
+    - name: isInStock
+      type: boolean
+      default: false
+# relations:
+#   - type: ManyToOne # A TypeORM relationship
+#     model: Category
