@@ -8,40 +8,64 @@ export class {{ module | capitalize }} {
   @PrimaryGeneratedColumn()
   id: number;
 {% for field in entity.fields %}
-  {% if field.type == 'enum' -%}
+  {%- if field.type == 'enum' %}
   @Column({
     type: 'varchar',
-    {% if field.default is defined %}default: '{{ field.default }}',{% endif %}
-    {% if field.unique %}unique: true,{% endif %}
+    {%- if field.default is defined %}
+    default: '{{ field.default }}',
+    {%- endif %}
+    {%- if field.unique %}
+    unique: true,
+    {%- endif %}
   })
   {{ field.name }}: {{ field.enum | map('tojson') | join(' | ') }};
-  {%- elif field.type == 'string' -%}
+  {%- elif field.type == 'string' %}
   @Column({
-    {% if field.validation and field.validation.maxLength %}length: {{ field.validation.maxLength }},{% endif %}
-    {% if not field.required %}nullable: true,{% endif %}
-    {% if field.unique %}unique: true,{% endif %}
-    {% if field.select is defined and not field.select %}select: false,{% endif %}
+    {%- if field.validation and field.validation.maxLength %}
+    length: {{ field.validation.maxLength }},
+    {%- endif %}
+    {%- if not field.required %}
+    nullable: true,
+    {%- endif %}
+    {%- if field.unique %}
+    unique: true,
+    {%- endif %}
+    {%- if field.select is defined and not field.select %}
+    select: false,
+    {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: string;
-  {%- elif field.type == 'number' -%}
+  {%- elif field.type == 'number' %}
   @Column({
     type: 'decimal',
     precision: 10,
     scale: 2,
-    {% if not field.required %}nullable: true,{% endif %}
-    {% if field.unique %}unique: true,{% endif %}
+    {%- if not field.required %}
+    nullable: true,
+    {%- endif %}
+    {%- if field.unique %}
+    unique: true,
+    {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: number;
-  {%- elif field.type == 'boolean' -%}
+  {%- elif field.type == 'boolean' %}
   @Column({
-    {% if field.default is defined %}default: {{ field.default | lower }},{% endif %}
-    {% if not field.required %}nullable: true,{% endif %}
+    {%- if field.default is defined %}
+    default: {{ field.default | lower }},
+    {%- endif %}
+    {%- if not field.required %}
+    nullable: true,
+    {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: boolean;
-  {%- else -%}
+  {%- else %}
   @Column({
-    {% if not field.required %}nullable: true,{% endif %}
-    {% if field.unique %}unique: true,{% endif %}
+    {%- if not field.required %}
+    nullable: true,
+    {%- endif %}
+    {%- if field.unique %}
+    unique: true,
+    {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: any;
   {%- endif %}

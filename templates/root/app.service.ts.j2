@@ -15,9 +15,9 @@ export class AppService {
       version: '1.0.0',
       description: 'Generated NestJS application with TypeORM and SQLite',
       modules: [
-{% for module_name in module_names %}
+{%- for module_name in module_names %}
         '{{ module_name }}',
-{% endfor %}
+{%- endfor %}
       ],
     };
   }

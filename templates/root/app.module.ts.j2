@@ -5,9 +5,9 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-{% for module_name in module_names %}
+{%- for module_name in module_names %}
 import { {{ module_name | capitalize }}Module } from './{{ module_name | lower }}/{{ module_name | lower }}.module';
-{% endfor %}
+{%- endfor %}
 
 @Module({
   imports: [
@@ -18,9 +18,9 @@ import { {{ module_name | capitalize }}Module } from './{{ module_name | lower }
       synchronize: {{ root.database.synchronize | default(true) | lower }},
       logging: {{ root.database.logging | default(false) | lower }},
     }),
-{% for module_name in module_names %}
+{%- for module_name in module_names %}
     {{ module_name | capitalize }}Module,
-{% endfor %}
+{%- endfor %}
   ],
   controllers: [AppController],
   providers: [AppService],
