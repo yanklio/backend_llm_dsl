@@ -14,9 +14,48 @@ import {
   Max,
   IsEnum,
 } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class Create{{ module | capitalize }}Dto {
 {% for field in entity.fields %}
+  {%- if field.type == 'enum' %}
+  @ApiProperty({
+    description: {% if field.description is defined %}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif %},
+    enum: [{{ field.enum | map('tojson') | join(', ') }}],
+    {% if field.example is defined %}example: '{{ field.example }}',{% endif %}
+    {% if not field.required %}required: false,{% endif %}
+  })
+  {%- elif field.type == 'string' %}
+  @ApiProperty({
+    description: {% if field.description is defined %}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif %},
+    {% if field.validation and field.validation.maxLength %}maxLength: {{ field.validation.maxLength }},{% endif %}
+    {% if field.validation and field.validation.minLength %}minLength: {{ field.validation.minLength }},{% endif %}
+    {% if field.example is defined %}example: '{{ field.example }}',{% else %}example: 'sample_{{ field.name }}',{% endif %}
+    {% if not field.required %}required: false,{% endif %}
+  })
+  {%- elif field.type == 'number' %}
+  @ApiProperty({
+    description: {% if field.description is defined %}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif %},
+    type: 'number',
+    {% if field.validation and field.validation.min is defined %}minimum: {{ field.validation.min }},{% endif %}
+    {% if field.validation and field.validation.max is defined %}maximum: {{ field.validation.max }},{% endif %}
+    {% if field.example is defined %}example: {{ field.example }},{% else %}example: 0,{% endif %}
+    {% if not field.required %}required: false,{% endif %}
+  })
+  {%- elif field.type == 'boolean' %}
+  @ApiProperty({
+    description: {% if field.description is defined %}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif %},
+    type: 'boolean',
+    {% if field.example is defined %}example: {{ field.example | lower }},{% endif %}
+    {% if not field.required %}required: false,{% endif %}
+  })
+  {%- else %}
+  @ApiProperty({
+    description: {% if field.description is defined %}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif %},
+    {% if field.example is defined %}example: '{{ field.example }}',{% endif %}
+    {% if not field.required %}required: false,{% endif %}
+  })
+  {%- endif %}
   {% if field.validation %}
   {%- if field.validation.isEmail %}
   @IsEmail()
