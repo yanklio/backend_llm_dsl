@@ -11,11 +11,11 @@ root:
     logging: false
 
   # Global features to enable
-  # features:
-  # auth: true
-  # cors: true
-  # validation: true
-  # swagger: true
+  features:
+    # auth: true
+    cors: true
+    # validation: true
+    swagger: true
 
   # Auth configuration (if enabled)
   # auth:
@@ -36,20 +36,24 @@ modules:
     entity:
       fields:
         - name: name
+          description: The name of the product
           type: string
           required: true
           validation: { minLength: 3, maxLength: 100 }
 
         - name: price
+          description: The price of the product
           type: number
           required: true
           validation: { min: 0 }
 
         - name: isInStock
+          description: Indicates whether the product is in stock
           type: boolean
           default: false
 
         - name: description
+          description: The description of the product
           type: string
           required: false
           validation: { maxLength: 500 }
