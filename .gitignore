@@ -1,2 +1,3 @@
 nest_project/*
 node_modules/*
+generator_env/*
