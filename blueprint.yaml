@@ -1,23 +1,117 @@
-# This is the "blueprint" the LLM will generate.
-# It describes one complete Nest.JS module.
-module: Product
-generate: [controller, service, module, entity, dto]
+# Enhanced Blueprint Configuration
+# Supports a root module with global features and multiple sub-modules for entities
 
-entity:
-  fields:
-    - name: name
-      type: string
-      required: true
-      validation: { minLength: 3, maxLength: 100 }
+# Global Root Module Configuration
+root:
+  name: App
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
 
-    - name: price
-      type: number
-      required: true
-      validation: { min: 0 }
+  # Global features to enable
+  # features:
+  # auth: true
+  # cors: true
+  # validation: true
+  # swagger: true
 
-    - name: isInStock
-      type: boolean
-      default: false
-# relations:
-#   - type: ManyToOne # A TypeORM relationship
-#     model: Category
+  # Auth configuration (if enabled)
+  # auth:
+  # jwtSecret: your-secret-key-change-in-production
+  # jwtExpiresIn: 1d
+  # enableLocalStrategy: true
+  # enableJwtStrategy: true
+
+  # Global middleware and pipes
+  globalPrefix: api
+  port: 3000
+
+# Sub-modules - each represents a domain entity
+modules:
+  - name: Product
+    generate: [controller, service, module, entity, dto]
+
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: { minLength: 3, maxLength: 100 }
+
+        - name: price
+          type: number
+          required: true
+          validation: { min: 0 }
+
+        - name: isInStock
+          type: boolean
+          default: false
+
+        - name: description
+          type: string
+          required: false
+          validation: { maxLength: 500 }
+
+      # relations:
+      #   - type: ManyToOne
+      #     model: Category
+      #     field: category
+      #     onDelete: CASCADE
+
+  - name: Category
+    generate: [controller, service, module, entity, dto]
+
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: { minLength: 2, maxLength: 50 }
+
+        - name: description
+          type: string
+          required: false
+
+      # relations:
+      #   - type: OneToMany
+      #     model: Product
+      #     field: products
+
+  - name: User
+    generate: [controller, service, module, entity, dto]
+    authProtected: true # Requires authentication for all endpoints
+
+    entity:
+      fields:
+        - name: email
+          type: string
+          required: true
+          validation: { isEmail: true }
+          unique: true
+
+        - name: password
+          type: string
+          required: true
+          validation: { minLength: 8 }
+          select: false # Don't include in queries by default
+
+        - name: firstName
+          type: string
+          required: true
+          validation: { minLength: 2, maxLength: 50 }
+
+        - name: lastName
+          type: string
+          required: true
+          validation: { minLength: 2, maxLength: 50 }
+
+        - name: isActive
+          type: boolean
+          default: true
+
+        - name: role
+          type: enum
+          enum: [user, admin, moderator]
+          default: user
