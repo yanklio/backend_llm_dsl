@@ -11,11 +11,11 @@ root:
     logging: false
 
   # Global features to enable
-  # features:
-  # auth: true
-  # cors: true
-  # validation: true
-  # swagger: true
+  features:
+    # auth: true
+    cors: true
+    # validation: true
+    swagger: true
 
   # Auth configuration (if enabled)
   # auth:
