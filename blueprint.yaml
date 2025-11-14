@@ -3,26 +3,26 @@
 
 # Global Root Module Configuration
 root:
-  name: App
+  name: PetTrackerApp
   database:
     type: sqlite
-    database: ./data/app.db
+    database: ./data/pets.db
     synchronize: true
     logging: false
 
   # Global features to enable
   features:
-    # auth: true
+    auth: true
     cors: true
-    # validation: true
+    validation: true
     swagger: true
 
   # Auth configuration (if enabled)
-  # auth:
-  # jwtSecret: your-secret-key-change-in-production
-  # jwtExpiresIn: 1d
-  # enableLocalStrategy: true
-  # enableJwtStrategy: true
+  auth:
+    jwtSecret: change-this-secret-key-in-production
+    jwtExpiresIn: 1d
+    enableLocalStrategy: true
+    enableJwtStrategy: true
 
   # Global middleware and pipes
   globalPrefix: api
@@ -30,60 +30,7 @@ root:
 
 # Sub-modules - each represents a domain entity
 modules:
-  - name: Product
-    generate: [controller, service, module, entity, dto]
-
-    entity:
-      fields:
-        - name: name
-          description: The name of the product
-          type: string
-          required: true
-          validation: { minLength: 3, maxLength: 100 }
-
-        - name: price
-          description: The price of the product
-          type: number
-          required: true
-          validation: { min: 0 }
-
-        - name: isInStock
-          description: Indicates whether the product is in stock
-          type: boolean
-          default: false
-
-        - name: description
-          description: The description of the product
-          type: string
-          required: false
-          validation: { maxLength: 500 }
-
-      relations:
-        - type: ManyToOne
-          model: Category
-          field: category
-          onDelete: CASCADE
-
-  - name: Category
-    generate: [controller, service, module, entity, dto]
-
-    entity:
-      fields:
-        - name: name
-          type: string
-          required: true
-          validation: { minLength: 2, maxLength: 50 }
-
-        - name: description
-          type: string
-          required: false
-
-      relations:
-        - type: OneToMany
-          model: Product
-          field: products
-
-  - name: User
+  - name: Owner
     generate: [controller, service, module, entity, dto]
     authProtected: true # Requires authentication for all endpoints
 
@@ -94,28 +41,79 @@ modules:
           required: true
           validation: { isEmail: true }
           unique: true
+          description: Owner's email address (used for login)
 
         - name: password
           type: string
           required: true
           validation: { minLength: 8 }
-          # select: false # Don't include in queries by default
+          description: Owner's login password
+          # select: false # Uncomment to hide password from default queries
 
         - name: firstName
           type: string
           required: true
           validation: { minLength: 2, maxLength: 50 }
+          description: Owner's first name
 
         - name: lastName
           type: string
           required: true
           validation: { minLength: 2, maxLength: 50 }
+          description: Owner's last name
 
-        - name: isActive
-          type: boolean
-          default: true
+        - name: phone
+          type: string
+          required: false
+          validation: { maxLength: 20 }
+          description: Owner's contact phone number
 
-        - name: role
+      relations:
+        - type: OneToMany
+          model: Pet
+          field: pets
+          description: A list of pets belonging to this owner
+
+  - name: Pet
+    generate: [controller, service, module, entity, dto]
+    authProtected: true # Pets are managed by authenticated owners
+
+    entity:
+      fields:
+        - name: name
+          description: The name of the pet
+          type: string
+          required: true
+          validation: { minLength: 2, maxLength: 100 }
+
+        - name: species
+          description: The species of the pet
           type: enum
-          enum: [user, admin, moderator]
-          default: user
+          enum: [dog, cat, bird, fish, reptile, other]
+          required: true
+          default: other
+
+        - name: breed
+          description: The pet's breed
+          type: string
+          required: false
+          validation: { maxLength: 50 }
+
+        - name: age
+          description: The age of the pet
+          type: number
+          required: false
+          validation: { min: 0, max: 100 }
+
+        - name: notes
+          description: Additional notes about the pet
+          type: string
+          required: false
+          validation: { maxLength: 500 }
+
+      relations:
+        - type: ManyToOne
+          model: Owner
+          field: owner
+          description: The owner of this pet
+          onDelete: CASCADE # If the owner is deleted, delete their pets
