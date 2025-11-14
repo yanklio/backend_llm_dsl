@@ -20,7 +20,7 @@ export class Create{{ module | capitalize }}Dto {
 {% for field in entity.fields -%}
   {%- if field.type == 'enum' %}
   @ApiProperty({
-    description: {% if field.description is defined -%}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif -%},
+    description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
     enum: [{{ field.enum | map('tojson') | join(', ') }}],
     {%- if field.example is defined %}
     example: '{{ field.example }}',
@@ -31,7 +31,7 @@ export class Create{{ module | capitalize }}Dto {
   })
   {%- elif field.type == 'string' %}
   @ApiProperty({
-    description: {% if field.description is defined -%}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif -%},
+    description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
     {%- if field.validation and field.validation.maxLength %}
     maxLength: {{ field.validation.maxLength }},
     {%- endif %}
@@ -47,7 +47,7 @@ export class Create{{ module | capitalize }}Dto {
   })
   {%- elif field.type == 'number' %}
   @ApiProperty({
-    description: {% if field.description is defined -%}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif -%},
+    description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
     type: 'number',
     {%- if field.validation and field.validation.min is defined %}
     minimum: {{ field.validation.min }},
@@ -66,7 +66,7 @@ export class Create{{ module | capitalize }}Dto {
   })
   {%- elif field.type == 'boolean' %}
   @ApiProperty({
-    description: {% if field.description is defined -%}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif -%},
+    description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
     type: 'boolean',
     {%- if field.example is defined %}
     example: {{ field.example | lower }},
@@ -77,7 +77,7 @@ export class Create{{ module | capitalize }}Dto {
   })
   {%- else %}
   @ApiProperty({
-    description: {% if field.description is defined -%}'{{ field.description }}'{% else %}'{{ field.name | replace("_", " ") | capitalize }}'{% endif -%},
+    description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
     {%- if field.example is defined %}
     example: '{{ field.example }}',
     {%- endif %}
