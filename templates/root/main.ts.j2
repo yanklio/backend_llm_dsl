@@ -23,7 +23,7 @@ async function bootstrap() {
 
   {% if root.features and root.features.swagger %}
   const config = new DocumentBuilder()
-    .setTitle('Api')
+    .setTitle('{{ root.name }}')
     .setDescription('API DEMO')
     .setVersion('1.0')
     .addTag('backed by backi')
