@@ -1,6 +1,38 @@
 from .logger import Logger
 
 
+def handle_dto_file(template_data, dto_dir, env):
+    try:
+        template = env.get_template("dto/create-dto.ts.j2")
+        output_code = template.render(template_data)
+        file_name = f"create-{template_data['module'].lower()}.dto.ts"
+        (dto_dir / file_name).write_text(output_code)
+        Logger.success(f"Generated {dto_dir / file_name}")
+    except Exception as e:
+        Logger.error(f"Failed to generate create DTO: {e}")
+
+    # Generate update-dto
+    try:
+        template = env.get_template("dto/update-dto.ts.j2")
+        output_code = template.render(template_data)
+        file_name = f"update-{template_data['module'].lower()}.dto.ts"
+        (dto_dir / file_name).write_text(output_code)
+        Logger.success(f"Generated {dto_dir / file_name}")
+    except Exception as e:
+        Logger.error(f"Failed to generate update DTO: {e}")
+
+
+def handle_entity_file(template_data, entities_dir, env):
+    try:
+        template = env.get_template("entity.ts.j2")
+        output_code = template.render(template_data)
+        file_name = f"{template_data['module'].lower()}.entity.ts"
+        (entities_dir / file_name).write_text(output_code)
+        Logger.success(f"Generated {entities_dir / file_name}")
+    except Exception as e:
+        Logger.error(f"Failed to generate entity file: {e}")
+
+
 def generate_module(module_data, env, base_output_dir):
     """Generate a single sub-module (entity module)"""
     module_name = module_data["name"]
@@ -27,42 +59,14 @@ def generate_module(module_data, env, base_output_dir):
     for file_key in files_to_generate:
         template_name = f"{file_key}.ts.j2"
 
-        # Handle DTOs as a special case
         if file_key == "dto":
-            # Generate create-dto
-            try:
-                template = env.get_template("dto/create-dto.ts.j2")
-                output_code = template.render(template_data)
-                file_name = f"create-{module_name.lower()}.dto.ts"
-                (dto_dir / file_name).write_text(output_code)
-                Logger.success(f"Generated {dto_dir / file_name}")
-            except Exception as e:
-                Logger.error(f"Failed to generate create DTO: {e}")
-
-            # Generate update-dto
-            try:
-                template = env.get_template("dto/update-dto.ts.j2")
-                output_code = template.render(template_data)
-                file_name = f"update-{module_name.lower()}.dto.ts"
-                (dto_dir / file_name).write_text(output_code)
-                Logger.success(f"Generated {dto_dir / file_name}")
-            except Exception as e:
-                Logger.error(f"Failed to generate update DTO: {e}")
+            handle_dto_file(template_data, dto_dir, env)
             continue
 
-        # Handle entity as a special case
         if file_key == "entity":
-            try:
-                template = env.get_template(template_name)
-                output_code = template.render(template_data)
-                file_name = f"{module_name.lower()}.entity.ts"
-                (entities_dir / file_name).write_text(output_code)
-                Logger.success(f"Generated {entities_dir / file_name}")
-            except Exception as e:
-                Logger.error(f"Failed to generate entity: {e}")
+            handle_entity_file(template_data, entities_dir, env)
             continue
 
-        # Standard file generation (controller, service, module)
         try:
             template = env.get_template(template_name)
             output_code = template.render(template_data)

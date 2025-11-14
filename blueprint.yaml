@@ -58,11 +58,11 @@ modules:
           required: false
           validation: { maxLength: 500 }
 
-      # relations:
-      #   - type: ManyToOne
-      #     model: Category
-      #     field: category
-      #     onDelete: CASCADE
+      relations:
+        - type: ManyToOne
+          model: Category
+          field: category
+          onDelete: CASCADE
 
   - name: Category
     generate: [controller, service, module, entity, dto]
@@ -78,10 +78,10 @@ modules:
           type: string
           required: false
 
-      # relations:
-      #   - type: OneToMany
-      #     model: Product
-      #     field: products
+      relations:
+        - type: OneToMany
+          model: Product
+          field: products
 
   - name: User
     generate: [controller, service, module, entity, dto]
@@ -99,7 +99,7 @@ modules:
           type: string
           required: true
           validation: { minLength: 8 }
-          select: false # Don't include in queries by default
+          # select: false # Don't include in queries by default
 
         - name: firstName
           type: string

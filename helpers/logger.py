@@ -16,7 +16,7 @@ class Logger:
         elif self.log_level == "WARNING":
             print(f"⚠ WARNING: {message}")
         elif self.log_level == "ERROR":
-            print(f"⚠  ERROR: {message}")
+            print(f"⨯  ERROR: {message}")
         else:
             print(f"? UNKNOWN: {message}")
 
