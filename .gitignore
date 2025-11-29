@@ -3,5 +3,12 @@ nest_project/*
 node_modules/*
 generator_env/*
 
+# Python virtual environments
+thesis_env/
+*_env/
+venv/
+env/
+.venv/
+
 # secrets
 .env
