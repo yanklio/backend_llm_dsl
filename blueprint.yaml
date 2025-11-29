@@ -1,0 +1,43 @@
+root:
+  name: BlogApp
+  database:
+    type: sqlite
+    database: ./data/blog.db
+    synchronize: true
+    logging: false
+
+modules:
+  - name: User
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: username
+          type: string
+          required: true
+          unique: true
+          validation: {minLength: 3, maxLength: 50}
+        - name: email
+          type: string
+          required: true
+          unique: true
+          validation: {isEmail: true}
+        - name: password
+          type: string
+          required: true
+          validation: {minLength: 6, maxLength: 100}
+  - name: Post
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: title
+          type: string
+          required: true
+          validation: {minLength: 5, maxLength: 255}
+        - name: content
+          type: string
+          required: true
+          validation: {minLength: 10}
+        - name: userId
+          type: number
+          required: true
+          validation: {min: 1}

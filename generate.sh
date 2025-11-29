@@ -34,6 +34,8 @@ echo -e "${BLUE}Blueprint:${NC} $BLUEPRINT_FILE"
 echo -e "${BLUE}Blueprint name:${NC} $BLUEPRINT_NAME"
 echo ""
 
+cd dsl
+
 # Check if nest_project directory exists
 if [ ! -d "nest_project" ]; then
     echo -e "${RED}Error: nest_project directory not found!${NC}"
