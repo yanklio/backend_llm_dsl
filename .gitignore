@@ -9,6 +9,7 @@ thesis_env/
 venv/
 env/
 .venv/
+__pycache__/
 
 # secrets
 .env

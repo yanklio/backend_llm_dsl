@@ -34,7 +34,6 @@ echo -e "${BLUE}Blueprint:${NC} $BLUEPRINT_FILE"
 echo -e "${BLUE}Blueprint name:${NC} $BLUEPRINT_NAME"
 echo ""
 
-cd dsl
 
 # Check if nest_project directory exists
 if [ ! -d "nest_project" ]; then
@@ -57,8 +56,8 @@ echo ""
 echo -e "${BLUE}Generating new code from blueprint...${NC}"
 echo ""
 
-if [ -f "generate.py" ]; then
-    python3 generate.py "$BLUEPRINT_FILE"
+if [ -f "dsl/generate.py" ]; then
+    python3 dsl/generate.py "$BLUEPRINT_FILE"
 
     if [ $? -eq 0 ]; then
         echo ""
