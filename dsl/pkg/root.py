@@ -8,14 +8,12 @@ def generate_root_module(root_config, modules_data, env, output_dir):
     src_dir = output_dir / "src"
     src_dir.mkdir(parents=True, exist_ok=True)
 
-    # Prepare data for root templates
     template_data = {
         "root": root_config,
         "modules": modules_data,
         "module_names": [m["name"] for m in modules_data],
     }
 
-    # Generate app.module.ts
     try:
         template = env.get_template("root/app.module.ts.j2")
         output_code = template.render(template_data)
@@ -25,7 +23,6 @@ def generate_root_module(root_config, modules_data, env, output_dir):
     except Exception as e:
         Logger.error(f"Could not generate app.module.ts: {e}")
 
-    # Generate main.ts
     try:
         template = env.get_template("root/main.ts.j2")
         output_code = template.render(template_data)

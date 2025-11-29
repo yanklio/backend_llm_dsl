@@ -60,13 +60,13 @@ def main(blueprint_file):
     print(f"Blueprint: {blueprint_file}")
     print("=" * 60 + "\n\n")
 
-    # Load the YAML data
     with open(blueprint_file, "r") as f:
         data = yaml.safe_load(f)
 
-    # Setup Jinja2 environment
-    env = Environment(loader=FileSystemLoader("./templates"))
-    # Add custom filter
+    script_dir = Path(__file__).parent
+    template_dir = script_dir / "templates"
+    env = Environment(loader=FileSystemLoader(str(template_dir)))
+
     env.filters["to_ts_type"] = to_ts_type
 
     # Base output directory

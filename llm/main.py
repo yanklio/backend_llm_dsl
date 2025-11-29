@@ -15,6 +15,7 @@ def natural_language_to_yaml(description: str) -> str:
 
     system_prompt = """You are a YAML blueprint generator for NestJS applications.
 Generate ONLY valid YAML (no other text, no markdown) following this exact structure:
+Don't forget about relations if needed. Don't create `CreatedAt` or `UpdatedAt` fields at all (already included).
 
 root:
   name: AppName
@@ -23,20 +24,45 @@ root:
     database: ./data/app.db
     synchronize: true
     logging: false
+  
+  features:
+    cors: true
+    swagger: true
 
 modules:
-  - name: EntityName
+  - name: Owner
     generate: [controller, service, module, entity, dto]
     entity:
       fields:
-        - name: fieldName
+        - name: name
           type: string
           required: true
           validation: {minLength: 3, maxLength: 100}
-        - name: anotherField
+        - name: age
           type: number
           required: true
           validation: {min: 0}
+    relations:
+        - type: OneToMany
+          model: Pet
+          field: pets
+          description: A list of pets belonging to this owner
+  - name: Pet
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 1, maxLength: 50}
+        - name: breed
+          type: string
+          required: false
+    relations:
+        - type: ManyToOne
+          model: Owner
+          field: owner
+          description: The owner of this pet
 
 Only respond with valid YAML. No explanations. No markdown code blocks. Just raw YAML."""
 
@@ -46,40 +72,32 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
     ]
 
     response = llm.invoke(messages)
-
-    # Extract text content
     yaml_text = response.content
-
-    if "```yaml" in yaml_text:
-        yaml_text = yaml_text.split("```yaml")[1].split("```")[0].strip()
-    elif "```" in yaml_text:
-        yaml_text = yaml_text.split("```")[1].split("```")[0].strip()
-
+    
     return yaml_text
 
 
 def write_blueprint_and_run(
     description: str,
-    blueprint_file: str = "../blueprint.yaml",
+    blueprint_file: str = "./blueprint.yaml",
     script_file: str = "./generate.sh",
 ):
     """Generate YAML blueprint, write to file, and run script"""
-
-    # Generate the YAML blueprint
-    # print(f"Generating blueprint for: {description}")
+    
     yaml_content = natural_language_to_yaml(description)
 
-    # # Write blueprint to file
     with open(blueprint_file, "w") as f:
         f.write(yaml_content)
     print(f"Blueprint written to {blueprint_file}")
 
-    # Check if script exists and run it
-    if os.path.exists(script_file):
-        print(f"Running script: {script_file}")
+    script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "generate.sh")
+    
+    if os.path.exists(script_path):
+        print(f"Running script: {script_path}")
         try:
+            parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             result = subprocess.run(
-                ["./generate.sh"], shell=True, capture_output=True, text=True, cwd=".."
+                ["bash", "generate.sh"], capture_output=True, text=True, cwd=parent_dir
             )
             if result.returncode == 0:
                 print("Script executed successfully!")
@@ -92,18 +110,15 @@ def write_blueprint_and_run(
         except Exception as e:
             print(f"Error running script: {e}")
     else:
-        print(f"Script file {script_file} not found. Only blueprint was generated.")
+        print(f"Script file {script_path} not found. Only blueprint was generated.")
 
     return ""  # yaml_content
 
 
-# Example usage
 if __name__ == "__main__":
     description = "Create a NestJS application for a simple blog pages for multiple users"
 
-    # Generate, write, and run
     blueprint = write_blueprint_and_run(description)
 
-    # Also print the generated blueprint for reference
     print("\nGenerated Blueprint:")
     print(blueprint)
