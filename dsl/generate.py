@@ -2,12 +2,11 @@ import argparse
 from pathlib import Path
 
 import yaml
-from jinja2 import Environment, FileSystemLoader
-
 from helpers.logger import Logger
 from helpers.module import generate_module
 from helpers.root import generate_root_module
 from helpers.types import to_ts_type
+from jinja2 import Environment, FileSystemLoader
 
 
 def handle_relations(modules_data, env, base_output_dir):

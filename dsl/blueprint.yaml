@@ -117,3 +117,11 @@ modules:
           field: owner
           description: The owner of this pet
           onDelete: CASCADE # If the owner is deleted, delete their pets
+
+      get_params:
+        fields: ["name", "species", "breed", "age", "notes"]
+        sortBy: ["name", "species", "breed", "age", "notes"]
+        sortOrder: ["ASC", "DESC"]
+        pagination:
+          limit: 10
+          page: 1
