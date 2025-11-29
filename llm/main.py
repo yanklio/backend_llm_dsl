@@ -8,10 +8,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 load_dotenv()
 
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.1)
-messages = [
-    ("system", "Translate the user sentence to French."),
-    ("human", "I love programming."),
-]
 
 
 def natural_language_to_yaml(description: str) -> str:
