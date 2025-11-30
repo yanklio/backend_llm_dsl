@@ -1,3 +1,4 @@
+import argparse
 import os
 import subprocess
 
@@ -77,48 +78,44 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
     return yaml_text
 
 
-def write_blueprint_and_run(
-    description: str,
+def save_blueprint(
+    generated_yaml: str,
     blueprint_file: str = "./blueprint.yaml",
-    script_file: str = "./generate.sh",
 ):
-    """Generate YAML blueprint, write to file, and run script"""
-    
-    yaml_content = natural_language_to_yaml(description)
-
+    """Save the generated YAML blueprint to a file"""
+  
     with open(blueprint_file, "w") as f:
-        f.write(yaml_content)
+        f.write(generated_yaml)
     print(f"Blueprint written to {blueprint_file}")
 
-    script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "generate.sh")
-    
-    if os.path.exists(script_path):
-        print(f"Running script: {script_path}")
-        try:
-            parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            result = subprocess.run(
-                ["bash", "generate.sh"], capture_output=True, text=True, cwd=parent_dir
-            )
-            if result.returncode == 0:
-                print("Script executed successfully!")
-                if result.stdout:
-                    print("Output:", result.stdout)
-            else:
-                print(f"Script failed with return code {result.returncode}")
-                if result.stderr:
-                    print("Error:", result.stderr)
-        except Exception as e:
-            print(f"Error running script: {e}")
-    else:
-        print(f"Script file {script_path} not found. Only blueprint was generated.")
-
-    return ""  # yaml_content
+    return ""
 
 
 if __name__ == "__main__":
-    description = "Create a NestJS application for a simple blog pages for multiple users"
+    parser = argparse.ArgumentParser(description="Generate NestJS application from natural language description")
+    
+    # First argument (positional) - description
+    parser.add_argument(
+        "description", 
+        nargs="?", 
+        default="Create a NestJS application for a simple blog pages for multiple users",
+        help="Description of the NestJS application to generate (default: blog application)"
+    )
+    
+    # Flag for blueprint file path
+    parser.add_argument(
+        "-b", "--blueprint", 
+        default="./blueprint.yaml",
+        help="Path where the blueprint YAML file should be saved (default: ./blueprint.yaml)"
+    )
+    
+    args = parser.parse_args()
+    
+    print(f"Description: {args.description}")
+    print(f"Blueprint file: {args.blueprint}")
 
-    blueprint = write_blueprint_and_run(description)
+    blueprint = natural_language_to_yaml(args.description)
+    save_blueprint(blueprint, args.blueprint)
 
     print("\nGenerated Blueprint:")
     print(blueprint)

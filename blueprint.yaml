@@ -1,56 +1,49 @@
 root:
-  name: BlogApp
+  name: ECommerceAPI
   database:
     type: sqlite
-    database: ./data/blog.db
+    database: ./data/ecommerce.db
     synchronize: true
     logging: false
+  
   features:
     cors: true
     swagger: true
 
 modules:
-  - name: User
+  - name: Product
     generate: [controller, service, module, entity, dto]
     entity:
       fields:
-        - name: username
+        - name: name
           type: string
           required: true
-          unique: true
-          validation: {minLength: 3, maxLength: 50}
+          validation: {minLength: 3, maxLength: 100}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 500}
+        - name: price
+          type: number
+          required: true
+          validation: {min: 0.01}
+        - name: stock
+          type: number
+          required: true
+          validation: {min: 0, isInt: true}
+  - name: Customer
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 100}
         - name: email
           type: string
           required: true
-          unique: true
           validation: {isEmail: true}
-        - name: password
+        - name: address
           type: string
-          required: true
-          validation: {minLength: 8}
-    relations:
-        - type: OneToMany
-          model: Post
-          field: posts
-          description: A list of posts created by this user
-  - name: Post
-    generate: [controller, service, module, entity, dto]
-    entity:
-      fields:
-        - name: title
-          type: string
-          required: true
-          validation: {minLength: 5, maxLength: 255}
-        - name: content
-          type: string
-          required: true
-          validation: {minLength: 10}
-        - name: published
-          type: boolean
           required: false
-          default: false
-    relations:
-        - type: ManyToOne
-          model: User
-          field: author
-          description: The user who authored this post
+          validation: {maxLength: 200}
