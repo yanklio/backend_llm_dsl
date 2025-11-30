@@ -437,4 +437,4 @@ zict
 zipp
 zope.interface
 zstandard
-langchain_google_genai-3.2.0
+langchain_google_genai==3.2.0
