@@ -1,4 +1,4 @@
-from .logger import Logger
+from utils.logger import Logger
 
 
 def handle_dto_file(template_data, dto_dir, env):
@@ -11,7 +11,6 @@ def handle_dto_file(template_data, dto_dir, env):
     except Exception as e:
         Logger.error(f"Failed to generate create DTO: {e}")
 
-    # Generate update-dto
     try:
         template = env.get_template("dto/update-dto.ts.j2")
         output_code = template.render(template_data)
@@ -49,7 +48,6 @@ def generate_module(module_data, env, base_output_dir):
 
     files_to_generate = module_data.get("generate", [])
 
-    # Prepare template data with module-specific info
     template_data = {
         "module": module_name,
         "entity": module_data.get("entity", {}),
