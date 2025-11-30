@@ -1,9 +1,5 @@
 #!/bin/bash
-
-# regenerate.sh
-# Script to delete src directory and regenerate NestJS code from blueprint
-
-set -e  
+set -e
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -45,3 +41,21 @@ else
 fi
 
 echo ""
+echo -e "${BLUE}Generating new code from blueprint...${NC}"
+echo ""
+
+if [ -f "dsl/generate.py" ]; then
+    python3 dsl/generate.py "$BLUEPRINT_FILE"
+
+    if [ $? -eq 0 ]; then
+        echo ""
+        echo -e "${GREEN}✓ Regeneration completed successfully!${NC}"
+    else
+        echo ""
+        echo -e "${RED}✗ Generation failed!${NC}"
+        exit 1
+    fi
+else
+    echo -e "${RED}Error: generate.py not found!${NC}"
+    exit 1
+fi

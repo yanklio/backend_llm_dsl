@@ -2,10 +2,10 @@ import argparse
 from pathlib import Path
 
 import yaml
-from helpers.logger import Logger
-from helpers.module import generate_module
-from helpers.root import generate_root_module
-from helpers.types import to_ts_type
+from pkg.logger import Logger
+from pkg.module import generate_module
+from pkg.root import generate_root_module
+from pkg.types import to_ts_type
 from jinja2 import Environment, FileSystemLoader
 
 

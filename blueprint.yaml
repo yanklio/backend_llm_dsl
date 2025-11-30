@@ -5,7 +5,6 @@ root:
     database: ./data/blog.db
     synchronize: true
     logging: false
-  
   features:
     cors: true
     swagger: true
@@ -19,21 +18,21 @@ modules:
           type: string
           required: true
           unique: true
-          validation: {minLength: 3, maxLength: 50}
+          validation: { minLength: 3, maxLength: 50 }
         - name: email
           type: string
           required: true
           unique: true
-          validation: {isEmail: true}
+          validation: { isEmail: true }
         - name: password
           type: string
           required: true
-          validation: {minLength: 8}
+          validation: { minLength: 6 }
     relations:
-        - type: OneToMany
-          model: Post
-          field: posts
-          description: A list of posts created by this user
+      - type: OneToMany
+        model: Post
+        field: posts
+        description: A list of posts created by this user
   - name: Post
     generate: [controller, service, module, entity, dto]
     entity:
@@ -41,17 +40,17 @@ modules:
         - name: title
           type: string
           required: true
-          validation: {minLength: 5, maxLength: 255}
+          validation: { minLength: 5, maxLength: 255 }
         - name: content
           type: string
           required: true
-          validation: {minLength: 10}
+          validation: { minLength: 10 }
         - name: published
           type: boolean
           required: false
           default: false
     relations:
-        - type: ManyToOne
-          model: User
-          field: author
-          description: The user who authored this post
+      - type: ManyToOne
+        model: User
+        field: author
+        description: The user who authored this post
