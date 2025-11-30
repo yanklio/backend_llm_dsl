@@ -10,10 +10,12 @@ from utils.logger import Logger
 from utils.type import to_ts_type
 
 
-def main(blueprint_file):
+def main(blueprint_file, nest_project_path=None):
     print("=" * 60)
     print("Starting Code Generation")
     print(f"Blueprint: {blueprint_file}")
+    if nest_project_path:
+        print(f"Target NestJS Project: {nest_project_path}")
     print("=" * 60 + "\n\n")
 
     with open(blueprint_file, "r") as f:
@@ -25,7 +27,12 @@ def main(blueprint_file):
 
     env.filters["to_ts_type"] = to_ts_type
 
-    base_output_dir = Path("nest_project")
+    base_output_dir = Path(nest_project_path) if nest_project_path else Path("nest_project")
+    
+    if not base_output_dir.exists():
+        Logger.warn(f"Target directory does not exist: {base_output_dir}")
+        base_output_dir.mkdir(parents=True, exist_ok=True)
+        print(f"Created directory: {base_output_dir}")
 
     root_config = data.get("root", {})
     modules_data = data.get("modules", [])
@@ -47,10 +54,8 @@ def main(blueprint_file):
                     if "inverseField" in relations_map[relation_key]:
                         relation["inverseField"] = relations_map[relation_key]["inverseField"]
 
-    # Generate root module files
     generate_root_module(root_config, modules_data, env, base_output_dir)
 
-    # Generate each sub-module
     src_dir = base_output_dir / "src"
     for module_data in modules_data:
         generate_module(module_data, env, src_dir)
@@ -59,7 +64,6 @@ def main(blueprint_file):
     print("✓ Generation Complete!")
     print("=" * 60)
 
-    # Print summary
     print("\nGenerated:")
     print(f"  - Root module: {root_config.get('name', 'App')}")
     print(f"  - Sub-modules: {len(modules_data)}")
@@ -78,7 +82,13 @@ if __name__ == "__main__":
         default="blueprint.yaml",
         help="The path to the YAML blueprint file (default: blueprint.yaml)",
     )
+    parser.add_argument(
+        "--nest-project",
+        "-p",
+        type=str,
+        help="Path to existing NestJS project directory (default: nest_project)",
+    )
 
     args = parser.parse_args()
 
-    main(args.blueprint_file)
+    main(args.blueprint_file, args.nest_project)
