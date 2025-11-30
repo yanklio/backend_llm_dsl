@@ -13,3 +13,8 @@ __pycache__/
 
 # secrets
 .env
+
+# IDE files
+.vscode/
+.idea/
+.github/
