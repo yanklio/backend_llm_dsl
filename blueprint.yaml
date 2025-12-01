@@ -1,23 +1,49 @@
-# This is the "blueprint" the LLM will generate.
-# It describes one complete Nest.JS module.
-module: Product
-generate: [controller, service, module, entity, dto]
+root:
+  name: ECommerceAPI
+  database:
+    type: sqlite
+    database: ./data/ecommerce.db
+    synchronize: true
+    logging: false
+  
+  features:
+    cors: true
+    swagger: true
 
-entity:
-  fields:
-    - name: name
-      type: string
-      required: true
-      validation: { minLength: 3, maxLength: 100 }
-
-    - name: price
-      type: number
-      required: true
-      validation: { min: 0 }
-
-    - name: isInStock
-      type: boolean
-      default: false
-# relations:
-#   - type: ManyToOne # A TypeORM relationship
-#     model: Category
+modules:
+  - name: Product
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 100}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 500}
+        - name: price
+          type: number
+          required: true
+          validation: {min: 0.01}
+        - name: stock
+          type: number
+          required: true
+          validation: {min: 0, isInt: true}
+  - name: Customer
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 100}
+        - name: email
+          type: string
+          required: true
+          validation: {isEmail: true}
+        - name: address
+          type: string
+          required: false
+          validation: {maxLength: 200}

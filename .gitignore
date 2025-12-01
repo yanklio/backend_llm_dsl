@@ -1,0 +1,20 @@
+# build
+nest_project/*
+node_modules/*
+generator_env/*
+
+# Python virtual environments
+thesis_env/
+*_env/
+venv/
+env/
+.venv/
+__pycache__/
+
+# secrets
+.env
+
+# IDE files
+.vscode/
+.idea/
+.github/
