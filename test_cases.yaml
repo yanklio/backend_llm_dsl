@@ -5,6 +5,12 @@ TEST_CASE_1:
     Entity should have: id, email, name, createdAt
     Endpoints: GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id
     Each endpoint should use the UserService
+  endpoints:
+    - GET /users
+    - GET /users/:id
+    - POST /users
+    - PUT /users/:id
+    - DELETE /users/:id
 
 TEST_CASE_2:
   name: "User with Relations"
@@ -14,6 +20,10 @@ TEST_CASE_2:
     Post belongs to User (ManyToOne relationship)
     Create endpoints to get user's posts
     Posts table: id, title, content, createdAt, userId
+  endpoints:
+    - GET /users/:id/posts
+    - POST /posts
+    - GET /posts/:id
 
 TEST_CASE_3:
   name: "With Validation"
@@ -22,6 +32,11 @@ TEST_CASE_3:
     Fields: id, name (required, min 2 chars, max 100), price (required, min 0), stock (required, min 0)
     Endpoints: GET all products with pagination (limit, page), GET by id, POST create, PUT update, DELETE
     All fields should be validated according to constraints
+  endpoints:
+    - GET /products
+    - GET /products/:id
+    - POST /products
+    - PUT /products/:id
 
 TEST_CASE_4:
   name: "Complex with Enums"
@@ -30,6 +45,11 @@ TEST_CASE_4:
     Fields: id, userId (FK to User), status (enum: pending, shipped, delivered, cancelled), totalPrice, createdAt
     Endpoints: GET all user's orders, GET order by id, POST create order, PUT update status
     Only allow valid status transitions
+  endpoints:
+    - GET /users/:id/orders
+    - GET /orders/:id
+    - POST /orders
+    - PUT /orders/:id/status
 
 TEST_CASE_5:
   name: "With Relationships and Validation"
@@ -39,3 +59,8 @@ TEST_CASE_5:
     Relations: Can have many Products
     Endpoints: GET all, GET by id, POST create, PUT update, DELETE
     Validate name uniqueness
+  endpoints:
+    - GET /categories
+    - GET /categories/:id
+    - POST /categories
+    - PUT /categories/:id

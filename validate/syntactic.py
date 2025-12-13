@@ -45,7 +45,6 @@ def validate_project(project_path: str) -> Dict:
             "errors": [{"file": "", "line": 0, "column": 0, "message": "No TypeScript files found", "code": "NO_FILES"}]
         }
     
-    # Check if tsconfig.json exists
     if not (project_path / "tsconfig.json").exists():
         return {
             "valid": False,
@@ -54,7 +53,6 @@ def validate_project(project_path: str) -> Dict:
             "errors": [{"file": "", "line": 0, "column": 0, "message": "tsconfig.json not found", "code": "MISSING_CONFIG"}]
         }
     
-    # Run TypeScript compiler
     errors = _run_tsc(project_path)
     
     return {
@@ -108,7 +106,6 @@ def _parse_error_line(line: str) -> Dict | None:
         if len(parts) != 2:
             return None
         
-        # Parse file(line,column)
         file_loc = parts[0].split("(")
         if len(file_loc) != 2:
             return None
@@ -116,14 +113,12 @@ def _parse_error_line(line: str) -> Dict | None:
         file_path = file_loc[0].strip()
         line_col = file_loc[1].strip()
         
-        # Parse line,column
         line_num, col_num = 0, 0
         if "," in line_col:
             coords = line_col.split(",")
             line_num = int(coords[0])
             col_num = int(coords[1])
         
-        # Parse error code and message
         error_part = parts[1]
         code = ""
         message = error_part
