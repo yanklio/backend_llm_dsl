@@ -2,6 +2,7 @@
 nest_project/*
 node_modules/*
 thesis_env/*
+test_cases/*
 
 # Python virtual environments
 thesis_env/
