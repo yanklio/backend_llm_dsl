@@ -1,0 +1,247 @@
+import sys
+import yaml
+import json
+import subprocess
+from pathlib import Path
+from validate.syntactic import validate_project as validate_syntactic
+from validate.runtime import validate_project as validate_runtime
+
+
+def load_test_cases():
+    """Load test cases from YAML file."""
+    with open('test_cases.yaml', 'r') as f:
+        return yaml.safe_load(f)
+
+
+def generate_dsl_approach(test_case_name, test_case_data):
+    """Generate using DSL approach (YAML -> Code)."""
+    print(f"\n{'='*60}")
+    print("GENERATING WITH DSL APPROACH")
+    print(f"{'='*60}\n")
+    
+    # Use the blueprint from test_cases/dsl_llm/
+    blueprint_path = f"test_cases/dsl_llm/{test_case_name}_blueprint.yaml"
+    
+    if not Path(blueprint_path).exists():
+        print(f"Error: Blueprint not found at {blueprint_path}")
+        print("Generating blueprint from requirement using LLM...")
+        
+        # Generate blueprint using LLM
+        result = subprocess.run(
+            ["python", "-c", f"""
+from llm.yaml_generator import natural_language_to_yaml
+import sys
+
+requirement = '''{test_case_data['requirement']}'''
+try:
+    yaml_output = natural_language_to_yaml(requirement)
+    with open('{blueprint_path}', 'w') as f:
+        f.write(yaml_output)
+    print("Blueprint generated successfully")
+except Exception as e:
+    print(f"Error generating blueprint: {{e}}", file=sys.stderr)
+    sys.exit(1)
+"""],
+            capture_output=True,
+            text=True
+        )
+        
+        if result.returncode != 0:
+            print(f"Failed to generate blueprint: {result.stderr}")
+            return False
+        print(result.stdout)
+    
+    # Generate code from blueprint
+    print(f"Generating code from blueprint: {blueprint_path}")
+    result = subprocess.run(
+        ["python", "dsl/generate.py", blueprint_path, "--nest-project", "nest_project"],
+        capture_output=True,
+        text=True
+    )
+    
+    if result.returncode != 0:
+        print(f"Generation failed: {result.stderr}")
+        return False
+    
+    print(result.stdout)
+    print("✓ Code generation completed")
+    return True
+
+
+def generate_raw_approach(test_case_name, test_case_data):
+    """Generate using RAW LLM approach (Direct code generation)."""
+    print(f"\n{'='*60}")
+    print("GENERATING WITH RAW LLM APPROACH")
+    print(f"{'='*60}\n")
+    
+    print("Generating code directly from LLM...")
+    result = subprocess.run(
+        ["python", "-c", f"""
+from llm.raw_generator import generate_nestjs_backend
+import sys
+
+requirement = '''{test_case_data['requirement']}'''
+try:
+    generate_nestjs_backend(requirement, 'nest_project')
+    print("✓ Direct code generation completed")
+except Exception as e:
+    print(f"Error: {{e}}", file=sys.stderr)
+    sys.exit(1)
+"""],
+        capture_output=True,
+        text=True
+    )
+    
+    if result.returncode != 0:
+        print(f"Generation failed: {result.stderr}")
+        return False
+    
+    print(result.stdout)
+    return True
+
+
+def main():
+    """Main execution function."""
+    if len(sys.argv) < 3:
+        print("Usage: python test_single_case.py <test_case_name> <approach>")
+        print("\nArguments:")
+        print("  test_case_name: TEST_CASE_1, TEST_CASE_2, TEST_CASE_3, TEST_CASE_4, TEST_CASE_5")
+        print("  approach: dsl or raw")
+        print("\nExample:")
+        print("  python test_single_case.py TEST_CASE_1 dsl")
+        sys.exit(1)
+    
+    test_case_name = sys.argv[1]
+    approach = sys.argv[2].lower()
+    
+    if approach not in ['dsl', 'raw']:
+        print(f"Error: Invalid approach '{approach}'. Use 'dsl' or 'raw'")
+        sys.exit(1)
+    
+    # Load test cases
+    test_cases = load_test_cases()
+    
+    if test_case_name not in test_cases:
+        print(f"Error: Test case '{test_case_name}' not found")
+        print("\nAvailable test cases:")
+        for case_name, case_data in test_cases.items():
+            print(f"  - {case_name}: {case_data['name']}")
+        sys.exit(1)
+    
+    test_case = test_cases[test_case_name]
+    endpoints = test_case.get('endpoints', [])
+    
+    # Print header
+    print("\n" + "="*60)
+    print(f"TEST CASE: {test_case['name']}")
+    print(f"APPROACH: {approach.upper()}")
+    print("="*60)
+    print(f"\nRequirement:")
+    print(test_case['requirement'])
+    print(f"\nEndpoints to validate: {len(endpoints)}")
+    for ep in endpoints:
+        print(f"  - {ep}")
+    
+    # Clean nest_project/src before generation
+    src_path = Path("nest_project/src")
+    if src_path.exists():
+        print(f"\nCleaning {src_path}...")
+        subprocess.run(["rm", "-rf", str(src_path)], check=True)
+    
+    # Generate code
+    if approach == 'dsl':
+        success = generate_dsl_approach(test_case_name, test_case)
+    else:
+        success = generate_raw_approach(test_case_name, test_case)
+    
+    if not success:
+        print("\n✗ Generation failed")
+        sys.exit(1)
+    
+    # Validation Phase
+    print("\n" + "="*60)
+    print("VALIDATION PHASE")
+    print("="*60)
+    
+    # 1. Syntactic Validation
+    print("\n[1/2] Running Syntactic Validation...")
+    syntactic_result = validate_syntactic("nest_project")
+    
+    print(f"\nSyntactic Result:")
+    print(f"  Valid: {syntactic_result['valid']}")
+    print(f"  Total Files: {syntactic_result['total_files']}")
+    print(f"  Error Count: {syntactic_result['error_count']}")
+    
+    if syntactic_result['errors']:
+        print(f"\n  Syntax Errors ({len(syntactic_result['errors'])}):")
+        for error in syntactic_result['errors'][:5]:  # Show first 5
+            print(f"    [{error['file']}:{error['line']}] {error['message'][:80]}")
+        if len(syntactic_result['errors']) > 5:
+            print(f"    ... and {len(syntactic_result['errors']) - 5} more errors")
+    
+    # 2. Runtime Validation with Endpoint Testing
+    print("\n[2/2] Running Runtime Validation with Endpoint Testing...")
+    runtime_result = validate_runtime("nest_project", endpoints)
+    
+    print(f"\nRuntime Result:")
+    print(f"  Valid: {runtime_result['valid']}")
+    print(f"  Build Success: {runtime_result['build_success']}")
+    print(f"  Start Success: {runtime_result['start_success']}")
+    
+    if runtime_result.get('endpoint_tests'):
+        print(f"\n  Endpoint Tests:")
+        passed = 0
+        failed = 0
+        for endpoint, test_result in runtime_result['endpoint_tests'].items():
+            if test_result['success']:
+                passed += 1
+                status = "✓"
+            else:
+                failed += 1
+                status = "✗"
+            status_code = test_result.get('status_code', 'N/A')
+            response_time = test_result.get('response_time_ms', 'N/A')
+            print(f"    {status} {endpoint:35} [{status_code}] {response_time}ms")
+            if not test_result['success']:
+                print(f"        Error: {test_result.get('error', 'Unknown')}")
+        
+        print(f"\n  Summary: {passed} passed, {failed} failed out of {len(endpoints)} total")
+    
+    if runtime_result['errors']:
+        print(f"\n  Runtime Errors ({len(runtime_result['errors'])}):")
+        for error in runtime_result['errors']:
+            print(f"    [{error['stage']}] {error['message'][:100]}")
+    
+    # Final Summary
+    print("\n" + "="*60)
+    print("FINAL SUMMARY")
+    print("="*60)
+    
+    overall_valid = syntactic_result['valid'] and runtime_result['valid']
+    
+    print(f"Test Case: {test_case['name']}")
+    print(f"Approach: {approach.upper()}")
+    print(f"Syntactic Validation: {'✓ PASS' if syntactic_result['valid'] else '✗ FAIL'}")
+    print(f"Runtime Validation: {'✓ PASS' if runtime_result['valid'] else '✗ FAIL'}")
+    print(f"Overall: {'✓ PASS' if overall_valid else '✗ FAIL'}")
+    print("="*60 + "\n")
+    
+    # Save results
+    results = {
+        "test_case": test_case_name,
+        "approach": approach,
+        "syntactic": syntactic_result,
+        "runtime": runtime_result,
+        "overall_valid": overall_valid
+    }
+    
+    output_file = f"nest_project/validation_result_{approach}.json"
+    with open(output_file, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Results saved to: {output_file}")
+    
+    sys.exit(0 if overall_valid else 1)
+
+
+if __name__ == "__main__":
+    main()

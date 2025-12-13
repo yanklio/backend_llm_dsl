@@ -1,8 +1,3 @@
-"""
-Runtime validation for generated NestJS applications.
-Tests if the app builds and runs successfully.
-"""
-
 import json
 import subprocess
 import time
@@ -36,6 +31,7 @@ def validate_project(project_path: str, endpoints: Optional[List[str]] = None, b
             "valid": False,
             "build_success": False,
             "start_success": False,
+            "endpoint_tests": {},
             "errors": [{"stage": "setup", "message": "package.json not found", "code": "MISSING_PACKAGE_JSON"}]
         }
     
@@ -46,16 +42,18 @@ def validate_project(project_path: str, endpoints: Optional[List[str]] = None, b
             "valid": False,
             "build_success": False,
             "start_success": False,
+            "endpoint_tests": {},
             "errors": errors
         }
     
-    # Build the project
+    build_result = _run_npm_build(project_path)
     if not build_result["success"]:
         errors.append(build_result["error"])
         return {
             "valid": False,
             "build_success": False,
             "start_success": False,
+            "endpoint_tests": {},
             "errors": errors
         }
     
@@ -66,6 +64,7 @@ def validate_project(project_path: str, endpoints: Optional[List[str]] = None, b
             "valid": False,
             "build_success": True,
             "start_success": False,
+            "endpoint_tests": {},
             "errors": errors
         }
     

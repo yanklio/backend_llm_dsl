@@ -19,7 +19,6 @@ def read_project_context(project_dir: str) -> str:
 
     context = "=== EXISTING PROJECT FILES ===\n\n"
 
-    # Read key files for context
     for file_path in project_path.rglob("*.ts"):
         if "node_modules" not in str(file_path):
             try:
@@ -124,13 +123,11 @@ Make it production-ready and runnable."""
 
     messages = [SystemMessage(content=system_prompt), HumanMessage(content=user_prompt)]
 
-    print("🤖 Asking AI to generate code...")
+    print("Generating code...")
     response = llm.invoke(messages)
 
-    # Parse JSON response
     content = response.content.strip()
 
-    # Strip markdown code blocks if present
     if content.startswith("```json"):
         content = content[7:]
     elif content.startswith("```"):
@@ -191,16 +188,11 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 Vibe Coder - NestJS Generator\n")
-    print(f"Request: {args.description}\n")
-
     try:
-        # Generate files
         files = natural_language_to_code(args.description, args.output)
 
         print(f"\n📝 Generated {len(files)} files\n")
 
-        # Save them
         save_files(files, args.output)
 
         print("\n🎉 Done! Run with:")
