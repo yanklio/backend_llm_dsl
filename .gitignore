@@ -1,7 +1,7 @@
 # build
 nest_project/*
 node_modules/*
-generator_env/*
+thesis_env/*
 
 # Python virtual environments
 thesis_env/
