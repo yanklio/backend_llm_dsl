@@ -169,7 +169,6 @@ def save_files(files: dict, output_dir: str):
 
     print(f"\n📁 Saved {saved_count}/{len(files)} files to: {output_path.absolute()}")
 
-
 def main():
     parser = argparse.ArgumentParser(
         description="Vibe coder - generate NestJS code from simple descriptions"

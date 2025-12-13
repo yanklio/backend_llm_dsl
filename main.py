@@ -34,12 +34,7 @@ def main():
     )
 
     args = parser.parse_args()
-
-    print(f"🎯 Description: {args.description}")
-    print(f"📄 Blueprint: {args.blueprint}")
-    print(f"📁 Project: {args.project}")
-    print()
-
+    
     print("🤖 Generating blueprint with LLM...")
     blueprint = natural_language_to_yaml(args.description)
     save_blueprint(blueprint, args.blueprint)

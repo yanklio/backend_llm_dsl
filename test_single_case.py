@@ -5,6 +5,12 @@ import subprocess
 from pathlib import Path
 from validate.syntactic import validate_project as validate_syntactic
 from validate.runtime import validate_project as validate_runtime
+from llm.yaml_generator import natural_language_to_yaml
+from llm.raw_generator import generate_nestjs_backend
+
+# Add dsl directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent / 'dsl'))
+from generate import main as dsl_generate
 
 
 def load_test_cases():
@@ -19,53 +25,29 @@ def generate_dsl_approach(test_case_name, test_case_data):
     print("GENERATING WITH DSL APPROACH")
     print(f"{'='*60}\n")
     
-    # Use the blueprint from test_cases/dsl_llm/
     blueprint_path = f"test_cases/dsl_llm/{test_case_name}_blueprint.yaml"
     
     if not Path(blueprint_path).exists():
         print(f"Error: Blueprint not found at {blueprint_path}")
         print("Generating blueprint from requirement using LLM...")
         
-        # Generate blueprint using LLM
-        result = subprocess.run(
-            ["python", "-c", f"""
-from llm.yaml_generator import natural_language_to_yaml
-import sys
-
-requirement = '''{test_case_data['requirement']}'''
-try:
-    yaml_output = natural_language_to_yaml(requirement)
-    with open('{blueprint_path}', 'w') as f:
-        f.write(yaml_output)
-    print("Blueprint generated successfully")
-except Exception as e:
-    print(f"Error generating blueprint: {{e}}", file=sys.stderr)
-    sys.exit(1)
-"""],
-            capture_output=True,
-            text=True
-        )
-        
-        if result.returncode != 0:
-            print(f"Failed to generate blueprint: {result.stderr}")
+        try:
+            yaml_output = natural_language_to_yaml(test_case_data['requirement'])
+            with open(blueprint_path, 'w') as f:
+                f.write(yaml_output)
+            print("✓ Blueprint generated successfully")
+        except Exception as e:
+            print(f"Failed to generate blueprint: {e}")
             return False
-        print(result.stdout)
     
-    # Generate code from blueprint
     print(f"Generating code from blueprint: {blueprint_path}")
-    result = subprocess.run(
-        ["python", "dsl/generate.py", blueprint_path, "--nest-project", "nest_project"],
-        capture_output=True,
-        text=True
-    )
-    
-    if result.returncode != 0:
-        print(f"Generation failed: {result.stderr}")
+    try:
+        dsl_generate(blueprint_path, "nest_project")
+        print("✓ Code generation completed")
+        return True
+    except Exception as e:
+        print(f"Generation failed: {e}")
         return False
-    
-    print(result.stdout)
-    print("✓ Code generation completed")
-    return True
 
 
 def generate_raw_approach(test_case_name, test_case_data):
@@ -75,29 +57,13 @@ def generate_raw_approach(test_case_name, test_case_data):
     print(f"{'='*60}\n")
     
     print("Generating code directly from LLM...")
-    result = subprocess.run(
-        ["python", "-c", f"""
-from llm.raw_generator import generate_nestjs_backend
-import sys
-
-requirement = '''{test_case_data['requirement']}'''
-try:
-    generate_nestjs_backend(requirement, 'nest_project')
-    print("✓ Direct code generation completed")
-except Exception as e:
-    print(f"Error: {{e}}", file=sys.stderr)
-    sys.exit(1)
-"""],
-        capture_output=True,
-        text=True
-    )
-    
-    if result.returncode != 0:
-        print(f"Generation failed: {result.stderr}")
+    try:
+        generate_nestjs_backend(test_case_data['requirement'], 'nest_project')
+        print("✓ Direct code generation completed")
+        return True
+    except Exception as e:
+        print(f"Generation failed: {e}")
         return False
-    
-    print(result.stdout)
-    return True
 
 
 def main():

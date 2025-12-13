@@ -64,3 +64,4 @@ TEST_CASE_5:
     - GET /categories/:id
     - POST /categories
     - PUT /categories/:id
+    - GET /products
