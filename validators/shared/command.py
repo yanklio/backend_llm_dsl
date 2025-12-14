@@ -68,18 +68,24 @@ def start_process(command: list, cwd: Path) -> subprocess.Popen:
 
 def terminate_process(process: subprocess.Popen, timeout: int = 5) -> None:
     """
-    Safely terminate a process.
+    Safely terminate a process and ensure cleanup.
 
     Args:
         process: Process to terminate
         timeout: Time to wait before killing
     """
+    import time
+
     if process.poll() is None:
         process.terminate()
         try:
             process.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
             process.kill()
+            process.wait()  # Wait for kill to complete
+
+    # Small delay to ensure port is released
+    time.sleep(1)
 
 
 def check_process_running(process: subprocess.Popen) -> Tuple[bool, Optional[str]]:

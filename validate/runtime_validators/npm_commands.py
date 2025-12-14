@@ -64,16 +64,17 @@ def run_npm_build(project_path: Path) -> Dict:
     return {"success": True}
 
 
-def run_npm_start(project_path: Path, wait_time: int = 5) -> Dict:
+def run_npm_start(project_path: Path, wait_time: int = 5, terminate: bool = True) -> Dict:
     """
     Start the application and verify it runs.
 
     Args:
         project_path: Path to the NestJS project
         wait_time: Seconds to wait before checking if app crashed
+        terminate: Whether to terminate the process after verification (False if endpoints will be tested)
 
     Returns:
-        Dictionary with success status and optional error
+        Dictionary with success status, optional error, and process if not terminated
     """
     import time
 
@@ -94,8 +95,11 @@ def run_npm_start(project_path: Path, wait_time: int = 5) -> Dict:
                 ),
             }
 
-        terminate_process(process)
-        return {"success": True}
+        if terminate:
+            terminate_process(process)
+            return {"success": True}
+        else:
+            return {"success": True, "process": process}
 
     except Exception as e:
         return {

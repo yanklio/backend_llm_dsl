@@ -69,25 +69,34 @@ def validate_project(
             errors=errors,
         )
 
-    # Run npm start
-    start_result = run_npm_start(project_path_obj)
-    if not start_result["success"]:
-        errors.append(start_result["error"])
-        return RuntimeValidationResult(
-            valid=False,
-            build_success=True,
-            start_success=False,
-            endpoint_tests={},
-            errors=errors,
-        )
-
-    # Test endpoints if provided
+    # Test endpoints if provided (which will also start the app)
     endpoint_results = {}
     if endpoints:
         endpoint_test = test_endpoints(project_path_obj, endpoints, base_url)
         endpoint_results = endpoint_test["results"]
         if not endpoint_test["success"]:
             errors.extend(endpoint_test["errors"])
+            # Check if error was due to app crash on start
+            if any(err.get("code") == "APP_CRASHED" for err in endpoint_test["errors"]):
+                return RuntimeValidationResult(
+                    valid=False,
+                    build_success=True,
+                    start_success=False,
+                    endpoint_tests=endpoint_results,
+                    errors=errors,
+                )
+    else:
+        # Only run start check if no endpoints to test
+        start_result = run_npm_start(project_path_obj, terminate=True)
+        if not start_result["success"]:
+            errors.append(start_result["error"])
+            return RuntimeValidationResult(
+                valid=False,
+                build_success=True,
+                start_success=False,
+                endpoint_tests={},
+                errors=errors,
+            )
 
     return RuntimeValidationResult(
         valid=len(errors) == 0,

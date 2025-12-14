@@ -1,5 +1,6 @@
 """Endpoint testing utilities for runtime validation."""
 
+import socket
 import time
 from pathlib import Path
 from typing import Dict, List
@@ -8,6 +9,25 @@ import requests
 
 from ..shared.error_types import ErrorCodes, create_error
 from ..shared.subprocess_utils import check_process_running, start_process, terminate_process
+
+
+def is_port_in_use(port: int, host: str = "localhost") -> bool:
+    """
+    Check if a port is currently in use.
+
+    Args:
+        port: Port number to check
+        host: Host to check on
+
+    Returns:
+        True if port is in use, False otherwise
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((host, port))
+            return False
+        except OSError:
+            return True
 
 
 def test_endpoints(
@@ -29,6 +49,21 @@ def test_endpoints(
     process = None
 
     try:
+        # Check if port is already in use
+        port = 3000
+        if is_port_in_use(port):
+            return {
+                "success": False,
+                "results": {},
+                "errors": [
+                    create_error(
+                        "endpoint_test",
+                        f"Port {port} is already in use. Please free the port before testing.",
+                        ErrorCodes.START_ERROR,
+                    )
+                ],
+            }
+
         # Start the application
         process = start_process(["npm", "run", "start"], cwd=project_path)
         time.sleep(8)
@@ -79,9 +114,20 @@ def test_endpoints(
             ],
         }
     finally:
-        # Clean up process
+        # Clean up process - ensure it's terminated even if exception occurs
         if process:
-            terminate_process(process)
+            try:
+                terminate_process(process)
+            except Exception as cleanup_error:
+                # Log cleanup error but don't override main error
+                if not errors:
+                    errors.append(
+                        create_error(
+                            "cleanup",
+                            f"Failed to cleanup process: {str(cleanup_error)}",
+                            ErrorCodes.START_ERROR,
+                        )
+                    )
 
 
 def test_single_endpoint(endpoint: str, base_url: str) -> Dict:

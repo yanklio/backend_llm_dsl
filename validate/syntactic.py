@@ -3,7 +3,7 @@
 import json
 import sys
 
-from syntactic_validators import validate_project
+from .syntactic_validators import validate_project
 
 
 def main():

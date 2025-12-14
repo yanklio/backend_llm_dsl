@@ -169,6 +169,20 @@ def save_files(files: dict, output_dir: str):
 
     print(f"\n📁 Saved {saved_count}/{len(files)} files to: {output_path.absolute()}")
 
+
+def generate_nestjs_backend(description: str, output_dir: str = "./nest_project"):
+    """
+    Generate NestJS backend from natural language description.
+    This is a wrapper function that combines code generation and file saving.
+
+    Args:
+        description: Natural language description of the application
+        output_dir: Output directory for the generated project
+    """
+    files = natural_language_to_code(description, output_dir)
+    save_files(files, output_dir)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Vibe coder - generate NestJS code from simple descriptions"

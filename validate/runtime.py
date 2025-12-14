@@ -5,7 +5,8 @@ import sys
 from typing import List, Optional
 
 import yaml
-from runtime_validators import validate_project
+
+from .runtime_validators import validate_project
 
 
 def load_endpoints_from_yaml(test_case_name: str, test_cases_file: str) -> Optional[List[str]]:
