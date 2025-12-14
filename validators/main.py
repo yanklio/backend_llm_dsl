@@ -1,5 +1,6 @@
 import Path
 
+from .runtime_validators import validate_runtime
 from .syntatic_validators import validate_syntatic
 
 
@@ -12,6 +13,7 @@ def main(project_path: Path):
     """
     errors = []
     errors.extend(validate_syntatic(project_path))
+    errors.extend(validate_runtime(project_path))
     return errors
 
 

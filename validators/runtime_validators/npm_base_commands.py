@@ -1,13 +1,26 @@
-"""NPM command execution utilities for runtime validation."""
-
+import time
 from pathlib import Path
 from typing import Dict
 
+from ..shared.command import check_process_running, run_command, start_process, terminate_process
 from ..shared.error_types import ErrorCodes, create_error
-from ..shared.subprocess_utils import run_command
 
 
-def run_npm_install(project_path: Path) -> Dict:
+def check_base_npm(project_path: Path) -> Dict:
+    """
+    Check all base npm commmands
+    """
+    errors = []
+    installErrors = _run_npm_install(project_path)
+    errors.extend(installErrors)
+    buildErrors = _run_npm_build(project_path)
+    errors.extend(buildErrors)
+    startErrors = _run_npm_start(project_path)
+    errors.extend(startErrors)
+    return {"install": installErrors, "build": buildErrors, "start": startErrors, "errors": errors}
+
+
+def _run_npm_install(project_path: Path) -> Dict:
     """
     Install npm dependencies.
 
@@ -37,7 +50,7 @@ def run_npm_install(project_path: Path) -> Dict:
     return {"success": True}
 
 
-def run_npm_build(project_path: Path) -> Dict:
+def _run_npm_build(project_path: Path) -> Dict:
     """
     Build the NestJS project.
 
@@ -64,7 +77,7 @@ def run_npm_build(project_path: Path) -> Dict:
     return {"success": True}
 
 
-def run_npm_start(project_path: Path, wait_time: int = 5, terminate: bool = True) -> Dict:
+def _run_npm_start(project_path: Path, wait_time: int = 10, terminate: bool = True) -> Dict:
     """
     Start the application and verify it runs.
 
@@ -76,10 +89,6 @@ def run_npm_start(project_path: Path, wait_time: int = 5, terminate: bool = True
     Returns:
         Dictionary with success status, optional error, and process if not terminated
     """
-    import time
-
-    from ..shared.subprocess_utils import check_process_running, start_process, terminate_process
-
     try:
         process = start_process(["npm", "run", "start"], cwd=project_path)
         time.sleep(wait_time)
@@ -87,7 +96,7 @@ def run_npm_start(project_path: Path, wait_time: int = 5, terminate: bool = True
         is_running, error_output = check_process_running(process)
 
         if not is_running:
-            error_message = error_output[:200] if error_output else "Application crashed"
+            error_message = error_output if error_output else "Application crashed"
             return {
                 "success": False,
                 "error": create_error(

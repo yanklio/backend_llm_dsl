@@ -7,7 +7,7 @@ import yaml
 
 from llm.raw_generator import generate_nestjs_backend
 from llm.yaml_generator import natural_language_to_yaml
-from validators import validate_syntactic
+from validators import validate_runtime, validate_syntactic
 
 # Add dsl directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent / "dsl"))
@@ -136,7 +136,6 @@ def main():
 
     print("\nSyntactic Result:")
     print(f"  Valid: {syntactic_result['valid']}")
-    print(f"  Total Files: {syntactic_result['total_files']}")
     print(f"  Error Count: {syntactic_result['error_count']}")
 
     if syntactic_result["errors"]:
@@ -147,49 +146,26 @@ def main():
             print(f"    ... and {len(syntactic_result['errors']) - 5} more errors")
 
     # 2. Runtime Validation with Endpoint Testing
-    # print("\n[2/2] Running Runtime Validation with Endpoint Testing...")
-    # runtime_result = validate_runtime("nest_project", endpoints)
+    print("\n[2/2] Running Runtime Validation with Endpoint Testing...")
+    runtime_result = validate_runtime("nest_project")
 
-    # print("\nRuntime Result:")
-    # print(f"  Valid: {runtime_result['valid']}")
-    # print(f"  Build Success: {runtime_result['build_success']}")
-    # print(f"  Start Success: {runtime_result['start_success']}")
-
-    # if runtime_result.get("endpoint_tests"):
-    #     print("\n  Endpoint Tests:")
-    #     passed = 0
-    #     failed = 0
-    #     for endpoint, test_result in runtime_result["endpoint_tests"].items():
-    #         if test_result["success"]:
-    #             passed += 1
-    #             status = "✓"
-    #         else:
-    #             failed += 1
-    #             status = "✗"
-    #         status_code = test_result.get("status_code", "N/A")
-    #         response_time = test_result.get("response_time_ms", "N/A")
-    #         print(f"    {status} {endpoint:35} [{status_code}] {response_time}ms")
-    #         if not test_result["success"]:
-    #             print(f"        Error: {test_result.get('error', 'Unknown')}")
-
-    #     print(f"\n  Summary: {passed} passed, {failed} failed out of {len(endpoints)} total")
-
-    # if runtime_result["errors"]:
-    #     print(f"\n  Runtime Errors ({len(runtime_result['errors'])}):")
-    #     for error in runtime_result["errors"]:
-    #         print(f"    [{error['stage']}] {error['message'][:100]}")
+    print("\nRuntime Result:")
+    print(f"  Valid: {runtime_result['valid']}")
+    print(f"  Install Success: {runtime_result['install_success']}")
+    print(f"  Build Success: {runtime_result['build_success']}")
+    print(f"  Start Success: {runtime_result['start_success']}")
 
     # Final Summary
     print("\n" + "=" * 60)
     print("FINAL SUMMARY")
     print("=" * 60)
 
-    overall_valid = syntactic_result["valid"]  # and runtime_result["valid"]
+    overall_valid = syntactic_result["valid"] and runtime_result["valid"]
 
     print(f"Test Case: {test_case['name']}")
     print(f"Approach: {approach.upper()}")
     print(f"Syntactic Validation: {'✓ PASS' if syntactic_result['valid'] else '✗ FAIL'}")
-    # print(f"Runtime Validation: {'✓ PASS' if runtime_result['valid'] else '✗ FAIL'}")
+    print(f"Runtime Validation: {'✓ PASS' if runtime_result['valid'] else '✗ FAIL'}")
     print(f"Overall: {'✓ PASS' if overall_valid else '✗ FAIL'}")
     print("=" * 60 + "\n")
 
