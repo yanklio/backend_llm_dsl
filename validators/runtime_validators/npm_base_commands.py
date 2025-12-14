@@ -2,22 +2,43 @@ import time
 from pathlib import Path
 from typing import Dict
 
-from ..shared.command import check_process_running, run_command, start_process, terminate_process
+from ..shared.command import (
+    check_process_running,
+    is_port_in_use,
+    kill_process_on_port,
+    run_command,
+    start_process,
+    terminate_process,
+)
 from ..shared.error_types import ErrorCodes, create_error
 
 
 def check_base_npm(project_path: Path) -> Dict:
     """
     Check all base npm commmands
+
+    Args:
+        project_path: Path to the NestJS project
+
+    Returns:
+        Dictionary with success status and errors
     """
     errors = []
-    installErrors = _run_npm_install(project_path)
-    errors.extend(installErrors)
-    buildErrors = _run_npm_build(project_path)
-    errors.extend(buildErrors)
-    startErrors = _run_npm_start(project_path)
-    errors.extend(startErrors)
-    return {"install": installErrors, "build": buildErrors, "start": startErrors, "errors": errors}
+    install = _run_npm_install(project_path)
+    if "error" in install:
+        errors.extend(install["error"])
+    build = _run_npm_build(project_path)
+    if "error" in build:
+        errors.extend(build["error"])
+    start = _run_npm_start(project_path)
+    if "error" in start:
+        errors.extend(start["error"])
+    return {
+        "install_success": install["success"],
+        "build_success": build["success"],
+        "start_success": start["success"],
+        "errors": errors,
+    }
 
 
 def _run_npm_install(project_path: Path) -> Dict:
@@ -44,6 +65,8 @@ def _run_npm_install(project_path: Path) -> Dict:
         else:
             code = ErrorCodes.INSTALL_FAILED
             message = f"npm install failed: {error_message}"
+
+        print("DEV", code)
 
         return {"success": False, "error": create_error("install", message, code)}
 
@@ -77,7 +100,9 @@ def _run_npm_build(project_path: Path) -> Dict:
     return {"success": True}
 
 
-def _run_npm_start(project_path: Path, wait_time: int = 10, terminate: bool = True) -> Dict:
+def _run_npm_start(
+    project_path: Path, wait_time: int = 10, terminate: bool = True, port: int = 3000
+) -> Dict:
     """
     Start the application and verify it runs.
 
@@ -85,11 +110,20 @@ def _run_npm_start(project_path: Path, wait_time: int = 10, terminate: bool = Tr
         project_path: Path to the NestJS project
         wait_time: Seconds to wait before checking if app crashed
         terminate: Whether to terminate the process after verification (False if endpoints will be tested)
+        port: Port number the application runs on (default: 3000 for NestJS)
 
     Returns:
         Dictionary with success status, optional error, and process if not terminated
     """
     try:
+        # Clean up any existing process on the port
+        if is_port_in_use(port):
+            print(f"Port {port} is in use, attempting to free it...")
+            if kill_process_on_port(port):
+                print(f"Port {port} freed successfully")
+            else:
+                print(f"Warning: Could not free port {port}")
+
         process = start_process(["npm", "run", "start"], cwd=project_path)
         time.sleep(wait_time)
 
@@ -105,7 +139,7 @@ def _run_npm_start(project_path: Path, wait_time: int = 10, terminate: bool = Tr
             }
 
         if terminate:
-            terminate_process(process)
+            terminate_process(process, port=port)
             return {"success": True}
         else:
             return {"success": True, "process": process}

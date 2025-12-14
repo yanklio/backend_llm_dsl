@@ -1,4 +1,3 @@
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -85,7 +84,6 @@ def main():
         print(f"Error: Invalid approach '{approach}'. Use 'dsl' or 'raw'")
         sys.exit(1)
 
-    # Load test cases
     test_cases = load_test_cases()
 
     if test_case_name not in test_cases:
@@ -98,7 +96,6 @@ def main():
     test_case = test_cases[test_case_name]
     endpoints = test_case.get("endpoints", [])
 
-    # Print header
     print("\n" + "=" * 60)
     print(f"TEST CASE: {test_case['name']}")
     print(f"APPROACH: {approach.upper()}")
@@ -109,13 +106,11 @@ def main():
     for ep in endpoints:
         print(f"  - {ep}")
 
-    # Clean nest_project/src before generation
     src_path = Path("nest_project/src")
     if src_path.exists():
         print(f"\nCleaning {src_path}...")
         subprocess.run(["rm", "-rf", str(src_path)], check=True)
 
-    # Generate code
     if approach == "dsl":
         success = generate_dsl_approach(test_case_name, test_case)
     else:
@@ -125,13 +120,8 @@ def main():
         print("\n✗ Generation failed")
         sys.exit(1)
 
-    # Validation Phase
-    print("\n" + "=" * 60)
-    print("VALIDATION PHASE")
-    print("=" * 60)
-
     # 1. Syntactic Validation
-    print("\n[1/2] Running Syntactic Validation...")
+    print("\n1 Running Syntactic Validation...")
     syntactic_result = validate_syntactic("nest_project")
 
     print("\nSyntactic Result:")
@@ -145,8 +135,7 @@ def main():
         if len(syntactic_result["errors"]) > 5:
             print(f"    ... and {len(syntactic_result['errors']) - 5} more errors")
 
-    # 2. Runtime Validation with Endpoint Testing
-    print("\n[2/2] Running Runtime Validation with Endpoint Testing...")
+    print("\n2 Running Runtime Validation with Endpoint Testing...")
     runtime_result = validate_runtime("nest_project")
 
     print("\nRuntime Result:")
@@ -154,6 +143,11 @@ def main():
     print(f"  Install Success: {runtime_result['install_success']}")
     print(f"  Build Success: {runtime_result['build_success']}")
     print(f"  Start Success: {runtime_result['start_success']}")
+
+    # if runtime_result["errors"]:
+    #     print("  Errors:")
+    #     for error in runtime_result["errors"]:
+    #         print(f"    {error}")
 
     # Final Summary
     print("\n" + "=" * 60)
@@ -169,7 +163,6 @@ def main():
     print(f"Overall: {'✓ PASS' if overall_valid else '✗ FAIL'}")
     print("=" * 60 + "\n")
 
-    # Save results
     results = {
         "test_case": test_case_name,
         "approach": approach,
@@ -178,10 +171,10 @@ def main():
         "overall_valid": overall_valid,
     }
 
-    output_file = f"nest_project/validation_result_{approach}.json"
-    with open(output_file, "w") as f:
-        json.dump(results, f, indent=2)
-    print(f"Results saved to: {output_file}")
+    # output_file = f"nest_project/validation_result_{approach}.json"
+    # with open(output_file, "w") as f:
+    #     json.dump(results, f, indent=2)
+    # print(f"Results saved to: {output_file}")
 
     sys.exit(0 if overall_valid else 1)
 

@@ -16,13 +16,9 @@ def validate_runtime(project_path):
             - errors (dict): Dictionary of errors from install, build, and start operations
     """
     results = check_base_npm(project_path)
-    install_result = results["install"]
-    build_result = results["build"]
-    start_result = results["start"]
-
-    install_success = install_result.get("success", False)
-    build_success = build_result.get("success", False)
-    start_success = start_result.get("success", False)
+    install_success = results["install_success"]
+    build_success = results["build_success"]
+    start_success = results["start_success"]
 
     return {
         "valid": install_success and build_success and start_success,
