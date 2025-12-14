@@ -55,7 +55,7 @@ def info(cls, message):
 
 
 @classmethod
-def warning(cls, message):
+def warn(cls, message):
     default_logger.log_level = "WARNING"
     default_logger.log(message)
 
@@ -72,5 +72,5 @@ Logger.end = end
 Logger.success = success
 Logger.debug = debug
 Logger.info = info
-Logger.warning = warning
+Logger.warn = warn
 Logger.error = error
