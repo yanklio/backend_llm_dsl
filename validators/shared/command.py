@@ -1,5 +1,3 @@
-"""Shared subprocess execution utilities."""
-
 import socket
 import subprocess
 import time

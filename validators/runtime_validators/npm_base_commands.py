@@ -51,7 +51,7 @@ def _run_npm_install(project_path: Path) -> Dict:
     Returns:
         Dictionary with success status and optional error
     """
-    result = run_command(["npm", "install"], cwd=project_path, timeout=300)
+    result = run_command(["npm", "install"], cwd=project_path, timeout=1000)
 
     if not result.success:
         error_message = result.stderr[:200] if result.stderr else "npm install failed"
@@ -116,7 +116,6 @@ def _run_npm_start(
         Dictionary with success status, optional error, and process if not terminated
     """
     try:
-        # Clean up any existing process on the port
         if is_port_in_use(port):
             print(f"Port {port} is in use, attempting to free it...")
             if kill_process_on_port(port):
