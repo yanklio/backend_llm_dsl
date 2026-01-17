@@ -1,0 +1,11 @@
+======================================================================
+📊 METRICS SUMMARY REPORT
+======================================================================
+
+## Consistency Metrics
+
+Overall Average Consistency: 99.96%
+
+- Create a simple blog with users and posts...
+  Consistency: 99.96%
+  Avg Time: 3.39s
