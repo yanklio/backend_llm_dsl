@@ -3,11 +3,11 @@ import sys
 from pathlib import Path
 
 import yaml
-from core.modules.module import generate_module
-from core.modules.relation import handle_relations
-from core.root import generate_root_module
+from .core.modules.module import generate_module
+from .core.modules.relation import handle_relations
+from .core.root import generate_root_module
 from jinja2 import Environment, FileSystemLoader
-from utils.type import to_ts_type
+from .utils.type import to_ts_type
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))

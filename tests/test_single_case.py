@@ -13,7 +13,8 @@ from src.dsl.generate import main as dsl_generate
 
 def load_test_cases():
     """Load test cases from YAML file."""
-    with open("test_cases.yaml", "r") as f:
+    test_cases_path = Path(__file__).parent / "test_cases.yaml"
+    with open(test_cases_path, "r") as f:
         return yaml.safe_load(f)
 
 
@@ -23,14 +24,16 @@ def generate_dsl_approach(test_case_name, test_case_data):
     print("GENERATING WITH DSL APPROACH")
     print(f"{'=' * 60}\n")
 
-    blueprint_path = f"test_cases/dsl_llm/{test_case_name}_blueprint.yaml"
+    tests_dir = Path(__file__).parent
+    blueprint_path = tests_dir / "test_cases" / "dsl_llm" / f"{test_case_name}_blueprint.yaml"
 
-    if not Path(blueprint_path).exists():
+    if not blueprint_path.exists():
         print(f"Error: Blueprint not found at {blueprint_path}")
         print("Generating blueprint from requirement using LLM...")
 
         try:
             yaml_output = natural_language_to_yaml(test_case_data["requirement"])
+            blueprint_path.parent.mkdir(parents=True, exist_ok=True)
             with open(blueprint_path, "w") as f:
                 f.write(yaml_output)
             print("✓ Blueprint generated successfully")
@@ -40,7 +43,7 @@ def generate_dsl_approach(test_case_name, test_case_data):
 
     print(f"Generating code from blueprint: {blueprint_path}")
     try:
-        dsl_generate(blueprint_path, "nest_project")
+        dsl_generate(str(blueprint_path), "nest_project")
         print("✓ Code generation completed")
         return True
     except Exception as e:
@@ -104,7 +107,8 @@ def main():
     for ep in endpoints:
         print(f"  - {ep}")
 
-    src_path = Path("nest_project/src")
+    project_root = Path(__file__).parent.parent
+    src_path = project_root / "nest_project" / "src"
     if src_path.exists():
         print(f"\nCleaning {src_path}...")
         subprocess.run(["rm", "-rf", str(src_path)], check=True)

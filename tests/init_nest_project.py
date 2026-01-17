@@ -23,7 +23,7 @@ from pathlib import Path
 def get_nest_project_path():
     """Get the nest_project path."""
     script_dir = Path(__file__).parent
-    nest_project = script_dir / "nest_project"
+    nest_project = script_dir.parent / "nest_project"
     return nest_project
 
 
