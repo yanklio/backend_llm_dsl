@@ -26,6 +26,26 @@ class MultiProviderYAMLGenerator:
         self._setup_providers()
 
     def _setup_providers(self):
+        """Setup providers based on availability (Groq → OpenRouter → Gemini)"""
+        
+        if os.getenv("GROQ_API_KEY"):
+            try:
+                from langchain_groq import ChatGroq
+
+                self.providers.append(
+                    {
+                        "name": "Groq (Llama 3.1)",
+                        "llm": ChatGroq(
+                            model="llama-3.1-8b-instant",
+                            api_key=os.getenv("GROQ_API_KEY"),
+                            temperature=0.1,
+                        ),
+                    }
+                )
+                logger.info("✓ Groq provider configured")
+            except Exception as e:
+                logger.warn(f"Groq setup failed: {e}")
+
         if os.getenv("OPENROUTER_API_KEY"):
             try:
                 from langchain_openai import ChatOpenAI
@@ -43,48 +63,8 @@ class MultiProviderYAMLGenerator:
                 )
                 logger.info("✓ OpenRouter provider configured")
             except Exception as e:
-                logger.warning(f"OpenRouter setup failed: {e}")
+                logger.warn(f"OpenRouter setup failed: {e}")
 
-        # 2. Try Groq (very fast, good free tier)
-        if os.getenv("GROQ_API_KEY"):
-            try:
-                from langchain_groq import ChatGroq
-
-                self.providers.append(
-                    {
-                        "name": "Groq (Llama 3.1)",
-                        "llm": ChatGroq(
-                            model="llama-3.1-8b-instant",
-                            api_key=os.getenv("GROQ_API_KEY"),
-                            temperature=0.1,
-                        ),
-                    }
-                )
-                logger.info("✓ Groq provider configured")
-            except Exception as e:
-                logger.warning(f"Groq setup failed: {e}")
-
-        # 3. Try Together AI
-        if os.getenv("TOGETHER_API_KEY"):
-            try:
-                from langchain_openai import ChatOpenAI
-
-                self.providers.append(
-                    {
-                        "name": "Together AI (Llama 3.1)",
-                        "llm": ChatOpenAI(
-                            model="meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-                            api_key=os.getenv("TOGETHER_API_KEY"),
-                            base_url="https://api.together.xyz/v1",
-                            temperature=0.1,
-                        ),
-                    }
-                )
-                logger.info("✓ Together AI provider configured")
-            except Exception as e:
-                logger.warning(f"Together AI setup failed: {e}")
-
-        # 4. Fallback to original Gemini
         if os.getenv("GOOGLE_API_KEY"):
             try:
                 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -99,11 +79,10 @@ class MultiProviderYAMLGenerator:
                 )
                 logger.info("✓ Google Gemini provider configured")
             except Exception as e:
-                logger.warning(f"Gemini setup failed: {e}")
+                logger.warn(f"Gemini setup failed: {e}")
 
         try:
             from langchain_ollama import ChatOllama
-
             import requests
 
             try:
@@ -123,10 +102,9 @@ class MultiProviderYAMLGenerator:
         if not self.providers:
             logger.error("❌ No LLM providers configured!")
             logger.info("Please set one of these environment variables:")
-            logger.info("  - OPENROUTER_API_KEY (recommended)")
-            logger.info("  - GROQ_API_KEY")
-            logger.info("  - TOGETHER_API_KEY")
-            logger.info("  - GOOGLE_API_KEY")
+            logger.info("  - GROQ_API_KEY (recommended - 30 req/min)")
+            logger.info("  - OPENROUTER_API_KEY (20 req/min)")
+            logger.info("  - GOOGLE_API_KEY (5 req/min)")
             logger.info("Or install Ollama locally")
             sys.exit(1)
 
