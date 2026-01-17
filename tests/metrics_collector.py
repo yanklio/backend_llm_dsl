@@ -19,7 +19,7 @@ import yaml
 from dotenv import load_dotenv
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from src.llm.yaml_generator_multi import natural_language_to_yaml
+from src.llm.dsl_generate import natural_language_to_yaml
 
 load_dotenv()
 
@@ -54,7 +54,8 @@ class MetricsCollector:
             start_time = time.time()
 
             try:
-                blueprint_yaml = natural_language_to_yaml(description)
+                result = natural_language_to_yaml(description)
+                blueprint_yaml = result.content
                 blueprints.append(blueprint_yaml)
                 generation_time = time.time() - start_time
                 generation_times.append(generation_time)

@@ -1,13 +1,14 @@
 import sys
 from pathlib import Path
+import json
 
 import yaml
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.dsl.generate import main as dsl_generate_main
-from src.llm.raw_generator import natural_language_to_code, save_files
-from src.llm.yaml_generator import natural_language_to_yaml, save_blueprint
+from src.llm.raw_generate import natural_language_to_code, save_files
+from src.llm.dsl_generate import natural_language_to_yaml, save_blueprint
 from src.shared import logger
 
 
@@ -27,8 +28,8 @@ def generate_dsl_llm(case_id: str, requirement: str) -> bool:
     try:
         # Generate blueprint from natural language
         logger.info("Generating blueprint with LLM...")
-        blueprint = natural_language_to_yaml(requirement)
-        save_blueprint(blueprint, blueprint_path)
+        result = natural_language_to_yaml(requirement)
+        save_blueprint(result.content, blueprint_path)
         logger.success("Blueprint generated")
 
         # Generate backend code from blueprint
@@ -51,7 +52,8 @@ def generate_raw_llm(case_id: str, requirement: str) -> bool:
     try:
         # Generate complete backend code directly from natural language
         logger.info("Generating code directly with LLM...")
-        files = natural_language_to_code(requirement, project_path)
+        result = natural_language_to_code(requirement, project_path)
+        files = json.loads(result.content)
         logger.success(f"Generated {len(files)} files")
 
         # Save all generated files

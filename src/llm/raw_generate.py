@@ -1,4 +1,3 @@
-"""Raw LLM generator module."""
 
 import argparse
 import json
@@ -9,26 +8,16 @@ from typing import Any, Dict
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from src.shared import logger
+from src.llm.wrapper import LLMClient, GenerationResult
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2)
-
-
 def read_project_context(project_dir: str) -> str:
-    """Read existing project files for context.
-
-    Args:
-        project_dir (str): Directory of the project.
-
-    Returns:
-        str: Context string with file contents.
-    """
+    """Read existing project files for context."""
     project_path = Path(project_dir)
 
     if not project_path.exists():
@@ -49,19 +38,12 @@ def read_project_context(project_dir: str) -> str:
 
 
 def natural_language_to_code(
-    description: str, project_dir: str = "./nest_project"
-) -> Dict[str, Any]:
-    """Generate code from simple description - vibe coder style.
-
-    Args:
-        description (str): Description of the application.
-        project_dir (str): Project directory.
-
-    Returns:
-        Dict[str, Any]: Dictionary of generated files.
-    """
+    description: str, project_dir: str = "./nest_project", primary_model: str = None
+) -> GenerationResult:
+    """Generate code from simple description - vibe coder style."""
 
     existing_context = read_project_context(project_dir)
+    client = LLMClient(temperature=0.2)
 
     system_prompt = """You are an expert NestJS developer. Generate COMPLETE, WORKING, ERROR-FREE code.
 
@@ -132,32 +114,21 @@ Make it production-ready and runnable."""
     messages = [SystemMessage(content=system_prompt), HumanMessage(content=user_prompt)]
 
     logger.start("Generating code with LLM...")
-    response = llm.invoke(messages)
+    
+    result = client.generate(messages, primary_provider_id=primary_model)
 
-    content = str(response.content).strip()
-
-    if content.startswith("```json"):
-        content = content[7:]
-    elif content.startswith("```"):
-        content = content[3:]
-    if content.endswith("```"):
-        content = content[:-3]
-
-    content = content.strip()
-
-    files = json.loads(content)
-    logger.success(f"Generated {len(files)} files")
-
-    return files
+    try:
+        files = json.loads(result.content)
+        logger.success(f"Generated {len(files)} files via {result.provider}")
+        return result
+    except json.JSONDecodeError:
+        logger.error("Failed to parse LLM response as JSON")
+        logger.debug(result.content)
+        raise ValueError("Invalid JSON response from LLM")
 
 
 def save_files(files: Dict[str, Any], output_dir: str) -> None:
-    """Save generated files to directory.
-
-    Args:
-        files (Dict[str, Any]): Dictionary of files to save.
-        output_dir (str): Output directory.
-    """
+    """Save generated files to directory."""
     output_path = Path(output_dir)
 
     output_path.mkdir(parents=True, exist_ok=True)
@@ -182,21 +153,6 @@ def save_files(files: Dict[str, Any], output_dir: str) -> None:
     logger.end(f"Saved {saved_count}/{len(files)} files")
 
 
-def generate_nestjs_backend(
-    description: str, output_dir: str = "./nest_project"
-) -> None:
-    """Generate NestJS backend from natural language description.
-
-    This is a wrapper function that combines code generation and file saving.
-
-    Args:
-        description (str): Natural language description of the application.
-        output_dir (str): Output directory for the generated project.
-    """
-    files = natural_language_to_code(description, output_dir)
-    save_files(files, output_dir)
-
-
 def main() -> None:
     """Main execution entry point."""
     parser = argparse.ArgumentParser(
@@ -214,12 +170,30 @@ def main() -> None:
         default="./nest_project",
         help="Output directory (default: ./nest_project)",
     )
+    
+    parser.add_argument(
+        "-m",
+        "--model",
+        default=None,
+        help="Primary model/provider to use (groq, gemini, openrouter, ollama)",
+    )
 
     args = parser.parse_args()
+    
+    if args.model:
+        logger.info(f"Preferred Model: {args.model}")
 
     try:
-        files = natural_language_to_code(args.description, args.output)
+        result = natural_language_to_code(args.description, args.output, args.model)
+        
+        # Log statistics
+        logger.info("=== Generation Statistics ===")
+        logger.info(f"Provider: {result.provider}")
+        logger.info(f"Time: {result.duration_seconds:.2f}s")
+        if result.total_tokens:
+            logger.info(f"Tokens: {result.total_tokens} (In: {result.input_tokens}, Out: {result.output_tokens})")
 
+        files = json.loads(result.content)
         save_files(files, args.output)
 
         logger.success("Done! Run with:")

@@ -5,7 +5,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from src.dsl.generate import main as dsl_generate_main
-from src.llm.yaml_generator import natural_language_to_yaml, save_blueprint
+from src.llm.dsl_generate import natural_language_to_yaml, save_blueprint
 
 
 def main():
@@ -37,8 +37,10 @@ def main():
     args = parser.parse_args()
 
     print("🤖 Generating blueprint with LLM...")
-    blueprint = natural_language_to_yaml(args.description)
-    save_blueprint(blueprint, args.blueprint)
+    result = natural_language_to_yaml(args.description)
+    print(f"Stats: {result.duration_seconds}s via {result.provider}")
+
+    save_blueprint(result.content, args.blueprint)
     print("✅ Blueprint generated!")
     print()
 

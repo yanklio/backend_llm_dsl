@@ -1,23 +1,23 @@
+
 import argparse
 import sys
 from pathlib import Path
 
-from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
+from dotenv import load_dotenv
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.shared import logger
+from src.llm.wrapper import LLMClient, GenerationResult
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.1)
-
-
-def natural_language_to_yaml(description: str) -> str:
-    """Convert natural language to YAML blueprint using LangChain + Gemini"""
+def natural_language_to_yaml(description: str, primary_model: str = None) -> GenerationResult:
+    """Convert natural language to YAML blueprint using LLM."""
+    
+    client = LLMClient(temperature=0.1)
 
     system_prompt = """You are a YAML blueprint generator for NestJS applications.
 Generate ONLY valid YAML (no other text, no markdown) following this exact structure:
@@ -77,55 +77,66 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
         HumanMessage(content=f"Create a NestJS application for: {description}"),
     ]
 
-    logger.debug("Invoking LLM to generate YAML blueprint...")
-    response = llm.invoke(messages)
-    yaml_text = response.content
-
-    return yaml_text
+    return client.generate(messages, primary_provider_id=primary_model)
 
 
-def save_blueprint(
-    generated_yaml: str,
-    blueprint_file: str = "./blueprint.yaml",
-):
-    """Save the generated YAML blueprint to a file"""
-
+def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml"):
+    """Save the generated YAML blueprint to a file."""
     with open(blueprint_file, "w") as f:
         f.write(generated_yaml)
     logger.success(f"Blueprint saved to {blueprint_file}")
 
-    return ""
 
-
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
-        description="Generate NestJS application from natural language description"
+        description="Generate NestJS application blueprint (DSL) from natural language"
     )
 
-    # First argument (positional) - description
     parser.add_argument(
         "description",
         nargs="?",
         default="Create a NestJS application for a simple blog pages for multiple users",
-        help="Description of the NestJS application to generate (default: blog application)",
+        help="Description of the NestJS application to generate",
     )
 
-    # Flag for blueprint file path
     parser.add_argument(
         "-b",
         "--blueprint",
         default="./blueprint.yaml",
-        help="Path where the blueprint YAML file should be saved (default: ./blueprint.yaml)",
+        help="Path where the blueprint YAML file should be saved",
+    )
+
+    parser.add_argument(
+        "-m",
+        "--model",
+        default=None,
+        help="Primary model/provider to use (groq, gemini, openrouter, ollama)",
     )
 
     args = parser.parse_args()
 
     logger.start("Generating YAML blueprint from description")
     logger.info(f"Description: {args.description}")
+    if args.model:
+        logger.info(f"Preferred Model: {args.model}")
 
-    blueprint = natural_language_to_yaml(args.description)
-    save_blueprint(blueprint, args.blueprint)
+    try:
+        result = natural_language_to_yaml(args.description, args.model)
+        
+        logger.info("=== Generation Statistics ===")
+        logger.info(f"Provider: {result.provider}")
+        logger.info(f"Time: {result.duration_seconds:.2f}s")
+        if result.total_tokens:
+            logger.info(f"Tokens: {result.total_tokens} (In: {result.input_tokens}, Out: {result.output_tokens})")
 
-    logger.success("Blueprint generated successfully")
-    logger.debug("Generated Blueprint:")
-    logger.debug(blueprint[:200] + "..." if len(blueprint) > 200 else blueprint)
+        save_blueprint(result.content, args.blueprint)
+        
+        logger.debug("Generated Blueprint:")
+        logger.debug(result.content[:200] + "..." if len(result.content) > 200 else result.content)
+        
+    except Exception as e:
+        logger.error(f"Failed to generate blueprint: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

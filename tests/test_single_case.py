@@ -9,9 +9,10 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.dsl.generate import main as dsl_generate
-from src.llm.raw_generator import generate_nestjs_backend
-from src.llm.yaml_generator import natural_language_to_yaml
+from src.llm.raw_generate import natural_language_to_code, save_files
+from src.llm.dsl_generate import natural_language_to_yaml
 from src.validators import validate_runtime, validate_syntactic
+import json
 
 
 def load_test_cases() -> Dict[str, Any]:
@@ -39,7 +40,8 @@ def generate_dsl_approach(test_case_name: str, test_case_data: Dict[str, Any]) -
         print("Generating blueprint from requirement using LLM...")
 
         try:
-            yaml_output = natural_language_to_yaml(test_case_data["requirement"])
+            result = natural_language_to_yaml(test_case_data["requirement"])
+            yaml_output = result.content
             blueprint_path.parent.mkdir(parents=True, exist_ok=True)
             with open(blueprint_path, "w") as f:
                 f.write(yaml_output)
@@ -69,7 +71,9 @@ def generate_raw_approach(test_case_name: str, test_case_data: Dict[str, Any]) -
 
     print("Generating code directly from LLM...")
     try:
-        generate_nestjs_backend(test_case_data["requirement"], str(nest_project_path))
+        result = natural_language_to_code(test_case_data["requirement"], str(nest_project_path))
+        files = json.loads(result.content)
+        save_files(files, str(nest_project_path))
         print("✓ Direct code generation completed")
         return True
     except Exception as e:

@@ -1,49 +1,64 @@
 root:
-  name: ECommerceAPI
+  name: UserManagementSystem
   database:
     type: sqlite
-    database: ./data/ecommerce.db
+    database: ./data/user-management-system.db
     synchronize: true
     logging: false
-  
+
   features:
     cors: true
     swagger: true
 
 modules:
-  - name: Product
+  - name: User
     generate: [controller, service, module, entity, dto]
     entity:
       fields:
-        - name: name
-          type: string
-          required: true
-          validation: {minLength: 3, maxLength: 100}
-        - name: description
-          type: string
-          required: false
-          validation: {maxLength: 500}
-        - name: price
-          type: number
-          required: true
-          validation: {min: 0.01}
-        - name: stock
-          type: number
-          required: true
-          validation: {min: 0, isInt: true}
-  - name: Customer
-    generate: [controller, service, module, entity, dto]
-    entity:
-      fields:
-        - name: name
+        - name: username
           type: string
           required: true
           validation: {minLength: 3, maxLength: 100}
         - name: email
           type: string
           required: true
-          validation: {isEmail: true}
-        - name: address
+          validation: {pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$}
+        - name: password
           type: string
-          required: false
-          validation: {maxLength: 200}
+          required: true
+          validation: {minLength: 8}
+    relations:
+        - type: ManyToMany
+          model: Role
+          field: roles
+          description: A list of roles assigned to this user
+  - name: Role
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 100}
+      relations:
+        - type: ManyToMany
+          model: User
+          field: users
+          description: A list of users assigned to this role
+  - name: Auth
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: token
+          type: string
+          required: true
+          validation: {minLength: 10}
+        - name: expiresAt
+          type: date
+          required: true
+          validation: {min: now}
+    relations:
+        - type: OneToOne
+          model: User
+          field: user
+          description: The user associated with this authentication token
