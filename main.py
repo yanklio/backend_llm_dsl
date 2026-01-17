@@ -3,10 +3,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-sys.path.insert(0, str(Path(__file__).parent / "dsl"))
 
-from dsl.generate import main as dsl_generate_main
-from llm.yaml_generator import natural_language_to_yaml, save_blueprint
+from src.dsl.generate import main as dsl_generate_main
+from src.llm.yaml_generator import natural_language_to_yaml, save_blueprint
 
 
 def main():

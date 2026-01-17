@@ -4,12 +4,11 @@ from pathlib import Path
 
 import yaml
 
-from llm.raw_generator import generate_nestjs_backend
-from llm.yaml_generator import natural_language_to_yaml
-from validators import validate_runtime, validate_syntactic
-
-sys.path.insert(0, str(Path(__file__).parent / "dsl"))
-from generate import main as dsl_generate
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from src.llm.raw_generator import generate_nestjs_backend
+from src.llm.yaml_generator import natural_language_to_yaml
+from src.validators import validate_runtime, validate_syntactic
+from src.dsl.generate import main as dsl_generate
 
 
 def load_test_cases():

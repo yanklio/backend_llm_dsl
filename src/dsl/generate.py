@@ -11,7 +11,7 @@ from utils.type import to_ts_type
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from shared.logs.logger import logger
+from src.shared.logs.logger import logger
 
 
 def main(blueprint_file, nest_project_path=None):

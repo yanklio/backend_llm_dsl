@@ -2,8 +2,8 @@ import sys
 from pathlib import Path
 
 # Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
-from shared.logs.logger import logger
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
+from src.shared.logs.logger import logger
 
 
 def handle_dto_file(template_data, dto_dir, env):

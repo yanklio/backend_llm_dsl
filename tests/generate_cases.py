@@ -3,13 +3,12 @@ from pathlib import Path
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).parent))
-sys.path.insert(0, str(Path(__file__).parent / "dsl"))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dsl.generate import main as dsl_generate_main
-from llm.raw_generator import natural_language_to_code, save_files
-from llm.yaml_generator import natural_language_to_yaml, save_blueprint
-from shared import logger
+from src.dsl.generate import main as dsl_generate_main
+from src.llm.raw_generator import natural_language_to_code, save_files
+from src.llm.yaml_generator import natural_language_to_yaml, save_blueprint
+from src.shared import logger
 
 
 def load_test_cases(file_path: str = "test_cases.yaml") -> dict:

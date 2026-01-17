@@ -3,8 +3,8 @@ import time
 from pathlib import Path
 from typing import Dict
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from shared import logger
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+from src.shared import logger
 
 from ..shared.command import (
     check_process_running,

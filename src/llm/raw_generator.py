@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-from shared import logger
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from src.shared import logger
 
 load_dotenv()
 

@@ -18,8 +18,8 @@ from typing import Dict, List, Any
 import yaml
 from dotenv import load_dotenv
 
-sys.path.insert(0, str(Path(__file__).parent))
-from llm.yaml_generator_multi import natural_language_to_yaml
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from src.llm.yaml_generator_multi import natural_language_to_yaml
 
 load_dotenv()
 
@@ -143,7 +143,7 @@ class MetricsCollector:
 
         try:
             # Run code generation
-            from dsl.generate import main as dsl_generate_main
+            from src.dsl.generate import main as dsl_generate_main
 
             dsl_generate_main(blueprint_file, project_dir)
 

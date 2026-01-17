@@ -3,7 +3,7 @@
 Test script to verify provider chain configuration
 """
 
-from llm.yaml_generator_multi import natural_language_to_yaml
+from src.llm.yaml_generator_multi import natural_language_to_yaml
 
 # Test with default chain: Groq → OpenRouter → Gemini
 print("Testing provider chain: Groq → OpenRouter → Gemini")
