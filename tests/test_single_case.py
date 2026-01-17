@@ -25,6 +25,8 @@ def generate_dsl_approach(test_case_name, test_case_data):
     print(f"{'=' * 60}\n")
 
     tests_dir = Path(__file__).parent
+    project_root = tests_dir.parent
+    nest_project_path = project_root / "nest_project"
     blueprint_path = tests_dir / "test_cases" / "dsl_llm" / f"{test_case_name}_blueprint.yaml"
 
     if not blueprint_path.exists():
@@ -43,7 +45,7 @@ def generate_dsl_approach(test_case_name, test_case_data):
 
     print(f"Generating code from blueprint: {blueprint_path}")
     try:
-        dsl_generate(str(blueprint_path), "nest_project")
+        dsl_generate(str(blueprint_path), str(nest_project_path))
         print("✓ Code generation completed")
         return True
     except Exception as e:
@@ -57,9 +59,12 @@ def generate_raw_approach(test_case_name, test_case_data):
     print("GENERATING WITH RAW LLM APPROACH")
     print(f"{'=' * 60}\n")
 
+    project_root = Path(__file__).parent.parent
+    nest_project_path = project_root / "nest_project"
+    
     print("Generating code directly from LLM...")
     try:
-        generate_nestjs_backend(test_case_data["requirement"], "nest_project")
+        generate_nestjs_backend(test_case_data["requirement"], str(nest_project_path))
         print("✓ Direct code generation completed")
         return True
     except Exception as e:
@@ -124,7 +129,8 @@ def main():
 
     # 1. Syntactic Validation
     print("\n1 Running Syntactic Validation...")
-    syntactic_result = validate_syntactic("nest_project")
+    nest_project_path = project_root / "nest_project"
+    syntactic_result = validate_syntactic(str(nest_project_path))
 
     print("\nSyntactic Result:")
     print(f"  Valid: {syntactic_result['valid']}")
@@ -138,7 +144,7 @@ def main():
             print(f"    ... and {len(syntactic_result['errors']) - 5} more errors")
 
     print("\n2 Running Runtime Validation with Endpoint Testing...")
-    runtime_result = validate_runtime("nest_project")
+    runtime_result = validate_runtime(str(nest_project_path))
 
     print("\nRuntime Result:")
     print(f"  Valid: {runtime_result['valid']}")
