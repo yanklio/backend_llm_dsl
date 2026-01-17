@@ -56,7 +56,7 @@ def _run_npm_install(project_path: Path) -> Dict:
         Dictionary with success status and optional error
     """
     logger.debug("Running npm install...")
-    result = run_command(["npm", "install"], cwd=project_path, timeout=1000)
+    result = run_command(["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000)
 
     if not result.success:
         error_message = result.stderr[:200] if result.stderr else "npm install failed"
@@ -125,14 +125,7 @@ def _run_npm_start(
         Dictionary with success status, optional error, and process if not terminated
     """
     try:
-        logger.debug(f"Starting application on port {port}...")
-
-        if is_port_in_use(port):
-            logger.warn(f"Port {port} is in use, attempting to free it...")
-            if kill_process_on_port(port):
-                logger.success(f"Port {port} freed")
-            else:
-                logger.warn(f"Could not free port {port}")
+        logger.debug(f"Starting application on port {port}...") 
 
         process = start_process(["npm", "run", "start"], cwd=project_path)
         time.sleep(wait_time)

@@ -1,3 +1,4 @@
+import signal
 import socket
 import subprocess
 import time
@@ -66,49 +67,6 @@ def start_process(command: list, cwd: Path) -> subprocess.Popen:
     )
 
 
-def terminate_process(
-    process: subprocess.Popen, timeout: int = 5, port: Optional[int] = None
-) -> None:
-    """
-    Safely terminate a process and ensure cleanup.
-
-    Args:
-        process: Process to terminate
-        timeout: Time to wait before killing
-        port: Optional port number to wait for release (e.g., 3000 for NestJS)
-    """
-    if process.poll() is None:
-        process.terminate()
-        try:
-            process.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
-
-    time.sleep(2)
-
-    if port is not None:
-        wait_for_port_release(port, max_wait=10)
-    else:
-        time.sleep(1)
-
-
-def check_process_running(process: subprocess.Popen) -> Tuple[bool, Optional[str]]:
-    """
-    Check if a process is still running.
-
-    Args:
-        process: Process to check
-
-    Returns:
-        Tuple of (is_running, error_output)
-    """
-    if process.poll() is not None:
-        _, stderr = process.communicate()
-        return False, stderr
-    return True, None
-
-
 def is_port_in_use(port: int) -> bool:
     """
     Check if a port is currently in use.
@@ -127,23 +85,39 @@ def is_port_in_use(port: int) -> bool:
             return True
 
 
-def wait_for_port_release(port: int, max_wait: int = 10) -> bool:
+def get_pids_on_port(port: int) -> list:
     """
-    Wait for a port to be released.
+    Get all PIDs using a specific port.
 
     Args:
-        port: Port number to wait for
-        max_wait: Maximum seconds to wait
+        port: Port number to check
 
     Returns:
-        True if port was released, False if timeout
+        List of process IDs
     """
-    start_time = time.time()
-    while time.time() - start_time < max_wait:
-        if not is_port_in_use(port):
-            return True
-        time.sleep(0.5)
-    return False
+    pids = []
+
+    # Try lsof first
+    try:
+        result = subprocess.run(
+            ["lsof", "-ti", f":{port}"], capture_output=True, text=True, timeout=5
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            pids = [p.strip() for p in result.stdout.strip().split("\n") if p.strip()]
+            return pids
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+
+    # Try fuser as fallback
+    try:
+        result = subprocess.run(["fuser", f"{port}/tcp"], capture_output=True, text=True, timeout=5)
+        if result.returncode == 0 and result.stdout.strip():
+            pids = result.stdout.strip().split()
+            return pids
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+
+    return pids
 
 
 def kill_process_on_port(port: int) -> bool:
@@ -154,26 +128,127 @@ def kill_process_on_port(port: int) -> bool:
         port: Port number to free up
 
     Returns:
+        True if port is now free, False otherwise
+    """
+    # Check if already free
+    if not is_port_in_use(port):
+        return True
+
+    # Get PIDs and kill them
+    pids = get_pids_on_port(port)
+
+    for pid in pids:
+        try:
+            subprocess.run(["kill", "-9", pid], timeout=2)
+        except Exception:
+            pass
+
+    time.sleep(1)
+    return not is_port_in_use(port)
+
+
+def force_kill_port(port: int, max_attempts: int = 3) -> bool:
+    """
+    Forcefully kill all processes on a port with retries.
+
+    Args:
+        port: Port number to kill
+        max_attempts: Number of kill attempts
+
+    Returns:
+        True if port is now free, False otherwise
+    """
+    for attempt in range(max_attempts):
+        if not is_port_in_use(port):
+            return True
+
+        if kill_process_on_port(port):
+            return True
+
+        time.sleep(1)
+
+    return not is_port_in_use(port)
+
+
+def wait_for_port_free(port: int, timeout: int = 10) -> bool:
+    """
+    Wait for a port to become free.
+
+    Args:
+        port: Port number to wait for
+        timeout: Maximum seconds to wait
+
+    Returns:
+        True if port is free, False if timeout
+    """
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        if not is_port_in_use(port):
+            return True
+        time.sleep(0.5)
+
+    return False
+
+
+def terminate_process(
+    process: subprocess.Popen,
+    timeout: int = 5,
+    port: Optional[int] = None,
+    delay_cleanup: float = 0,
+) -> bool:
+    """
+    Terminate process with graceful interrupt signal (Ctrl+C), then cleanup port.
+
+    Args:
+        process: Process to terminate
+        timeout: Timeout for graceful termination in seconds
+        port: Optional port number to force free if needed
+        delay_cleanup: Delay in seconds before cleaning up port (simulates Ctrl+C interrupt)
+
+    Returns:
         True if successful, False otherwise
     """
-    try:
-        result = subprocess.run(["fuser", "-k", f"{port}/tcp"], capture_output=True, timeout=5)
-        time.sleep(2)
-        return not is_port_in_use(port)
-    except (subprocess.TimeoutExpired, FileNotFoundError):
+    # Step 1: Send interrupt signal (SIGINT - like Ctrl+C)
+    if process.poll() is None:
         try:
-            result = subprocess.run(
-                ["lsof", "-ti", f":{port}"], capture_output=True, text=True, timeout=5
-            )
-            if result.returncode == 0 and result.stdout.strip():
-                pids = result.stdout.strip().split("\n")
-                for pid in pids:
-                    try:
-                        subprocess.run(["kill", "-9", pid], timeout=5)
-                    except:
-                        pass
-                time.sleep(2)
-                return not is_port_in_use(port)
-        except:
+            process.send_signal(signal.SIGINT)
+        except Exception:
             pass
-    return False
+
+        try:
+            process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            # Timeout: force kill
+            process.kill()
+            process.wait()
+
+    # Step 2: Wait for cleanup delay
+    if delay_cleanup > 0:
+        time.sleep(delay_cleanup)
+
+    # Step 3: Wait for port to naturally free up
+    if port is not None:
+        wait_for_port_free(port, timeout=5)
+
+        # Step 4: Force kill port if still in use
+        if is_port_in_use(port):
+            force_kill_port(port)
+
+    return True
+
+
+def check_process_running(process: subprocess.Popen) -> Tuple[bool, Optional[str]]:
+    """
+    Check if a process is still running.
+
+    Args:
+        process: Process to check
+
+    Returns:
+        Tuple of (is_running, error_output)
+    """
+    if process.poll() is not None:
+        _, stderr = process.communicate()
+        return False, stderr
+    return True, None

@@ -297,7 +297,6 @@ sqlite3
 1. **Rapid Prototyping**: Generate MVPs from feature descriptions
 2. **API Design**: Create consistent REST API structures
 3. **Database Modeling**: Translate business requirements to data models
-4. **Documentation**: Auto-generate API documentation
 
 ### For Development Teams
 1. **Boilerplate Generation**: Eliminate repetitive setup tasks

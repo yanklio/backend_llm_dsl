@@ -99,7 +99,8 @@ def update_package_json(nest_project_path):
     required_dependencies = {
         "@nestjs/typeorm": "^11.0.0",
         "typeorm": "^0.3.20",
-        "@nestjs/swagger": "^7.1.0",
+        "@nestjs/swagger": "^8.0.0",
+        "@nestjs/mapped-types": "^2.0.5",
         "class-validator": "^0.14.0",
         "class-transformer": "^0.5.1",
         "sqlite3": "^5.1.7",
