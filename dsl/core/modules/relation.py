@@ -1,4 +1,9 @@
-from utils.logger import Logger
+import sys
+from pathlib import Path
+
+# Add parent directory to path for shared imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+from shared.logs.logger import logger
 
 
 def handle_relations(modules_data, env, base_output_dir):
@@ -20,7 +25,7 @@ def handle_relations(modules_data, env, base_output_dir):
                 }
 
             except KeyError:
-                Logger.error(f"Invalid relation format: {relation}")
+                logger.error(f"Invalid relation format: {relation}")
 
     module_names = {module_data["name"] for module_data in modules_data}
     valid_relations = {}
@@ -28,7 +33,7 @@ def handle_relations(modules_data, env, base_output_dir):
         if related_model in module_names:
             valid_relations[(module_name, related_model)] = relation_data
         else:
-            Logger.warn(
+            logger.warn(
                 f"Removing invalid relation: {module_name} -> {related_model} "
                 f"(module '{related_model}' not found)"
             )

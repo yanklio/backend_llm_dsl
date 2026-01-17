@@ -1,6 +1,10 @@
+import sys
 import time
 from pathlib import Path
 from typing import Dict
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from shared import logger
 
 from ..shared.command import (
     check_process_running,
@@ -51,6 +55,7 @@ def _run_npm_install(project_path: Path) -> Dict:
     Returns:
         Dictionary with success status and optional error
     """
+    logger.debug("Running npm install...")
     result = run_command(["npm", "install"], cwd=project_path, timeout=1000)
 
     if not result.success:
@@ -66,10 +71,11 @@ def _run_npm_install(project_path: Path) -> Dict:
             code = ErrorCodes.INSTALL_FAILED
             message = f"npm install failed: {error_message}"
 
-        print("DEV", code)
+        logger.warn(message)
 
         return {"success": False, "error": create_error("install", message, code)}
 
+    logger.success("npm install completed")
     return {"success": True}
 
 
@@ -83,6 +89,7 @@ def _run_npm_build(project_path: Path) -> Dict:
     Returns:
         Dictionary with success status and optional error
     """
+    logger.debug("Running npm run build...")
     result = run_command(["npm", "run", "build"], cwd=project_path, timeout=120)
 
     if not result.success:
@@ -95,8 +102,10 @@ def _run_npm_build(project_path: Path) -> Dict:
             code = ErrorCodes.BUILD_FAILED
             message = f"npm run build failed: {error_message}"
 
+        logger.warn(message)
         return {"success": False, "error": create_error("build", message, code)}
 
+    logger.success("Build completed")
     return {"success": True}
 
 
@@ -116,12 +125,14 @@ def _run_npm_start(
         Dictionary with success status, optional error, and process if not terminated
     """
     try:
+        logger.debug(f"Starting application on port {port}...")
+
         if is_port_in_use(port):
-            print(f"Port {port} is in use, attempting to free it...")
+            logger.warn(f"Port {port} is in use, attempting to free it...")
             if kill_process_on_port(port):
-                print(f"Port {port} freed successfully")
+                logger.success(f"Port {port} freed")
             else:
-                print(f"Warning: Could not free port {port}")
+                logger.warn(f"Could not free port {port}")
 
         process = start_process(["npm", "run", "start"], cwd=project_path)
         time.sleep(wait_time)
@@ -130,12 +141,15 @@ def _run_npm_start(
 
         if not is_running:
             error_message = error_output if error_output else "Application crashed"
+            logger.error(f"Application crashed: {error_message}")
             return {
                 "success": False,
                 "error": create_error(
                     "start", f"Application crashed: {error_message}", ErrorCodes.START_CRASHED
                 ),
             }
+
+        logger.success("Application started successfully")
 
         if terminate:
             terminate_process(process, port=port)
@@ -144,6 +158,7 @@ def _run_npm_start(
             return {"success": True, "process": process}
 
     except Exception as e:
+        logger.error(f"Start error: {str(e)}")
         return {
             "success": False,
             "error": create_error("start", f"Start error: {str(e)}", ErrorCodes.START_ERROR),

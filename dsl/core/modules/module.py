@@ -1,4 +1,9 @@
-from utils.logger import Logger
+import sys
+from pathlib import Path
+
+# Add parent directory to path for shared imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+from shared.logs.logger import logger
 
 
 def handle_dto_file(template_data, dto_dir, env):
@@ -7,18 +12,18 @@ def handle_dto_file(template_data, dto_dir, env):
         output_code = template.render(template_data)
         file_name = f"create-{template_data['module'].lower()}.dto.ts"
         (dto_dir / file_name).write_text(output_code)
-        Logger.success(f"Generated {dto_dir / file_name}")
+        logger.success(f"Generated {file_name}")
     except Exception as e:
-        Logger.error(f"Failed to generate create DTO: {e}")
+        logger.error(f"Failed to generate create DTO: {e}")
 
     try:
         template = env.get_template("dto/update-dto.ts.j2")
         output_code = template.render(template_data)
         file_name = f"update-{template_data['module'].lower()}.dto.ts"
         (dto_dir / file_name).write_text(output_code)
-        Logger.success(f"Generated {dto_dir / file_name}")
+        logger.success(f"Generated {file_name}")
     except Exception as e:
-        Logger.error(f"Failed to generate update DTO: {e}")
+        logger.error(f"Failed to generate update DTO: {e}")
 
 
 def handle_entity_file(template_data, entities_dir, env):
@@ -27,15 +32,15 @@ def handle_entity_file(template_data, entities_dir, env):
         output_code = template.render(template_data)
         file_name = f"{template_data['module'].lower()}.entity.ts"
         (entities_dir / file_name).write_text(output_code)
-        Logger.success(f"Generated {entities_dir / file_name}")
+        logger.success(f"Generated {file_name}")
     except Exception as e:
-        Logger.error(f"Failed to generate entity file: {e}")
+        logger.error(f"Failed to generate entity file: {e}")
 
 
 def generate_module(module_data, env, base_output_dir):
     """Generate a single sub-module (entity module)"""
     module_name = module_data["name"]
-    Logger.start(f"Generating module: {module_name}")
+    logger.start(f"Generating {module_name} module...")
 
     module_dir = base_output_dir / module_name.lower()
     module_dir.mkdir(parents=True, exist_ok=True)
@@ -70,8 +75,8 @@ def generate_module(module_data, env, base_output_dir):
             output_code = template.render(template_data)
             file_name = f"{module_name.lower()}.{file_key}.ts"
             (module_dir / file_name).write_text(output_code)
-            Logger.success(f"Generated {module_dir / file_name}")
+            logger.success(f"Generated {file_name}")
         except Exception as e:
-            Logger.error(f"Failed to generate {file_key}: {e}")
+            logger.error(f"Failed to generate {file_key}: {e}")
 
-    Logger.end(f"Generated module: {module_name}")
+    logger.end(f"{module_name} module generated")

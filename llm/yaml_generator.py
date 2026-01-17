@@ -1,8 +1,13 @@
 import argparse
+import sys
+from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from shared import logger
 
 load_dotenv()
 
@@ -70,6 +75,7 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
         HumanMessage(content=f"Create a NestJS application for: {description}"),
     ]
 
+    logger.debug("Invoking LLM to generate YAML blueprint...")
     response = llm.invoke(messages)
     yaml_text = response.content
 
@@ -84,7 +90,7 @@ def save_blueprint(
 
     with open(blueprint_file, "w") as f:
         f.write(generated_yaml)
-    print(f"Blueprint written to {blueprint_file}")
+    logger.success(f"Blueprint saved to {blueprint_file}")
 
     return ""
 
@@ -112,11 +118,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    print(f"Description: {args.description}")
-    print(f"Blueprint file: {args.blueprint}")
+    logger.start("Generating YAML blueprint from description")
+    logger.info(f"Description: {args.description}")
 
     blueprint = natural_language_to_yaml(args.description)
     save_blueprint(blueprint, args.blueprint)
 
-    print("\nGenerated Blueprint:")
-    print(blueprint)
+    logger.success("Blueprint generated successfully")
+    logger.debug("Generated Blueprint:")
+    logger.debug(blueprint[:200] + "..." if len(blueprint) > 200 else blueprint)

@@ -8,7 +8,6 @@ from llm.raw_generator import generate_nestjs_backend
 from llm.yaml_generator import natural_language_to_yaml
 from validators import validate_runtime, validate_syntactic
 
-# Add dsl directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent / "dsl"))
 from generate import main as dsl_generate
 

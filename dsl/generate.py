@@ -1,4 +1,5 @@
 import argparse
+import sys
 from pathlib import Path
 
 import yaml
@@ -6,18 +7,14 @@ from core.modules.module import generate_module
 from core.modules.relation import handle_relations
 from core.root import generate_root_module
 from jinja2 import Environment, FileSystemLoader
-from utils.logger import Logger
 from utils.type import to_ts_type
+
+# Add parent directory to path for shared imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from shared.logs.logger import logger
 
 
 def main(blueprint_file, nest_project_path=None):
-    print("=" * 60)
-    print("Starting Code Generation")
-    print(f"Blueprint: {blueprint_file}")
-    if nest_project_path:
-        print(f"Target NestJS Project: {nest_project_path}")
-    print("=" * 60 + "\n\n")
-
     with open(blueprint_file, "r") as f:
         data = yaml.safe_load(f)
 
@@ -28,20 +25,17 @@ def main(blueprint_file, nest_project_path=None):
     env.filters["to_ts_type"] = to_ts_type
 
     base_output_dir = Path(nest_project_path) if nest_project_path else Path("nest_project")
-    
+
     if not base_output_dir.exists():
-        Logger.warn(f"Target directory does not exist: {base_output_dir}")
         base_output_dir.mkdir(parents=True, exist_ok=True)
-        print(f"Created directory: {base_output_dir}")
 
     root_config = data.get("root", {})
     modules_data = data.get("modules", [])
 
-
     if not modules_data:
-        Logger.warn("No modules defined in blueprint!")
+        logger.warn("No modules defined in blueprint!")
         return
-    
+
     relations_map = handle_relations(modules_data, env, base_output_dir)
 
     for module_data in modules_data:
@@ -60,15 +54,7 @@ def main(blueprint_file, nest_project_path=None):
     for module_data in modules_data:
         generate_module(module_data, env, src_dir)
 
-    print("\n" + "=" * 60)
-    print("✓ Generation Complete!")
-    print("=" * 60)
-
-    print("\nGenerated:")
-    print(f"  - Root module: {root_config.get('name', 'App')}")
-    print(f"  - Sub-modules: {len(modules_data)}")
-    for module in modules_data:
-        print(f"    • {module['name']}")
+    logger.success(f"✓ Generation Complete! ({len(modules_data)} modules)")
 
 
 if __name__ == "__main__":

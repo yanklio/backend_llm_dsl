@@ -1,9 +1,13 @@
 import argparse
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from shared import logger
 
 load_dotenv()
 
@@ -48,57 +52,38 @@ def natural_language_to_code(description: str, project_dir: str = "./nest_projec
    - reflect-metadata, rxjs
    - sqlite3 (for database)
    - @nestjs/cli (devDependencies)
-   - typescript, @types/node (devDependencies)
 
-2. **Update DTOs - DO NOT use PartialType**:
-   - NEVER import from @nestjs/mapped-types
-   - Create simple classes with @IsOptional() on ALL fields
-   - Example:
-   ```typescript
-   export class UpdateUserDto {
-     @IsOptional()
-     @IsString()
-     username?: string;
-   }
-   ```
+2. **EVERY file must have FULL implementation**:
+   - No placeholder comments like "// TODO: implement"
+   - No "..." or ellipsis
+   - All imports must be correct
+   - All decorators must be present
 
-3. **TypeORM Config (app.module.ts)**:
-   - Use 'sqlite' as database type
-   - database: 'database.sqlite'
-   - synchronize: true
-   - autoLoadEntities: true
+3. **Database setup MUST work**:
+   - Use TypeORM with SQLite
+   - database.config.ts must export DataSource
+   - All entities must have proper decorators
 
-4. **Entities MUST have**:
-   - @Entity() decorator
-   - @PrimaryGeneratedColumn() id field
-   - Proper @Column() decorators
-   - Relations with cascade options if needed
+4. **Generate DTOs for all entities**:
+   - CreateXxxDTO for POST requests
+   - UpdateXxxDTO for PATCH requests
+   - Use class-validator decorators
 
-5. **Services MUST have**:
-   - Full CRUD: create, findAll, findOne, update, remove
+5. **Controllers must have all CRUD endpoints**:
+   - GET / (list all)
+   - GET /:id (get one)
+   - POST / (create)
+   - PATCH /:id (update)
+   - DELETE /:id (delete)
+
+6. **Services must implement business logic**:
+   - Use repository pattern
    - Proper error handling
-   - @Injectable() decorator
+   - No async/await mistakes
 
-6. **Controllers MUST have**:
-   - @Controller() with route prefix
-   - @Get(), @Post(), @Patch(), @Delete() decorators
-   - Proper @Body(), @Param() decorators
-
-7. **File Structure**:
-   ```
-   package.json
-   tsconfig.json
-   src/main.ts
-   src/app.module.ts
-   src/app.controller.ts (optional)
-   src/app.service.ts (optional)
-   src/{entity}/{entity}.entity.ts
-   src/{entity}/{entity}.service.ts
-   src/{entity}/{entity}.controller.ts
-   src/{entity}/{entity}.module.ts
-   src/{entity}/dto/create-{entity}.dto.ts
-   src/{entity}/dto/update-{entity}.dto.ts
-   ```
+7. **Modules must import everything needed**:
+   - TypeOrmModule.forFeature([Entity])
+   - All services and controllers exported
 
 Return ONLY valid JSON with NO markdown, NO explanations:
 {
@@ -123,7 +108,7 @@ Make it production-ready and runnable."""
 
     messages = [SystemMessage(content=system_prompt), HumanMessage(content=user_prompt)]
 
-    print("Generating code...")
+    logger.start("Generating code with LLM...")
     response = llm.invoke(messages)
 
     content = response.content.strip()
@@ -140,6 +125,7 @@ Make it production-ready and runnable."""
     import json
 
     files = json.loads(content)
+    logger.success(f"Generated {len(files)} files")
 
     return files
 
@@ -152,6 +138,8 @@ def save_files(files: dict, output_dir: str):
 
     output_path.mkdir(parents=True, exist_ok=True)
 
+    logger.start(f"Saving files to {output_dir}...")
+
     saved_count = 0
     for file_path, content in files.items():
         try:
@@ -162,12 +150,12 @@ def save_files(files: dict, output_dir: str):
                 content = json.dumps(content, indent=2)
 
             full_path.write_text(content, encoding="utf-8")
-            print(f"✅ {file_path}")
+            logger.success(f"Saved {file_path}")
             saved_count += 1
         except Exception as e:
-            print(f"❌ Failed to save {file_path}: {e}")
+            logger.error(f"Failed to save {file_path}: {e}")
 
-    print(f"\n📁 Saved {saved_count}/{len(files)} files to: {output_path.absolute()}")
+    logger.end(f"Saved {saved_count}/{len(files)} files")
 
 
 def generate_nestjs_backend(description: str, output_dir: str = "./nest_project"):
@@ -204,17 +192,15 @@ def main():
     try:
         files = natural_language_to_code(args.description, args.output)
 
-        print(f"\n📝 Generated {len(files)} files\n")
-
         save_files(files, args.output)
 
-        print("\n🎉 Done! Run with:")
-        print(f"  cd {args.output}")
-        print("  npm install")
-        print("  npm run start:dev")
+        logger.success("Done! Run with:")
+        logger.info(f"  cd {args.output}")
+        logger.info("  npm install")
+        logger.info("  npm run start:dev")
 
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        logger.error(f"Error: {e}")
         import traceback
 
         traceback.print_exc()

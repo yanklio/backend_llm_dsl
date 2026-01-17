@@ -1,4 +1,9 @@
-from utils.logger import Logger
+import sys
+from pathlib import Path
+
+# Add parent directory to path for shared imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from shared.logs.logger import logger
 
 
 def _prepare_template_data(root_config, modules_data):
@@ -32,15 +37,13 @@ def _generate_file(env, template_name, output_filename, template_data, src_dir):
         output_code = template.render(template_data)
         output_path = src_dir / output_filename
         output_path.write_text(output_code)
-        Logger.success(f"Generated {output_path}")
+        logger.success(f"Generated {output_path}")
     except Exception as e:
-        Logger.error(f"Could not generate {output_filename}: {e}")
+        logger.error(f"Could not generate {output_filename}: {e}")
 
 
 def generate_root_module(root_config, modules_data, env, output_dir):
     """Generate root module files (app.module.ts, main.ts, etc.)"""
-    Logger.start("Generating root module files")
-
     src_dir = output_dir / "src"
     src_dir.mkdir(parents=True, exist_ok=True)
 
@@ -49,5 +52,3 @@ def generate_root_module(root_config, modules_data, env, output_dir):
 
     for template_name, output_filename in files_to_generate:
         _generate_file(env, template_name, output_filename, template_data, src_dir)
-
-    Logger.end("Generated root module files")

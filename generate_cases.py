@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).parent / "dsl"))
 from dsl.generate import main as dsl_generate_main
 from llm.raw_generator import natural_language_to_code, save_files
 from llm.yaml_generator import natural_language_to_yaml, save_blueprint
+from shared import logger
 
 
 def load_test_cases(file_path: str = "test_cases.yaml") -> dict:
@@ -22,25 +23,23 @@ def generate_dsl_llm(case_id: str, requirement: str) -> bool:
     blueprint_path = f"./test_cases/dsl_llm/{case_id}_blueprint.yaml"
     project_path = f"./test_cases/dsl_llm/{case_id}_backend"
 
-    print("🤖 [DSL_LLM] Generating blueprint with LLM...")
-    print(f"📄 Blueprint: {blueprint_path}")
-    print(f"📁 Project: {project_path}")
+    logger.start(f"[DSL_LLM] Generating {case_id}")
 
     try:
         # Generate blueprint from natural language
+        logger.info("Generating blueprint with LLM...")
         blueprint = natural_language_to_yaml(requirement)
         save_blueprint(blueprint, blueprint_path)
-        print("✅ Blueprint generated!")
-        print()
+        logger.success("Blueprint generated")
 
         # Generate backend code from blueprint
-        print("🔧 Generating backend code...")
+        logger.info("Generating backend code...")
         dsl_generate_main(blueprint_path, project_path)
-        print("✅ [DSL_LLM] Backend code generated!")
+        logger.success("[DSL_LLM] Backend code generated")
         return True
 
     except Exception as e:
-        print(f"❌ [DSL_LLM] Failed to process {case_id}: {e}")
+        logger.error(f"[DSL_LLM] Failed to process {case_id}: {e}")
         return False
 
 
@@ -48,23 +47,22 @@ def generate_raw_llm(case_id: str, requirement: str) -> bool:
     """Generate backend using RAW_LLM approach (LLM -> Direct Code)"""
     project_path = f"./test_cases/raw_llm/{case_id}_backend"
 
-    print("🤖 [RAW_LLM] Generating code directly with LLM...")
-    print(f"📁 Project: {project_path}")
+    logger.start(f"[RAW_LLM] Generating {case_id}")
 
     try:
         # Generate complete backend code directly from natural language
+        logger.info("Generating code directly with LLM...")
         files = natural_language_to_code(requirement, project_path)
-
-        print(f"\n📝 Generated {len(files)} files\n")
+        logger.success(f"Generated {len(files)} files")
 
         # Save all generated files
         save_files(files, project_path)
 
-        print("✅ [RAW_LLM] Backend code generated!")
+        logger.success("[RAW_LLM] Backend code generated")
         return True
 
     except Exception as e:
-        print(f"❌ [RAW_LLM] Failed to process {case_id}: {e}")
+        logger.error(f"[RAW_LLM] Failed to process {case_id}: {e}")
         import traceback
 
         traceback.print_exc()
@@ -73,13 +71,8 @@ def generate_raw_llm(case_id: str, requirement: str) -> bool:
 
 def process_test_case(case_id: str, case_data: dict) -> dict:
     """Process a single test case with both approaches"""
-    print(f"\n{'=' * 80}")
-    print(f"Processing: {case_id}")
-    print(f"{'=' * 80}")
-    print(f"Name: {case_data['name']}")
-    print("\nRequirement:")
-    print(case_data["requirement"])
-    print()
+    logger.start(f"Processing {case_id}: {case_data['name']}")
+    logger.info(f"Requirement: {case_data['requirement'][:60]}...")
 
     results = {
         "case_id": case_id,
@@ -90,12 +83,11 @@ def process_test_case(case_id: str, case_data: dict) -> dict:
 
     # Generate using DSL_LLM approach
     results["dsl_llm_success"] = generate_dsl_llm(case_id, case_data["requirement"])
-    print()
 
     # Generate using RAW_LLM approach
     results["raw_llm_success"] = generate_raw_llm(case_id, case_data["requirement"])
 
-    print(f"{'=' * 80}\n")
+    logger.end(f"Completed {case_id}")
 
     return results
 
@@ -112,14 +104,12 @@ def main():
         all_results.append(result)
 
     # Print summary
-    print("\n" + "=" * 80)
-    print("SUMMARY")
-    print("=" * 80)
+    logger.start("SUMMARY")
     for result in all_results:
-        dsl_status = "✅" if result["dsl_llm_success"] else "❌"
-        raw_status = "✅" if result["raw_llm_success"] else "❌"
-        print(f"{result['case_id']}: DSL_LLM {dsl_status} | RAW_LLM {raw_status}")
-    print("=" * 80)
+        dsl_status = "✓" if result["dsl_llm_success"] else "✗"
+        raw_status = "✓" if result["raw_llm_success"] else "✗"
+        logger.info(f"{result['case_id']}: DSL_LLM {dsl_status} | RAW_LLM {raw_status}")
+    logger.end("All cases processed")
 
 
 if __name__ == "__main__":
