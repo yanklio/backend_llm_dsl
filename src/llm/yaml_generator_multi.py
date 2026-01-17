@@ -27,7 +27,7 @@ class MultiProviderYAMLGenerator:
 
     def _setup_providers(self):
         """Setup providers based on availability (Groq → OpenRouter → Gemini)"""
-        
+
         if os.getenv("GROQ_API_KEY"):
             try:
                 from langchain_groq import ChatGroq

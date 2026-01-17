@@ -1,24 +1,27 @@
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any, Dict
 
 import yaml
 
+# Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from src.dsl.generate import main as dsl_generate
 from src.llm.raw_generator import generate_nestjs_backend
 from src.llm.yaml_generator import natural_language_to_yaml
 from src.validators import validate_runtime, validate_syntactic
-from src.dsl.generate import main as dsl_generate
 
 
-def load_test_cases():
+def load_test_cases() -> Dict[str, Any]:
     """Load test cases from YAML file."""
     test_cases_path = Path(__file__).parent / "test_cases.yaml"
     with open(test_cases_path, "r") as f:
         return yaml.safe_load(f)
 
 
-def generate_dsl_approach(test_case_name, test_case_data):
+def generate_dsl_approach(test_case_name: str, test_case_data: Dict[str, Any]) -> bool:
     """Generate using DSL approach (YAML -> Code)."""
     print(f"\n{'=' * 60}")
     print("GENERATING WITH DSL APPROACH")
@@ -27,7 +30,9 @@ def generate_dsl_approach(test_case_name, test_case_data):
     tests_dir = Path(__file__).parent
     project_root = tests_dir.parent
     nest_project_path = project_root / "nest_project"
-    blueprint_path = tests_dir / "test_cases" / "dsl_llm" / f"{test_case_name}_blueprint.yaml"
+    blueprint_path = (
+        tests_dir / "test_cases" / "dsl_llm" / f"{test_case_name}_blueprint.yaml"
+    )
 
     if not blueprint_path.exists():
         print(f"Error: Blueprint not found at {blueprint_path}")
@@ -53,7 +58,7 @@ def generate_dsl_approach(test_case_name, test_case_data):
         return False
 
 
-def generate_raw_approach(test_case_name, test_case_data):
+def generate_raw_approach(test_case_name: str, test_case_data: Dict[str, Any]) -> bool:
     """Generate using RAW LLM approach (Direct code generation)."""
     print(f"\n{'=' * 60}")
     print("GENERATING WITH RAW LLM APPROACH")
@@ -61,7 +66,7 @@ def generate_raw_approach(test_case_name, test_case_data):
 
     project_root = Path(__file__).parent.parent
     nest_project_path = project_root / "nest_project"
-    
+
     print("Generating code directly from LLM...")
     try:
         generate_nestjs_backend(test_case_data["requirement"], str(nest_project_path))
@@ -77,7 +82,9 @@ def main():
     if len(sys.argv) < 3:
         print("Usage: python test_single_case.py <test_case_name> <approach>")
         print("\nArguments:")
-        print("  test_case_name: TEST_CASE_1, TEST_CASE_2, TEST_CASE_3, TEST_CASE_4, TEST_CASE_5")
+        print(
+            "  test_case_name: TEST_CASE_1, TEST_CASE_2, TEST_CASE_3, TEST_CASE_4, TEST_CASE_5"
+        )
         print("  approach: dsl or raw")
         print("\nExample:")
         print("  python test_single_case.py TEST_CASE_1 dsl")
@@ -152,11 +159,6 @@ def main():
     print(f"  Build Success: {runtime_result['build_success']}")
     print(f"  Start Success: {runtime_result['start_success']}")
 
-    # if runtime_result["errors"]:
-    #     print("  Errors:")
-    #     for error in runtime_result["errors"]:
-    #         print(f"    {error}")
-
     # Final Summary
     print("\n" + "=" * 60)
     print("FINAL SUMMARY")
@@ -166,7 +168,9 @@ def main():
 
     print(f"Test Case: {test_case['name']}")
     print(f"Approach: {approach.upper()}")
-    print(f"Syntactic Validation: {'✓ PASS' if syntactic_result['valid'] else '✗ FAIL'}")
+    print(
+        f"Syntactic Validation: {'✓ PASS' if syntactic_result['valid'] else '✗ FAIL'}"
+    )
     print(f"Runtime Validation: {'✓ PASS' if runtime_result['valid'] else '✗ FAIL'}")
     print(f"Overall: {'✓ PASS' if overall_valid else '✗ FAIL'}")
     print("=" * 60 + "\n")
@@ -178,11 +182,6 @@ def main():
         "runtime": [],
         "overall_valid": overall_valid,
     }
-
-    # output_file = f"nest_project/validation_result_{approach}.json"
-    # with open(output_file, "w") as f:
-    #     json.dump(results, f, indent=2)
-    # print(f"Results saved to: {output_file}")
 
     sys.exit(0 if overall_valid else 1)
 

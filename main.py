@@ -9,7 +9,9 @@ from src.llm.yaml_generator import natural_language_to_yaml, save_blueprint
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate NestJS application from description")
+    parser = argparse.ArgumentParser(
+        description="Generate NestJS application from description"
+    )
 
     parser.add_argument(
         "-b",
@@ -33,7 +35,7 @@ def main():
     )
 
     args = parser.parse_args()
-    
+
     print("🤖 Generating blueprint with LLM...")
     blueprint = natural_language_to_yaml(args.description)
     save_blueprint(blueprint, args.blueprint)

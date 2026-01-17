@@ -58,7 +58,9 @@ class UnifiedLogger:
         """Check if a message at this level should be logged."""
         if cls._verbose:
             return True
-        return cls.LEVEL_HIERARCHY.get(level, 1) >= cls.LEVEL_HIERARCHY.get(cls._min_level, 1)
+        return cls.LEVEL_HIERARCHY.get(level, 1) >= cls.LEVEL_HIERARCHY.get(
+            cls._min_level, 1
+        )
 
     @classmethod
     def _format_message(cls, level: LogLevel, message: str) -> str:

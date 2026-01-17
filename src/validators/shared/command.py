@@ -9,7 +9,9 @@ from typing import Optional, Tuple
 class SubprocessResult:
     """Result of a subprocess execution."""
 
-    def __init__(self, success: bool, stdout: str = "", stderr: str = "", returncode: int = 0):
+    def __init__(
+        self, success: bool, stdout: str = "", stderr: str = "", returncode: int = 0
+    ):
         self.success = success
         self.stdout = stdout
         self.stderr = stderr
@@ -46,7 +48,9 @@ def run_command(
     except subprocess.TimeoutExpired:
         return SubprocessResult(success=False, stderr="Command timeout")
     except FileNotFoundError:
-        return SubprocessResult(success=False, stderr=f"Command not found: {command[0]}")
+        return SubprocessResult(
+            success=False, stderr=f"Command not found: {command[0]}"
+        )
     except Exception as e:
         return SubprocessResult(success=False, stderr=str(e))
 
@@ -110,7 +114,9 @@ def get_pids_on_port(port: int) -> list:
 
     # Try fuser as fallback
     try:
-        result = subprocess.run(["fuser", f"{port}/tcp"], capture_output=True, text=True, timeout=5)
+        result = subprocess.run(
+            ["fuser", f"{port}/tcp"], capture_output=True, text=True, timeout=5
+        )
         if result.returncode == 0 and result.stdout.strip():
             pids = result.stdout.strip().split()
             return pids

@@ -170,10 +170,18 @@ class MetricsVisualizer:
 
         # Left plot: Modules and Fields
         bars1 = ax1.bar(
-            x - width / 2, num_modules, width, label="Modules", color=self.colors["primary"]
+            x - width / 2,
+            num_modules,
+            width,
+            label="Modules",
+            color=self.colors["primary"],
         )
         bars2 = ax1.bar(
-            x + width / 2, total_fields, width, label="Fields", color=self.colors["info"]
+            x + width / 2,
+            total_fields,
+            width,
+            label="Fields",
+            color=self.colors["info"],
         )
 
         ax1.set_xlabel("Test Case", fontsize=11, fontweight="bold")
@@ -220,7 +228,12 @@ class MetricsVisualizer:
         """
         fig, ax = plt.subplots(figsize=(10, 6))
 
-        categories = ["Simple\nBlog", "E-Commerce\nSystem", "Social\nNetwork", "Task\nManager"]
+        categories = [
+            "Simple\nBlog",
+            "E-Commerce\nSystem",
+            "Social\nNetwork",
+            "Task\nManager",
+        ]
 
         # Simulated data: DSL provides high consistency
         with_dsl = [98.5, 97.2, 96.8, 98.1]  # High consistency with DSL

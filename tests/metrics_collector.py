@@ -50,7 +50,7 @@ class MetricsCollector:
         generation_times = []
 
         for i in range(num_runs):
-            print(f"   Run {i+1}/{num_runs}...", end=" ")
+            print(f"   Run {i + 1}/{num_runs}...", end=" ")
             start_time = time.time()
 
             try:
@@ -75,7 +75,9 @@ class MetricsCollector:
             if consistency_scores
             else 0
         )
-        avg_time = sum(generation_times) / len(generation_times) if generation_times else 0
+        avg_time = (
+            sum(generation_times) / len(generation_times) if generation_times else 0
+        )
 
         result = {
             "description": description,
@@ -165,10 +167,14 @@ class MetricsCollector:
                 "generation_time": generation_time,
                 "num_files_generated": num_files,
                 "total_lines_of_code": total_lines,
-                "lines_per_second": total_lines / generation_time if generation_time > 0 else 0,
+                "lines_per_second": total_lines / generation_time
+                if generation_time > 0
+                else 0,
             }
 
-            print(f"   ✓ Generated {num_files} files ({total_lines} lines) in {generation_time:.2f}s")
+            print(
+                f"   ✓ Generated {num_files} files ({total_lines} lines) in {generation_time:.2f}s"
+            )
 
             self.results["performance_tests"].append(result)
             return result
@@ -210,9 +216,11 @@ class MetricsCollector:
         ]
 
         for i, test_case in enumerate(test_cases):
-            print(f"\n{'='*70}")
-            print(f"Test Case {i+1}/{len(test_cases)}: {test_case['name']} ({test_case['complexity']} complexity)")
-            print(f"{'='*70}")
+            print(f"\n{'=' * 70}")
+            print(
+                f"Test Case {i + 1}/{len(test_cases)}: {test_case['name']} ({test_case['complexity']} complexity)"
+            )
+            print(f"{'=' * 70}")
 
             # Measure consistency
             consistency_result = self.measure_consistency(
@@ -260,12 +268,14 @@ class MetricsCollector:
             ]
             overall_avg = sum(avg_scores) / len(avg_scores)
 
-            report.append(f"Overall Average Consistency: {overall_avg*100:.2f}%")
+            report.append(f"Overall Average Consistency: {overall_avg * 100:.2f}%")
             report.append("")
 
             for test in self.results["consistency_tests"]:
                 report.append(f"- {test['description'][:50]}...")
-                report.append(f"  Consistency: {test['avg_consistency_score']*100:.2f}%")
+                report.append(
+                    f"  Consistency: {test['avg_consistency_score'] * 100:.2f}%"
+                )
                 report.append(f"  Avg Time: {test['avg_generation_time']:.2f}s")
                 report.append("")
 

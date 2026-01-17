@@ -1,12 +1,29 @@
+"""Relation handling logic for the DSL engine."""
+
 import sys
 from pathlib import Path
+from typing import Any, Dict, List
+
+from jinja2 import Environment
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 from src.shared.logs.logger import logger
 
 
-def handle_relations(modules_data, env, base_output_dir):
+def handle_relations(
+    modules_data: List[Dict[str, Any]], env: Environment, base_output_dir: Path
+) -> Dict[tuple, Dict[str, Any]]:
+    """Process and validate entity relations.
+
+    Args:
+        modules_data (List[Dict[str, Any]]): List of module configurations.
+        env (Environment): Jinja2 environment (unused here but matches signature).
+        base_output_dir (Path): Base output directory (unused here).
+
+    Returns:
+        Dict[tuple, Dict[str, Any]]: A map of valid relations keyed by (module, related_model).
+    """
     relations_map = {}
     for module_data in modules_data:
         module_name = module_data["name"]

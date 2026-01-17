@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Initialize the nest_project with all necessary dependencies for DSL-generated code.
+"""Initialize the nest_project with all necessary dependencies for DSL-generated code.
 
 This script:
 1. Creates a new NestJS project if one doesn't exist (using nest CLI)
@@ -20,15 +19,26 @@ import sys
 from pathlib import Path
 
 
-def get_nest_project_path():
-    """Get the nest_project path."""
+def get_nest_project_path() -> Path:
+    """Get the nest_project path.
+
+    Returns:
+        Path: The absolute path to the nest_project directory.
+    """
     script_dir = Path(__file__).parent
     nest_project = script_dir.parent / "nest_project"
     return nest_project
 
 
-def create_nest_project(nest_project_path):
-    """Create a new NestJS project using nest CLI."""
+def create_nest_project(nest_project_path: Path) -> bool:
+    """Create a new NestJS project using nest CLI.
+
+    Args:
+        nest_project_path (Path): Path where the project should be created.
+
+    Returns:
+        bool: True if project creation was successful, False otherwise.
+    """
     print(f"Creating new NestJS project at {nest_project_path}...")
 
     try:
@@ -76,7 +86,9 @@ def create_nest_project(nest_project_path):
         print("Error: nest new command timed out")
         return False
     except FileNotFoundError:
-        print("Error: nest CLI not found. Please ensure @nestjs/cli is installed globally")
+        print(
+            "Error: nest CLI not found. Please ensure @nestjs/cli is installed globally"
+        )
         print("Install it with: npm install -g @nestjs/cli")
         return False
     except Exception as e:
@@ -84,8 +96,15 @@ def create_nest_project(nest_project_path):
         return False
 
 
-def update_package_json(nest_project_path):
-    """Update package.json with required dependencies."""
+def update_package_json(nest_project_path: Path) -> bool:
+    """Update package.json with required dependencies.
+
+    Args:
+        nest_project_path (Path): Path to the NestJS project.
+
+    Returns:
+        bool: True if update was successful, False otherwise.
+    """
     package_json_path = nest_project_path / "package.json"
 
     if not package_json_path.exists():
@@ -130,8 +149,15 @@ def update_package_json(nest_project_path):
     return True
 
 
-def install_dependencies(nest_project_path):
-    """Install npm dependencies."""
+def install_dependencies(nest_project_path: Path) -> bool:
+    """Install npm dependencies.
+
+    Args:
+        nest_project_path (Path): Path to the NestJS project.
+
+    Returns:
+        bool: True if installation was successful, False otherwise.
+    """
     print(f"\nInstalling npm dependencies in {nest_project_path}...")
 
     try:
@@ -158,8 +184,15 @@ def install_dependencies(nest_project_path):
         return False
 
 
-def verify_project(nest_project_path):
-    """Verify the NestJS project structure."""
+def verify_project(nest_project_path: Path) -> bool:
+    """Verify the NestJS project structure.
+
+    Args:
+        nest_project_path (Path): Path to the NestJS project.
+
+    Returns:
+        bool: True if project structure is valid, False otherwise.
+    """
     required_files = [
         "package.json",
         "tsconfig.json",
@@ -176,7 +209,7 @@ def verify_project(nest_project_path):
     return True
 
 
-def main():
+def main() -> None:
     """Main execution."""
     print("=" * 70)
     print("NestJS Project Initialization for DSL Code Generation")
@@ -209,7 +242,9 @@ def main():
     print("\n2. Installing npm dependencies...")
     if not install_dependencies(nest_project_path):
         print("\n✗ npm install failed")
-        print("You can try running 'npm install --legacy-peer-deps' manually in nest_project/")
+        print(
+            "You can try running 'npm install --legacy-peer-deps' manually in nest_project/"
+        )
         sys.exit(1)
 
     print("\n" + "=" * 70)

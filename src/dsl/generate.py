@@ -1,20 +1,33 @@
+"""Module to generate NestJS code from a YAML blueprint."""
+
 import argparse
 import sys
 from pathlib import Path
+from typing import Optional
 
 import yaml
+from jinja2 import Environment, FileSystemLoader
+
+# Add parent directory to path for shared imports
+# TODO: Refactor this to use proper package installation
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+from src.shared.logs.logger import logger
+
 from .core.modules.module import generate_module
 from .core.modules.relation import handle_relations
 from .core.root import generate_root_module
-from jinja2 import Environment, FileSystemLoader
 from .utils.type import to_ts_type
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from src.shared.logs.logger import logger
 
+def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
+    """Generate NestJS project from blueprint.
 
-def main(blueprint_file, nest_project_path=None):
+    Args:
+        blueprint_file (str): Path to the blueprint YAML file.
+        nest_project_path (Optional[str]): Output directory for the project.
+                                           Defaults to "nest_project".
+    """
     with open(blueprint_file, "r") as f:
         data = yaml.safe_load(f)
 
@@ -24,7 +37,9 @@ def main(blueprint_file, nest_project_path=None):
 
     env.filters["to_ts_type"] = to_ts_type
 
-    base_output_dir = Path(nest_project_path) if nest_project_path else Path("nest_project")
+    base_output_dir = (
+        Path(nest_project_path) if nest_project_path else Path("nest_project")
+    )
 
     if not base_output_dir.exists():
         base_output_dir.mkdir(parents=True, exist_ok=True)
@@ -46,7 +61,9 @@ def main(blueprint_file, nest_project_path=None):
                 relation_key = (module_name, related_model)
                 if relation_key in relations_map:
                     if "inverseField" in relations_map[relation_key]:
-                        relation["inverseField"] = relations_map[relation_key]["inverseField"]
+                        relation["inverseField"] = relations_map[relation_key][
+                            "inverseField"
+                        ]
 
     generate_root_module(root_config, modules_data, env, base_output_dir)
 

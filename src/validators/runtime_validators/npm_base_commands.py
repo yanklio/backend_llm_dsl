@@ -1,31 +1,30 @@
+"""NPM base command validators."""
+
 import sys
 import time
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict
 
+# Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 from src.shared import logger
-
-from ..shared.command import (
+from src.validators.shared.command import (
     check_process_running,
-    is_port_in_use,
-    kill_process_on_port,
     run_command,
     start_process,
     terminate_process,
 )
-from ..shared.error_types import ErrorCodes, create_error
+from src.validators.shared.error_types import ErrorCodes, create_error
 
 
-def check_base_npm(project_path: Path) -> Dict:
-    """
-    Check all base npm commmands
+def check_base_npm(project_path: Path) -> Dict[str, Any]:
+    """Check all base npm commands.
 
     Args:
-        project_path: Path to the NestJS project
+        project_path (Path): Path to the NestJS project.
 
     Returns:
-        Dictionary with success status and errors
+        Dict[str, Any]: Dictionary with success status and errors.
     """
     errors = []
     install = _run_npm_install(project_path)
@@ -45,18 +44,19 @@ def check_base_npm(project_path: Path) -> Dict:
     }
 
 
-def _run_npm_install(project_path: Path) -> Dict:
-    """
-    Install npm dependencies.
+def _run_npm_install(project_path: Path) -> Dict[str, Any]:
+    """Install npm dependencies.
 
     Args:
-        project_path: Path to the NestJS project
+        project_path (Path): Path to the NestJS project.
 
     Returns:
-        Dictionary with success status and optional error
+        Dict[str, Any]: Dictionary with success status and optional error.
     """
     logger.debug("Running npm install...")
-    result = run_command(["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000)
+    result = run_command(
+        ["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000
+    )
 
     if not result.success:
         error_message = result.stderr[:200] if result.stderr else "npm install failed"
@@ -79,15 +79,14 @@ def _run_npm_install(project_path: Path) -> Dict:
     return {"success": True}
 
 
-def _run_npm_build(project_path: Path) -> Dict:
-    """
-    Build the NestJS project.
+def _run_npm_build(project_path: Path) -> Dict[str, Any]:
+    """Build the NestJS project.
 
     Args:
-        project_path: Path to the NestJS project
+        project_path (Path): Path to the NestJS project.
 
     Returns:
-        Dictionary with success status and optional error
+        Dict[str, Any]: Dictionary with success status and optional error.
     """
     logger.debug("Running npm run build...")
     result = run_command(["npm", "run", "build"], cwd=project_path, timeout=120)
@@ -111,21 +110,20 @@ def _run_npm_build(project_path: Path) -> Dict:
 
 def _run_npm_start(
     project_path: Path, wait_time: int = 10, terminate: bool = True, port: int = 3000
-) -> Dict:
-    """
-    Start the application and verify it runs.
+) -> Dict[str, Any]:
+    """Start the application and verify it runs.
 
     Args:
-        project_path: Path to the NestJS project
-        wait_time: Seconds to wait before checking if app crashed
-        terminate: Whether to terminate the process after verification (False if endpoints will be tested)
-        port: Port number the application runs on (default: 3000 for NestJS)
+        project_path (Path): Path to the NestJS project.
+        wait_time (int): Seconds to wait before checking if app crashed.
+        terminate (bool): Whether to terminate the process after verification.
+        port (int): Port number the application runs on.
 
     Returns:
-        Dictionary with success status, optional error, and process if not terminated
+        Dict[str, Any]: Dictionary with success status, optional error, and process.
     """
     try:
-        logger.debug(f"Starting application on port {port}...") 
+        logger.debug(f"Starting application on port {port}...")
 
         process = start_process(["npm", "run", "start"], cwd=project_path)
         time.sleep(wait_time)
@@ -138,7 +136,9 @@ def _run_npm_start(
             return {
                 "success": False,
                 "error": create_error(
-                    "start", f"Application crashed: {error_message}", ErrorCodes.START_CRASHED
+                    "start",
+                    f"Application crashed: {error_message}",
+                    ErrorCodes.START_CRASHED,
                 ),
             }
 
@@ -154,5 +154,7 @@ def _run_npm_start(
         logger.error(f"Start error: {str(e)}")
         return {
             "success": False,
-            "error": create_error("start", f"Start error: {str(e)}", ErrorCodes.START_ERROR),
+            "error": create_error(
+                "start", f"Start error: {str(e)}", ErrorCodes.START_ERROR
+            ),
         }

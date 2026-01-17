@@ -1,12 +1,26 @@
+"""Module generation logic for the DSL engine."""
+
 import sys
 from pathlib import Path
+from typing import Any, Dict
+
+from jinja2 import Environment
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 from src.shared.logs.logger import logger
 
 
-def handle_dto_file(template_data, dto_dir, env):
+def handle_dto_file(
+    template_data: Dict[str, Any], dto_dir: Path, env: Environment
+) -> None:
+    """Generate DTO files for the module.
+
+    Args:
+        template_data (Dict[str, Any]): Data passed to the template.
+        dto_dir (Path): Directory where DTOs should be saved.
+        env (Environment): Jinja2 environment.
+    """
     try:
         template = env.get_template("dto/create-dto.ts.j2")
         output_code = template.render(template_data)
@@ -26,7 +40,16 @@ def handle_dto_file(template_data, dto_dir, env):
         logger.error(f"Failed to generate update DTO: {e}")
 
 
-def handle_entity_file(template_data, entities_dir, env):
+def handle_entity_file(
+    template_data: Dict[str, Any], entities_dir: Path, env: Environment
+) -> None:
+    """Generate entity files for the module.
+
+    Args:
+        template_data (Dict[str, Any]): Data passed to the template.
+        entities_dir (Path): Directory where entities should be saved.
+        env (Environment): Jinja2 environment.
+    """
     try:
         template = env.get_template("entity.ts.j2")
         output_code = template.render(template_data)
@@ -37,8 +60,16 @@ def handle_entity_file(template_data, entities_dir, env):
         logger.error(f"Failed to generate entity file: {e}")
 
 
-def generate_module(module_data, env, base_output_dir):
-    """Generate a single sub-module (entity module)"""
+def generate_module(
+    module_data: Dict[str, Any], env: Environment, base_output_dir: Path
+) -> None:
+    """Generate a single sub-module (entity module).
+
+    Args:
+        module_data (Dict[str, Any]): Configuration for the module.
+        env (Environment): Jinja2 environment.
+        base_output_dir (Path): Base directory for output.
+    """
     module_name = module_data["name"]
     logger.start(f"Generating {module_name} module...")
 

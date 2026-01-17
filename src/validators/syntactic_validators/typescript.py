@@ -1,19 +1,20 @@
-from pathlib import Path
-from typing import List
+"""TypeScript validator module."""
 
-from ..shared.command import run_command
-from ..shared.error_types import ErrorCodes, ValidationError, create_error
+from pathlib import Path
+from typing import List, Optional, Tuple, Dict, Any
+
+from src.validators.shared.command import run_command
+from src.validators.shared.error_types import ErrorCodes, ValidationError, create_error
 
 
 def check_typescript(project_path: Path) -> List[ValidationError]:
-    """
-    Execute TypeScript compiler and return structured errors.
+    """Execute TypeScript compiler and return structured errors.
 
     Args:
-        project_path: Path to the NestJS project
+        project_path (Path): Path to the NestJS project.
 
     Returns:
-        List of validation errors
+        List[ValidationError]: List of validation errors.
     """
     result = run_command(["npx", "tsc", "--noEmit"], cwd=project_path, timeout=60)
 
@@ -46,15 +47,14 @@ def check_typescript(project_path: Path) -> List[ValidationError]:
     return errors
 
 
-def _parse_file_location(file_loc_part: str) -> tuple[str, str] | None:
-    """
-    Parse file path and line/column coordinates from error line.
+def _parse_file_location(file_loc_part: str) -> Optional[Tuple[str, str]]:
+    """Parse file path and line/column coordinates from error line.
 
     Args:
-        file_loc_part: Part of error line before "): error"
+        file_loc_part (str): Part of error line before "): error".
 
     Returns:
-        Tuple of (file_path, line_col_string) or None if invalid format
+        Optional[Tuple[str, str]]: Tuple of (file_path, line_col_string) or None if invalid format.
     """
     file_loc = file_loc_part.split("(")
     if len(file_loc) != 2:
@@ -65,33 +65,34 @@ def _parse_file_location(file_loc_part: str) -> tuple[str, str] | None:
     return file_path, line_col
 
 
-def _parse_line_column(line_col: str) -> tuple[int, int]:
-    """
-    Parse line and column numbers from coordinate string.
+def _parse_line_column(line_col: str) -> Tuple[int, int]:
+    """Parse line and column numbers from coordinate string.
 
     Args:
-        line_col: String like "12,5"
+        line_col (str): String like "12,5".
 
     Returns:
-        Tuple of (line_num, col_num), defaults to (0, 0) if parsing fails
+        Tuple[int, int]: Tuple of (line_num, col_num), defaults to (0, 0) if parsing fails.
     """
     line_num, col_num = 0, 0
     if "," in line_col:
         coords = line_col.split(",")
-        line_num = int(coords[0])
-        col_num = int(coords[1])
+        try:
+            line_num = int(coords[0])
+            col_num = int(coords[1])
+        except ValueError:
+            pass
     return line_num, col_num
 
 
-def _parse_error_code_and_message(error_part: str) -> tuple[str, str]:
-    """
-    Extract error code and message from error part.
+def _parse_error_code_and_message(error_part: str) -> Tuple[str, str]:
+    """Extract error code and message from error part.
 
     Args:
-        error_part: Part after "): error " like "TS2322: Type 'string'..."
+        error_part (str): Part after "): error " like "TS2322: Type 'string'..."
 
     Returns:
-        Tuple of (code, message)
+        Tuple[str, str]: Tuple of (code, message).
     """
     code = ""
     message = error_part
@@ -105,17 +106,16 @@ def _parse_error_code_and_message(error_part: str) -> tuple[str, str]:
     return code, message
 
 
-def _parse_typescript_error(line: str) -> ValidationError | None:
-    """
-    Parse TypeScript compiler error line.
+def _parse_typescript_error(line: str) -> Optional[ValidationError]:
+    """Parse TypeScript compiler error line.
 
     Format: src/user/user.entity.ts(12,5): error TS2322: Type 'string' is not assignable to type 'number'.
 
     Args:
-        line: Single line of TypeScript compiler output
+        line (str): Single line of TypeScript compiler output.
 
     Returns:
-        ValidationError dictionary or None if not an error line
+        Optional[ValidationError]: ValidationError dictionary or None if not an error line.
     """
     if "error TS" not in line:
         return None
@@ -133,7 +133,9 @@ def _parse_typescript_error(line: str) -> ValidationError | None:
         line_num, col_num = _parse_line_column(line_col)
         code, message = _parse_error_code_and_message(parts[1])
 
-        return create_error("compile", message, code, file=file_path, line=line_num, column=col_num)
+        return create_error(
+            "compile", message, code, file=file_path, line=line_num, column=col_num
+        )
 
     except Exception:
         return create_error("compile", line, ErrorCodes.PARSE_ERROR)

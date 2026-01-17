@@ -1,11 +1,17 @@
+"""Raw LLM generator module."""
+
 import argparse
+import json
 import sys
+import traceback
 from pathlib import Path
+from typing import Any, Dict
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 
+# Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from src.shared import logger
 
@@ -15,7 +21,14 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2)
 
 
 def read_project_context(project_dir: str) -> str:
-    """Read existing project files for context"""
+    """Read existing project files for context.
+
+    Args:
+        project_dir (str): Directory of the project.
+
+    Returns:
+        str: Context string with file contents.
+    """
     project_path = Path(project_dir)
 
     if not project_path.exists():
@@ -29,14 +42,24 @@ def read_project_context(project_dir: str) -> str:
                 rel_path = file_path.relative_to(project_path)
                 content = file_path.read_text()
                 context += f"\n--- {rel_path} ---\n{content}\n"
-            except:
+            except Exception:
                 pass
 
     return context
 
 
-def natural_language_to_code(description: str, project_dir: str = "./nest_project") -> dict:
-    """Generate code from simple description - vibe coder style"""
+def natural_language_to_code(
+    description: str, project_dir: str = "./nest_project"
+) -> Dict[str, Any]:
+    """Generate code from simple description - vibe coder style.
+
+    Args:
+        description (str): Description of the application.
+        project_dir (str): Project directory.
+
+    Returns:
+        Dict[str, Any]: Dictionary of generated files.
+    """
 
     existing_context = read_project_context(project_dir)
 
@@ -111,7 +134,7 @@ Make it production-ready and runnable."""
     logger.start("Generating code with LLM...")
     response = llm.invoke(messages)
 
-    content = response.content.strip()
+    content = str(response.content).strip()
 
     if content.startswith("```json"):
         content = content[7:]
@@ -122,18 +145,19 @@ Make it production-ready and runnable."""
 
     content = content.strip()
 
-    import json
-
     files = json.loads(content)
     logger.success(f"Generated {len(files)} files")
 
     return files
 
 
-def save_files(files: dict, output_dir: str):
-    """Save generated files to directory"""
-    import json
+def save_files(files: Dict[str, Any], output_dir: str) -> None:
+    """Save generated files to directory.
 
+    Args:
+        files (Dict[str, Any]): Dictionary of files to save.
+        output_dir (str): Output directory.
+    """
     output_path = Path(output_dir)
 
     output_path.mkdir(parents=True, exist_ok=True)
@@ -158,26 +182,30 @@ def save_files(files: dict, output_dir: str):
     logger.end(f"Saved {saved_count}/{len(files)} files")
 
 
-def generate_nestjs_backend(description: str, output_dir: str = "./nest_project"):
-    """
-    Generate NestJS backend from natural language description.
+def generate_nestjs_backend(
+    description: str, output_dir: str = "./nest_project"
+) -> None:
+    """Generate NestJS backend from natural language description.
+
     This is a wrapper function that combines code generation and file saving.
 
     Args:
-        description: Natural language description of the application
-        output_dir: Output directory for the generated project
+        description (str): Natural language description of the application.
+        output_dir (str): Output directory for the generated project.
     """
     files = natural_language_to_code(description, output_dir)
     save_files(files, output_dir)
 
 
-def main():
+def main() -> None:
+    """Main execution entry point."""
     parser = argparse.ArgumentParser(
         description="Vibe coder - generate NestJS code from simple descriptions"
     )
 
     parser.add_argument(
-        "description", help="What you want (e.g., 'add a Post entity with title and content')"
+        "description",
+        help="What you want (e.g., 'add a Post entity with title and content')",
     )
 
     parser.add_argument(
@@ -201,8 +229,6 @@ def main():
 
     except Exception as e:
         logger.error(f"Error: {e}")
-        import traceback
-
         traceback.print_exc()
 
 
