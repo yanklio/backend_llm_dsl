@@ -94,7 +94,7 @@ Practice/
 ├── 🧪 tests/                 # Testing Suite
 │   ├── test_cases/           # Scenario definitions & blueprints
 │   ├── test_single_case.py   # Single case test runner
-│   ├── init_nest_project.py  # Test environment setup
+│   ├── utils:/init_nest_project.py  # Test environment setup
 │   └── metrics_collector.py  # Performance metrics
 ├── 🏃 nest_project/          # Generated NestJS Application
 ├── 📄 pyproject.toml         # Python Tooling Config (Ruff)
