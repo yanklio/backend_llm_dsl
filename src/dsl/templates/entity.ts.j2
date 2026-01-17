@@ -13,6 +13,7 @@ export class {{ module | capitalize }} {
   @PrimaryGeneratedColumn()
   id: number;
 {% for field in entity.fields %}
+  {%- if field.name not in ['id', 'createdAt', 'updatedAt'] %}
   {%- if field.type == 'enum' %}
   @Column({
     type: 'varchar',
@@ -73,6 +74,7 @@ export class {{ module | capitalize }} {
     {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: any;
+  {%- endif %}
   {%- endif %}
 {% endfor %}
 {%- if entity.relations %}

@@ -95,7 +95,7 @@ class LLMClient:
                 return provider.generate(messages)
 
             except Exception as e:
-                logger.warning(f"✗ {provider.name} failed: {e}")
+                logger.warn(f"✗ {provider.name} failed: {e}")
                 if i < len(execution_list) - 1:
                     logger.info("Trying next provider...")
         

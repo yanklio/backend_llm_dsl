@@ -12,6 +12,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from src.shared import logger
+from src.shared.utils import clean_llm_response, try_parse_json
 from src.llm.wrapper import LLMClient, GenerationResult
 
 load_dotenv()
@@ -90,16 +91,25 @@ def natural_language_to_code(
    - TypeOrmModule.forFeature([Entity])
    - All services and controllers exported
 
-Return ONLY valid JSON with NO markdown, NO explanations:
+Return a SINGLE VALID JSON object mapping file paths to file content.
+DO NOT output raw code. DO NOT output markdown blocks (unless wrapping the JSON).
+DO NOT acknowledge the request. Just output the JSON.
+
+Return a SINGLE VALID JSON object where:
+1. Keys are file paths (e.g., "src/main.ts")
+2. Values are the FULL FILE CONTENT as a SINGLE STRING.
+   - You MUST escape newlines (\n) and quotes (\") correctly.
+   - Do NOT return objects, arrays, or metadata for the files. Just the code string.
+   - Do NOT generate .map, .d.ts, or compiled .js files. Only .ts source files.
+
+Structure:
 {
-  "package.json": {...},
-  "tsconfig.json": {...},
-  "src/main.ts": "full code",
-  "src/app.module.ts": "full code",
-  ...
+  "package.json": "{\n  \"name\": \"my-app\",\n  \"dependencies\": { ... }\n}",
+  "src/app.module.ts": "import { Module } from '@nestjs/common';\n\n@Module({...})\nexport class AppModule {}"
 }
 
-MUST compile without errors. MUST run with npm run start:dev. NO PLACEHOLDERS."""
+The output must be pure JSON. NO text before or after.
+Make sure the JSON is valid. escape backslashes if needed."""
 
     user_prompt = f"""{existing_context}
 
@@ -118,13 +128,25 @@ Make it production-ready and runnable."""
     result = client.generate(messages, primary_provider_id=primary_model)
 
     try:
-        files = json.loads(result.content)
+        cleaned_content = clean_llm_response(result.content)
+        result.content = cleaned_content
+        files = try_parse_json(cleaned_content)
         logger.success(f"Generated {len(files)} files via {result.provider}")
         return result
-    except json.JSONDecodeError:
+    except Exception as e:
         logger.error("Failed to parse LLM response as JSON")
-        logger.debug(result.content)
-        raise ValueError("Invalid JSON response from LLM")
+        logger.error(f"Parse error: {str(e)}")
+        
+        # Save to file for debugging
+        debug_file = Path("/tmp/llm_response_debug.json")
+        debug_file.write_text(cleaned_content)
+        logger.error(f"Saved malformed response to {debug_file}")
+        
+        logger.error("First 2000 chars of cleaned response:")
+        logger.error(cleaned_content[:2000])
+        logger.error("Last 500 chars of cleaned response:")
+        logger.error(cleaned_content[-500:])
+        raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
 
 
 def save_files(files: Dict[str, Any], output_dir: str) -> None:
@@ -193,7 +215,8 @@ def main() -> None:
         if result.total_tokens:
             logger.info(f"Tokens: {result.total_tokens} (In: {result.input_tokens}, Out: {result.output_tokens})")
 
-        files = json.loads(result.content)
+        cleaned_content = clean_llm_response(result.content)
+        files = try_parse_json(cleaned_content)
         save_files(files, args.output)
 
         logger.success("Done! Run with:")

@@ -12,7 +12,7 @@ from src.dsl.generate import main as dsl_generate
 from src.llm.raw_generate import natural_language_to_code, save_files
 from src.llm.dsl_generate import natural_language_to_yaml
 from src.validators import validate_runtime, validate_syntactic
-import json
+from src.shared.utils import try_parse_json
 
 
 def load_test_cases() -> Dict[str, Any]:
@@ -51,6 +51,9 @@ def generate_dsl_approach(test_case_name: str, test_case_data: Dict[str, Any]) -
             return False
 
     print(f"Generating code from blueprint: {blueprint_path}")
+    with open(blueprint_path, "r") as f:
+        print(f.read())
+
     try:
         dsl_generate(str(blueprint_path), str(nest_project_path))
         print("✓ Code generation completed")
@@ -72,7 +75,7 @@ def generate_raw_approach(test_case_name: str, test_case_data: Dict[str, Any]) -
     print("Generating code directly from LLM...")
     try:
         result = natural_language_to_code(test_case_data["requirement"], str(nest_project_path))
-        files = json.loads(result.content)
+        files = try_parse_json(result.content)
         save_files(files, str(nest_project_path))
         print("✓ Direct code generation completed")
         return True

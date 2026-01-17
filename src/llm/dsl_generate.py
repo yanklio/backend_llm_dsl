@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.shared import logger
+from src.shared.utils import clean_llm_response
 from src.llm.wrapper import LLMClient, GenerationResult
 
 load_dotenv()
@@ -20,11 +21,19 @@ def natural_language_to_yaml(description: str, primary_model: str = None) -> Gen
     client = LLMClient(temperature=0.1)
 
     system_prompt = """You are a YAML blueprint generator for NestJS applications.
-Generate ONLY valid YAML (no other text, no markdown) following this exact structure:
-Don't forget about relations if needed. Don't create `CreatedAt` or `UpdatedAt` fields at all (already included).
+Don't forget about relations if needed. Don't create `id`, `createdAt` or `updatedAt` fields at all (already included).
+
+🚨 CRITICAL NAMING RULE:
+- Module names MUST be singular entity names WITHOUT any suffix
+- ✓ CORRECT: "User", "Post", "Product", "Category", "Order"
+- ✗ WRONG: "UserModule", "PostModule", "ProductModule", "Users", "user"
+- The name field should be the entity name in PascalCase (e.g., "User" not "UserModule")
+- DO NOT add "Module", "Service", "Controller" or any other suffix to the module name
+
+Generate ONLY valid YAML (no other text, no markdown) following this exact structure (this is only an example, adapt it based on prompt needs):
 
 root:
-  name: AppName
+  name: PetAdministration
   database:
     type: sqlite
     database: ./data/app.db
@@ -48,7 +57,7 @@ modules:
           type: number
           required: true
           validation: {min: 0}
-    relations:
+      relations:
         - type: OneToMany
           model: Pet
           field: pets
@@ -64,9 +73,9 @@ modules:
         - name: breed
           type: string
           required: false
-    relations:
+      relations:
         - type: ManyToOne
-          model: Owner
+          model: Owner    
           field: owner
           description: The owner of this pet
 
@@ -77,7 +86,9 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
         HumanMessage(content=f"Create a NestJS application for: {description}"),
     ]
 
-    return client.generate(messages, primary_provider_id=primary_model)
+    result = client.generate(messages, primary_provider_id=primary_model)
+    result.content = clean_llm_response(result.content)
+    return result
 
 
 def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml"):
