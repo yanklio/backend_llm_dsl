@@ -1,0 +1,3258 @@
+[
+  {
+    "test_case": "TEST_CASE_1",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 0.91,
+        "dsl_time": 0.05847907066345215,
+        "total_time": 1.097900152206421,
+        "input_tokens": 627,
+        "output_tokens": 600,
+        "total_tokens": 1227,
+        "provider": "Groq (Llama 3.1)"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 40,
+        "errors": [
+          {
+            "file": "src/app.controller.ts",
+            "line": 11,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 11,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => string)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 16,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 16,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => { status: string; timestamp: string; uptime: number; })'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 21,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 24,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 25,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 26,
+            "column": 3,
+            "message": "Property 'email' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 34,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 35,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 36,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 37,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 38,
+            "column": 3,
+            "message": "Property 'name' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 8,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 9,
+            "column": 3,
+            "message": "Property 'id' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 11,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 13,
+            "column": 3,
+            "message": "Property 'email' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 15,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 18,
+            "column": 3,
+            "message": "Property 'name' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 21,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 22,
+            "column": 3,
+            "message": "Property 'createdAt' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 24,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 25,
+            "column": 3,
+            "message": "Property 'updatedAt' has no initializer and is not definitely assigned in the constructor.",
+            "code": "TS2564"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 13,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 13,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((createUserDto: CreateUserDto) => Promise<User>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 14,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 18,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 18,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => Promise<User[]>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 24,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 24,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string) => Promise<User>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 25,
+            "column": 11,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 29,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string, updateUserDto: UpdateUserDto) => Promise<User>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 30,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 30,
+            "column": 35,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 34,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 34,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string) => Promise<void>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 35,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 13,
+            "column": 5,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": false,
+        "build_success": false,
+        "start_success": true,
+        "errors": [
+          "stage",
+          "message",
+          "code",
+          "stage",
+          "message",
+          "code"
+        ]
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-01-17T23:27:19.759145"
+  },
+  {
+    "test_case": "TEST_CASE_1",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 13.12,
+        "dsl_time": 0.0,
+        "total_time": 13.33324122428894,
+        "input_tokens": 2584,
+        "output_tokens": 11984,
+        "total_tokens": 14568,
+        "provider": "Groq (Llama 3.1)"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 333,
+        "errors": [
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 50,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 51,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 74,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 95,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 97,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 98,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 112,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 113,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 142,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 143,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 201,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 203,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 207,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 213,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 214,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 237,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 238,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 277,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 282,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 1,
+            "column": 285,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 41,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 42,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 68,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 91,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 92,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 118,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 142,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 143,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 166,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 187,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 188,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 211,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 237,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 238,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 265,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 290,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 292,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 293,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 303,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 307,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 368,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 372,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 401,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 405,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 429,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 433,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.module.ts",
+            "line": 1,
+            "column": 434,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 45,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 47,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 48,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 62,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 63,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 89,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 90,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 113,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 114,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 141,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 146,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 148,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 149,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 163,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 164,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 177,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 185,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 200,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 208,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 225,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 233,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 277,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 285,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 322,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 330,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 335,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/app.service.ts",
+            "line": 1,
+            "column": 338,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 56,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 58,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 59,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 113,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 117,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 132,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 136,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 158,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 162,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 210,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 214,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 232,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 236,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/database.config.ts",
+            "line": 1,
+            "column": 251,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 44,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 45,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 67,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 87,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 88,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 115,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 137,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 139,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 140,
+            "message": "Unknown keyword or identifier. Did you mean 'async'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 169,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 170,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 221,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 222,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 313,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 314,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 340,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/main.ts",
+            "line": 1,
+            "column": 343,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 61,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 63,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 64,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 93,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 97,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 107,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 108,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 125,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 127,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 131,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 142,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 146,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 160,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 161,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 177,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 1,
+            "column": 180,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/update-user.dto.ts",
+            "line": 1,
+            "column": 52,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/update-user.dto.ts",
+            "line": 1,
+            "column": 53,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/dto/update-user.dto.ts",
+            "line": 1,
+            "column": 79,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/dto/update-user.dto.ts",
+            "line": 1,
+            "column": 104,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/update-user.dto.ts",
+            "line": 1,
+            "column": 106,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/dto/update-user.dto.ts",
+            "line": 1,
+            "column": 107,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 102,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 104,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 105,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 115,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 116,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 136,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 140,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 165,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 166,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 180,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 182,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 186,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 211,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 212,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 229,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 231,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 235,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 244,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 245,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 261,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 263,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 267,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 286,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 287,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 306,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 308,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 312,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 331,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 332,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 351,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 1,
+            "column": 354,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 98,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 99,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 123,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 145,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 146,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 163,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 193,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 194,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 220,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 249,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 250,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 276,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 305,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 307,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 308,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 329,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 330,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 360,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 361,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 421,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 423,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 427,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 433,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 434,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 471,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 472,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 517,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 522,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 524,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 528,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 539,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 540,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 612,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 613,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 660,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 665,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 667,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 671,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 678,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 679,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 749,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 750,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 807,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 812,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 814,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 818,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 831,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 832,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 848,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 854,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 892,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 898,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 935,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 957,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 958,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1019,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1024,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1026,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1030,
+            "message": "Decorators must precede the name and all keywords of property declarations.",
+            "code": "TS1436"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1044,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1045,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1116,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1117,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1156,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1161,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 1,
+            "column": 1164,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 41,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 42,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 68,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 91,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 92,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 116,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 138,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 139,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 166,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 191,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 192,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 209,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 239,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 241,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 242,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 252,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 256,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 300,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 304,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 334,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 338,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 363,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 367,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.module.ts",
+            "line": 1,
+            "column": 368,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 64,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 65,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 94,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 117,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 118,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 141,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 156,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 157,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 174,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 204,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 205,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 231,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 260,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 261,
+            "message": "Unknown keyword or identifier. Did you mean 'import'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 287,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 316,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 318,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 319,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 333,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 334,
+            "message": "Unknown keyword or identifier. Did you mean 'export'?",
+            "code": "TS1435"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 361,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 362,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 377,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 383,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 406,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 412,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 462,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 470,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 472,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 473,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 535,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 536,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 596,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 597,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 646,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 651,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 653,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 654,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 691,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 692,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 737,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 742,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 744,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 745,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 790,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 791,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 853,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 854,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 871,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 872,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 939,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 946,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 947,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 964,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 969,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 971,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 972,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1046,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1047,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1100,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1108,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1111,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1119,
+            "message": "',' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1136,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1145,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1146,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1163,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1164,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1231,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1238,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1239,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1288,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1293,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1295,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1296,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1340,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1341,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1382,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1383,
+            "message": "Unexpected keyword or identifier.",
+            "code": "TS1434"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1427,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1432,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 1,
+            "column": 1435,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "tsconfig.json",
+            "line": 1,
+            "column": 2,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "tsconfig.json",
+            "line": 1,
+            "column": 386,
+            "message": "Unterminated string literal.",
+            "code": "TS1002"
+          },
+          {
+            "file": "tsconfig.json",
+            "line": 1,
+            "column": 386,
+            "message": "Property value can only be string literal, numeric literal, 'true', 'false', 'null', object literal or array literal.",
+            "code": "TS1328"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": false,
+        "build_success": false,
+        "start_success": false,
+        "errors": [
+          "stage",
+          "message",
+          "code",
+          "stage",
+          "message",
+          "code",
+          "stage",
+          "message",
+          "code"
+        ]
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-01-17T23:27:45.519810"
+  },
+  {
+    "test_case": "TEST_CASE_2",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 1.58,
+        "dsl_time": 0.06774020195007324,
+        "total_time": 1.7596473693847656,
+        "input_tokens": 618,
+        "output_tokens": 1234,
+        "total_tokens": 1852,
+        "provider": "Groq (Llama 3.1)"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 68,
+        "errors": [
+          {
+            "file": "src/app.controller.ts",
+            "line": 11,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 11,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => string)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 16,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/app.controller.ts",
+            "line": 16,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => { status: string; timestamp: string; uptime: number; })'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 21,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 26,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 27,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 28,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 33,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 36,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/dto/create-post.dto.ts",
+            "line": 37,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/entities/post.entity.ts",
+            "line": 9,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/entities/post.entity.ts",
+            "line": 12,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/entities/post.entity.ts",
+            "line": 17,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/entities/post.entity.ts",
+            "line": 22,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/entities/post.entity.ts",
+            "line": 26,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/entities/post.entity.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 13,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 13,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((createPostDto: CreatePostDto) => Promise<Post>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 14,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 18,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 18,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => Promise<Post[]>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 24,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 24,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string) => Promise<Post>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 25,
+            "column": 11,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 29,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string, updatePostDto: UpdatePostDto) => Promise<Post>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 30,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 30,
+            "column": 35,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 34,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 34,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string) => Promise<void>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/post/post.controller.ts",
+            "line": 35,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/post/post.service.ts",
+            "line": 13,
+            "column": 5,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 21,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 26,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 27,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 28,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 33,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 36,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/dto/create-user.dto.ts",
+            "line": 37,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 9,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 12,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 17,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 22,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 26,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/entities/user.entity.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Unable to resolve signature of property decorator when called as an expression.",
+            "code": "TS1240"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 13,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 13,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((createUserDto: CreateUserDto) => Promise<User>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 14,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 18,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 18,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | (() => Promise<User[]>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 24,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 24,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string) => Promise<User>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 25,
+            "column": 11,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 29,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 29,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string, updateUserDto: UpdateUserDto) => Promise<User>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 30,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 30,
+            "column": 35,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 34,
+            "column": 3,
+            "message": "Unable to resolve signature of method decorator when called as an expression.",
+            "code": "TS1241"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 34,
+            "column": 4,
+            "message": "Decorator function return type 'void | TypedPropertyDescriptor<unknown>' is not assignable to type 'void | ((id: string) => Promise<void>)'.",
+            "code": "TS1270"
+          },
+          {
+            "file": "src/user/user.controller.ts",
+            "line": 35,
+            "column": 10,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 13,
+            "column": 5,
+            "message": "Decorators are not valid here.",
+            "code": "TS1206"
+          },
+          {
+            "file": "test/app.e2e-spec.ts",
+            "line": 3,
+            "column": 8,
+            "message": "Module '\"/home/yarlaw/Projects/Thesis/Practice/nest_project/node_modules/@types/supertest/index\"' can only be default-imported using the 'esModuleInterop' flag",
+            "code": "TS1259"
+          },
+          {
+            "file": "tsconfig.json",
+            "line": 1,
+            "column": 2,
+            "message": "Invalid character.",
+            "code": "TS1127"
+          },
+          {
+            "file": "tsconfig.json",
+            "line": 1,
+            "column": 386,
+            "message": "Unterminated string literal.",
+            "code": "TS1002"
+          },
+          {
+            "file": "tsconfig.json",
+            "line": 1,
+            "column": 386,
+            "message": "Property value can only be string literal, numeric literal, 'true', 'false', 'null', object literal or array literal.",
+            "code": "TS1328"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": false,
+        "build_success": false,
+        "start_success": false,
+        "errors": [
+          "stage",
+          "message",
+          "code",
+          "stage",
+          "message",
+          "code",
+          "stage",
+          "message",
+          "code"
+        ]
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-01-17T23:28:04.010404"
+  },
+  {
+    "test_case": "TEST_CASE_2",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 12.59,
+        "dsl_time": 0.0,
+        "total_time": 12.79312539100647,
+        "input_tokens": 2575,
+        "output_tokens": 9049,
+        "total_tokens": 11624,
+        "provider": "Groq (Llama 3.1)"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 1,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": [
+          "stage",
+          "message",
+          "code",
+          "stage",
+          "message",
+          "code"
+        ]
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-01-17T23:28:45.565639"
+  }
+]

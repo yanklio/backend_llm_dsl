@@ -1,8 +1,10 @@
 # build
-nest_project/*
-node_modules/*
-thesis_env/*
-test_cases/*
+nest_project/
+**/nest_project/
+**/node_modules/
+tests/test_cases/
+tests/metrics_output/
+metrics_output/
 
 # Python virtual environments
 thesis_env/
