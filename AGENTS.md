@@ -2,6 +2,51 @@
 
 This document provides a comprehensive overview of the NestJS Code Generation project for AI agents and future contributors.
 
+## 👨‍💻 Code Style & Standards
+
+To maintain a high-quality unified codebase, all Python code must adhere to the following standards. The project is configured with `pyproject.toml` to enforce these rules via **Ruff**.
+
+### 1. Style Guide
+*   **Formatter**: Use **Ruff** for strict formatting (black-compatible).
+*   **Indent**: 4 spaces.
+*   **Quotes**: Double quotes (`"`) for strings.
+*   **Line Length**: 88 characters.
+
+### 2. Imports
+*   **Sorting**: Imports must be sorted and grouped in the following order:
+    1.  Standard Library (e.g., `sys`, `pathlib`)
+    2.  Third-Party Libraries (e.g., `yaml`, `jinja2`)
+    3.  Local Application Imports (e.g., `src.shared`, `src.dsl`)
+*   **Absolute Imports**: Prefer absolute imports for project modules over relative ones where possible, though relative imports are used in `__init__.py` or internal module references.
+*   **Unused Imports**: Remove all unused imports.
+
+### 3. Type Hinting
+*   **Strict Typing**: All function signatures (arguments and return types) must be type-hinted.
+*   **Generic Types**: Use `List`, `Dict`, `Optional`, `Any` from `typing` module for complex types.
+
+### 4. Documentation
+*   **Docstrings**: All public modules, classes, and functions must have docstrings.
+*   **Format**: Use **Google-style** docstrings.
+    ```python
+    def my_function(param1: int, param2: str) -> bool:
+        """Description of what the function does.
+
+        Args:
+            param1 (int): The first parameter.
+            param2 (str): The second parameter.
+
+        Returns:
+            bool: The return value description.
+        """
+    ```
+
+### 5. Linting & Validation
+Run the standard linter before committing:
+```bash
+ruff check .
+ruff format .
+```
+
 ## 🎯 Project Overview
 
 This is an **AI-powered NestJS application generator** that transforms natural language descriptions into fully functional backend applications. The system combines Large Language Models (LLMs) with Domain-Specific Language (DSL) templates to automate the creation of REST APIs with TypeORM database integration.
@@ -30,31 +75,30 @@ This is an **AI-powered NestJS application generator** that transforms natural l
 
 ```
 Practice/
-├── 🤖 llm/                    # AI/LLM Integration Layer
-│   ├── main.py               # Gemini AI integration
-│   └── __init__.py           
-├── 🔧 dsl/                    # Code Generation Engine
-│   ├── generate.py           # Main generation orchestrator
-│   ├── core/                 # Core generation logic
-│   │   ├── root.py          # App root module generation
-│   │   └── modules/         # Module-specific generators
-│   │       ├── module.py    # Entity module generation
-│   │       └── relation.py  # Database relation handling
-│   ├── templates/           # Jinja2 Templates
-│   │   ├── root/           # Root app templates
-│   │   ├── dto/            # Data Transfer Object templates
-│   │   ├── entity.ts.j2    # TypeORM entity template
-│   │   ├── controller.ts.j2 # NestJS controller template
-│   │   ├── service.ts.j2   # Business logic service template
-│   │   └── module.ts.j2    # NestJS module template
-│   └── utils/              # Utility functions
+├── 🤖 src/
+│   ├── dsl/                  # Code Generation Engine
+│   │   ├── core/             # Core generation logic
+│   │   ├── templates/        # Jinja2 Templates
+│   │   ├── utils/            # Utility functions
+│   │   └── generate.py       # Main DSL generator entry
+│   ├── llm/                  # AI/LLM Integration Layer
+│   │   ├── raw_generator.py  # Direct Code Generation (Vibe Coding)
+│   │   ├── yaml_generator.py # Natural Language to YAML (Single Provider)
+│   │   └── yaml_generator_multi.py # Multi-Provider YAML Generator
+│   ├── shared/               # Shared utilities (logging, etc.)
+│   └── validators/           # Verification & Testing Tools
+│       ├── runtime_validators/   # NPM & Runtime Checks
+│       ├── syntactic_validators/ # TypeScript Syntax Checks
+│       ├── shared/               # Shared validator utilities
+│       └── main.py              # Main validation entry point
+├── 🧪 tests/                 # Testing Suite
+│   ├── test_cases/           # Scenario definitions & blueprints
+│   ├── test_single_case.py   # Single case test runner
+│   ├── utils:/init_nest_project.py  # Test environment setup
+│   └── metrics_collector.py  # Performance metrics
 ├── 🏃 nest_project/          # Generated NestJS Application
-│   ├── src/                 # Generated source code (auto-created)
-│   ├── package.json         # NestJS dependencies
-│   └── tsconfig.json        # TypeScript configuration
-├── 📋 blueprint.yaml         # Current project blueprint
-├── 🚀 generate.py            # Main CLI entry point
-└── 📦 requirements.txt       # Python dependencies
+├── 📄 pyproject.toml         # Python Tooling Config (Ruff)
+└── 📦 requirements.txt       # Dependencies
 ```
 
 ## 🔄 Workflow Process
@@ -156,12 +200,12 @@ template_data = {
 
 1. **Generate from Natural Language**:
 ```bash
-python generate.py "Create an e-commerce API with products, customers, and orders"
+python src/llm/yaml_generator.py "Create an e-commerce API with products, customers, and orders"
 ```
 
 2. **Use Existing Blueprint**:
 ```bash
-python dsl/generate.py blueprint.yaml ./nest_project
+python src/dsl/generate.py blueprint.yaml ./nest_project
 ```
 
 3. **Run Generated Application**:
@@ -179,7 +223,7 @@ npm run start:dev
 
 ## 🔍 Key Components Deep Dive
 
-### 1. Natural Language Processor (`llm/main.py`)
+### 1. Natural Language Processor (`src/llm/yaml_generator.py`)
 ```python
 def natural_language_to_yaml(description: str) -> str:
     # Converts natural language to structured YAML
@@ -187,17 +231,17 @@ def natural_language_to_yaml(description: str) -> str:
     # Returns valid YAML blueprint
 ```
 
-### 2. Code Generator (`dsl/generate.py`)
+### 2. Code Generator (`src/dsl/generate.py`)
 ```python
-def main(blueprint_file, nest_project_path):
+def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
     # Orchestrates the entire generation process
     # Loads YAML, processes templates, generates files
     # Handles relations between entities
 ```
 
-### 3. Module Generator (`dsl/core/modules/module.py`)
+### 3. Module Generator (`src/dsl/core/modules/module.py`)
 ```python
-def generate_module(module_data, env, base_output_dir):
+def generate_module(module_data: Dict, env: Environment, base_output_dir: Path) -> None:
     # Generates individual entity modules
     # Creates DTOs, entities, services, controllers
     # Handles file organization and imports
@@ -297,7 +341,6 @@ sqlite3
 1. **Rapid Prototyping**: Generate MVPs from feature descriptions
 2. **API Design**: Create consistent REST API structures
 3. **Database Modeling**: Translate business requirements to data models
-4. **Documentation**: Auto-generate API documentation
 
 ### For Development Teams
 1. **Boilerplate Generation**: Eliminate repetitive setup tasks
