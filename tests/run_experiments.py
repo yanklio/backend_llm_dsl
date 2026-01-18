@@ -42,16 +42,6 @@ def clean_project(project_path: Path):
     src_path = project_path / "src"
     if src_path.exists():
         subprocess.run(["rm", "-rf", str(src_path)], check=True)
-    
-    # Also clean other files that might be generated in root
-    for file in project_path.glob("*.ts"):
-        file.unlink()
-    for file in project_path.glob("*.json"):
-        if file.name not in ["package-lock.json", "package.json", "tsconfig.json", "node_modules"]:
-            print(f"Deleting {file.name}")
-            file.unlink()
-        else:
-            print(f"Skipping {file.name}")
 
 def save_results(results: List[Dict[str, Any]]):
     output_file = Path(__file__).parent / "test_results.json"

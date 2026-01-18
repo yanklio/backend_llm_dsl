@@ -16,7 +16,7 @@ class GroqProvider(BaseProvider):
             raise ValueError("GROQ_API_KEY not found")
             
         self.llm = ChatGroq(
-            model="openai/gpt-oss-20b",
+            model="llama-3.1-8b-instant",
             api_key=api_key,
             temperature=temperature,
         )
@@ -27,7 +27,7 @@ class GroqProvider(BaseProvider):
 
     @property
     def name(self) -> str:
-        return "Groq (GPT OSS 20B)"
+        return "Groq (Llama 3.1 8B Instant)"
 
     def generate(self, messages: List[BaseMessage]) -> GenerationResult:
         return self._track_generation(self.llm.invoke, messages)
