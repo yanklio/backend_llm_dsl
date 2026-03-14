@@ -1,6 +1,6 @@
 """Shared error types and structures for validation."""
 
-from typing import Dict, List, TypedDict
+from typing import TypedDict
 
 
 class ValidationError(TypedDict, total=False):
@@ -19,7 +19,7 @@ class ValidationResult(TypedDict, total=False):
     """Standard validation result structure."""
 
     valid: bool
-    errors: List[ValidationError]
+    errors: list[ValidationError]
 
 
 class RuntimeValidationResult(ValidationResult):
@@ -27,7 +27,7 @@ class RuntimeValidationResult(ValidationResult):
 
     build_success: bool
     start_success: bool
-    endpoint_tests: Dict
+    endpoint_tests: dict
 
 
 class SyntacticValidationResult(ValidationResult):

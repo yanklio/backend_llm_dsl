@@ -6,31 +6,55 @@ from pathlib import Path
 from langchain_core.messages import HumanMessage, SystemMessage
 from dotenv import load_dotenv
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 from src.shared import logger
 from src.shared.utils import clean_llm_response
 from src.llm.wrapper import LLMClient, GenerationResult
 
 load_dotenv()
 
-def natural_language_to_yaml(description: str, primary_model: str = None) -> GenerationResult:
-    """Convert natural language to YAML blueprint using LLM."""
-    
+def natural_language_to_yaml(description: str, primary_model: str | None = None) -> GenerationResult:
+    """Convert natural language to YAML blueprint using LLM.
+
+    Args:
+        description (str): Plain English description of the desired NestJS application.
+        primary_model (str | None): Provider ID to try first (groq, openrouter, gemini, ollama).
+
+    Returns:
+        GenerationResult: The generated YAML content and metadata.
+    """
     client = LLMClient(temperature=0.1)
 
     system_prompt = """You are a YAML blueprint generator for NestJS applications.
 Don't forget about relations if needed. Don't create `id`, `createdAt` or `updatedAt` fields at all (already included).
 
-🚨 CRITICAL NAMING RULE:
-- Module names MUST be singular entity names WITHOUT any suffix
-- ✓ CORRECT: "User", "Post", "Product", "Category", "Order"
-- ✗ WRONG: "UserModule", "PostModule", "ProductModule", "Users", "user"
-- The name field should be the entity name in PascalCase (e.g., "User" not "UserModule")
-- DO NOT add "Module", "Service", "Controller" or any other suffix to the module name
+🚨 CRITICAL STRUCTURE RULES:
+1. ONE MODULE PER ENTITY - Each module represents ONE database entity
+2. NEVER create separate modules for services, controllers, or repositories (e.g., NO "UserService", "UserController", "UserRepository")
+3. ALWAYS include the entity definition with fields - never set entity to null
+4. Module name should be the entity name in PascalCase (e.g., "User", "Post", "Product")
 
-Generate ONLY valid YAML (no other text, no markdown) following this exact structure (this is only an example, adapt it based on prompt needs):
+CORRECT structure (one module per entity):
+```yaml
+modules:
+  - name: User
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: email
+          type: string
+          required: true
+```
+
+WRONG (DO NOT DO THIS):
+```yaml
+- name: UserService    # WRONG - don't add Service suffix
+  generate: [service]
+  entity: null         # WRONG - always include entity
+- name: UserController # WRONG - don't create separate controller module
+  generate: [controller]
+```
+
+Generate ONLY valid YAML (no other text, no markdown) following this exact structure:
 
 root:
   name: PetAdministration
@@ -75,7 +99,7 @@ modules:
           required: false
       relations:
         - type: ManyToOne
-          model: Owner    
+          model: Owner
           field: owner
           description: The owner of this pet
 
@@ -91,14 +115,20 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
     return result
 
 
-def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml"):
-    """Save the generated YAML blueprint to a file."""
+def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml") -> None:
+    """Save the generated YAML blueprint to a file.
+
+    Args:
+        generated_yaml (str): The YAML content to save.
+        blueprint_file (str): Path to save the blueprint file.
+    """
     with open(blueprint_file, "w") as f:
         f.write(generated_yaml)
     logger.success(f"Blueprint saved to {blueprint_file}")
 
 
-def main():
+def main() -> None:
+    """Main entry point for CLI."""
     parser = argparse.ArgumentParser(
         description="Generate NestJS application blueprint (DSL) from natural language"
     )

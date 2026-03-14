@@ -1,5 +1,6 @@
 TEST_CASE_1:
   name: "Simple User CRUD"
+  tier: simple
   requirement: |
     Create a NestJS service for managing users.
     Entity should have: id, email, name, createdAt
@@ -13,55 +14,312 @@ TEST_CASE_1:
     - DELETE /users/:id
 
 TEST_CASE_2:
-  name: "User with Relations"
+  name: "Product Catalog"
+  tier: simple
   requirement: |
-    Create User and Post services.
-    User can have many Posts (OneToMany relationship)
-    Post belongs to User (ManyToOne relationship)
-    Create endpoints to get user's posts
-    Posts table: id, title, content, createdAt, userId
-  endpoints:
-    - GET /users/:id/posts
-    - POST /posts
-    - GET /posts/:id
-
-TEST_CASE_3:
-  name: "With Validation"
-  requirement: |
-    Create Product service.
-    Fields: id, name (required, min 2 chars, max 100), price (required, min 0), stock (required, min 0)
-    Endpoints: GET all products with pagination (limit, page), GET by id, POST create, PUT update, DELETE
-    All fields should be validated according to constraints
+    Create a NestJS service for managing products.
+    Entity should have: id, name (required, min 2 chars, max 100), price (required, min 0), description (optional, max 500 chars), stock (required, min 0), createdAt
+    Endpoints: CRUD operations on /products
+    All fields should be validated according to their constraints
   endpoints:
     - GET /products
     - GET /products/:id
     - POST /products
     - PUT /products/:id
+    - DELETE /products/:id
+
+TEST_CASE_3:
+  name: "Todo List"
+  tier: simple
+  requirement: |
+    Create a NestJS service for managing todo items.
+    Entity should have: id, title (required, max 200 chars), done (boolean, default false), dueDate (date, optional), createdAt
+    Endpoints: CRUD operations on /todos
+  endpoints:
+    - GET /todos
+    - GET /todos/:id
+    - POST /todos
+    - PUT /todos/:id
+    - DELETE /todos/:id
 
 TEST_CASE_4:
-  name: "Complex with Enums"
+  name: "Notes App"
+  tier: simple
   requirement: |
-    Create Order service.
-    Fields: id, userId (FK to User), status (enum: pending, shipped, delivered, cancelled), totalPrice, createdAt
-    Endpoints: GET all user's orders, GET order by id, POST create order, PUT update status
-    Only allow valid status transitions
+    Create a NestJS service for managing notes.
+    Entity should have: id, title (required, min 1 max 150), content (required), pinned (boolean, default false), createdAt, updatedAt
+    Endpoints: CRUD operations on /notes
   endpoints:
-    - GET /users/:id/orders
-    - GET /orders/:id
-    - POST /orders
-    - PUT /orders/:id/status
+    - GET /notes
+    - GET /notes/:id
+    - POST /notes
+    - PUT /notes/:id
+    - DELETE /notes/:id
 
 TEST_CASE_5:
-  name: "With Relationships and Validation"
+  name: "Event with Enum Status"
+  tier: simple
   requirement: |
-    Create Category service.
-    Fields: id, name (required, unique, min 2 max 50), description (optional)
-    Relations: Can have many Products
-    Endpoints: GET all, GET by id, POST create, PUT update, DELETE
-    Validate name uniqueness
+    Create a NestJS service for managing events.
+    Entity should have: id, title (required, max 200), location (required), startDate (date, required), status (enum: draft, published, cancelled, default draft), createdAt
+    Endpoints: CRUD operations on /events
+  endpoints:
+    - GET /events
+    - GET /events/:id
+    - POST /events
+    - PUT /events/:id
+    - DELETE /events/:id
+
+TEST_CASE_6:
+  name: "Blog with Posts"
+  tier: medium
+  requirement: |
+    Create a NestJS service for a blog platform with Authors and Posts.
+    Author entity: id, name (required, min 2 max 100), email (required, unique, email format), bio (optional, max 500), createdAt
+    Post entity: id, title (required, min 5 max 200), content (required), published (boolean, default false), createdAt
+    Relations: Author has many Posts (OneToMany), Post belongs to Author (ManyToOne)
+    Endpoints: CRUD for both /authors and /posts
+  endpoints:
+    - GET /authors
+    - GET /authors/:id
+    - POST /authors
+    - PUT /authors/:id
+    - DELETE /authors/:id
+    - GET /posts
+    - GET /posts/:id
+    - POST /posts
+    - PUT /posts/:id
+    - DELETE /posts/:id
+
+TEST_CASE_7:
+  name: "Category and Products"
+  tier: medium
+  requirement: |
+    Create a NestJS service for managing categories and products.
+    Category entity: id, name (required, unique, min 2 max 50), description (optional, max 300), createdAt
+    Product entity: id, name (required, min 2 max 100), price (required, min 0), stock (required, min 0), createdAt
+    Relations: Category has many Products (OneToMany), Product belongs to one Category (ManyToOne)
+    Endpoints: CRUD for both /categories and /products
   endpoints:
     - GET /categories
     - GET /categories/:id
     - POST /categories
     - PUT /categories/:id
+    - DELETE /categories/:id
     - GET /products
+    - GET /products/:id
+    - POST /products
+    - PUT /products/:id
+    - DELETE /products/:id
+
+TEST_CASE_8:
+  name: "Orders with Enum Status"
+  tier: medium
+  requirement: |
+    Create a NestJS service for managing customers and orders.
+    Customer entity: id, name (required, min 2 max 100), email (required, unique, email format), phone (optional, max 20), createdAt
+    Order entity: id, totalPrice (required, min 0), status (enum: pending, confirmed, shipped, delivered, cancelled, default pending), orderDate (date, required), createdAt
+    Relations: Customer has many Orders (OneToMany), Order belongs to one Customer (ManyToOne, cascade delete)
+    Endpoints: CRUD for both /customers and /orders
+  endpoints:
+    - GET /customers
+    - GET /customers/:id
+    - POST /customers
+    - PUT /customers/:id
+    - DELETE /customers/:id
+    - GET /orders
+    - GET /orders/:id
+    - POST /orders
+    - PUT /orders/:id
+    - DELETE /orders/:id
+
+TEST_CASE_9:
+  name: "School with Teachers and Courses"
+  tier: medium
+  requirement: |
+    Create a NestJS service for managing a school with teachers and courses.
+    Teacher entity: id, firstName (required, min 2 max 50), lastName (required, min 2 max 50), email (required, unique, email format), subject (required, max 100), createdAt
+    Course entity: id, name (required, min 3 max 150), description (optional, max 500), credits (required number, min 1 max 10), createdAt
+    Relations: Teacher has many Courses (OneToMany), Course belongs to one Teacher (ManyToOne)
+    Endpoints: CRUD for both /teachers and /courses
+  endpoints:
+    - GET /teachers
+    - GET /teachers/:id
+    - POST /teachers
+    - PUT /teachers/:id
+    - DELETE /teachers/:id
+    - GET /courses
+    - GET /courses/:id
+    - POST /courses
+    - PUT /courses/:id
+    - DELETE /courses/:id
+
+TEST_CASE_10:
+  name: "Warehouse with Sections and Items"
+  tier: medium
+  requirement: |
+    Create a NestJS service for warehouse inventory management with sections and items.
+    Section entity: id, name (required, unique, min 1 max 50), floor (required number, min 1 max 20), createdAt
+    Item entity: id, sku (required, unique, max 30), name (required, min 2 max 100), quantity (required number, min 0), weight (optional number, min 0), createdAt
+    Relations: Section has many Items (OneToMany), Item belongs to one Section (ManyToOne)
+    Endpoints: CRUD for both /sections and /items
+    Items should support filtering by name and sku with pagination (limit, page) and sorting by name or quantity
+  endpoints:
+    - GET /sections
+    - GET /sections/:id
+    - POST /sections
+    - PUT /sections/:id
+    - DELETE /sections/:id
+    - GET /items
+    - GET /items/:id
+    - POST /items
+    - PUT /items/:id
+    - DELETE /items/:id
+
+TEST_CASE_11:
+  name: "E-commerce: Products, Categories (ManyToMany), and Reviews"
+  tier: complex
+  requirement: |
+    Create a NestJS service for an e-commerce platform with products, categories, and reviews.
+    Category entity: id, name (required, unique, min 2 max 80), description (optional, max 300), createdAt
+    Product entity: id, name (required, min 2 max 150), price (required number, min 0), description (optional, max 1000), inStock (boolean, default true), createdAt
+    Review entity: id, rating (required number, min 1 max 5), comment (optional, max 500), reviewerName (required, max 100), createdAt
+    Relations:
+      - Product and Category have a ManyToMany relationship (a product can be in many categories, a category can have many products)
+      - Product has many Reviews (OneToMany), Review belongs to one Product (ManyToOne)
+    Products should support filtering by name with pagination (limit, page) and sorting by name or price
+    Endpoints: CRUD for /categories, /products, and /reviews
+  endpoints:
+    - GET /categories
+    - GET /categories/:id
+    - POST /categories
+    - PUT /categories/:id
+    - DELETE /categories/:id
+    - GET /products
+    - GET /products/:id
+    - POST /products
+    - PUT /products/:id
+    - DELETE /products/:id
+    - GET /reviews
+    - GET /reviews/:id
+    - POST /reviews
+    - DELETE /reviews/:id
+
+TEST_CASE_12:
+  name: "Project Management: Users, Projects, and Tasks"
+  tier: complex
+  requirement: |
+    Create a NestJS service for project management with users, projects, and tasks.
+    User entity: id, name (required, min 2 max 100), email (required, unique, email format), role (enum: admin, manager, developer, viewer, default developer), createdAt
+    Project entity: id, name (required, min 3 max 150), description (optional, max 500), status (enum: planning, active, on_hold, completed, default planning), startDate (date, optional), createdAt
+    Task entity: id, title (required, min 3 max 200), description (optional, max 1000), priority (enum: low, medium, high, critical, default medium), completed (boolean, default false), dueDate (date, optional), createdAt
+    Relations:
+      - User and Project have a ManyToMany relationship (users can be in many projects, projects can have many users)
+      - Project has many Tasks (OneToMany), Task belongs to one Project (ManyToOne, cascade delete)
+    Tasks should support filtering by title and priority with pagination (limit, page) and sorting by title, priority, or dueDate
+    Endpoints: CRUD for /users, /projects, and /tasks
+  endpoints:
+    - GET /users
+    - GET /users/:id
+    - POST /users
+    - PUT /users/:id
+    - DELETE /users/:id
+    - GET /projects
+    - GET /projects/:id
+    - POST /projects
+    - PUT /projects/:id
+    - DELETE /projects/:id
+    - GET /tasks
+    - GET /tasks/:id
+    - POST /tasks
+    - PUT /tasks/:id
+    - DELETE /tasks/:id
+
+TEST_CASE_13:
+  name: "Clinic: Doctors, Patients (OneToOne Profile), and Appointments"
+  tier: complex
+  requirement: |
+    Create a NestJS service for a medical clinic with doctors, patients, and appointments.
+    Doctor entity: id, firstName (required, min 2 max 50), lastName (required, min 2 max 50), specialization (required, max 100), email (required, unique, email format), createdAt
+    Patient entity: id, firstName (required, min 2 max 50), lastName (required, min 2 max 50), dateOfBirth (date, required), phone (optional, max 20), createdAt
+    Appointment entity: id, appointmentDate (date, required), reason (required, max 300), status (enum: scheduled, in_progress, completed, cancelled, default scheduled), notes (optional, max 1000), createdAt
+    Relations:
+      - Doctor has many Appointments (OneToMany), Appointment belongs to one Doctor (ManyToOne)
+      - Patient has many Appointments (OneToMany), Appointment belongs to one Patient (ManyToOne)
+    Appointments should support filtering by status and appointmentDate with pagination (limit, page)
+    Endpoints: CRUD for /doctors, /patients, and /appointments
+  endpoints:
+    - GET /doctors
+    - GET /doctors/:id
+    - POST /doctors
+    - PUT /doctors/:id
+    - DELETE /doctors/:id
+    - GET /patients
+    - GET /patients/:id
+    - POST /patients
+    - PUT /patients/:id
+    - DELETE /patients/:id
+    - GET /appointments
+    - GET /appointments/:id
+    - POST /appointments
+    - PUT /appointments/:id
+    - DELETE /appointments/:id
+
+TEST_CASE_14:
+  name: "Library: Books, Authors (ManyToMany), and Loans"
+  tier: complex
+  requirement: |
+    Create a NestJS service for a library management system with books, authors, and loans.
+    Author entity: id, name (required, min 2 max 100), biography (optional, max 1000), createdAt
+    Book entity: id, title (required, min 1 max 200), isbn (required, unique, max 20), publishedYear (required number, min 1000 max 2030), available (boolean, default true), createdAt
+    Loan entity: id, borrowerName (required, max 100), borrowDate (date, required), returnDate (date, optional), status (enum: active, returned, overdue, default active), createdAt
+    Relations:
+      - Author and Book have a ManyToMany relationship (a book can have multiple authors, an author can write multiple books)
+      - Book has many Loans (OneToMany), Loan belongs to one Book (ManyToOne)
+    Books should support filtering by title and isbn with pagination (limit, page) and sorting by title or publishedYear
+    Endpoints: CRUD for /authors, /books, and /loans
+  endpoints:
+    - GET /authors
+    - GET /authors/:id
+    - POST /authors
+    - PUT /authors/:id
+    - DELETE /authors/:id
+    - GET /books
+    - GET /books/:id
+    - POST /books
+    - PUT /books/:id
+    - DELETE /books/:id
+    - GET /loans
+    - GET /loans/:id
+    - POST /loans
+    - PUT /loans/:id
+
+TEST_CASE_15:
+  name: "HR System: Departments, Employees, and Skills (ManyToMany)"
+  tier: complex
+  requirement: |
+    Create a NestJS service for an HR management system with departments, employees, and skills.
+    Department entity: id, name (required, unique, min 2 max 100), budget (optional number, min 0), createdAt
+    Employee entity: id, firstName (required, min 2 max 50), lastName (required, min 2 max 50), email (required, unique, email format), hireDate (date, required), salary (required number, min 0), status (enum: active, on_leave, terminated, default active), createdAt
+    Skill entity: id, name (required, unique, min 2 max 80), level (enum: beginner, intermediate, advanced, expert, default beginner), createdAt
+    Relations:
+      - Department has many Employees (OneToMany), Employee belongs to one Department (ManyToOne)
+      - Employee and Skill have a ManyToMany relationship (an employee can have many skills, a skill can belong to many employees)
+    Employees should support filtering by firstName, lastName, and status with pagination (limit, page) and sorting by lastName, hireDate, or salary
+    Endpoints: CRUD for /departments, /employees, and /skills
+  endpoints:
+    - GET /departments
+    - GET /departments/:id
+    - POST /departments
+    - PUT /departments/:id
+    - DELETE /departments/:id
+    - GET /employees
+    - GET /employees/:id
+    - POST /employees
+    - PUT /employees/:id
+    - DELETE /employees/:id
+    - GET /skills
+    - GET /skills/:id
+    - POST /skills
+    - PUT /skills/:id
+    - DELETE /skills/:id

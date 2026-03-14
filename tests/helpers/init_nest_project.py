@@ -149,6 +149,49 @@ def update_package_json(nest_project_path: Path) -> bool:
     return True
 
 
+def update_tsconfig(nest_project_path: Path) -> bool:
+    """Update tsconfig.json with required compiler options for decorators.
+
+    Args:
+        nest_project_path (Path): Path to the NestJS project.
+
+    Returns:
+        bool: True if update was successful, False otherwise.
+    """
+    tsconfig_path = nest_project_path / "tsconfig.json"
+
+    if not tsconfig_path.exists():
+        print(f"Error: tsconfig.json not found at {tsconfig_path}")
+        return False
+
+    with open(tsconfig_path, "r") as f:
+        tsconfig = json.load(f)
+
+    compiler_options = tsconfig.get("compilerOptions", {})
+
+    updated = False
+    if not compiler_options.get("experimentalDecorators", False):
+        compiler_options["experimentalDecorators"] = True
+        print("  + Added experimentalDecorators: true")
+        updated = True
+
+    if not compiler_options.get("emitDecoratorMetadata", False):
+        compiler_options["emitDecoratorMetadata"] = True
+        print("  + Added emitDecoratorMetadata: true")
+        updated = True
+
+    tsconfig["compilerOptions"] = compiler_options
+
+    with open(tsconfig_path, "w") as f:
+        json.dump(tsconfig, f, indent=2)
+
+    if updated:
+        print("✓ Updated tsconfig.json with decorator support")
+    else:
+        print("✓ tsconfig.json already has decorator support")
+    return True
+
+
 def install_dependencies(nest_project_path: Path) -> bool:
     """Install npm dependencies.
 
@@ -232,6 +275,11 @@ def main() -> None:
         sys.exit(1)
 
     print(f"Project path: {nest_project_path}")
+
+    # Step 0.5: Update tsconfig.json for decorator support
+    print("\n0.5. Updating tsconfig.json with decorator support...")
+    if not update_tsconfig(nest_project_path):
+        print("Warning: Failed to update tsconfig.json")
 
     # Step 1: Update package.json
     print("\n1. Updating package.json with required dependencies...")

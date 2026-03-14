@@ -1,6 +1,5 @@
 
 import os
-from typing import List
 
 from langchain_core.messages import BaseMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -14,7 +13,7 @@ class GeminiProvider(BaseProvider):
             raise ValueError("GOOGLE_API_KEY not found")
             
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash-exp", 
+            model="gemini-2.0-flash", 
             temperature=temperature
         )
 
@@ -26,5 +25,5 @@ class GeminiProvider(BaseProvider):
     def name(self) -> str:
         return "Google Gemini"
 
-    def generate(self, messages: List[BaseMessage]) -> GenerationResult:
+    def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         return self._track_generation(self.llm.invoke, messages)

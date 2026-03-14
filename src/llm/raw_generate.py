@@ -4,13 +4,11 @@ import json
 import sys
 import traceback
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from src.shared import logger
 from src.shared.utils import clean_llm_response, try_parse_json
 from src.llm.wrapper import LLMClient, GenerationResult
@@ -18,7 +16,14 @@ from src.llm.wrapper import LLMClient, GenerationResult
 load_dotenv()
 
 def read_project_context(project_dir: str) -> str:
-    """Read existing project files for context."""
+    """Read existing project files for context.
+
+    Args:
+        project_dir (str): Path to the project directory.
+
+    Returns:
+        str: Concatenated content of all TypeScript files in the project.
+    """
     project_path = Path(project_dir)
 
     if not project_path.exists():
@@ -39,57 +44,105 @@ def read_project_context(project_dir: str) -> str:
 
 
 def natural_language_to_code(
-    description: str, project_dir: str = "./nest_project", primary_model: str = None
+    description: str, project_dir: str = "./nest_project", primary_model: str | None = None
 ) -> GenerationResult:
-    """Generate code from simple description - vibe coder style."""
+    """Generate code from simple description - vibe coder style.
+
+    Args:
+        description (str): Plain English description of the desired application.
+        project_dir (str): Directory path where the project files should be generated.
+        primary_model (str | None): Provider ID to try first.
+
+    Returns:
+        GenerationResult: The generated code content and metadata.
+    """
 
     existing_context = read_project_context(project_dir)
     client = LLMClient(temperature=0.2)
 
-    system_prompt = """You are an expert NestJS developer. Generate COMPLETE, WORKING, ERROR-FREE code.
+    system_prompt = """You are an expert NestJS developer. Generate COMPLETE, WORKING, ERROR-FREE code for src/ directory.
 
 🚨 CRITICAL REQUIREMENTS:
 
-1. **package.json MUST include ALL these dependencies**:
-   - @nestjs/common, @nestjs/core, @nestjs/platform-express
-   - @nestjs/typeorm, typeorm
-   - @nestjs/mapped-types (REQUIRED for Update DTOs)
-   - class-validator, class-transformer
-   - reflect-metadata, rxjs
-   - sqlite3 (for database)
-   - @nestjs/cli (devDependencies)
 
-2. **EVERY file must have FULL implementation**:
+1. **EVERY file must have FULL implementation**:
    - No placeholder comments like "// TODO: implement"
    - No "..." or ellipsis
    - All imports must be correct
    - All decorators must be present
 
-3. **Database setup MUST work**:
-   - Use TypeORM with SQLite
+2. **Database setup MUST work**:
+  - Use TypeORM with SQLite
    - database.config.ts must export DataSource
    - All entities must have proper decorators
 
-4. **Generate DTOs for all entities**:
+3. **Generate DTOs for all entities**:
    - CreateXxxDTO for POST requests
    - UpdateXxxDTO for PATCH requests
    - Use class-validator decorators
 
-5. **Controllers must have all CRUD endpoints**:
+4. **Controllers must have all CRUD endpoints**:
    - GET / (list all)
    - GET /:id (get one)
    - POST / (create)
    - PATCH /:id (update)
    - DELETE /:id (delete)
 
-6. **Services must implement business logic**:
+5. **Services must implement business logic**:
    - Use repository pattern
    - Proper error handling
    - No async/await mistakes
 
-7. **Modules must import everything needed**:
+6. **Modules must import everything needed**:
    - TypeOrmModule.forFeature([Entity])
    - All services and controllers exported
+
+7. **Only create files outside src/ directory**:
+   - Do not create package.json or tsconfig.json
+   - Do not create files in node_modules/
+   - Do not create files in dist/
+
+For context you will be already given this dependencies list from package.json (do not include it in the generated code):
+
+"dependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/platform-express": "^11.0.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1",
+    "@nestjs/typeorm": "^11.0.0",
+    "typeorm": "^0.3.20",
+    "@nestjs/swagger": "^8.0.0",
+    "@nestjs/mapped-types": "^2.0.5",
+    "class-validator": "^0.14.0",
+    "class-transformer": "^0.5.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.1",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.10.7",
+    "@types/supertest": "^6.0.2",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "globals": "^16.0.0",
+    "jest": "^30.0.0",
+    "prettier": "^3.4.2",
+    "source-map-support": "^0.5.21",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.20.0"
+  },
 
 Return a SINGLE VALID JSON object mapping file paths to file content.
 DO NOT output raw code. DO NOT output markdown blocks (unless wrapping the JSON).
@@ -97,27 +150,28 @@ DO NOT acknowledge the request. Just output the JSON.
 
 Return a SINGLE VALID JSON object where:
 1. Keys are file paths (e.g., "src/main.ts")
-2. Values are the FULL FILE CONTENT as a SINGLE STRING.
-   - You MUST escape newlines (\n) and quotes (\") correctly.
+2. Values are the FULL FILE CONTENT as properly escaped JSON strings
+   - The output MUST be valid JSON parseable by standard JSON parsers
+   - Newlines in file content must be represented as the JSON escape sequence \\n (backslash followed by n)
+   - Double quotes must be escaped as \\"
+   - Backslashes must be escaped as \\\\
    - Do NOT return objects, arrays, or metadata for the files. Just the code string.
    - Do NOT generate .map, .d.ts, or compiled .js files. Only .ts source files.
 
-Structure:
+Example structure (note how newlines are \\n in the JSON):
 {
-  "package.json": "{\n  \"name\": \"my-app\",\n  \"dependencies\": { ... }\n}",
-  "src/app.module.ts": "import { Module } from '@nestjs/common';\n\n@Module({...})\nexport class AppModule {}"
+  "src/app.module.ts": "import { Module } from '@nestjs/common';\\n\\n@Module({\\n  imports: [],\\n})\\nexport class AppModule {}"
 }
 
-The output must be pure JSON. NO text before or after.
-Make sure the JSON is valid. escape backslashes if needed."""
+CRITICAL: The output must be pure, valid JSON. NO text before or after. NO markdown code blocks.
+Test your output mentally: it should be parseable by json.loads() or JSON.parse()."""
 
     user_prompt = f"""{existing_context}
 
 === REQUEST ===
 {description}
 
-Generate ALL files needed for a COMPLETE, WORKING NestJS application.
-Include package.json, tsconfig.json, and all source files.
+Generate ALL files needed for a COMPLETE, WORKING NestJS application inside src/ directory.
 Every file must have FULL implementation - no placeholders or TODOs.
 Make it production-ready and runnable."""
 
@@ -149,8 +203,13 @@ Make it production-ready and runnable."""
         raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
 
 
-def save_files(files: Dict[str, Any], output_dir: str) -> None:
-    """Save generated files to directory."""
+def save_files(files: dict[str, Any], output_dir: str) -> None:
+    """Save generated files to directory.
+
+    Args:
+        files (dict[str, Any]): Dictionary of file paths to content.
+        output_dir (str): Base directory to save files in.
+    """
     output_path = Path(output_dir)
 
     output_path.mkdir(parents=True, exist_ok=True)
@@ -165,6 +224,14 @@ def save_files(files: Dict[str, Any], output_dir: str) -> None:
 
             if isinstance(content, (dict, list)):
                 content = json.dumps(content, indent=2)
+            
+            if isinstance(content, str) and "\\n" in content:
+                if content.count("\\n") > content.count("\n") * 2:
+                    logger.warn(f"Detected literal escape sequences in {file_path}, fixing...")
+                    content = content.replace("\\n", "\n")
+                    content = content.replace("\\t", "\t")
+                    content = content.replace('\\"', '"')
+                    content = content.replace("\\\\", "\\")
 
             full_path.write_text(content, encoding="utf-8")
             logger.success(f"Saved {file_path}")

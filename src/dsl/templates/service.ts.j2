@@ -6,24 +6,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, FindOptionsWhere, FindManyOptions } from 'typeorm';
 import { Create{{ module | capitalize }}Dto } from './dto/create-{{ module | lower }}.dto';
 import { Update{{ module | capitalize }}Dto } from './dto/update-{{ module | lower }}.dto';
+{%- if entity %}
 import { {{ module | capitalize }} } from './entities/{{ module | lower }}.entity';
+{%- endif %}
 
-{%- if entity.search %}
+{%- if entity and entity.get_params %}
 
 interface SearchParams {
   search?: string;
-{%- if entity.search.filters %}
+{%- if entity.get_params.filters %}
   filters?: {
-{%- for filter in entity.search.filters %}
+{%- for filter in entity.get_params.filters %}
     {{ filter }}?: string;
 {%- endfor %}
   };
 {%- endif %}
-{%- if entity.search.sort %}
+{%- if entity.get_params.sort %}
   sortBy?: string;
   sortOrder?: 'ASC' | 'DESC';
 {%- endif %}
-{%- if entity.search.pagination %}
+{%- if entity.get_params.pagination %}
   page?: number;
   limit?: number;
 {%- endif %}
@@ -43,7 +45,7 @@ export class {{ module | capitalize }}Service {
     return this.{{ module | lower }}Repository.save({{ module | lower }});
   }
 
-  {%- if entity.search %}
+  {%- if entity and entity.get_params %}
 
   async findAll(params?: SearchParams): Promise<{{ module | capitalize }}[] | { data: {{ module | capitalize }}[]; total: number; page: number; limit: number }> {
     const where: FindOptionsWhere<{{ module | capitalize }}> = {};
@@ -52,8 +54,8 @@ export class {{ module | capitalize }}Service {
     // Handle search across multiple fields
     if (params?.search) {
       const searchConditions: FindOptionsWhere<{{ module | capitalize }}>[] = [];
-{%- if entity.search.fields %}
-{%- for field in entity.search.fields %}
+{%- if entity.get_params.fields %}
+{%- for field in entity.get_params.fields %}
       searchConditions.push({ {{ field }}: Like(`%${params.search}%`) } as FindOptionsWhere<{{ module | capitalize }}>);
 {%- endfor %}
 {%- endif %}
@@ -62,10 +64,10 @@ export class {{ module | capitalize }}Service {
       options.where = where;
     }
 
-{%- if entity.search.filters %}
+{%- if entity.get_params.filters %}
     // Handle filters
     if (params?.filters) {
-{%- for filter in entity.search.filters %}
+{%- for filter in entity.get_params.filters %}
       if (params.filters.{{ filter }}) {
         if (!options.where || Array.isArray(options.where)) {
           options.where = {};
@@ -76,12 +78,12 @@ export class {{ module | capitalize }}Service {
     }
 {%- endif %}
 
-{%- if entity.search.sort %}
+{%- if entity.get_params.sort %}
     // Handle sorting
     if (params?.sortBy) {
       const sortOrder = params.sortOrder || 'ASC';
-{%- if entity.search.sort %}
-      const allowedSortFields = [{{ entity.search.sort | map('tojson') | join(', ') }}];
+{%- if entity.get_params.sort %}
+      const allowedSortFields = [{{ entity.get_params.sort | map('tojson') | join(', ') }}];
       if (allowedSortFields.includes(params.sortBy)) {
         options.order = { [params.sortBy]: sortOrder } as any;
       }
@@ -89,7 +91,7 @@ export class {{ module | capitalize }}Service {
     }
 {%- endif %}
 
-{%- if entity.search.pagination %}
+{%- if entity.get_params.pagination %}
     // Handle pagination
     if (params?.page && params?.limit) {
       const page = params.page > 0 ? params.page : 1;

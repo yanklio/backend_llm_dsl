@@ -17,20 +17,22 @@ from src.llm.raw_generate import natural_language_to_code, save_files
 from src.llm.dsl_generate import natural_language_to_yaml
 from src.validators import validate_runtime, validate_syntactic
 from src.llm.wrapper import GenerationResult
+from src.shared.utils import try_parse_json
 
-# Suppress stdout/stderr for quieter execution
+# Suppress stdout/stderr for quieter execution but capture to debug file
 class SuppressOutput:
     def __enter__(self):
         self._original_stdout = sys.stdout
         self._original_stderr = sys.stderr
-        sys.stdout = open("/dev/null", "w")
-        sys.stderr = open("/dev/null", "w")
+        self._log_file = open("experiments_debug.log", "a")
+        sys.stdout = self._log_file
+        sys.stderr = self._log_file
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stderr.close()
         sys.stdout = self._original_stdout
         sys.stderr = self._original_stderr
+        if self._log_file:
+            self._log_file.close()
 
 def load_test_cases() -> Dict[str, Any]:
     test_cases_path = Path(__file__).parent / "test_cases.yaml"
@@ -38,20 +40,12 @@ def load_test_cases() -> Dict[str, Any]:
         return yaml.safe_load(f)
 
 def clean_project(project_path: Path):
-    """Clean src but keep node_modules if possible"""
-    src_path = project_path / "src"
-    if src_path.exists():
-        subprocess.run(["rm", "-rf", str(src_path)], check=True)
-    
-    # Also clean other files that might be generated in root
-    for file in project_path.glob("*.ts"):
-        file.unlink()
-    for file in project_path.glob("*.json"):
-        if file.name not in ["package-lock.json", "package.json", "tsconfig.json", "node_modules"]:
-            print(f"Deleting {file.name}")
-            file.unlink()
-        else:
-            print(f"Skipping {file.name}")
+    """Clean project directories between test runs"""
+    dirs_to_clean = ["src", "dist", "data"]
+    for dir_name in dirs_to_clean:
+        dir_path = project_path / dir_name
+        if dir_path.exists():
+            subprocess.run(["rm", "-rf", str(dir_path)], check=True)
 
 def save_results(results: List[Dict[str, Any]]):
     output_file = Path(__file__).parent / "test_results.json"
@@ -119,7 +113,7 @@ def run_raw_approach(test_case_name: str, test_case_data: Dict[str, Any], projec
         with SuppressOutput():
             # Pass model=None to use default or env var
             result: GenerationResult = natural_language_to_code(test_case_data["requirement"], str(project_path))
-            files = json.loads(result.content)
+            files = try_parse_json(result.content)
             save_files(files, str(project_path))
             
         metrics["llm_time"] = result.duration_seconds

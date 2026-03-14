@@ -1,3 +1,9 @@
+[project]
+name = "nestjs-dsl-generator"
+version = "0.1.0"
+description = "AI-powered NestJS application generator using DSL"
+requires-python = ">=3.9"
+
 [tool.ruff]
 line-length = 88
 target-version = "py39"

@@ -1,6 +1,5 @@
 
 import os
-from typing import List
 
 from langchain_core.messages import BaseMessage
 from langchain_openai import ChatOpenAI
@@ -15,7 +14,7 @@ class OpenRouterProvider(BaseProvider):
             raise ValueError("OPENROUTER_API_KEY not found")
             
         self.llm = ChatOpenAI(
-            model="google/gemini-2.0-flash-exp:free",
+            model="google/gemini-2.0-flash:free",
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
             temperature=temperature,
@@ -29,5 +28,5 @@ class OpenRouterProvider(BaseProvider):
     def name(self) -> str:
         return "OpenRouter (Gemini Free)"
 
-    def generate(self, messages: List[BaseMessage]) -> GenerationResult:
+    def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         return self._track_generation(self.llm.invoke, messages)

@@ -17,7 +17,7 @@ export class {{ module | capitalize }}Controller {
 
   @Get()
    findAll(
-{%- if entity.get_params %}
+{%- if entity and entity.get_params %}
     @Query('search') search?: string,
 {%- if entity.get_params.filters %}
 {%- for filter in entity.get_params.filters %}
@@ -34,7 +34,7 @@ export class {{ module | capitalize }}Controller {
 {%- endif %}
 {%- endif %}
   ) {
-{%- if entity.get_params %}
+{%- if entity and entity.get_params %}
     return this.{{ module | lower }}Service.findAll({
       search,
 {%- if entity.get_params.filters %}

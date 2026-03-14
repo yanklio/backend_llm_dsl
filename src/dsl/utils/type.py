@@ -13,6 +13,8 @@ def to_ts_type(py_type: str) -> str:
         return "number"
     if py_type == "boolean":
         return "boolean"
+    if py_type == "date":
+        return "Date"
     if py_type == "enum":
         return "string"
     return "any"

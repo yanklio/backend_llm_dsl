@@ -1,6 +1,5 @@
 
 import requests
-from typing import List
 
 from langchain_core.messages import BaseMessage
 from langchain_ollama import ChatOllama
@@ -30,5 +29,5 @@ class OllamaProvider(BaseProvider):
     def name(self) -> str:
         return "Ollama (Local)"
 
-    def generate(self, messages: List[BaseMessage]) -> GenerationResult:
+    def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         return self._track_generation(self.llm.invoke, messages)
