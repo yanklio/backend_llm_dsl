@@ -5,6 +5,8 @@ from typing import Any, List, Tuple
 
 from jinja2 import Environment
 
+from src.shared.logs.logger import logger
+
 
 def _prepare_template_data(
     root_config: dict[str, Any], modules_data: list[dict[str, Any]]

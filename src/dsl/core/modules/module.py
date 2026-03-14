@@ -5,6 +5,8 @@ from typing import Any
 
 from jinja2 import Environment
 
+from src.shared.logs.logger import logger
+
 
 def handle_dto_file(
     template_data: dict[str, Any], dto_dir: Path, env: Environment
