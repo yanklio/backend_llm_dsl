@@ -3,7 +3,7 @@
 import sys
 import time
 from pathlib import Path
-from typing import Any, dict
+from typing import Any
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
@@ -26,16 +26,16 @@ def check_base_npm(project_path: Path) -> dict[str, Any]:
     Returns:
         Dict[str, Any]: Dictionary with success status and errors.
     """
-    errors = []
+    errors = {}
     install = _run_npm_install(project_path)
     if "error" in install:
-        errors.extend(install["error"])
+        errors["install"] = install["error"]
     build = _run_npm_build(project_path)
     if "error" in build:
-        errors.extend(build["error"])
+        errors["build"] = build["error"]
     start = _run_npm_start(project_path)
     if "error" in start:
-        errors.extend(start["error"])
+        errors["start"] = start["error"]
     return {
         "install_success": install["success"],
         "build_success": build["success"],
