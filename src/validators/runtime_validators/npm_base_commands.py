@@ -1,12 +1,9 @@
 """NPM base command validators."""
 
-import sys
 import time
 from pathlib import Path
 from typing import Any
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 from src.shared import logger
 from src.validators.shared.command import (
     check_process_running,

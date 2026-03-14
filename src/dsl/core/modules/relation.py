@@ -1,13 +1,10 @@
 """Relation handling logic for the DSL engine."""
 
-import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
 from jinja2 import Environment
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 from src.shared.logs.logger import logger
 
 

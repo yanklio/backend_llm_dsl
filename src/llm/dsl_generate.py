@@ -6,9 +6,6 @@ from pathlib import Path
 from langchain_core.messages import HumanMessage, SystemMessage
 from dotenv import load_dotenv
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
 from src.shared import logger
 from src.shared.utils import clean_llm_response
 from src.llm.wrapper import LLMClient, GenerationResult

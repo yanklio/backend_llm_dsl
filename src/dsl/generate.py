@@ -1,16 +1,11 @@
 """Module to generate NestJS code from a YAML blueprint."""
 
 import argparse
-import sys
 from pathlib import Path
 from typing import Optional
 
 import yaml
 from jinja2 import Environment, FileSystemLoader
-
-# Add parent directory to path for shared imports
-# TODO: Refactor this to use proper package installation
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.shared.logs.logger import logger
 
