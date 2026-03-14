@@ -17,6 +17,7 @@ from src.llm.raw_generate import natural_language_to_code, save_files
 from src.llm.dsl_generate import natural_language_to_yaml
 from src.validators import validate_runtime, validate_syntactic
 from src.llm.wrapper import GenerationResult
+from src.shared.utils import try_parse_json
 
 # Suppress stdout/stderr for quieter execution
 class SuppressOutput:
@@ -109,7 +110,7 @@ def run_raw_approach(test_case_name: str, test_case_data: Dict[str, Any], projec
         with SuppressOutput():
             # Pass model=None to use default or env var
             result: GenerationResult = natural_language_to_code(test_case_data["requirement"], str(project_path))
-            files = json.loads(result.content)
+            files = try_parse_json(result.content)
             save_files(files, str(project_path))
             
         metrics["llm_time"] = result.duration_seconds
