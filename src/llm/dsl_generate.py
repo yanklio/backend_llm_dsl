@@ -27,14 +27,34 @@ def natural_language_to_yaml(description: str, primary_model: str | None = None)
     system_prompt = """You are a YAML blueprint generator for NestJS applications.
 Don't forget about relations if needed. Don't create `id`, `createdAt` or `updatedAt` fields at all (already included).
 
-🚨 CRITICAL NAMING RULE:
-- Module names MUST be singular entity names WITHOUT any suffix
-- ✓ CORRECT: "User", "Post", "Product", "Category", "Order"
-- ✗ WRONG: "UserModule", "PostModule", "ProductModule", "Users", "user"
-- The name field should be the entity name in PascalCase (e.g., "User" not "UserModule")
-- DO NOT add "Module", "Service", "Controller" or any other suffix to the module name
+🚨 CRITICAL STRUCTURE RULES:
+1. ONE MODULE PER ENTITY - Each module represents ONE database entity
+2. NEVER create separate modules for services, controllers, or repositories (e.g., NO "UserService", "UserController", "UserRepository")
+3. ALWAYS include the entity definition with fields - never set entity to null
+4. Module name should be the entity name in PascalCase (e.g., "User", "Post", "Product")
 
-Generate ONLY valid YAML (no other text, no markdown) following this exact structure (this is only an example, adapt it based on prompt needs):
+CORRECT structure (one module per entity):
+```yaml
+modules:
+  - name: User
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: email
+          type: string
+          required: true
+```
+
+WRONG (DO NOT DO THIS):
+```yaml
+- name: UserService    # WRONG - don't add Service suffix
+  generate: [service]
+  entity: null         # WRONG - always include entity
+- name: UserController # WRONG - don't create separate controller module
+  generate: [controller]
+```
+
+Generate ONLY valid YAML (no other text, no markdown) following this exact structure:
 
 root:
   name: PetAdministration
@@ -79,7 +99,7 @@ modules:
           required: false
       relations:
         - type: ManyToOne
-          model: Owner    
+          model: Owner
           field: owner
           description: The owner of this pet
 
