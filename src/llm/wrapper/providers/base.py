@@ -1,7 +1,7 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import Optional, Any
 import time
 
 from langchain_core.messages import BaseMessage
@@ -35,14 +35,14 @@ class BaseProvider(ABC):
         pass
 
     @abstractmethod
-    def generate(self, messages: List[BaseMessage]) -> GenerationResult:
+    def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """
         Generate content from messages.
         Must return GenerationResult with statistics.
         """
         pass
 
-    def _track_generation(self, llm_invoke_func, messages: List[BaseMessage]) -> GenerationResult:
+    def _track_generation(self, llm_invoke_func, messages: list[BaseMessage]) -> GenerationResult:
         """
         Helper to measure time and capture standard LangChain usage metadata.
         Most providers can use this if they implement standard LangChain invoke.

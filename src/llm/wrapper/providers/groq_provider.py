@@ -1,12 +1,12 @@
 
 import os
-from typing import List
 
 from langchain_core.messages import BaseMessage
 from langchain_groq import ChatGroq
 
 from src.shared import logger
 from .base import BaseProvider, GenerationResult
+
 
 class GroqProvider(BaseProvider):
     def __init__(self, temperature: float = 0.1):
@@ -29,5 +29,5 @@ class GroqProvider(BaseProvider):
     def name(self) -> str:
         return "Groq (Llama 3.1 8B Instant)"
 
-    def generate(self, messages: List[BaseMessage]) -> GenerationResult:
+    def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         return self._track_generation(self.llm.invoke, messages)

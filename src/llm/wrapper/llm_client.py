@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from dotenv import load_dotenv
 from langchain_core.messages import BaseMessage
@@ -22,7 +22,7 @@ class LLMClient:
 
     def __init__(self, temperature: float = 0.1):
         self.temperature = temperature
-        self.providers: List[BaseProvider] = []
+        self.providers: list[BaseProvider] = []
         self._setup_providers()
 
     def _setup_providers(self):
@@ -64,7 +64,7 @@ class LLMClient:
             logger.info("Or install Ollama locally")
 
     def generate(
-        self, messages: List[BaseMessage], primary_provider_id: Optional[str] = None
+        self, messages: list[BaseMessage], primary_provider_id: Optional[str] = None
     ) -> GenerationResult:
         """Generate content using available providers.
 
