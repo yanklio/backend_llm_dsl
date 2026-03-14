@@ -1,24 +1,22 @@
 """Root module generation logic for the DSL engine."""
 
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, List, Tuple
 
 from jinja2 import Environment
 
-from src.shared.logs.logger import logger
-
 
 def _prepare_template_data(
-    root_config: Dict[str, Any], modules_data: List[Dict[str, Any]]
-) -> Dict[str, Any]:
+    root_config: dict[str, Any], modules_data: list[dict[str, Any]]
+) -> dict[str, Any]:
     """Prepare template data for rendering.
 
     Args:
-        root_config (Dict[str, Any]): Root configuration dictionary.
-        modules_data (List[Dict[str, Any]]): List of module data.
+        root_config (dict[str, Any]): Root configuration dictionary.
+        modules_data (list[dict[str, Any]]): List of module data.
 
     Returns:
-        Dict[str, Any]: Consolidated template data.
+        dict[str, Any]: Consolidated template data.
     """
     return {
         "root": root_config,
@@ -27,14 +25,14 @@ def _prepare_template_data(
     }
 
 
-def _get_files_to_generate(root_config: Dict[str, Any]) -> List[Tuple[str, str]]:
+def _get_files_to_generate(root_config: dict[str, Any]) -> list[tuple[str, str]]:
     """Get list of files to generate based on configuration.
 
     Args:
-        root_config (Dict[str, Any]): Root configuration dictionary.
+        root_config (dict[str, Any]): Root configuration dictionary.
 
     Returns:
-        List[Tuple[str, str]]: List of (template_path, output_filename) tuples.
+        list[tuple[str, str]]: List of (template_path, output_filename) tuples.
     """
     files_to_generate = [
         ("root/app.module.ts.j2", "app.module.ts"),
@@ -53,7 +51,7 @@ def _generate_file(
     env: Environment,
     template_name: str,
     output_filename: str,
-    template_data: Dict[str, Any],
+    template_data: dict[str, Any],
     src_dir: Path,
 ) -> None:
     """Generate a single file from template.
@@ -62,7 +60,7 @@ def _generate_file(
         env (Environment): Jinja2 environment.
         template_name (str): Name of the template to render.
         output_filename (str): Name of the output file.
-        template_data (Dict[str, Any]): Data to pass to template.
+        template_data (dict[str, Any]): Data to pass to template.
         src_dir (Path): Output directory.
     """
     try:
@@ -76,16 +74,16 @@ def _generate_file(
 
 
 def generate_root_module(
-    root_config: Dict[str, Any],
-    modules_data: List[Dict[str, Any]],
+    root_config: dict[str, Any],
+    modules_data: list[dict[str, Any]],
     env: Environment,
     output_dir: Path,
 ) -> None:
     """Generate root module files (app.module.ts, main.ts, etc.).
 
     Args:
-        root_config (Dict[str, Any]): Root configuration dictionary.
-        modules_data (List[Dict[str, Any]]): List of module data.
+        root_config (dict[str, Any]): Root configuration dictionary.
+        modules_data (list[dict[str, Any]]): List of module data.
         env (Environment): Jinja2 environment.
         output_dir (Path): Base output directory.
     """

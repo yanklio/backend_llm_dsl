@@ -4,7 +4,7 @@ import json
 import sys
 import traceback
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -187,7 +187,7 @@ Make it production-ready and runnable."""
         raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
 
 
-def save_files(files: Dict[str, Any], output_dir: str) -> None:
+def save_files(files: dict[str, Any], output_dir: str) -> None:
     """Save generated files to directory."""
     output_path = Path(output_dir)
 

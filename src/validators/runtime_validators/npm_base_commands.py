@@ -21,7 +21,7 @@ def check_base_npm(project_path: Path) -> dict[str, Any]:
         project_path (Path): Path to the NestJS project.
 
     Returns:
-        Dict[str, Any]: Dictionary with success status and errors.
+        dict[str, Any]: Dictionary with success status and errors.
     """
     errors = {}
     install = _run_npm_install(project_path)
@@ -48,7 +48,7 @@ def _run_npm_install(project_path: Path) -> dict[str, Any]:
         project_path (Path): Path to the NestJS project.
 
     Returns:
-        Dict[str, Any]: Dictionary with success status and optional error.
+        dict[str, Any]: Dictionary with success status and optional error.
     """
     logger.debug("Running npm install...")
     result = run_command(["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000)
@@ -81,7 +81,7 @@ def _run_npm_build(project_path: Path) -> dict[str, Any]:
         project_path (Path): Path to the NestJS project.
 
     Returns:
-        Dict[str, Any]: Dictionary with success status and optional error.
+        dict[str, Any]: Dictionary with success status and optional error.
     """
     logger.debug("Running npm run build...")
     result = run_command(["npm", "run", "build"], cwd=project_path, timeout=120)
