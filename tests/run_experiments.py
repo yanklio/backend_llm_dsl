@@ -19,19 +19,20 @@ from src.validators import validate_runtime, validate_syntactic
 from src.llm.wrapper import GenerationResult
 from src.shared.utils import try_parse_json
 
-# Suppress stdout/stderr for quieter execution
+# Suppress stdout/stderr for quieter execution but capture to debug file
 class SuppressOutput:
     def __enter__(self):
         self._original_stdout = sys.stdout
         self._original_stderr = sys.stderr
-        sys.stdout = open("/dev/null", "w")
-        sys.stderr = open("/dev/null", "w")
+        self._log_file = open("experiments_debug.log", "a")
+        sys.stdout = self._log_file
+        sys.stderr = self._log_file
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        sys.stdout.close()
-        sys.stderr.close()
         sys.stdout = self._original_stdout
         sys.stderr = self._original_stderr
+        if self._log_file:
+            self._log_file.close()
 
 def load_test_cases() -> Dict[str, Any]:
     test_cases_path = Path(__file__).parent / "test_cases.yaml"
