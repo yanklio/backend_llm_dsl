@@ -6,6 +6,8 @@ import time
 
 from langchain_core.messages import BaseMessage
 
+from src.shared.utils import clean_llm_response
+
 @dataclass
 class GenerationResult:
     content: str
@@ -53,15 +55,8 @@ class BaseProvider(ABC):
         
         content = str(response.content)
         
-        # Clean markdown
-        if "```yaml" in content:
-            content = content.split("```yaml")[1].split("```")[0].strip()
-        elif "```json" in content:
-            content = content.split("```json")[1].split("```")[0].strip()
-        elif "```" in content:
-            content = content.split("```")[1].split("```")[0].strip()
-            
-        content = content.strip()
+        # Clean markdown using shared utility
+        content = clean_llm_response(content)
 
         # Extract Usage Metadata
         usage = {}
