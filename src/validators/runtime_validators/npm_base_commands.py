@@ -3,7 +3,7 @@
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, dict
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
@@ -17,7 +17,7 @@ from src.validators.shared.command import (
 from src.validators.shared.error_types import ErrorCodes, create_error
 
 
-def check_base_npm(project_path: Path) -> Dict[str, Any]:
+def check_base_npm(project_path: Path) -> dict[str, Any]:
     """Check all base npm commands.
 
     Args:
@@ -44,7 +44,7 @@ def check_base_npm(project_path: Path) -> Dict[str, Any]:
     }
 
 
-def _run_npm_install(project_path: Path) -> Dict[str, Any]:
+def _run_npm_install(project_path: Path) -> dict[str, Any]:
     """Install npm dependencies.
 
     Args:
@@ -54,9 +54,7 @@ def _run_npm_install(project_path: Path) -> Dict[str, Any]:
         Dict[str, Any]: Dictionary with success status and optional error.
     """
     logger.debug("Running npm install...")
-    result = run_command(
-        ["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000
-    )
+    result = run_command(["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000)
 
     if not result.success:
         error_message = result.stderr[:200] if result.stderr else "npm install failed"
@@ -79,7 +77,7 @@ def _run_npm_install(project_path: Path) -> Dict[str, Any]:
     return {"success": True}
 
 
-def _run_npm_build(project_path: Path) -> Dict[str, Any]:
+def _run_npm_build(project_path: Path) -> dict[str, Any]:
     """Build the NestJS project.
 
     Args:
@@ -110,7 +108,7 @@ def _run_npm_build(project_path: Path) -> Dict[str, Any]:
 
 def _run_npm_start(
     project_path: Path, wait_time: int = 10, terminate: bool = True, port: int = 3000
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Start the application and verify it runs.
 
     Args:
@@ -154,7 +152,5 @@ def _run_npm_start(
         logger.error(f"Start error: {str(e)}")
         return {
             "success": False,
-            "error": create_error(
-                "start", f"Start error: {str(e)}", ErrorCodes.START_ERROR
-            ),
+            "error": create_error("start", f"Start error: {str(e)}", ErrorCodes.START_ERROR),
         }
