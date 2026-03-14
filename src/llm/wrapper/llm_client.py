@@ -21,11 +21,16 @@ class LLMClient:
     """Manages multiple LLM providers with fallback support."""
 
     def __init__(self, temperature: float = 0.1):
+        """Initialize the LLM client.
+
+        Args:
+            temperature (float): Temperature setting for LLM generation.
+        """
         self.temperature = temperature
         self.providers: list[BaseProvider] = []
         self._setup_providers()
 
-    def _setup_providers(self):
+    def _setup_providers(self) -> None:
         """Setup providers based on availability and configure them."""
         # 1. Groq
         try:
@@ -71,6 +76,9 @@ class LLMClient:
         Args:
             messages: List of conversation messages.
             primary_provider_id: ID of the provider to try first (groq, openrouter, gemini, ollama).
+
+        Returns:
+            GenerationResult: The generated content and metadata.
         """
         if not self.providers:
             raise Exception("No LLM providers available")

@@ -16,7 +16,14 @@ from src.llm.wrapper import LLMClient, GenerationResult
 load_dotenv()
 
 def read_project_context(project_dir: str) -> str:
-    """Read existing project files for context."""
+    """Read existing project files for context.
+
+    Args:
+        project_dir (str): Path to the project directory.
+
+    Returns:
+        str: Concatenated content of all TypeScript files in the project.
+    """
     project_path = Path(project_dir)
 
     if not project_path.exists():
@@ -37,9 +44,18 @@ def read_project_context(project_dir: str) -> str:
 
 
 def natural_language_to_code(
-    description: str, project_dir: str = "./nest_project", primary_model: str = None
+    description: str, project_dir: str = "./nest_project", primary_model: str | None = None
 ) -> GenerationResult:
-    """Generate code from simple description - vibe coder style."""
+    """Generate code from simple description - vibe coder style.
+
+    Args:
+        description (str): Plain English description of the desired application.
+        project_dir (str): Directory path where the project files should be generated.
+        primary_model (str | None): Provider ID to try first.
+
+    Returns:
+        GenerationResult: The generated code content and metadata.
+    """
 
     existing_context = read_project_context(project_dir)
     client = LLMClient(temperature=0.2)
@@ -188,7 +204,12 @@ Make it production-ready and runnable."""
 
 
 def save_files(files: dict[str, Any], output_dir: str) -> None:
-    """Save generated files to directory."""
+    """Save generated files to directory.
+
+    Args:
+        files (dict[str, Any]): Dictionary of file paths to content.
+        output_dir (str): Base directory to save files in.
+    """
     output_path = Path(output_dir)
 
     output_path.mkdir(parents=True, exist_ok=True)

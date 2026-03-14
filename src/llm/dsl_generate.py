@@ -12,9 +12,16 @@ from src.llm.wrapper import LLMClient, GenerationResult
 
 load_dotenv()
 
-def natural_language_to_yaml(description: str, primary_model: str = None) -> GenerationResult:
-    """Convert natural language to YAML blueprint using LLM."""
-    
+def natural_language_to_yaml(description: str, primary_model: str | None = None) -> GenerationResult:
+    """Convert natural language to YAML blueprint using LLM.
+
+    Args:
+        description (str): Plain English description of the desired NestJS application.
+        primary_model (str | None): Provider ID to try first (groq, openrouter, gemini, ollama).
+
+    Returns:
+        GenerationResult: The generated YAML content and metadata.
+    """
     client = LLMClient(temperature=0.1)
 
     system_prompt = """You are a YAML blueprint generator for NestJS applications.
@@ -88,14 +95,20 @@ Only respond with valid YAML. No explanations. No markdown code blocks. Just raw
     return result
 
 
-def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml"):
-    """Save the generated YAML blueprint to a file."""
+def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml") -> None:
+    """Save the generated YAML blueprint to a file.
+
+    Args:
+        generated_yaml (str): The YAML content to save.
+        blueprint_file (str): Path to save the blueprint file.
+    """
     with open(blueprint_file, "w") as f:
         f.write(generated_yaml)
     logger.success(f"Blueprint saved to {blueprint_file}")
 
 
-def main():
+def main() -> None:
+    """Main entry point for CLI."""
     parser = argparse.ArgumentParser(
         description="Generate NestJS application blueprint (DSL) from natural language"
     )
