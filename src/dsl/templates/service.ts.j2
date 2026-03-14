@@ -6,9 +6,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, FindOptionsWhere, FindManyOptions } from 'typeorm';
 import { Create{{ module | capitalize }}Dto } from './dto/create-{{ module | lower }}.dto';
 import { Update{{ module | capitalize }}Dto } from './dto/update-{{ module | lower }}.dto';
+{%- if entity %}
 import { {{ module | capitalize }} } from './entities/{{ module | lower }}.entity';
+{%- endif %}
 
-{%- if entity.get_params %}
+{%- if entity and entity.get_params %}
 
 interface SearchParams {
   search?: string;
@@ -43,7 +45,7 @@ export class {{ module | capitalize }}Service {
     return this.{{ module | lower }}Repository.save({{ module | lower }});
   }
 
-  {%- if entity.get_params %}
+  {%- if entity and entity.get_params %}
 
   async findAll(params?: SearchParams): Promise<{{ module | capitalize }}[] | { data: {{ module | capitalize }}[]; total: number; page: number; limit: number }> {
     const where: FindOptionsWhere<{{ module | capitalize }}> = {};
