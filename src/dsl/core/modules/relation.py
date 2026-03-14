@@ -5,6 +5,8 @@ from typing import Any
 
 from jinja2 import Environment
 
+from src.shared.logs.logger import logger
+
 
 def handle_relations(
     modules_data: list[dict[str, Any]], env: Environment, base_output_dir: Path
