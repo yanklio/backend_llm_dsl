@@ -88,6 +88,7 @@ def generate_module(
         "module": module_name,
         "entity": module_data.get("entity", {}),
         "authProtected": module_data.get("authProtected", False),
+        "relatedEntities": module_data.get("relatedEntities", []),
     }
 
     for file_key in files_to_generate:

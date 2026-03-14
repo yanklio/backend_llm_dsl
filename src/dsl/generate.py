@@ -77,6 +77,12 @@ def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
 
     src_dir = base_output_dir / "src"
     for module_data in modules_data:
+        module_name = module_data["name"]
+        related_entities = []
+        for (src, dest), rel_data in relations_map.items():
+            if src == module_name:
+                related_entities.append(rel_data["model"])
+        module_data["relatedEntities"] = related_entities
         generate_module(module_data, env, src_dir)
 
     logger.success(f"✓ Generation Complete! ({len(modules_data)} modules)")

@@ -64,6 +64,14 @@ export class {{ module | capitalize }} {
     {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: boolean;
+  {%- elif field.type == 'date' %}
+  @Column({
+    type: 'datetime',
+    {%- if not field.required %}
+    nullable: true,
+    {%- endif %}
+  })
+  {{ field.name }}{% if not field.required %}?{% endif %}: Date;
   {%- else %}
   @Column({
     {%- if not field.required %}

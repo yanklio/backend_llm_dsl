@@ -13,6 +13,7 @@ import {
   Min,
   Max,
   IsEnum,
+  IsDateString,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -75,6 +76,18 @@ export class Create{{ module | capitalize }}Dto {
     required: false,
     {%- endif %}
   })
+  {%- elif field.type == 'date' %}
+  @ApiProperty({
+    description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
+    type: 'string',
+    format: 'date-time',
+    {%- if field.example is defined %}
+    example: '{{ field.example }}',
+    {%- endif %}
+    {%- if not field.required %}
+    required: false,
+    {%- endif %}
+  })
   {%- else %}
   @ApiProperty({
     description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
@@ -111,6 +124,8 @@ export class Create{{ module | capitalize }}Dto {
   @IsNumber()
   {%- elif field.type == 'boolean' %}
   @IsBoolean()
+  {%- elif field.type == 'date' %}
+  @IsDateString()
   {%- endif %}
   {%- if field.required %}
   @IsNotEmpty()
