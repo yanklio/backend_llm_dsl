@@ -13,6 +13,7 @@ venv/
 env/
 .venv/
 __pycache__/
+*.egg-info/
 
 # secrets
 .env

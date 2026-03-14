@@ -6,9 +6,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { {{ module | capitalize }}Controller } from './{{ module | lower }}.controller';
 import { {{ module | capitalize }}Service } from './{{ module | lower }}.service';
 import { {{ module | capitalize }} } from './entities/{{ module | lower }}.entity';
+{% if relatedEntities %}
+{% for rel in relatedEntities %}
+import { {{ rel }} } from '../{{ rel | lower }}/entities/{{ rel | lower }}.entity';
+{% endfor %}
+{% endif %}
 
 @Module({
-  imports: [TypeOrmModule.forFeature([{{ module | capitalize }}])],
+  imports: [TypeOrmModule.forFeature([{{ module | capitalize }}{% if relatedEntities %}, {{ relatedEntities | join(', ') }}{% endif %}])],
   controllers: [{{ module | capitalize }}Controller],
   providers: [{{ module | capitalize }}Service],
   exports: [{{ module | capitalize }}Service],

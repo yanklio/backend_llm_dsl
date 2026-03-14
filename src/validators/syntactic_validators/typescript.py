@@ -1,20 +1,20 @@
 """TypeScript validator module."""
 
 from pathlib import Path
-from typing import List, Optional, Tuple, Dict, Any
+from typing import Optional, Any
 
 from src.validators.shared.command import run_command
 from src.validators.shared.error_types import ErrorCodes, ValidationError, create_error
 
 
-def check_typescript(project_path: Path) -> List[ValidationError]:
+def check_typescript(project_path: Path) -> list[ValidationError]:
     """Execute TypeScript compiler and return structured errors.
 
     Args:
         project_path (Path): Path to the NestJS project.
 
     Returns:
-        List[ValidationError]: List of validation errors.
+        list[ValidationError]: List of validation errors.
     """
     result = run_command(["npx", "tsc", "--noEmit"], cwd=project_path, timeout=60)
 
@@ -47,14 +47,14 @@ def check_typescript(project_path: Path) -> List[ValidationError]:
     return errors
 
 
-def _parse_file_location(file_loc_part: str) -> Optional[Tuple[str, str]]:
+def _parse_file_location(file_loc_part: str) -> Optional[tuple[str, str]]:
     """Parse file path and line/column coordinates from error line.
 
     Args:
         file_loc_part (str): Part of error line before "): error".
 
     Returns:
-        Optional[Tuple[str, str]]: Tuple of (file_path, line_col_string) or None if invalid format.
+        Optional[tuple[str, str]]: Tuple of (file_path, line_col_string) or None if invalid format.
     """
     file_loc = file_loc_part.split("(")
     if len(file_loc) != 2:
@@ -65,14 +65,14 @@ def _parse_file_location(file_loc_part: str) -> Optional[Tuple[str, str]]:
     return file_path, line_col
 
 
-def _parse_line_column(line_col: str) -> Tuple[int, int]:
+def _parse_line_column(line_col: str) -> tuple[int, int]:
     """Parse line and column numbers from coordinate string.
 
     Args:
         line_col (str): String like "12,5".
 
     Returns:
-        Tuple[int, int]: Tuple of (line_num, col_num), defaults to (0, 0) if parsing fails.
+        tuple[int, int]: Tuple of (line_num, col_num), defaults to (0, 0) if parsing fails.
     """
     line_num, col_num = 0, 0
     if "," in line_col:
@@ -85,14 +85,14 @@ def _parse_line_column(line_col: str) -> Tuple[int, int]:
     return line_num, col_num
 
 
-def _parse_error_code_and_message(error_part: str) -> Tuple[str, str]:
+def _parse_error_code_and_message(error_part: str) -> tuple[str, str]:
     """Extract error code and message from error part.
 
     Args:
         error_part (str): Part after "): error " like "TS2322: Type 'string'..."
 
     Returns:
-        Tuple[str, str]: Tuple of (code, message).
+        tuple[str, str]: Tuple of (code, message).
     """
     code = ""
     message = error_part

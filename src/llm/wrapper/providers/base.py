@@ -1,10 +1,12 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional, Any
+from typing import Optional, Any
 import time
 
 from langchain_core.messages import BaseMessage
+
+from src.shared.utils import clean_llm_response
 
 @dataclass
 class GenerationResult:
@@ -35,14 +37,14 @@ class BaseProvider(ABC):
         pass
 
     @abstractmethod
-    def generate(self, messages: List[BaseMessage]) -> GenerationResult:
+    def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """
         Generate content from messages.
         Must return GenerationResult with statistics.
         """
         pass
 
-    def _track_generation(self, llm_invoke_func, messages: List[BaseMessage]) -> GenerationResult:
+    def _track_generation(self, llm_invoke_func, messages: list[BaseMessage]) -> GenerationResult:
         """
         Helper to measure time and capture standard LangChain usage metadata.
         Most providers can use this if they implement standard LangChain invoke.
@@ -53,15 +55,8 @@ class BaseProvider(ABC):
         
         content = str(response.content)
         
-        # Clean markdown
-        if "```yaml" in content:
-            content = content.split("```yaml")[1].split("```")[0].strip()
-        elif "```json" in content:
-            content = content.split("```json")[1].split("```")[0].strip()
-        elif "```" in content:
-            content = content.split("```")[1].split("```")[0].strip()
-            
-        content = content.strip()
+        # Clean markdown using shared utility
+        content = clean_llm_response(content)
 
         # Extract Usage Metadata
         usage = {}

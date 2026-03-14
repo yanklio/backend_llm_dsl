@@ -1,16 +1,11 @@
 """Module to generate NestJS code from a YAML blueprint."""
 
 import argparse
-import sys
 from pathlib import Path
 from typing import Optional
 
 import yaml
 from jinja2 import Environment, FileSystemLoader
-
-# Add parent directory to path for shared imports
-# TODO: Refactor this to use proper package installation
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.shared.logs.logger import logger
 
@@ -64,11 +59,25 @@ def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
                         relation["inverseField"] = relations_map[relation_key][
                             "inverseField"
                         ]
+                    if "joinTable" in relations_map[relation_key]:
+                        relation["joinTable"] = relations_map[relation_key][
+                            "joinTable"
+                        ]
+                    if "joinColumn" in relations_map[relation_key]:
+                        relation["joinColumn"] = relations_map[relation_key][
+                            "joinColumn"
+                        ]
 
     generate_root_module(root_config, modules_data, env, base_output_dir)
 
     src_dir = base_output_dir / "src"
     for module_data in modules_data:
+        module_name = module_data["name"]
+        related_entities = []
+        for (src, dest), rel_data in relations_map.items():
+            if src == module_name:
+                related_entities.append(rel_data["model"])
+        module_data["relatedEntities"] = related_entities
         generate_module(module_data, env, src_dir)
 
     logger.success(f"✓ Generation Complete! ({len(modules_data)} modules)")

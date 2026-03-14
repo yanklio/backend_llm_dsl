@@ -1,30 +1,28 @@
 """Relation handling logic for the DSL engine."""
 
-import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from jinja2 import Environment
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent.parent))
 from src.shared.logs.logger import logger
 
 
 def handle_relations(
-    modules_data: List[Dict[str, Any]], env: Environment, base_output_dir: Path
-) -> Dict[tuple, Dict[str, Any]]:
+    modules_data: list[dict[str, Any]], env: Environment, base_output_dir: Path
+) -> dict[tuple, dict[str, Any]]:
     """Process and validate entity relations.
 
     Args:
-        modules_data (List[Dict[str, Any]]): List of module configurations.
+        modules_data (list[dict[str, Any]]): List of module configurations.
         env (Environment): Jinja2 environment (unused here but matches signature).
         base_output_dir (Path): Base output directory (unused here).
 
     Returns:
-        Dict[tuple, Dict[str, Any]]: A map of valid relations keyed by (module, related_model).
+        dict[tuple, dict[str, Any]]: A map of valid relations keyed by (module, related_model).
     """
     relations_map = {}
+    module_order = [module_data["name"] for module_data in modules_data]
     for module_data in modules_data:
         module_name = module_data["name"]
         for relation in module_data.get("entity", {}).get("relations", []):
@@ -34,12 +32,26 @@ def handle_relations(
                 relation_field = relation["field"]
                 relation_on_delete = relation.get("onDelete", "CASCADE")
 
-                relations_map[(module_name, related_model)] = {
+                relation_data = {
                     "model": related_model,
                     "type": relation_type,
                     "field": relation_field,
                     "onDelete": relation_on_delete,
                 }
+
+                if relation_type == "ManyToMany":
+                    owning_index = module_order.index(module_name)
+                    related_index = module_order.index(related_model)
+                    if owning_index < related_index:
+                        relation_data["joinTable"] = True
+
+                if relation_type == "OneToOne":
+                    owning_index = module_order.index(module_name)
+                    related_index = module_order.index(related_model)
+                    if owning_index > related_index:
+                        relation_data["joinColumn"] = True
+
+                relations_map[(module_name, related_model)] = relation_data
 
             except KeyError:
                 logger.error(f"Invalid relation format: {relation}")

@@ -64,6 +64,14 @@ export class {{ module | capitalize }} {
     {%- endif %}
   })
   {{ field.name }}{% if not field.required %}?{% endif %}: boolean;
+  {%- elif field.type == 'date' %}
+  @Column({
+    type: 'datetime',
+    {%- if not field.required %}
+    nullable: true,
+    {%- endif %}
+  })
+  {{ field.name }}{% if not field.required %}?{% endif %}: Date;
   {%- else %}
   @Column({
     {%- if not field.required %}
@@ -91,7 +99,7 @@ export class {{ module | capitalize }} {
   {%- elif relation.type == 'OneToOne' %}
   @OneToOne(() => {{ relation.model }}{% if relation.inverseField %}, {{ relation.model | lower }} => {{ relation.model | lower }}.{{ relation.inverseField }}{% endif %}{% if relation.onDelete %}, { onDelete: '{{ relation.onDelete }}' }{% endif %})
   {%- if relation.joinColumn %}
-  @JoinColumn({ name: '{{ relation.joinColumn }}' })
+  @JoinColumn()
   {%- endif %}
   {{ relation.field }}{% if not relation.required %}?{% endif %}: {{ relation.model }};
   {%- elif relation.type == 'ManyToMany' %}

@@ -29,14 +29,14 @@ def analyze():
         times = [e["generation"]["metrics"]["total_time"] for e in experiments]
         llm_times = [e["generation"]["metrics"].get("llm_time", 0) for e in experiments]
         dsl_times = [e["generation"]["metrics"].get("dsl_time", 0) for e in experiments]
-        
+
         in_tokens = [e["generation"]["metrics"]["input_tokens"] for e in experiments]
         out_tokens = [e["generation"]["metrics"]["output_tokens"] for e in experiments]
         total_tokens = [e["generation"]["metrics"]["total_tokens"] for e in experiments]
 
-        # Validation
-        passed = sum(1 for e in experiments if e["validation"].get("overall_valid"))
-        failed = sum(1 for e in experiments if not e["validation"].get("overall_valid") and e["generation"]["success"])
+        # Validation - handle cases where validation might be empty or None
+        passed = sum(1 for e in experiments if e.get("validation") and e["validation"].get("overall_valid"))
+        failed = sum(1 for e in experiments if e.get("validation") and not e["validation"].get("overall_valid") and e["generation"]["success"])
         errors = sum(1 for e in experiments if not e["generation"]["success"])
 
         print(f"Success Rate: {passed}/{len(experiments)} ({(passed/len(experiments))*100:.1f}%)")
@@ -56,7 +56,8 @@ def analyze():
             print(f"\nErrors encountered:")
             for e in experiments:
                 if not e["generation"]["success"]:
-                    print(f"  - {e['test_case']}: {e['generation'].get('error', 'Unknown')}")
+                    error_msg = e["generation"].get("error") or "Unknown error"
+                    print(f"  - {e['test_case']}: {error_msg}")
 
 if __name__ == "__main__":
     analyze()

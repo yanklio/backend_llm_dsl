@@ -22,12 +22,12 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$}
+          validation: {pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"}
         - name: password
           type: string
           required: true
           validation: {minLength: 8}
-    relations:
+      relations:
         - type: ManyToMany
           model: Role
           field: roles
@@ -57,7 +57,7 @@ modules:
           type: date
           required: true
           validation: {min: now}
-    relations:
+      relations:
         - type: OneToOne
           model: User
           field: user
