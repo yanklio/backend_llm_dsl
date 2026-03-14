@@ -8,7 +8,7 @@ import { {{ module | capitalize }}Service } from './{{ module | lower }}.service
 import { {{ module | capitalize }} } from './entities/{{ module | lower }}.entity';
 {% if relatedEntities %}
 {% for rel in relatedEntities %}
-import { {{ rel }} } from './entities/{{ rel | lower }}.entity';
+import { {{ rel }} } from '../{{ rel | lower }}/entities/{{ rel | lower }}.entity';
 {% endfor %}
 {% endif %}
 
