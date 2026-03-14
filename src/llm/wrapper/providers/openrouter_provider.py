@@ -15,7 +15,7 @@ class OpenRouterProvider(BaseProvider):
             raise ValueError("OPENROUTER_API_KEY not found")
             
         self.llm = ChatOpenAI(
-            model="google/gemini-2.0-flash-exp:free",
+            model="google/gemini-2.0-flash:free",
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
             temperature=temperature,
