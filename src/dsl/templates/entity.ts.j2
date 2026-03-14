@@ -91,7 +91,7 @@ export class {{ module | capitalize }} {
   {%- elif relation.type == 'OneToOne' %}
   @OneToOne(() => {{ relation.model }}{% if relation.inverseField %}, {{ relation.model | lower }} => {{ relation.model | lower }}.{{ relation.inverseField }}{% endif %}{% if relation.onDelete %}, { onDelete: '{{ relation.onDelete }}' }{% endif %})
   {%- if relation.joinColumn %}
-  @JoinColumn({ name: '{{ relation.joinColumn }}' })
+  @JoinColumn()
   {%- endif %}
   {{ relation.field }}{% if not relation.required %}?{% endif %}: {{ relation.model }};
   {%- elif relation.type == 'ManyToMany' %}

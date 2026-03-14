@@ -64,6 +64,14 @@ def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
                         relation["inverseField"] = relations_map[relation_key][
                             "inverseField"
                         ]
+                    if "joinTable" in relations_map[relation_key]:
+                        relation["joinTable"] = relations_map[relation_key][
+                            "joinTable"
+                        ]
+                    if "joinColumn" in relations_map[relation_key]:
+                        relation["joinColumn"] = relations_map[relation_key][
+                            "joinColumn"
+                        ]
 
     generate_root_module(root_config, modules_data, env, base_output_dir)
 

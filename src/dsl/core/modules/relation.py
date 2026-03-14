@@ -25,6 +25,7 @@ def handle_relations(
         Dict[tuple, Dict[str, Any]]: A map of valid relations keyed by (module, related_model).
     """
     relations_map = {}
+    module_order = [module_data["name"] for module_data in modules_data]
     for module_data in modules_data:
         module_name = module_data["name"]
         for relation in module_data.get("entity", {}).get("relations", []):
@@ -34,12 +35,26 @@ def handle_relations(
                 relation_field = relation["field"]
                 relation_on_delete = relation.get("onDelete", "CASCADE")
 
-                relations_map[(module_name, related_model)] = {
+                relation_data = {
                     "model": related_model,
                     "type": relation_type,
                     "field": relation_field,
                     "onDelete": relation_on_delete,
                 }
+
+                if relation_type == "ManyToMany":
+                    owning_index = module_order.index(module_name)
+                    related_index = module_order.index(related_model)
+                    if owning_index < related_index:
+                        relation_data["joinTable"] = True
+
+                if relation_type == "OneToOne":
+                    owning_index = module_order.index(module_name)
+                    related_index = module_order.index(related_model)
+                    if owning_index > related_index:
+                        relation_data["joinColumn"] = True
+
+                relations_map[(module_name, related_model)] = relation_data
 
             except KeyError:
                 logger.error(f"Invalid relation format: {relation}")
