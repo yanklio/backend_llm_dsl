@@ -66,23 +66,7 @@ class UnifiedLogger:
     def _format_message(cls, level: LogLevel, message: str) -> str:
         """Format a log message with symbol and level."""
         symbol = cls.SYMBOLS.get(level, "•")
-
-        if level == LogLevel.START:
-            return f"{symbol} {message}"
-        elif level == LogLevel.END:
-            return f"{symbol} {message}"
-        elif level == LogLevel.SUCCESS:
-            return f"{symbol} {message}"
-        elif level == LogLevel.ERROR:
-            return f"{symbol} {message}"
-        elif level == LogLevel.WARNING:
-            return f"{symbol} {message}"
-        elif level == LogLevel.INFO:
-            return f"{symbol} {message}"
-        elif level == LogLevel.DEBUG:
-            return f"{symbol} {message}"
-
-        return message
+        return f"{symbol} {message}"
 
     @classmethod
     def log(cls, level: LogLevel, message: str):
