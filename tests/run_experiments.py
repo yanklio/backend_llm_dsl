@@ -39,10 +39,12 @@ def load_test_cases() -> Dict[str, Any]:
         return yaml.safe_load(f)
 
 def clean_project(project_path: Path):
-    """Clean src but keep node_modules if possible"""
-    src_path = project_path / "src"
-    if src_path.exists():
-        subprocess.run(["rm", "-rf", str(src_path)], check=True)
+    """Clean project directories between test runs"""
+    dirs_to_clean = ["src", "dist", "data"]
+    for dir_name in dirs_to_clean:
+        dir_path = project_path / dir_name
+        if dir_path.exists():
+            subprocess.run(["rm", "-rf", str(dir_path)], check=True)
 
 def save_results(results: List[Dict[str, Any]]):
     output_file = Path(__file__).parent / "test_results.json"
