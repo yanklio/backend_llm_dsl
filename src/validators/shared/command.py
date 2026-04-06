@@ -1,9 +1,18 @@
+"""Command execution utilities for validators.
+
+Provides helpers for running subprocesses, managing ports, and handling
+process lifecycle during validation.
+"""
+
 import signal
 import socket
 import subprocess
 import time
 from pathlib import Path
 from typing import Optional, Tuple
+
+from src.shared.config import get_config
+from src.shared.exceptions import ValidationException, ValidationTimeoutException
 
 
 class SubprocessResult:
@@ -19,20 +28,26 @@ class SubprocessResult:
 
 
 def run_command(
-    command: list, cwd: Path, timeout: int = 60, capture_output: bool = True
+    command: list, cwd: Path, timeout: Optional[int] = None, capture_output: bool = True
 ) -> SubprocessResult:
-    """
-    Execute a command and return structured result.
+    """Execute a command and return structured result.
 
     Args:
         command: Command and arguments as list
         cwd: Working directory for command execution
-        timeout: Timeout in seconds
+        timeout: Timeout in seconds (uses config default if None)
         capture_output: Whether to capture stdout/stderr
 
     Returns:
         SubprocessResult with execution details
+
+    Raises:
+        ValidationTimeoutException: If command times out (wrapped in SubprocessResult)
     """
+    if timeout is None:
+        config = get_config()
+        timeout = config.validation.tsc_timeout
+
     try:
         result = subprocess.run(
             command, cwd=cwd, capture_output=capture_output, text=True, timeout=timeout
@@ -46,13 +61,18 @@ def run_command(
         )
 
     except subprocess.TimeoutExpired:
-        return SubprocessResult(success=False, stderr="Command timeout")
+        return SubprocessResult(
+            success=False,
+            stderr=f"Command timeout after {timeout}s"
+        )
     except FileNotFoundError:
         return SubprocessResult(
             success=False, stderr=f"Command not found: {command[0]}"
         )
+    except (OSError, subprocess.SubprocessError) as e:
+        return SubprocessResult(success=False, stderr=f"Subprocess error: {e}")
     except Exception as e:
-        return SubprocessResult(success=False, stderr=str(e))
+        return SubprocessResult(success=False, stderr=f"Unexpected error: {e}")
 
 
 def start_process(command: list, cwd: Path) -> subprocess.Popen:
@@ -176,17 +196,22 @@ def force_kill_port(port: int, max_attempts: int = 3) -> bool:
     return not is_port_in_use(port)
 
 
-def wait_for_port_free(port: int, timeout: int = 10) -> bool:
-    """
-    Wait for a port to become free.
+def wait_for_port_free(port: Optional[int] = None, timeout: Optional[int] = None) -> bool:
+    """Wait for a port to become free.
 
     Args:
-        port: Port number to wait for
-        timeout: Maximum seconds to wait
+        port: Port number to wait for (uses config default if None)
+        timeout: Maximum seconds to wait (uses config default if None)
 
     Returns:
         True if port is free, False if timeout
     """
+    config = get_config()
+    if port is None:
+        port = config.validation.app_port
+    if timeout is None:
+        timeout = config.validation.port_wait_time
+
     start_time = time.time()
 
     while time.time() - start_time < timeout:

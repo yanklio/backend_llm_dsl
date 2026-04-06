@@ -1,10 +1,13 @@
 """NPM base command validators."""
 
+import subprocess
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from src.shared import logger
+from src.shared.config import get_config
+from src.shared.exceptions import ValidationException
 from src.validators.shared.command import (
     check_process_running,
     run_command,
@@ -50,8 +53,13 @@ def _run_npm_install(project_path: Path) -> dict[str, Any]:
     Returns:
         dict[str, Any]: Dictionary with success status and optional error.
     """
+    config = get_config()
     logger.debug("Running npm install...")
-    result = run_command(["npm", "install", "--legacy-peer-deps"], cwd=project_path, timeout=1000)
+    result = run_command(
+        ["npm", "install", "--legacy-peer-deps"],
+        cwd=project_path,
+        timeout=config.validation.npm_install_timeout
+    )
 
     if not result.success:
         error_message = result.stderr[:200] if result.stderr else "npm install failed"
@@ -83,8 +91,13 @@ def _run_npm_build(project_path: Path) -> dict[str, Any]:
     Returns:
         dict[str, Any]: Dictionary with success status and optional error.
     """
+    config = get_config()
     logger.debug("Running npm run build...")
-    result = run_command(["npm", "run", "build"], cwd=project_path, timeout=120)
+    result = run_command(
+        ["npm", "run", "build"],
+        cwd=project_path,
+        timeout=config.validation.tsc_timeout
+    )
 
     if not result.success:
         error_message = result.stderr[:200] if result.stderr else "Build failed"
@@ -104,19 +117,28 @@ def _run_npm_build(project_path: Path) -> dict[str, Any]:
 
 
 def _run_npm_start(
-    project_path: Path, wait_time: int = 10, terminate: bool = True, port: int = 3000
+    project_path: Path,
+    wait_time: Optional[int] = None,
+    terminate: bool = True,
+    port: Optional[int] = None
 ) -> dict[str, Any]:
     """Start the application and verify it runs.
 
     Args:
         project_path (Path): Path to the NestJS project.
-        wait_time (int): Seconds to wait before checking if app crashed.
+        wait_time (int): Seconds to wait before checking if app crashed (uses config default if None).
         terminate (bool): Whether to terminate the process after verification.
-        port (int): Port number the application runs on.
+        port (int): Port number the application runs on (uses config default if None).
 
     Returns:
         Dict[str, Any]: Dictionary with success status, optional error, and process.
     """
+    config = get_config()
+    if wait_time is None:
+        wait_time = config.validation.port_wait_time
+    if port is None:
+        port = config.validation.app_port
+
     try:
         logger.debug(f"Starting application on port {port}...")
 
@@ -145,9 +167,15 @@ def _run_npm_start(
         else:
             return {"success": True, "process": process}
 
+    except (OSError, subprocess.SubprocessError) as e:
+        logger.error(f"Start error: {str(e)}")
+        return {
+            "success": False,
+            "error": create_error("start", f"Start subprocess error: {str(e)}", ErrorCodes.START_ERROR),
+        }
     except Exception as e:
         logger.error(f"Start error: {str(e)}")
         return {
             "success": False,
-            "error": create_error("start", f"Start error: {str(e)}", ErrorCodes.START_ERROR),
+            "error": create_error("start", f"Unexpected start error: {str(e)}", ErrorCodes.START_ERROR),
         }
