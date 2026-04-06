@@ -1,9 +1,28 @@
+"""Utility functions for cleaning and parsing LLM responses.
+
+Provides functions for cleaning markdown from LLM responses and parsing
+potentially malformed JSON with repair attempts.
+"""
+
 import re
+from typing import Any
 
 
 def clean_llm_response(content: str) -> str:
     """Clean LLM response by removing markdown code blocks.
-    Supports json, yaml, and generic code blocks.
+
+    Supports json, yaml, and generic code blocks. Extracts content
+    between ``` markers if present.
+
+    Args:
+        content: Raw LLM response string
+
+    Returns:
+        Cleaned content with markdown removed
+
+    Example:
+        >>> clean_llm_response("```json\\n{\"key\": \"value\"}\\n```")
+        '{"key": "value"}'
     """
     content = content.strip()
 
@@ -18,14 +37,29 @@ def clean_llm_response(content: str) -> str:
     return content
 
 
-import ast
 import json
 from json import JSONDecodeError
 
+from src.shared.exceptions import JSONParseException
 
-def try_parse_json(content: str) -> dict:
-    """Try to parse JSON, attempting to fix common LLM errors like missing closing braces
-    and unescaped control characters.
+
+def try_parse_json(content: str) -> dict[str, Any]:
+    """Try to parse JSON, attempting to fix common LLM errors.
+
+    Attempts multiple repair strategies for malformed JSON:
+    1. Standard JSON parsing
+    2. Fix unescaped control characters (newlines, tabs, etc.)
+    3. Add missing closing braces/brackets
+    4. Fix trailing commas
+
+    Args:
+        content: JSON string to parse
+
+    Returns:
+        Parsed JSON as a dictionary
+
+    Raises:
+        JSONParseException: If JSON cannot be parsed after all repair attempts
     """
     # First, try standard parsing
     try:
@@ -78,25 +112,34 @@ def try_parse_json(content: str) -> dict:
     except JSONDecodeError:
         pass
 
-    # Last resort: try Python's ast.literal_eval (more forgiving than JSON)
-    try:
-        result = ast.literal_eval(content)
-        if isinstance(result, dict):
-            return result
-    except (ValueError, SyntaxError):
-        pass
-
-    # If all else fails, raise a descriptive error
-    raise JSONDecodeError(
-        f"Could not parse JSON even after attempting fixes. Original error: {original_error}",
-        content[:200],  # Show first 200 chars
-        0,
+    # If all else fails, raise a descriptive error with context
+    raise JSONParseException(
+        f"Could not parse JSON even after attempting repairs. Original error: {original_error}",
+        code="JSON001",
+        context={
+            "content_preview": content[:200],
+            "content_length": len(content),
+            "original_error": str(original_error)
+        }
     )
 
 
 def _fix_json_escaping(content: str) -> str:
     """Attempt to fix common JSON escaping issues in LLM-generated content.
-    Specifically handles unescaped newlines and quotes within string values.
+
+    Handles:
+    - Unescaped newlines (\\n)
+    - Unescaped carriage returns (\\r)
+    - Unescaped tabs (\\t)
+
+    Args:
+        content: JSON string with potential escaping issues
+
+    Returns:
+        JSON string with control characters properly escaped
+
+    Note:
+        This is a heuristic approach and may not work for all edge cases.
     """
     # This is a heuristic approach - it may not work for all cases
     # The strategy is to find string values and escape control characters within them
