@@ -7,14 +7,15 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from .base import BaseProvider, GenerationResult
 
 class GeminiProvider(BaseProvider):
-    def __init__(self, temperature: float = 0.1):
-        super().__init__(temperature)
+    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+        super().__init__(temperature, timeout)
         if not os.getenv("GOOGLE_API_KEY"):
             raise ValueError("GOOGLE_API_KEY not found")
-            
+
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash", 
-            temperature=temperature
+            model="gemini-2.0-flash",
+            temperature=temperature,
+            timeout=timeout,
         )
 
     @property

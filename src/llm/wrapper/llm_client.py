@@ -4,6 +4,13 @@ from dotenv import load_dotenv
 from langchain_core.messages import BaseMessage
 
 from src.shared import logger
+from src.shared.config import get_config
+from src.shared.exceptions import (
+    LLMException,
+    LLMProviderException,
+    LLMTimeoutException,
+    LLMConnectionException,
+)
 
 from .providers import (
     BaseProvider,
@@ -20,13 +27,16 @@ load_dotenv()
 class LLMClient:
     """Manages multiple LLM providers with fallback support."""
 
-    def __init__(self, temperature: float = 0.1):
+    def __init__(self, temperature: Optional[float] = None, timeout: Optional[int] = None):
         """Initialize the LLM client.
 
         Args:
-            temperature (float): Temperature setting for LLM generation.
+            temperature: Temperature setting for LLM generation (uses config default if None)
+            timeout: Timeout in seconds for API calls (uses config default if None)
         """
-        self.temperature = temperature
+        config = get_config()
+        self.temperature = temperature if temperature is not None else config.llm.temperature
+        self.timeout = timeout if timeout is not None else config.llm.timeout
         self.providers: list[BaseProvider] = []
         self._setup_providers()
 
@@ -34,31 +44,40 @@ class LLMClient:
         """Setup providers based on availability and configure them."""
         # 1. Groq
         try:
-            self.providers.append(GroqProvider(self.temperature))
+            self.providers.append(GroqProvider(self.temperature, self.timeout))
             logger.info("✓ Groq provider configured")
-        except Exception as e:
+        except (ValueError, ConnectionError) as e:
             logger.warn(f"Groq setup failed: {e}")
+        except Exception as e:
+            logger.warn(f"Groq setup failed with unexpected error: {e}")
 
         # 2. OpenRouter
         try:
-            self.providers.append(OpenRouterProvider(self.temperature))
+            self.providers.append(OpenRouterProvider(self.temperature, self.timeout))
             logger.info("✓ OpenRouter provider configured")
-        except Exception as e:
+        except (ValueError, ConnectionError) as e:
             logger.warn(f"OpenRouter setup failed: {e}")
+        except Exception as e:
+            logger.warn(f"OpenRouter setup failed with unexpected error: {e}")
 
         # 3. Google Gemini
         try:
-            self.providers.append(GeminiProvider(self.temperature))
+            self.providers.append(GeminiProvider(self.temperature, self.timeout))
             logger.info("✓ Google Gemini provider configured")
-        except Exception as e:
+        except (ValueError, ConnectionError) as e:
             logger.warn(f"Gemini setup failed: {e}")
+        except Exception as e:
+            logger.warn(f"Gemini setup failed with unexpected error: {e}")
 
         # 4. Ollama (Local)
         try:
-            self.providers.append(OllamaProvider(self.temperature))
+            self.providers.append(OllamaProvider(self.temperature, self.timeout))
             logger.info("✓ Ollama (local) provider configured")
-        except Exception:
-            pass  # Silent fail for optional local provider
+        except (ValueError, ConnectionError):
+            # Silent fail for optional local provider
+            logger.debug("Ollama not available (optional)")
+        except Exception as e:
+            logger.debug(f"Ollama setup failed: {e}")
 
         if not self.providers:
             logger.error("❌ No LLM providers configured!")
@@ -79,9 +98,17 @@ class LLMClient:
 
         Returns:
             GenerationResult: The generated content and metadata.
+
+        Raises:
+            LLMException: If no providers are available
+            LLMException: If all providers fail to generate content
         """
         if not self.providers:
-            raise Exception("No LLM providers available")
+            raise LLMException(
+                "No LLM providers available",
+                code="LLM001",
+                context={"configured_providers": 0}
+            )
 
         execution_list = self.providers.copy()
 
@@ -95,14 +122,48 @@ class LLMClient:
                     f"Requested primary provider '{primary_provider_id}' not found/configured."
                 )
 
+        last_error = None
         for i, provider in enumerate(execution_list):
             try:
                 logger.info(f"Trying provider: {provider.name}")
                 return provider.generate(messages)
 
+            except TimeoutError as e:
+                last_error = LLMTimeoutException(
+                    f"{provider.name} timed out after {self.timeout}s: {e}",
+                    code="LLM002",
+                    context={"provider": provider.id, "timeout": self.timeout}
+                )
+                logger.warn(f"✗ {provider.name} timed out: {e}")
+                if i < len(execution_list) - 1:
+                    logger.info("Trying next provider...")
+
+            except ConnectionError as e:
+                last_error = LLMConnectionException(
+                    f"{provider.name} connection failed: {e}",
+                    code="LLM003",
+                    context={"provider": provider.id}
+                )
+                logger.warn(f"✗ {provider.name} connection failed: {e}")
+                if i < len(execution_list) - 1:
+                    logger.info("Trying next provider...")
+
             except Exception as e:
+                last_error = LLMProviderException(
+                    f"{provider.name} failed: {e}",
+                    code="LLM004",
+                    context={"provider": provider.id, "error": str(e)}
+                )
                 logger.warn(f"✗ {provider.name} failed: {e}")
                 if i < len(execution_list) - 1:
                     logger.info("Trying next provider...")
 
-        raise Exception("All providers failed to generate content")
+        # All providers failed
+        raise LLMException(
+            "All providers failed to generate content",
+            code="LLM005",
+            context={
+                "tried_providers": [p.id for p in execution_list],
+                "last_error": str(last_error) if last_error else None
+            }
+        )

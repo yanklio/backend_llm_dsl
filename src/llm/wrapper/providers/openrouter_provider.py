@@ -1,4 +1,3 @@
-
 import os
 
 from langchain_core.messages import BaseMessage
@@ -6,18 +5,21 @@ from langchain_openai import ChatOpenAI
 
 from .base import BaseProvider, GenerationResult
 
+
 class OpenRouterProvider(BaseProvider):
-    def __init__(self, temperature: float = 0.1):
-        super().__init__(temperature)
+    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+        super().__init__(temperature, timeout)
         api_key = os.getenv("OPENROUTER_API_KEY")
         if not api_key:
             raise ValueError("OPENROUTER_API_KEY not found")
-            
+
         self.llm = ChatOpenAI(
             model="google/gemini-2.0-flash:free",
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
             temperature=temperature,
+            timeout=timeout,
+            request_timeout=timeout,
         )
 
     @property

@@ -9,16 +9,18 @@ from .base import BaseProvider, GenerationResult
 
 
 class GroqProvider(BaseProvider):
-    def __init__(self, temperature: float = 0.1):
-        super().__init__(temperature)
+    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+        super().__init__(temperature, timeout)
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             raise ValueError("GROQ_API_KEY not found")
-            
+
         self.llm = ChatGroq(
             model="llama-3.3-70b-versatile",
             api_key=api_key,
             temperature=temperature,
+            timeout=timeout,
+            request_timeout=timeout,
         )
 
     @property

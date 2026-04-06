@@ -20,9 +20,16 @@ class GenerationResult:
 
 class BaseProvider(ABC):
     """Abstract base class for LLM providers."""
-    
-    def __init__(self, temperature: float = 0.1):
+
+    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+        """Initialize the provider.
+
+        Args:
+            temperature: Temperature for generation (0.0-2.0)
+            timeout: Timeout in seconds for API calls
+        """
         self.temperature = temperature
+        self.timeout = timeout
 
     @property
     @abstractmethod

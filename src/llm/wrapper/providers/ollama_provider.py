@@ -7,9 +7,9 @@ from langchain_ollama import ChatOllama
 from .base import BaseProvider, GenerationResult
 
 class OllamaProvider(BaseProvider):
-    def __init__(self, temperature: float = 0.1):
-        super().__init__(temperature)
-        
+    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+        super().__init__(temperature, timeout)
+
         # Check connection eagerly
         try:
             requests.get("http://localhost:11434", timeout=1)
@@ -17,8 +17,9 @@ class OllamaProvider(BaseProvider):
             raise ConnectionError("Ollama is not running on localhost:11434")
 
         self.llm = ChatOllama(
-            model="llama3.1", 
-            temperature=temperature
+            model="llama3.1",
+            temperature=temperature,
+            timeout=timeout,
         )
 
     @property
