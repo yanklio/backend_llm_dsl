@@ -9,18 +9,15 @@ import socket
 import subprocess
 import time
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 
 from src.shared.config import get_config
-from src.shared.exceptions import ValidationException, ValidationTimeoutException
 
 
 class SubprocessResult:
     """Result of a subprocess execution."""
 
-    def __init__(
-        self, success: bool, stdout: str = "", stderr: str = "", returncode: int = 0
-    ):
+    def __init__(self, success: bool, stdout: str = "", stderr: str = "", returncode: int = 0):
         self.success = success
         self.stdout = stdout
         self.stderr = stderr
@@ -61,14 +58,9 @@ def run_command(
         )
 
     except subprocess.TimeoutExpired:
-        return SubprocessResult(
-            success=False,
-            stderr=f"Command timeout after {timeout}s"
-        )
+        return SubprocessResult(success=False, stderr=f"Command timeout after {timeout}s")
     except FileNotFoundError:
-        return SubprocessResult(
-            success=False, stderr=f"Command not found: {command[0]}"
-        )
+        return SubprocessResult(success=False, stderr=f"Command not found: {command[0]}")
     except (OSError, subprocess.SubprocessError) as e:
         return SubprocessResult(success=False, stderr=f"Subprocess error: {e}")
     except Exception as e:
@@ -76,8 +68,7 @@ def run_command(
 
 
 def start_process(command: list, cwd: Path) -> subprocess.Popen:
-    """
-    Start a process without waiting for completion.
+    """Start a process without waiting for completion.
 
     Args:
         command: Command and arguments as list
@@ -92,8 +83,7 @@ def start_process(command: list, cwd: Path) -> subprocess.Popen:
 
 
 def is_port_in_use(port: int) -> bool:
-    """
-    Check if a port is currently in use.
+    """Check if a port is currently in use.
 
     Args:
         port: Port number to check
@@ -110,8 +100,7 @@ def is_port_in_use(port: int) -> bool:
 
 
 def get_pids_on_port(port: int) -> list:
-    """
-    Get all PIDs using a specific port.
+    """Get all PIDs using a specific port.
 
     Args:
         port: Port number to check
@@ -134,9 +123,7 @@ def get_pids_on_port(port: int) -> list:
 
     # Try fuser as fallback
     try:
-        result = subprocess.run(
-            ["fuser", f"{port}/tcp"], capture_output=True, text=True, timeout=5
-        )
+        result = subprocess.run(["fuser", f"{port}/tcp"], capture_output=True, text=True, timeout=5)
         if result.returncode == 0 and result.stdout.strip():
             pids = result.stdout.strip().split()
             return pids
@@ -147,8 +134,7 @@ def get_pids_on_port(port: int) -> list:
 
 
 def kill_process_on_port(port: int) -> bool:
-    """
-    Kill any process using the specified port.
+    """Kill any process using the specified port.
 
     Args:
         port: Port number to free up
@@ -174,8 +160,7 @@ def kill_process_on_port(port: int) -> bool:
 
 
 def force_kill_port(port: int, max_attempts: int = 3) -> bool:
-    """
-    Forcefully kill all processes on a port with retries.
+    """Forcefully kill all processes on a port with retries.
 
     Args:
         port: Port number to kill
@@ -184,7 +169,7 @@ def force_kill_port(port: int, max_attempts: int = 3) -> bool:
     Returns:
         True if port is now free, False otherwise
     """
-    for attempt in range(max_attempts):
+    for _ in range(max_attempts):
         if not is_port_in_use(port):
             return True
 
@@ -228,8 +213,7 @@ def terminate_process(
     port: Optional[int] = None,
     delay_cleanup: float = 0,
 ) -> bool:
-    """
-    Terminate process with graceful interrupt signal (Ctrl+C), then cleanup port.
+    """Terminate process with graceful interrupt signal (Ctrl+C), then cleanup port.
 
     Args:
         process: Process to terminate
@@ -269,9 +253,8 @@ def terminate_process(
     return True
 
 
-def check_process_running(process: subprocess.Popen) -> Tuple[bool, Optional[str]]:
-    """
-    Check if a process is still running.
+def check_process_running(process: subprocess.Popen) -> tuple[bool, Optional[str]]:
+    """Check if a process is still running.
 
     Args:
         process: Process to check

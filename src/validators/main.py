@@ -27,7 +27,9 @@ def main(project_path: Path) -> list[str]:
         runtime_errors = run_result.get("errors", {})
         for stage, output in runtime_errors.items():
             if output:
-                message = output.get("message", str(output)) if isinstance(output, dict) else str(output)
+                message = (
+                    output.get("message", str(output)) if isinstance(output, dict) else str(output)
+                )
                 all_errors.append(f"Runtime error during {stage}: {message[:200]}...")
 
     return all_errors

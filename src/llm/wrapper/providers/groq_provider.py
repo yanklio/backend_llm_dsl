@@ -5,7 +5,6 @@ import os
 from langchain_core.messages import BaseMessage
 from langchain_groq import ChatGroq
 
-from src.shared import logger
 from .base import BaseProvider, GenerationResult
 
 

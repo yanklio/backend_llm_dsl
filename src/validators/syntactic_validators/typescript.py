@@ -1,7 +1,7 @@
 """TypeScript validator module."""
 
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional
 
 from src.validators.shared.command import run_command
 from src.validators.shared.error_types import ErrorCodes, ValidationError, create_error
@@ -133,9 +133,7 @@ def _parse_typescript_error(line: str) -> Optional[ValidationError]:
         line_num, col_num = _parse_line_column(line_col)
         code, message = _parse_error_code_and_message(parts[1])
 
-        return create_error(
-            "compile", message, code, file=file_path, line=line_num, column=col_num
-        )
+        return create_error("compile", message, code, file=file_path, line=line_num, column=col_num)
 
     except Exception:
         return create_error("compile", line, ErrorCodes.PARSE_ERROR)

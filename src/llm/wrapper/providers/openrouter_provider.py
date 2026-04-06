@@ -13,6 +13,7 @@ class OpenRouterProvider(BaseProvider):
 
     Provides access to various LLM models through OpenRouter's unified API.
     """
+
     def __init__(self, temperature: float = 0.1, timeout: int = 120):
         """Initialize OpenRouter provider.
 

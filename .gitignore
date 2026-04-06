@@ -22,3 +22,10 @@ __pycache__/
 .vscode/
 .idea/
 .github/
+
+# testing
+.coverage
+htmlcov/
+*.pyc
+tests/test_results_copy.json
+tests/test_single_case_copy.py

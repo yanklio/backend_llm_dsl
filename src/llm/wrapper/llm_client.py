@@ -6,10 +6,10 @@ from langchain_core.messages import BaseMessage
 from src.shared import logger
 from src.shared.config import get_config
 from src.shared.exceptions import (
+    LLMConnectionException,
     LLMException,
     LLMProviderException,
     LLMTimeoutException,
-    LLMConnectionException,
 )
 
 from .providers import (
@@ -68,9 +68,15 @@ class LLMClient:
     def _setup_providers(self) -> None:
         """Setup providers based on availability and configure them."""
         _try_add_provider(self.providers, GroqProvider, "Groq", self.temperature, self.timeout)
-        _try_add_provider(self.providers, OpenRouterProvider, "OpenRouter", self.temperature, self.timeout)
-        _try_add_provider(self.providers, GeminiProvider, "Google Gemini", self.temperature, self.timeout)
-        _try_add_provider(self.providers, OllamaProvider, "Ollama (local)", self.temperature, self.timeout)
+        _try_add_provider(
+            self.providers, OpenRouterProvider, "OpenRouter", self.temperature, self.timeout
+        )
+        _try_add_provider(
+            self.providers, GeminiProvider, "Google Gemini", self.temperature, self.timeout
+        )
+        _try_add_provider(
+            self.providers, OllamaProvider, "Ollama (local)", self.temperature, self.timeout
+        )
 
         if not self.providers:
             logger.error("❌ No LLM providers configured!")
@@ -98,9 +104,7 @@ class LLMClient:
         """
         if not self.providers:
             raise LLMException(
-                "No LLM providers available",
-                code="LLM001",
-                context={"configured_providers": 0}
+                "No LLM providers available", code="LLM001", context={"configured_providers": 0}
             )
 
         execution_list = self.providers.copy()
@@ -125,7 +129,7 @@ class LLMClient:
                 last_error = LLMTimeoutException(
                     f"{provider.name} timed out after {self.timeout}s: {e}",
                     code="LLM002",
-                    context={"provider": provider.id, "timeout": self.timeout}
+                    context={"provider": provider.id, "timeout": self.timeout},
                 )
                 logger.warn(f"✗ {provider.name} timed out: {e}")
                 if i < len(execution_list) - 1:
@@ -135,7 +139,7 @@ class LLMClient:
                 last_error = LLMConnectionException(
                     f"{provider.name} connection failed: {e}",
                     code="LLM003",
-                    context={"provider": provider.id}
+                    context={"provider": provider.id},
                 )
                 logger.warn(f"✗ {provider.name} connection failed: {e}")
                 if i < len(execution_list) - 1:
@@ -145,7 +149,7 @@ class LLMClient:
                 last_error = LLMProviderException(
                     f"{provider.name} failed: {e}",
                     code="LLM004",
-                    context={"provider": provider.id, "error": str(e)}
+                    context={"provider": provider.id, "error": str(e)},
                 )
                 logger.warn(f"✗ {provider.name} failed: {e}")
                 if i < len(execution_list) - 1:
@@ -157,6 +161,6 @@ class LLMClient:
             code="LLM005",
             context={
                 "tried_providers": [p.id for p in execution_list],
-                "last_error": str(last_error) if last_error else None
-            }
+                "last_error": str(last_error) if last_error else None,
+            },
         )

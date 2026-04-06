@@ -4,10 +4,10 @@ Defines the abstract interface that all LLM providers must implement,
 along with common utilities for tracking generation metrics.
 """
 
+import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Optional, Any
-import time
+from typing import Optional
 
 from langchain_core.messages import BaseMessage
 
@@ -35,6 +35,7 @@ class GenerationResult:
     output_tokens: Optional[int] = None
     total_tokens: Optional[int] = None
     model_name: Optional[str] = None
+
 
 class BaseProvider(ABC):
     """Abstract base class for LLM providers."""
@@ -88,9 +89,9 @@ class BaseProvider(ABC):
         start_time = time.time()
         response = llm_invoke_func(messages)
         end_time = time.time()
-        
+
         content = str(response.content)
-        
+
         # Clean markdown using shared utility
         content = clean_llm_response(content)
 
@@ -111,5 +112,5 @@ class BaseProvider(ABC):
             duration_seconds=round(end_time - start_time, 2),
             input_tokens=input_tokens,
             output_tokens=output_tokens,
-            total_tokens=total_tokens
+            total_tokens=total_tokens,
         )

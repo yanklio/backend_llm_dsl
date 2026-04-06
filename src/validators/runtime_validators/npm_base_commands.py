@@ -7,7 +7,6 @@ from typing import Any, Optional
 
 from src.shared import logger
 from src.shared.config import get_config
-from src.shared.exceptions import ValidationException
 from src.validators.shared.command import (
     check_process_running,
     run_command,
@@ -58,7 +57,7 @@ def _run_npm_install(project_path: Path) -> dict[str, Any]:
     result = run_command(
         ["npm", "install", "--legacy-peer-deps"],
         cwd=project_path,
-        timeout=config.validation.npm_install_timeout
+        timeout=config.validation.npm_install_timeout,
     )
 
     if not result.success:
@@ -94,9 +93,7 @@ def _run_npm_build(project_path: Path) -> dict[str, Any]:
     config = get_config()
     logger.debug("Running npm run build...")
     result = run_command(
-        ["npm", "run", "build"],
-        cwd=project_path,
-        timeout=config.validation.tsc_timeout
+        ["npm", "run", "build"], cwd=project_path, timeout=config.validation.tsc_timeout
     )
 
     if not result.success:
@@ -120,7 +117,7 @@ def _run_npm_start(
     project_path: Path,
     wait_time: Optional[int] = None,
     terminate: bool = True,
-    port: Optional[int] = None
+    port: Optional[int] = None,
 ) -> dict[str, Any]:
     """Start the application and verify it runs.
 
@@ -171,11 +168,15 @@ def _run_npm_start(
         logger.error(f"Start error: {str(e)}")
         return {
             "success": False,
-            "error": create_error("start", f"Start subprocess error: {str(e)}", ErrorCodes.START_ERROR),
+            "error": create_error(
+                "start", f"Start subprocess error: {str(e)}", ErrorCodes.START_ERROR
+            ),
         }
     except Exception as e:
         logger.error(f"Start error: {str(e)}")
         return {
             "success": False,
-            "error": create_error("start", f"Unexpected start error: {str(e)}", ErrorCodes.START_ERROR),
+            "error": create_error(
+                "start", f"Unexpected start error: {str(e)}", ErrorCodes.START_ERROR
+            ),
         }

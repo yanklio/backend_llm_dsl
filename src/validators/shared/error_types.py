@@ -73,8 +73,7 @@ class ErrorCodes:
 
 
 def create_error(stage: str, message: str, code: str, **kwargs) -> ValidationError:
-    """
-    Create a standardized validation error.
+    """Create a standardized validation error.
 
     Args:
         stage: The validation stage where error occurred

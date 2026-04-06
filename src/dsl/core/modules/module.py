@@ -5,14 +5,12 @@ from typing import Any
 
 from jinja2 import Environment
 
+from src.shared.exceptions import TemplateException
 from src.shared.logs.logger import logger
 from src.shared.template_helper import TemplateRenderer
-from src.shared.exceptions import TemplateException
 
 
-def handle_dto_file(
-    template_data: dict[str, Any], dto_dir: Path, env: Environment
-) -> None:
+def handle_dto_file(template_data: dict[str, Any], dto_dir: Path, env: Environment) -> None:
     """Generate DTO files for the module.
 
     Args:
@@ -21,7 +19,7 @@ def handle_dto_file(
         env (Environment): Jinja2 environment.
     """
     renderer = TemplateRenderer(env)
-    module_lower = template_data['module'].lower()
+    module_lower = template_data["module"].lower()
 
     # Generate create DTO
     try:
@@ -38,9 +36,7 @@ def handle_dto_file(
         logger.error(f"Failed to generate update DTO: {e}")
 
 
-def handle_entity_file(
-    template_data: dict[str, Any], entities_dir: Path, env: Environment
-) -> None:
+def handle_entity_file(template_data: dict[str, Any], entities_dir: Path, env: Environment) -> None:
     """Generate entity files for the module.
 
     Args:
@@ -57,9 +53,7 @@ def handle_entity_file(
         logger.error(f"Failed to generate entity file: {e}")
 
 
-def generate_module(
-    module_data: dict[str, Any], env: Environment, base_output_dir: Path
-) -> None:
+def generate_module(module_data: dict[str, Any], env: Environment, base_output_dir: Path) -> None:
     """Generate a single sub-module (entity module).
 
     Args:

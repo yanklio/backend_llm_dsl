@@ -1,7 +1,6 @@
 """Ollama local LLM provider implementation."""
 
 import requests
-
 from langchain_core.messages import BaseMessage
 from langchain_ollama import ChatOllama
 
