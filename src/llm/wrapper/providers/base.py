@@ -1,3 +1,8 @@
+"""Base provider interface for LLM integrations.
+
+Defines the abstract interface that all LLM providers must implement,
+along with common utilities for tracking generation metrics.
+"""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -8,8 +13,21 @@ from langchain_core.messages import BaseMessage
 
 from src.shared.utils import clean_llm_response
 
+
 @dataclass
 class GenerationResult:
+    """Result of an LLM generation request.
+
+    Attributes:
+        content: Generated text content
+        provider: Name of the provider that generated the content
+        duration_seconds: Time taken for generation in seconds
+        input_tokens: Number of input tokens (if available)
+        output_tokens: Number of output tokens (if available)
+        total_tokens: Total tokens used (if available)
+        model_name: Name of the model used (if available)
+    """
+
     content: str
     provider: str
     duration_seconds: float
@@ -45,16 +63,27 @@ class BaseProvider(ABC):
 
     @abstractmethod
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
-        """
-        Generate content from messages.
-        Must return GenerationResult with statistics.
+        """Generate content from messages.
+
+        Args:
+            messages: List of conversation messages
+
+        Returns:
+            GenerationResult with content and statistics
         """
         pass
 
     def _track_generation(self, llm_invoke_func, messages: list[BaseMessage]) -> GenerationResult:
-        """
-        Helper to measure time and capture standard LangChain usage metadata.
+        """Helper to measure time and capture standard LangChain usage metadata.
+
         Most providers can use this if they implement standard LangChain invoke.
+
+        Args:
+            llm_invoke_func: LangChain LLM invoke function
+            messages: List of conversation messages
+
+        Returns:
+            GenerationResult with tracked metrics
         """
         start_time = time.time()
         response = llm_invoke_func(messages)
