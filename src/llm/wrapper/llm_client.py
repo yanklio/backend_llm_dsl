@@ -24,6 +24,31 @@ from .providers import (
 load_dotenv()
 
 
+def _try_add_provider(
+    providers: list[BaseProvider],
+    provider_class: type[BaseProvider],
+    name: str,
+    temperature: Optional[float],
+    timeout: Optional[int],
+) -> None:
+    """Try to instantiate and add a provider, handling exceptions gracefully.
+
+    Args:
+        providers: List to add provider to.
+        provider_class: The provider class to instantiate.
+        name: Human-readable name for logging.
+        temperature: Temperature setting.
+        timeout: Timeout setting.
+    """
+    try:
+        providers.append(provider_class(temperature, timeout))
+        logger.info(f"✓ {name} provider configured")
+    except (ValueError, ConnectionError) as e:
+        logger.warn(f"{name} setup failed: {e}")
+    except Exception as e:
+        logger.warn(f"{name} setup failed with unexpected error: {e}")
+
+
 class LLMClient:
     """Manages multiple LLM providers with fallback support."""
 
@@ -42,42 +67,10 @@ class LLMClient:
 
     def _setup_providers(self) -> None:
         """Setup providers based on availability and configure them."""
-        # 1. Groq
-        try:
-            self.providers.append(GroqProvider(self.temperature, self.timeout))
-            logger.info("✓ Groq provider configured")
-        except (ValueError, ConnectionError) as e:
-            logger.warn(f"Groq setup failed: {e}")
-        except Exception as e:
-            logger.warn(f"Groq setup failed with unexpected error: {e}")
-
-        # 2. OpenRouter
-        try:
-            self.providers.append(OpenRouterProvider(self.temperature, self.timeout))
-            logger.info("✓ OpenRouter provider configured")
-        except (ValueError, ConnectionError) as e:
-            logger.warn(f"OpenRouter setup failed: {e}")
-        except Exception as e:
-            logger.warn(f"OpenRouter setup failed with unexpected error: {e}")
-
-        # 3. Google Gemini
-        try:
-            self.providers.append(GeminiProvider(self.temperature, self.timeout))
-            logger.info("✓ Google Gemini provider configured")
-        except (ValueError, ConnectionError) as e:
-            logger.warn(f"Gemini setup failed: {e}")
-        except Exception as e:
-            logger.warn(f"Gemini setup failed with unexpected error: {e}")
-
-        # 4. Ollama (Local)
-        try:
-            self.providers.append(OllamaProvider(self.temperature, self.timeout))
-            logger.info("✓ Ollama (local) provider configured")
-        except (ValueError, ConnectionError):
-            # Silent fail for optional local provider
-            logger.debug("Ollama not available (optional)")
-        except Exception as e:
-            logger.debug(f"Ollama setup failed: {e}")
+        _try_add_provider(self.providers, GroqProvider, "Groq", self.temperature, self.timeout)
+        _try_add_provider(self.providers, OpenRouterProvider, "OpenRouter", self.temperature, self.timeout)
+        _try_add_provider(self.providers, GeminiProvider, "Google Gemini", self.temperature, self.timeout)
+        _try_add_provider(self.providers, OllamaProvider, "Ollama (local)", self.temperature, self.timeout)
 
         if not self.providers:
             logger.error("❌ No LLM providers configured!")

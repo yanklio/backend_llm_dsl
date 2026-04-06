@@ -4,8 +4,12 @@ Provides functions for cleaning markdown from LLM responses and parsing
 potentially malformed JSON with repair attempts.
 """
 
+import json
 import re
+from json import JSONDecodeError
 from typing import Any
+
+from src.shared.exceptions import JSONParseException
 
 
 def clean_llm_response(content: str) -> str:
@@ -26,8 +30,6 @@ def clean_llm_response(content: str) -> str:
     """
     content = content.strip()
 
-    # regex for ```type ... ```
-    # non-greedy match for content
     pattern = r"```(?:\w+)?\s*(.*?)\s*```"
     match = re.search(pattern, content, re.DOTALL)
 
@@ -37,113 +39,17 @@ def clean_llm_response(content: str) -> str:
     return content
 
 
-import json
-from json import JSONDecodeError
-
-from src.shared.exceptions import JSONParseException
-
-
-def try_parse_json(content: str) -> dict[str, Any]:
-    """Try to parse JSON, attempting to fix common LLM errors.
-
-    Attempts multiple repair strategies for malformed JSON:
-    1. Standard JSON parsing
-    2. Fix unescaped control characters (newlines, tabs, etc.)
-    3. Add missing closing braces/brackets
-    4. Fix trailing commas
-
-    Args:
-        content: JSON string to parse
-
-    Returns:
-        Parsed JSON as a dictionary
-
-    Raises:
-        JSONParseException: If JSON cannot be parsed after all repair attempts
-    """
-    # First, try standard parsing
-    try:
-        return json.loads(content)
-    except JSONDecodeError as e:
-        original_error = e
-
-    # Try to fix unescaped newlines and control characters FIRST
-    # This is the most common issue where LLMs put literal newlines in JSON strings
-    try:
-        fixed_content = _fix_json_escaping(content)
-        return json.loads(fixed_content)
-    except (JSONDecodeError, Exception) as e:
-        # Save this error for later
-        fixed_error = e
-
-    # Now try various truncation fixes on the escaped content
-    try:
-        fixed_content = _fix_json_escaping(content)
-
-        closing_attempts = [
-            '"}',  # Close string and object
-            '"\n}',  # Close string with newline and object
-            '",\n}',  # Close string with comma and object
-            '"}}}',  # Close multiple nested objects
-            '"\n}\n}',  # Close nested with newlines
-        ]
-
-        for closing in closing_attempts:
-            try:
-                return json.loads(fixed_content + closing)
-            except JSONDecodeError:
-                continue
-    except Exception:
-        pass
-
-    # Try simple truncation fixes on original content
-    try:
-        return json.loads(content + "}")
-    except JSONDecodeError:
-        pass
-
-    try:
-        return json.loads(content + "\n}")
-    except JSONDecodeError:
-        pass
-
-    try:
-        return json.loads(content + '"\n}')
-    except JSONDecodeError:
-        pass
-
-    # If all else fails, raise a descriptive error with context
-    raise JSONParseException(
-        f"Could not parse JSON even after attempting repairs. Original error: {original_error}",
-        code="JSON001",
-        context={
-            "content_preview": content[:200],
-            "content_length": len(content),
-            "original_error": str(original_error)
-        }
-    )
-
-
 def _fix_json_escaping(content: str) -> str:
     """Attempt to fix common JSON escaping issues in LLM-generated content.
 
-    Handles:
-    - Unescaped newlines (\\n)
-    - Unescaped carriage returns (\\r)
-    - Unescaped tabs (\\t)
+    Handles unescaped newlines, carriage returns, and tabs within string values.
 
     Args:
         content: JSON string with potential escaping issues
 
     Returns:
         JSON string with control characters properly escaped
-
-    Note:
-        This is a heuristic approach and may not work for all edge cases.
     """
-    # This is a heuristic approach - it may not work for all cases
-    # The strategy is to find string values and escape control characters within them
-
     result = []
     in_string = False
     escape_next = False
@@ -171,7 +77,6 @@ def _fix_json_escaping(content: str) -> str:
             continue
 
         if in_string:
-            # Escape control characters within strings
             if char == "\n":
                 result.append("\\n")
             elif char == "\r":
@@ -186,3 +91,88 @@ def _fix_json_escaping(content: str) -> str:
         i += 1
 
     return "".join(result)
+
+
+def _try_parse_with_closing(content: str, closing: str) -> dict[str, Any] | None:
+    """Try parsing JSON with a specific closing suffix.
+
+    Args:
+        content: JSON string to parse
+        closing: String to append before parsing
+
+    Returns:
+        Parsed JSON or None if parsing fails
+    """
+    try:
+        return json.loads(content + closing)
+    except JSONDecodeError:
+        return None
+
+
+def _apply_repair_strategies(content: str) -> dict[str, Any] | None:
+    """Apply multiple JSON repair strategies in sequence.
+
+    Strategies include: escaping fixes, closing bracket fixes, truncation fixes.
+
+    Args:
+        content: JSON string that may be malformed
+
+    Returns:
+        Parsed JSON or None if all repairs fail
+    """
+    strategies = [
+        lambda c: json.loads(_fix_json_escaping(c)),
+        lambda c: _try_parse_with_closing(_fix_json_escaping(c), '"}'),
+        lambda c: _try_parse_with_closing(_fix_json_escaping(c), '"\n}'),
+        lambda c: _try_parse_with_closing(_fix_json_escaping(c), '",\n}'),
+        lambda c: _try_parse_with_closing(_fix_json_escaping(c), '"}}}'),
+        lambda c: _try_parse_with_closing(_fix_json_escaping(c), '"\n}\n}'),
+        lambda c: _try_parse_with_closing(c, "}"),
+        lambda c: _try_parse_with_closing(c, "\n}"),
+        lambda c: _try_parse_with_closing(c, '"\n}'),
+    ]
+
+    for strategy in strategies:
+        try:
+            return strategy(content)
+        except (JSONDecodeError, Exception):
+            continue
+
+    return None
+
+
+def try_parse_json(content: str) -> dict[str, Any]:
+    """Try to parse JSON, attempting to fix common LLM errors.
+
+    Attempts multiple repair strategies for malformed JSON:
+    1. Standard JSON parsing
+    2. Fix unescaped control characters (newlines, tabs, etc.)
+    3. Add missing closing braces/brackets
+
+    Args:
+        content: JSON string to parse
+
+    Returns:
+        Parsed JSON as a dictionary
+
+    Raises:
+        JSONParseException: If JSON cannot be parsed after all repair attempts
+    """
+    try:
+        return json.loads(content)
+    except JSONDecodeError as e:
+        original_error = e
+
+    repaired = _apply_repair_strategies(content)
+    if repaired is not None:
+        return repaired
+
+    raise JSONParseException(
+        f"Could not parse JSON even after attempting repairs. Original error: {original_error}",
+        code="JSON001",
+        context={
+            "content_preview": content[:200],
+            "content_length": len(content),
+            "original_error": str(original_error),
+        },
+    )
