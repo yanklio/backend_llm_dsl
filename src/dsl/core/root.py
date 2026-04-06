@@ -6,6 +6,8 @@ from typing import Any
 from jinja2 import Environment
 
 from src.shared.logs.logger import logger
+from src.shared.template_helper import TemplateRenderer
+from src.shared.exceptions import TemplateException
 
 
 def _prepare_template_data(
@@ -65,13 +67,12 @@ def _generate_file(
         template_data (dict[str, Any]): Data to pass to template.
         src_dir (Path): Output directory.
     """
+    renderer = TemplateRenderer(env)
+    output_path = src_dir / output_filename
+
     try:
-        template = env.get_template(template_name)
-        output_code = template.render(template_data)
-        output_path = src_dir / output_filename
-        output_path.write_text(output_code)
-        logger.success(f"Generated {output_path}")
-    except Exception as e:
+        renderer.render_template(template_name, template_data, output_path)
+    except TemplateException as e:
         logger.error(f"Could not generate {output_filename}: {e}")
 
 

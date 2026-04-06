@@ -6,6 +6,8 @@ from typing import Any
 from jinja2 import Environment
 
 from src.shared.logs.logger import logger
+from src.shared.template_helper import TemplateRenderer
+from src.shared.exceptions import TemplateException
 
 
 def handle_dto_file(
@@ -18,22 +20,21 @@ def handle_dto_file(
         dto_dir (Path): Directory where DTOs should be saved.
         env (Environment): Jinja2 environment.
     """
+    renderer = TemplateRenderer(env)
+    module_lower = template_data['module'].lower()
+
+    # Generate create DTO
     try:
-        template = env.get_template("dto/create-dto.ts.j2")
-        output_code = template.render(template_data)
-        file_name = f"create-{template_data['module'].lower()}.dto.ts"
-        (dto_dir / file_name).write_text(output_code)
-        logger.success(f"Generated {file_name}")
-    except Exception as e:
+        file_name = f"create-{module_lower}.dto.ts"
+        renderer.render_template("dto/create-dto.ts.j2", template_data, dto_dir / file_name)
+    except TemplateException as e:
         logger.error(f"Failed to generate create DTO: {e}")
 
+    # Generate update DTO
     try:
-        template = env.get_template("dto/update-dto.ts.j2")
-        output_code = template.render(template_data)
-        file_name = f"update-{template_data['module'].lower()}.dto.ts"
-        (dto_dir / file_name).write_text(output_code)
-        logger.success(f"Generated {file_name}")
-    except Exception as e:
+        file_name = f"update-{module_lower}.dto.ts"
+        renderer.render_template("dto/update-dto.ts.j2", template_data, dto_dir / file_name)
+    except TemplateException as e:
         logger.error(f"Failed to generate update DTO: {e}")
 
 
@@ -47,13 +48,12 @@ def handle_entity_file(
         entities_dir (Path): Directory where entities should be saved.
         env (Environment): Jinja2 environment.
     """
+    renderer = TemplateRenderer(env)
+    file_name = f"{template_data['module'].lower()}.entity.ts"
+
     try:
-        template = env.get_template("entity.ts.j2")
-        output_code = template.render(template_data)
-        file_name = f"{template_data['module'].lower()}.entity.ts"
-        (entities_dir / file_name).write_text(output_code)
-        logger.success(f"Generated {file_name}")
-    except Exception as e:
+        renderer.render_template("entity.ts.j2", template_data, entities_dir / file_name)
+    except TemplateException as e:
         logger.error(f"Failed to generate entity file: {e}")
 
 
@@ -88,6 +88,8 @@ def generate_module(
         "relatedEntities": module_data.get("relatedEntities", []),
     }
 
+    renderer = TemplateRenderer(env)
+
     for file_key in files_to_generate:
         template_name = f"{file_key}.ts.j2"
 
@@ -100,12 +102,9 @@ def generate_module(
             continue
 
         try:
-            template = env.get_template(template_name)
-            output_code = template.render(template_data)
             file_name = f"{module_name.lower()}.{file_key}.ts"
-            (module_dir / file_name).write_text(output_code)
-            logger.success(f"Generated {file_name}")
-        except Exception as e:
+            renderer.render_template(template_name, template_data, module_dir / file_name)
+        except TemplateException as e:
             logger.error(f"Failed to generate {file_key}: {e}")
 
     logger.end(f"{module_name} module generated")

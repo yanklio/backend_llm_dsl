@@ -8,6 +8,7 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 from src.shared.logs.logger import logger
+from src.shared.exceptions import ConfigurationException
 
 from .core.modules.module import generate_module
 from .core.modules.relation import handle_relations
@@ -22,9 +23,40 @@ def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
         blueprint_file (str): Path to the blueprint YAML file.
         nest_project_path (Optional[str]): Output directory for the project.
                                            Defaults to "nest_project".
+
+    Raises:
+        ConfigurationException: If blueprint file is missing or invalid
     """
-    with open(blueprint_file, "r") as f:
-        data = yaml.safe_load(f)
+    # Read and parse blueprint file
+    try:
+        with open(blueprint_file, "r") as f:
+            data = yaml.safe_load(f)
+    except FileNotFoundError as e:
+        raise ConfigurationException(
+            f"Blueprint file not found: {blueprint_file}",
+            code="CONFIG001",
+            context={"file": blueprint_file}
+        ) from e
+    except yaml.YAMLError as e:
+        raise ConfigurationException(
+            f"Invalid YAML in blueprint file: {e}",
+            code="CONFIG002",
+            context={"file": blueprint_file, "error": str(e)}
+        ) from e
+    except Exception as e:
+        raise ConfigurationException(
+            f"Failed to read blueprint file: {e}",
+            code="CONFIG003",
+            context={"file": blueprint_file, "error": str(e)}
+        ) from e
+
+    # Validate blueprint structure
+    if not isinstance(data, dict):
+        raise ConfigurationException(
+            "Blueprint must be a YAML dictionary",
+            code="CONFIG004",
+            context={"file": blueprint_file, "type": type(data).__name__}
+        )
 
     script_dir = Path(__file__).parent
     template_dir = script_dir / "templates"
@@ -46,7 +78,7 @@ def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:
         logger.warn("No modules defined in blueprint!")
         return
 
-    relations_map = handle_relations(modules_data, env, base_output_dir)
+    relations_map = handle_relations(modules_data)
 
     for module_data in modules_data:
         module_name = module_data["name"]
