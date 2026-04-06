@@ -6,7 +6,6 @@ Two-phase approach:
 """
 
 import argparse
-import json
 import traceback
 from pathlib import Path
 from typing import Any
@@ -16,10 +15,9 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from src.llm.dsl_generate import natural_language_to_yaml, save_blueprint
 from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT
-from src.llm.wrapper import GenerationResult, LLMClient
+from src.llm.wrapper import LLMClient
 from src.shared import logger
 from src.shared.utils import clean_llm_response, try_parse_json
-from src.dsl.generate import main as dsl_generate
 
 load_dotenv()
 

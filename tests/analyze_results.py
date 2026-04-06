@@ -1,8 +1,9 @@
 
 import json
-from pathlib import Path
-from collections import defaultdict
 import statistics
+from collections import defaultdict
+from pathlib import Path
+
 
 def analyze():
     results_path = Path(__file__).parent / "test_results.json"
@@ -10,7 +11,7 @@ def analyze():
         print(f"No results found at {results_path}")
         return
 
-    with open(results_path, "r") as f:
+    with open(results_path) as f:
         results = json.load(f)
 
     # Group by approach
@@ -41,19 +42,19 @@ def analyze():
 
         print(f"Success Rate: {passed}/{len(experiments)} ({(passed/len(experiments))*100:.1f}%)")
         print(f"Status: {passed} PASS, {failed} FAIL, {errors} ERR")
-        print(f"\nAverages:")
+        print("\nAverages:")
         print(f"  Time (Total):  {statistics.mean(times):.2f}s")
         print(f"    - LLM Gen:   {statistics.mean(llm_times):.2f}s")
         if approach == "dsl":
             print(f"    - DSL Exec:  {statistics.mean(dsl_times):.2f}s")
             
-        print(f"  Tokens:")
+        print("  Tokens:")
         print(f"    - Input:     {statistics.mean(in_tokens):.1f}")
         print(f"    - Output:    {statistics.mean(out_tokens):.1f}")
         print(f"    - Total:     {statistics.mean(total_tokens):.1f}")
 
         if errors > 0:
-            print(f"\nErrors encountered:")
+            print("\nErrors encountered:")
             for e in experiments:
                 if not e["generation"]["success"]:
                     error_msg = e["generation"].get("error") or "Unknown error"

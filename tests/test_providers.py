@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
-"""
-Test script to verify provider chain configuration
-"""
+"""Test script to verify provider chain configuration."""
 
-import sys
 import argparse
+import sys
 from pathlib import Path
 
 # Add parent directory to path for shared imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.llm.dsl_generate import natural_language_to_yaml
+
 
 def main():
     parser = argparse.ArgumentParser(description="Test LLM provider chain")

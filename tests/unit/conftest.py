@@ -4,8 +4,8 @@ Provides shared fixtures and test utilities used across all unit tests.
 """
 
 import tempfile
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import pytest
 from jinja2 import Environment, FileSystemLoader

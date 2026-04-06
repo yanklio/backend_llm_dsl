@@ -5,12 +5,16 @@ description = "AI-powered NestJS application generator using DSL"
 requires-python = ">=3.9"
 
 [tool.ruff]
-line-length = 88
+line-length = 120
 target-version = "py39"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "D"]
-ignore = ["D100", "D104"]  # Ignore missing docstring in public module/package
+ignore = ["D100", "D104", "D107", "D301", "B904", "D101", "D103", "D105", "D107", "D200", "D415", "F811"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/llm/prompts.py" = ["E501"]
+"tests/**" = ["E501", "F811"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

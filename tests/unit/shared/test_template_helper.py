@@ -1,6 +1,5 @@
 """Tests for template rendering helper."""
 
-from pathlib import Path
 
 import pytest
 from jinja2 import Environment, FileSystemLoader

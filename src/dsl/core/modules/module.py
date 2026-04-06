@@ -10,7 +10,9 @@ from src.shared.logs.logger import logger
 from src.shared.template_helper import TemplateRenderer
 
 
-def handle_dto_file(template_data: dict[str, Any], dto_dir: Path, env: Environment) -> None:
+def handle_dto_file(
+    template_data: dict[str, Any], dto_dir: Path, env: Environment
+) -> None:
     """Generate DTO files for the module.
 
     Args:
@@ -24,19 +26,25 @@ def handle_dto_file(template_data: dict[str, Any], dto_dir: Path, env: Environme
     # Generate create DTO
     try:
         file_name = f"create-{module_lower}.dto.ts"
-        renderer.render_template("dto/create-dto.ts.j2", template_data, dto_dir / file_name)
+        renderer.render_template(
+            "dto/create-dto.ts.j2", template_data, dto_dir / file_name
+        )
     except TemplateException as e:
         logger.error(f"Failed to generate create DTO: {e}")
 
     # Generate update DTO
     try:
         file_name = f"update-{module_lower}.dto.ts"
-        renderer.render_template("dto/update-dto.ts.j2", template_data, dto_dir / file_name)
+        renderer.render_template(
+            "dto/update-dto.ts.j2", template_data, dto_dir / file_name
+        )
     except TemplateException as e:
         logger.error(f"Failed to generate update DTO: {e}")
 
 
-def handle_entity_file(template_data: dict[str, Any], entities_dir: Path, env: Environment) -> None:
+def handle_entity_file(
+    template_data: dict[str, Any], entities_dir: Path, env: Environment
+) -> None:
     """Generate entity files for the module.
 
     Args:
@@ -48,12 +56,16 @@ def handle_entity_file(template_data: dict[str, Any], entities_dir: Path, env: E
     file_name = f"{template_data['module'].lower()}.entity.ts"
 
     try:
-        renderer.render_template("entity.ts.j2", template_data, entities_dir / file_name)
+        renderer.render_template(
+            "entity.ts.j2", template_data, entities_dir / file_name
+        )
     except TemplateException as e:
         logger.error(f"Failed to generate entity file: {e}")
 
 
-def generate_module(module_data: dict[str, Any], env: Environment, base_output_dir: Path) -> None:
+def generate_module(
+    module_data: dict[str, Any], env: Environment, base_output_dir: Path
+) -> None:
     """Generate a single sub-module (entity module).
 
     Args:
@@ -97,7 +109,9 @@ def generate_module(module_data: dict[str, Any], env: Environment, base_output_d
 
         try:
             file_name = f"{module_name.lower()}.{file_key}.ts"
-            renderer.render_template(template_name, template_data, module_dir / file_name)
+            renderer.render_template(
+                template_name, template_data, module_dir / file_name
+            )
         except TemplateException as e:
             logger.error(f"Failed to generate {file_key}: {e}")
 

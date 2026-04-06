@@ -1,11 +1,6 @@
 """Tests for command execution helpers."""
 
 import subprocess
-import time
-from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
 
 from src.validators.shared.command import (
     SubprocessResult,

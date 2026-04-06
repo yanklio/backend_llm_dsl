@@ -1,5 +1,9 @@
-"""System prompts for LLM interactions."""
+"""System prompts for LLM interactions.
 
+The system prompts are intentionally long and contain examples. Disable line-length
+checks for this module as these are curated prompts that should not be modified.
+"""
+# noqa: E501
 SYSTEM_PROMPT = """You are a YAML blueprint generator for NestJS applications.
 Don't forget about relations if needed. Don't create `id`, `createdAt` or `updatedAt` fields at all (already included).
 

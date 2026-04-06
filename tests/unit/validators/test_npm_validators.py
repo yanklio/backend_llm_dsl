@@ -1,10 +1,7 @@
 """Tests for NPM validators."""
 
 import subprocess
-from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
-
-import pytest
+from unittest.mock import Mock, patch
 
 from src.validators.runtime_validators.npm_base_commands import (
     _run_npm_build,

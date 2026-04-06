@@ -10,7 +10,6 @@ from typing import Any
 from jinja2 import Environment, Template, TemplateNotFound
 
 from src.shared.exceptions import (
-    TemplateException,
     TemplateNotFoundException,
     TemplateRenderException,
 )
@@ -56,13 +55,13 @@ class TemplateRenderer:
             # Get the template
             template: Template = self.env.get_template(template_name)
         except TemplateNotFound as e:
+            search_path = "unknown"
+            if hasattr(self.env.loader, "searchpath"):
+                search_path = str(self.env.loader.searchpath)
             raise TemplateNotFoundException(
                 f"Template not found: {template_name}",
                 code="TEMPLATE002",
-                context={
-                    "template_name": template_name,
-                    "search_path": str(self.env.loader.searchpath if hasattr(self.env.loader, 'searchpath') else 'unknown')
-                }
+                context={"template_name": template_name, "search_path": search_path},
             ) from e
         except Exception as e:
             raise TemplateRenderException(

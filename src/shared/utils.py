@@ -13,7 +13,7 @@ from src.shared.exceptions import JSONParseException
 
 
 def clean_llm_response(content: str) -> str:
-    """Clean LLM response by removing markdown code blocks.
+    r"""Clean LLM response by removing markdown code blocks.
 
     Supports json, yaml, and generic code blocks. Extracts content
     between ``` markers if present.

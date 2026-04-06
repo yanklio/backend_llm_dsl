@@ -42,7 +42,7 @@ def load_test_cases() -> dict[str, Any]:
 
 
 def clean_project(project_path: Path):
-    """Clean project directories between test runs"""
+    """Clean project directories between test runs."""
     dirs_to_clean = ["src", "dist", "data"]
     for dir_name in dirs_to_clean:
         dir_path = project_path / dir_name

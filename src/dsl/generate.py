@@ -112,7 +112,7 @@ def _enrich_modules_with_relations(
                         relation["joinColumn"] = relations_map[relation_key]["joinColumn"]
 
         related_entities = []
-        for (src, dest), rel_data in relations_map.items():
+        for (src, _dest), rel_data in relations_map.items():
             if src == module_name:
                 related_entities.append(rel_data["model"])
         module_data["relatedEntities"] = related_entities

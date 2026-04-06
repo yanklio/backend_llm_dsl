@@ -1,9 +1,6 @@
 """Tests for TypeScript validator."""
 
-from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import patch
 
 from src.validators.shared.command import SubprocessResult
 from src.validators.shared.error_types import ErrorCodes

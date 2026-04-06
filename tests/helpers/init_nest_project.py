@@ -111,7 +111,7 @@ def update_package_json(nest_project_path: Path) -> bool:
         print(f"Error: package.json not found at {package_json_path}")
         return False
 
-    with open(package_json_path, "r") as f:
+    with open(package_json_path) as f:
         package_json = json.load(f)
 
     # Required dependencies for DSL-generated code
@@ -164,7 +164,7 @@ def update_tsconfig(nest_project_path: Path) -> bool:
         print(f"Error: tsconfig.json not found at {tsconfig_path}")
         return False
 
-    with open(tsconfig_path, "r") as f:
+    with open(tsconfig_path) as f:
         tsconfig = json.load(f)
 
     compiler_options = tsconfig.get("compilerOptions", {})

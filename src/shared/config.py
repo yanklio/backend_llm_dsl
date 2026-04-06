@@ -4,7 +4,6 @@ Provides centralized, type-safe configuration using Pydantic with support
 for environment variables. Eliminates hardcoded values throughout the codebase.
 """
 
-import os
 from pathlib import Path
 from typing import Optional
 
