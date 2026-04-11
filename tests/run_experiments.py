@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.dsl.generate import main as dsl_generate
 from src.llm.dsl_generate import natural_language_to_yaml
 from src.llm.raw_generate import natural_language_to_code, save_files
+from src.llm.mixed_generate import mixed_generate, save_mixed_files
 from src.llm.wrapper import GenerationResult
 from src.shared.utils import try_parse_json
 from src.validators import validate_runtime, validate_syntactic
@@ -109,16 +110,7 @@ def run_dsl_approach(
 def run_raw_approach(
     test_case_name: str, test_case_data: dict[str, Any], project_path: Path
 ) -> dict[str, Any]:
-    """Generate project files using the raw LLM approach and return execution metrics.
-
-    Args:
-        test_case_name: Name of the test case (used for reporting).
-        test_case_data: Test case payload containing the natural-language requirement.
-        project_path: Destination path where generated files are written.
-
-    Returns:
-        A dictionary indicating success/failure, metrics, and optional error details.
-    """
+    """Generate project files using the raw LLM approach and return execution metrics."""
     start_time = time.time()
     metrics = {
         "llm_time": 0.0,
@@ -153,104 +145,14 @@ def run_raw_approach(
         return {"success": False, "error": str(e), "metrics": metrics}
 
 
-def validate_project(project_path: Path) -> dict[str, Any]:
-    """Run syntactic and runtime validation for a generated project.
-
-    Args:
-        project_path: Path to the generated project to validate.
-
-    Returns:
-        Validation results for syntactic checks, runtime checks, and combined validity.
-    """
-    with SuppressOutput():
-        syntactic = validate_syntactic(str(project_path))
-        try:
-            # Catch potential validation crashes
-            runtime = validate_runtime(str(project_path))
-        except Exception as e:
-            runtime = {
-                "valid": False,
-                "install_success": False,
-                "build_success": False,
-                "start_success": False,
-                "error": str(e),
-            }
-
-    return {
-        "syntactic": syntactic,
-        "runtime": runtime,
-        "overall_valid": syntactic.get("valid", False) and runtime.get("valid", False),
-    }
-
-
-def main():
-    """Execute DSL and raw generation experiments across all configured test cases."""
-    test_cases = load_test_cases()
-    project_root = Path(__file__).parent.parent
-    nest_project_path = project_root / "nest_project"
-
-    # Ensure nest_project exists
-    nest_project_path.mkdir(exist_ok=True)
-
-    results = []
-
-    print(f"Starting experiments for {len(test_cases)} test cases...")
-    print(f"{'Test Case':<15} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}")
-    print("-" * 60)
-
-    for case_name, case_data in test_cases.items():
-        for approach in ["dsl", "raw"]:
-            clean_project(nest_project_path)
-
-            if approach == "dsl":
-                gen_result = run_dsl_approach(case_name, case_data, nest_project_path)
-            else:
-                gen_result = run_raw_approach(case_name, case_data, nest_project_path)
-
-            validation = {}
-            if gen_result["success"]:
-                validation = validate_project(nest_project_path)
-                status = "PASS" if validation["overall_valid"] else "FAIL"
-            else:
-                status = "ERR"
-
-            metrics = gen_result["metrics"]
-            total_tokens = metrics["total_tokens"]
-            total_time = metrics["total_time"]
-
-            print(
-                f"{case_name:<15} {approach:<10} {status:<10} {total_time:.2f}s   {str(total_tokens):<8}"
-            )
-            if status == "ERR":
-                print(f"  Error: {gen_result.get('error', 'Unknown')}")
-
-            current_result = {
-                "test_case": case_name,
-                "approach": approach,
-                "generation": gen_result,
-                "validation": validation,
-                "timestamp": datetime.now().isoformat(),
-            }
-            results.append(current_result)
-
-            # Incremental save
-            save_results(results)
-
-    print("-" * 60)
-    print(f"Results saved to {Path(__file__).parent / 'test_results.json'}")
-
-
-if __name__ == "__main__":
-    main()
-
-
-def run_raw_approach(
+def run_mixed_approach(
     test_case_name: str, test_case_data: dict[str, Any], project_path: Path
 ) -> dict[str, Any]:
+    """Generate project files using the mixed approach (YAML + raw code context)."""
     start_time = time.time()
     metrics = {
         "llm_time": 0.0,
-        "dsl_time": 0.0,  # Not applicable, but kept for schema consistency
+        "dsl_time": 0.0,
         "total_time": 0.0,
         "input_tokens": 0,
         "output_tokens": 0,
@@ -258,20 +160,32 @@ def run_raw_approach(
         "provider": None,
     }
 
+    blueprint_path = (
+        Path(__file__).parent / "test_cases" / "dsl_llm" / f"{test_case_name}_mixed_blueprint.yaml"
+    )
+    blueprint_path.parent.mkdir(parents=True, exist_ok=True)
+
     try:
         with SuppressOutput():
             # Pass model=None to use default or env var
-            result: GenerationResult = natural_language_to_code(
-                test_case_data["requirement"], str(project_path)
+            result = mixed_generate(
+                description=test_case_data["requirement"],
+                output_dir=str(project_path),
+                blueprint_path=str(blueprint_path),
+                primary_model=None
             )
-            files = try_parse_json(result.content)
-            save_files(files, str(project_path))
+            
+            if result["success"]:
+                save_mixed_files(result["files"], str(project_path))
+            else:
+                raise Exception(result.get("error", "Unknown mixed generation error"))
 
-        metrics["llm_time"] = result.duration_seconds
-        metrics["input_tokens"] = result.input_tokens
-        metrics["output_tokens"] = result.output_tokens
-        metrics["total_tokens"] = result.total_tokens
-        metrics["provider"] = result.provider
+        stats = result["statistics"]
+        metrics["llm_time"] = stats["total_duration_seconds"]
+        metrics["input_tokens"] = stats.get("phase1_tokens", 0) # Phase 1 input only approx
+        metrics["output_tokens"] = stats.get("phase2_tokens", 0) # Phase 2 total approx
+        metrics["total_tokens"] = stats.get("total_tokens", 0)
+        metrics["provider"] = stats.get("provider")
 
         metrics["total_time"] = time.time() - start_time
         return {"success": True, "metrics": metrics}
@@ -282,6 +196,7 @@ def run_raw_approach(
 
 
 def validate_project(project_path: Path) -> dict[str, Any]:
+    """Run syntactic and runtime validation for a generated project."""
     with SuppressOutput():
         syntactic = validate_syntactic(str(project_path))
         try:
@@ -304,6 +219,7 @@ def validate_project(project_path: Path) -> dict[str, Any]:
 
 
 def main():
+    """Execute DSL, raw, and mixed generation experiments across all configured test cases."""
     test_cases = load_test_cases()
     project_root = Path(__file__).parent.parent
     nest_project_path = project_root / "nest_project"
@@ -314,17 +230,20 @@ def main():
     results = []
 
     print(f"Starting experiments for {len(test_cases)} test cases...")
-    print(f"{'Test Case':<15} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}")
-    print("-" * 60)
+    print(f"{'Test Case':<15} {'Tier':<8} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}")
+    print("-" * 70)
 
     for case_name, case_data in test_cases.items():
-        for approach in ["dsl", "raw"]:
+        tier = case_data.get("tier", "unknown")
+        for approach in ["dsl", "raw", "mixed"]:
             clean_project(nest_project_path)
 
             if approach == "dsl":
                 gen_result = run_dsl_approach(case_name, case_data, nest_project_path)
-            else:
+            elif approach == "raw":
                 gen_result = run_raw_approach(case_name, case_data, nest_project_path)
+            else:
+                gen_result = run_mixed_approach(case_name, case_data, nest_project_path)
 
             validation = {}
             if gen_result["success"]:
@@ -338,13 +257,14 @@ def main():
             total_time = metrics["total_time"]
 
             print(
-                f"{case_name:<15} {approach:<10} {status:<10} {total_time:.2f}s   {str(total_tokens):<8}"
+                f"{case_name:<15} {tier:<8} {approach:<10} {status:<10} {total_time:.2f}s   {str(total_tokens):<8}"
             )
             if status == "ERR":
                 print(f"  Error: {gen_result.get('error', 'Unknown')}")
 
             current_result = {
                 "test_case": case_name,
+                "tier": tier,
                 "approach": approach,
                 "generation": gen_result,
                 "validation": validation,
@@ -355,7 +275,7 @@ def main():
             # Incremental save
             save_results(results)
 
-    print("-" * 60)
+    print("-" * 70)
     print(f"Results saved to {Path(__file__).parent / 'test_results.json'}")
 
 

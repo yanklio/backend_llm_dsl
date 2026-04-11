@@ -5,9 +5,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.44,
-        "dsl_time": 0.05516839027404785,
-        "total_time": 0.567288875579834,
+        "llm_time": 1.7,
+        "dsl_time": 0.09368228912353516,
+        "total_time": 1.9253592491149902,
         "input_tokens": 653,
         "output_tokens": 132,
         "total_tokens": 785,
@@ -30,7 +30,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:32:42.549566"
+    "timestamp": "2026-04-07T09:58:07.626654"
   },
   {
     "test_case": "TEST_CASE_1",
@@ -38,12 +38,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 2.7,
+        "llm_time": 3.17,
         "dsl_time": 0.0,
-        "total_time": 2.827650308609009,
+        "total_time": 3.353517770767212,
         "input_tokens": 1361,
-        "output_tokens": 1408,
-        "total_tokens": 2769,
+        "output_tokens": 1378,
+        "total_tokens": 2739,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -51,47 +51,19 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 6,
+        "error_count": 2,
         "errors": [
-          {
-            "file": "src/users/users.controller.ts",
-            "line": 11,
-            "column": 32,
-            "message": "Cannot find name 'User'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/users/users.controller.ts",
-            "line": 16,
-            "column": 55,
-            "message": "Cannot find name 'User'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/users/users.controller.ts",
-            "line": 21,
-            "column": 67,
-            "message": "Cannot find name 'User'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/users/users.controller.ts",
-            "line": 26,
-            "column": 92,
-            "message": "Cannot find name 'User'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/users/users.service.ts",
-            "line": 20,
-            "column": 5,
-            "message": "Type 'User | null' is not assignable to type 'User'.",
-            "code": "TS2322"
-          },
           {
             "file": "src/users/users.service.ts",
             "line": 20,
             "column": 40,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<User>'.",
+            "code": "TS2559"
+          },
+          {
+            "file": "src/users/users.service.ts",
+            "line": 29,
+            "column": 52,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<User>'.",
             "code": "TS2559"
           }
@@ -105,19 +77,19 @@
         "errors": {
           "build": {
             "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/users/users.controller.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m32\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'User'.\n\n\u001b[7m11\u001b[0m   async getAllUsers(): Promise<User[]> {\n\u001b[7m  \u001b[0m \u001b[91m         ",
+            "message": "npm run build failed: \u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m20\u001b[0m     return this.us",
             "code": "BUILD_FAILED"
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/users/users.controller.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m32\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'User'.\n\n\u001b[7m11\u001b[0m   async getAllUsers(): Promise<User[]> {\n\u001b[7m  \u001b[0m \u001b[91m                               ~~~~\u001b[0m\n\u001b[96msrc/users/users.controller.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'User'.\n\n\u001b[7m16\u001b[0m   async getUserById(@Param('id') id: number): Promise<User> {\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~~~\u001b[0m\n\u001b[96msrc/users/users.controller.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m67\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'User'.\n\n\u001b[7m21\u001b[0m   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                  ~~~~\u001b[0m\n\u001b[96msrc/users/users.controller.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m92\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'User'.\n\n\u001b[7m26\u001b[0m   async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<User> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                                           ~~~~\u001b[0m\n\u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'User | null' is not assignable to type 'User'.\n  Type 'null' is not assignable to type 'User'.\n\n\u001b[7m20\u001b[0m     return this.userRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m20\u001b[0m     return this.userRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m20\u001b[0m     return this.userRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m29\u001b[0m     const user = await this.userRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:33:00.323189"
+    "timestamp": "2026-04-07T09:58:23.670017"
   },
   {
     "test_case": "TEST_CASE_2",
@@ -125,9 +97,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.46,
-        "dsl_time": 0.05643320083618164,
-        "total_time": 0.5390579700469971,
+        "llm_time": 0.59,
+        "dsl_time": 0.11029505729675293,
+        "total_time": 0.7608850002288818,
         "input_tokens": 670,
         "output_tokens": 182,
         "total_tokens": 852,
@@ -150,7 +122,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:33:22.653390"
+    "timestamp": "2026-04-07T09:58:43.197504"
   },
   {
     "test_case": "TEST_CASE_2",
@@ -158,12 +130,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 3.01,
+        "llm_time": 3.44,
         "dsl_time": 0.0,
-        "total_time": 3.1258771419525146,
+        "total_time": 3.620465040206909,
         "input_tokens": 1378,
-        "output_tokens": 1526,
-        "total_tokens": 2904,
+        "output_tokens": 1540,
+        "total_tokens": 2918,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -223,7 +195,7 @@
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:33:41.066770"
+    "timestamp": "2026-04-07T09:58:58.586789"
   },
   {
     "test_case": "TEST_CASE_3",
@@ -231,9 +203,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.45,
-        "dsl_time": 0.05688738822937012,
-        "total_time": 0.5344178676605225,
+        "llm_time": 0.41,
+        "dsl_time": 0.10449051856994629,
+        "total_time": 0.5653789043426514,
         "input_tokens": 646,
         "output_tokens": 138,
         "total_tokens": 784,
@@ -256,7 +228,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:34:03.398564"
+    "timestamp": "2026-04-07T09:59:17.832637"
   },
   {
     "test_case": "TEST_CASE_3",
@@ -264,12 +236,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 2.86,
+        "llm_time": 2.99,
         "dsl_time": 0.0,
-        "total_time": 2.9799036979675293,
+        "total_time": 3.186440944671631,
         "input_tokens": 1354,
-        "output_tokens": 1531,
-        "total_tokens": 2885,
+        "output_tokens": 1422,
+        "total_tokens": 2776,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -277,47 +249,40 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 12,
+        "error_count": 9,
         "errors": [
           {
             "file": "src/app.module.ts",
-            "line": 11,
-            "column": 27,
+            "line": 10,
+            "column": 35,
             "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
             "code": "TS2345"
           },
           {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
             "file": "src/todo/todo.controller.ts",
             "line": 11,
-            "column": 32,
+            "column": 28,
             "message": "Cannot find name 'Todo'.",
             "code": "TS2304"
           },
           {
             "file": "src/todo/todo.controller.ts",
             "line": 16,
-            "column": 55,
+            "column": 51,
             "message": "Cannot find name 'Todo'.",
             "code": "TS2304"
           },
           {
             "file": "src/todo/todo.controller.ts",
             "line": 21,
-            "column": 67,
+            "column": 63,
             "message": "Cannot find name 'Todo'.",
             "code": "TS2304"
           },
           {
             "file": "src/todo/todo.controller.ts",
             "line": 26,
-            "column": 92,
+            "column": 88,
             "message": "Cannot find name 'Todo'.",
             "code": "TS2304"
           },
@@ -337,24 +302,10 @@
           },
           {
             "file": "src/todo/todo.service.ts",
-            "line": 21,
-            "column": 35,
-            "message": "Cannot find name 'CreateTodoDTO'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/todo/todo.service.ts",
             "line": 23,
             "column": 5,
             "message": "Type 'Todo[]' is missing the following properties from type 'Todo': id, title, done, dueDate, createdAt",
             "code": "TS2739"
-          },
-          {
-            "file": "src/todo/todo.service.ts",
-            "line": 26,
-            "column": 47,
-            "message": "Cannot find name 'UpdateTodoDTO'.",
-            "code": "TS2304"
           },
           {
             "file": "src/todo/todo.service.ts",
@@ -373,19 +324,19 @@
         "errors": {
           "build": {
             "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
+            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
             "code": "BUILD_FAILED"
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m11\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m32\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m11\u001b[0m   async getAllTodos(): Promise<Todo[]> {\n\u001b[7m  \u001b[0m \u001b[91m                               ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m16\u001b[0m   async getTodoById(@Param('id') id: number): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m67\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m21\u001b[0m   async createTodo(@Body() createTodoDTO: CreateTodoDTO): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                  ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m92\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m26\u001b[0m   async updateTodo(@Param('id') id: number, @Body() updateTodoDTO: UpdateTodoDTO): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                                           ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Todo | null' is not assignable to type 'Todo'.\n  Type 'null' is not assignable to type 'Todo'.\n\n\u001b[7m18\u001b[0m     return this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Todo>'.\n\n\u001b[7m18\u001b[0m     return this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'CreateTodoDTO'.\n\n\u001b[7m21\u001b[0m   async createTodo(createTodoDTO: CreateTodoDTO): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2739: \u001b[0mType 'Todo[]' is missing the following properties from type 'Todo': id, title, done, dueDate, createdAt\n\n\u001b[7m23\u001b[0m     return this.todoRepository.save(todo);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m47\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'UpdateTodoDTO'.\n\n\u001b[7m26\u001b[0m   async updateTodo(id: number, updateTodoDTO: UpdateTodoDTO): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                              ~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Todo>'.\n\n\u001b[7m27\u001b[0m     const todo = await this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(DatabaseConfig), TodoModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m28\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m11\u001b[0m   async findAll(): Promise<Todo[]> {\n\u001b[7m  \u001b[0m \u001b[91m                           ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m51\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m16\u001b[0m   async findOne(@Param('id') id: number): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                  ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m63\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m21\u001b[0m   async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                              ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m88\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m26\u001b[0m   async update(@Param('id') id: number, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                                       ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Todo | null' is not assignable to type 'Todo'.\n  Type 'null' is not assignable to type 'Todo'.\n\n\u001b[7m18\u001b[0m     return this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Todo>'.\n\n\u001b[7m18\u001b[0m     return this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2739: \u001b[0mType 'Todo[]' is missing the following properties from type 'Todo': id, title, done, dueDate, createdAt\n\n\u001b[7m23\u001b[0m     return this.todoRepository.save(todo);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Todo>'.\n\n\u001b[7m27\u001b[0m     const todo = await this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:34:21.393087"
+    "timestamp": "2026-04-07T09:59:32.896282"
   },
   {
     "test_case": "TEST_CASE_4",
@@ -393,9 +344,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.38,
-        "dsl_time": 0.058837175369262695,
-        "total_time": 0.4658656120300293,
+        "llm_time": 0.56,
+        "dsl_time": 0.10445117950439453,
+        "total_time": 0.720745325088501,
         "input_tokens": 646,
         "output_tokens": 143,
         "total_tokens": 789,
@@ -418,7 +369,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:34:43.626410"
+    "timestamp": "2026-04-07T09:59:52.293440"
   },
   {
     "test_case": "TEST_CASE_4",
@@ -426,12 +377,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 3.04,
+        "llm_time": 3.46,
         "dsl_time": 0.0,
-        "total_time": 3.1542558670043945,
+        "total_time": 3.6462602615356445,
         "input_tokens": 1354,
-        "output_tokens": 1518,
-        "total_tokens": 2872,
+        "output_tokens": 1559,
+        "total_tokens": 2913,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -439,40 +390,33 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 5,
+        "error_count": 4,
         "errors": [
           {
-            "file": "src/app.module.ts",
+            "file": "src/database/database.config.ts",
             "line": 10,
-            "column": 35,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
+            "column": 42,
+            "message": "Argument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'DataSourceOptions'.",
             "code": "TS2345"
           },
           {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
+            "file": "src/database/database.module.ts",
+            "line": 6,
+            "column": 35,
+            "message": "Argument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
+            "code": "TS2345"
           },
           {
             "file": "src/notes/notes.service.ts",
             "line": 18,
-            "column": 40,
+            "column": 41,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Note>'.",
             "code": "TS2559"
           },
           {
             "file": "src/notes/notes.service.ts",
-            "line": 27,
-            "column": 52,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Note>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/notes/notes.service.ts",
-            "line": 36,
-            "column": 52,
+            "line": 28,
+            "column": 41,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Note>'.",
             "code": "TS2559"
           }
@@ -486,19 +430,19 @@
         "errors": {
           "build": {
             "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
+            "message": "npm run build failed: \u001b[96msrc/database/database.config.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is n",
             "code": "BUILD_FAILED"
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(database), NotesModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m18\u001b[0m     return this.noteRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m27\u001b[0m     const note = await this.noteRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m36\u001b[0m     const note = await this.noteRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/database/database.config.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'DataSourceOptions'.\n  Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type 'SpannerConnectionOptions'.\n    Types of property 'type' are incompatible.\n      Type 'string' is not assignable to type '\"spanner\"'.\n\n\u001b[7m10\u001b[0m export const dataSource = new DataSource(databaseConfig);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/database/database.module.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type '({ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>) | ... 16 more ... | ({ ...; } & Partial<...>)'.\n    Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n      Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type 'Partial<SpannerConnectionOptions>'.\n        Types of property 'type' are incompatible.\n          Type 'string' is not assignable to type '\"spanner\"'.\n\n\u001b[7m6\u001b[0m   imports: [TypeOrmModule.forRoot(databaseConfig)],\n\u001b[7m \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m41\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m18\u001b[0m     return this.notesRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                        ~~\u001b[0m\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m28\u001b[0m:\u001b[93m41\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m28\u001b[0m     return this.notesRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                        ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:35:01.893437"
+    "timestamp": "2026-04-07T10:00:07.813982"
   },
   {
     "test_case": "TEST_CASE_5",
@@ -506,9 +450,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.4,
-        "dsl_time": 0.06028938293457031,
-        "total_time": 0.48397350311279297,
+        "llm_time": 0.87,
+        "dsl_time": 0.1070563793182373,
+        "total_time": 1.0319700241088867,
         "input_tokens": 653,
         "output_tokens": 159,
         "total_tokens": 812,
@@ -557,7 +501,7 @@
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:35:17.584316"
+    "timestamp": "2026-04-07T10:00:20.773168"
   },
   {
     "test_case": "TEST_CASE_5",
@@ -565,12 +509,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 3.2,
+        "llm_time": 3.87,
         "dsl_time": 0.0,
-        "total_time": 3.317291736602783,
+        "total_time": 4.047507286071777,
         "input_tokens": 1361,
-        "output_tokens": 1566,
-        "total_tokens": 2927,
+        "output_tokens": 1594,
+        "total_tokens": 2955,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -603,14 +547,14 @@
           },
           {
             "file": "src/events/events.service.ts",
-            "line": 18,
+            "line": 20,
             "column": 42,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Event>'.",
             "code": "TS2559"
           },
           {
             "file": "src/events/events.service.ts",
-            "line": 27,
+            "line": 29,
             "column": 55,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Event>'.",
             "code": "TS2559"
@@ -630,14 +574,14 @@
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m11\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/events/entities/event.entity.ts\u001b[0m:\u001b[93m1\u001b[0m:\u001b[93m68\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2305: \u001b[0mModule '\"typeorm\"' has no exported member 'Enum'.\n\n\u001b[7m1\u001b[0m import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Enum } from 'typeorm';\n\u001b[7m \u001b[0m \u001b[91m                                                                   ~~~~\u001b[0m\n\u001b[96msrc/events/events.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Event>'.\n\n\u001b[7m18\u001b[0m     return this.eventsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/events/events.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Event>'.\n\n\u001b[7m27\u001b[0m     const event = await this.eventsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m11\u001b[0m     TypeOrmModule.forRoot(database),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/events/entities/event.entity.ts\u001b[0m:\u001b[93m1\u001b[0m:\u001b[93m68\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2305: \u001b[0mModule '\"typeorm\"' has no exported member 'Enum'.\n\n\u001b[7m1\u001b[0m import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Enum } from 'typeorm';\n\u001b[7m \u001b[0m \u001b[91m                                                                   ~~~~\u001b[0m\n\u001b[96msrc/events/events.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Event>'.\n\n\u001b[7m20\u001b[0m     return this.eventsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/events/events.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Event>'.\n\n\u001b[7m29\u001b[0m     const event = await this.eventsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:35:36.209247"
+    "timestamp": "2026-04-07T10:00:36.631042"
   },
   {
     "test_case": "TEST_CASE_6",
@@ -645,12 +589,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.67,
-        "dsl_time": 0.08417344093322754,
-        "total_time": 0.7805066108703613,
+        "llm_time": 0.93,
+        "dsl_time": 0.1121373176574707,
+        "total_time": 1.098585844039917,
         "input_tokens": 702,
-        "output_tokens": 316,
-        "total_tokens": 1018,
+        "output_tokens": 315,
+        "total_tokens": 1017,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -670,7 +614,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:35:59.698884"
+    "timestamp": "2026-04-07T10:00:56.616922"
   },
   {
     "test_case": "TEST_CASE_6",
@@ -678,12 +622,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 5.42,
+        "llm_time": 5.89,
         "dsl_time": 0.0,
-        "total_time": 5.542337417602539,
+        "total_time": 6.087610721588135,
         "input_tokens": 1410,
-        "output_tokens": 2800,
-        "total_tokens": 4210,
+        "output_tokens": 2787,
+        "total_tokens": 4197,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -691,47 +635,54 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 6,
+        "error_count": 7,
         "errors": [
           {
             "file": "src/app.module.ts",
-            "line": 12,
-            "column": 35,
+            "line": 13,
+            "column": 27,
             "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
             "code": "TS2345"
           },
           {
-            "file": "src/author/author.service.ts",
+            "file": "src/authors/authors.service.ts",
             "line": 20,
-            "column": 42,
+            "column": 43,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Author>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/author/author.service.ts",
+            "file": "src/authors/authors.service.ts",
             "line": 29,
-            "column": 56,
+            "column": 57,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Author>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/post/post.service.ts",
+            "file": "src/database.config.ts",
+            "line": 7,
+            "column": 3,
+            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/posts/posts.service.ts",
             "line": 23,
-            "column": 44,
+            "column": 45,
             "message": "Expected 1 arguments, but got 2.",
             "code": "TS2554"
           },
           {
-            "file": "src/post/post.service.ts",
+            "file": "src/posts/posts.service.ts",
             "line": 27,
-            "column": 56,
+            "column": 57,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Author>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/post/post.service.ts",
+            "file": "src/posts/posts.service.ts",
             "line": 37,
-            "column": 52,
+            "column": 53,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Post>'.",
             "code": "TS2559"
           }
@@ -745,19 +696,19 @@
         "errors": {
           "build": {
             "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
+            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
             "code": "BUILD_FAILED"
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m12\u001b[0m   imports: [TypeOrmModule.forRoot(database), AuthorModule, PostModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~\u001b[0m\n\u001b[96msrc/author/author.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m20\u001b[0m     return this.authorRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/author/author.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m56\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m29\u001b[0m     const author = await this.authorRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                       ~~\u001b[0m\n\u001b[96msrc/post/post.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.postRepository.findOne(id, { relations: ['author'] });\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/post/post.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m56\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m27\u001b[0m     const author = await this.authorRepository.findOne(createPostDTO.authorId);\n\u001b[7m  \u001b[0m \u001b[91m                                                       ~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/post/post.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Post>'.\n\n\u001b[7m37\u001b[0m     const post = await this.postRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/authors/authors.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m43\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m20\u001b[0m     return this.authorsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                          ~~\u001b[0m\n\u001b[96msrc/authors/authors.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m57\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m29\u001b[0m     const author = await this.authorsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                        ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/posts/posts.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.postsRepository.findOne(id, { relations: ['author'] });\n\u001b[7m  \u001b[0m \u001b[91m                                            ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/posts/posts.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m57\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m27\u001b[0m     const author = await this.authorsRepository.findOne(createPostDTO.authorId);\n\u001b[7m  \u001b[0m \u001b[91m                                                        ~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/posts/posts.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m53\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Post>'.\n\n\u001b[7m37\u001b[0m     const post = await this.postsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                    ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:36:20.247854"
+    "timestamp": "2026-04-07T10:01:14.678586"
   },
   {
     "test_case": "TEST_CASE_7",
@@ -765,9 +716,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.74,
-        "dsl_time": 0.06354665756225586,
-        "total_time": 0.8256525993347168,
+        "llm_time": 0.96,
+        "dsl_time": 0.11268353462219238,
+        "total_time": 1.143341302871704,
         "input_tokens": 698,
         "output_tokens": 305,
         "total_tokens": 1003,
@@ -790,7 +741,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:36:42.872766"
+    "timestamp": "2026-04-07T10:01:34.669918"
   },
   {
     "test_case": "TEST_CASE_7",
@@ -798,12 +749,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 5.32,
+        "llm_time": 4.71,
         "dsl_time": 0.0,
-        "total_time": 5.4436633586883545,
+        "total_time": 4.8974690437316895,
         "input_tokens": 1406,
-        "output_tokens": 2813,
-        "total_tokens": 4219,
+        "output_tokens": 2590,
+        "total_tokens": 3996,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -811,111 +762,118 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 15,
+        "error_count": 16,
         "errors": [
           {
             "file": "src/app.module.ts",
-            "line": 13,
-            "column": 27,
+            "line": 10,
+            "column": 35,
             "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
             "code": "TS2345"
           },
           {
-            "file": "src/categories/categories.service.ts",
-            "line": 20,
+            "file": "src/category/category.service.ts",
+            "line": 18,
             "column": 44,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/categories/categories.service.ts",
-            "line": 29,
-            "column": 60,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/products/dto/create-product.dto.ts",
-            "line": 5,
-            "column": 4,
-            "message": "Cannot find name 'MinLength'. Did you mean 'length'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/products/dto/create-product.dto.ts",
-            "line": 6,
-            "column": 4,
-            "message": "Cannot find name 'MaxLength'. Did you mean 'length'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/products/dto/create-product.dto.ts",
-            "line": 10,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/products/dto/create-product.dto.ts",
-            "line": 14,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/products/dto/update-product.dto.ts",
-            "line": 6,
-            "column": 4,
-            "message": "Cannot find name 'MinLength'. Did you mean 'length'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/products/dto/update-product.dto.ts",
-            "line": 7,
-            "column": 4,
-            "message": "Cannot find name 'MaxLength'. Did you mean 'length'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/products/dto/update-product.dto.ts",
-            "line": 12,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/products/dto/update-product.dto.ts",
-            "line": 17,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/products/products.service.ts",
-            "line": 23,
-            "column": 47,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/products/products.service.ts",
+            "file": "src/category/category.service.ts",
             "line": 27,
             "column": 60,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/products/products.service.ts",
-            "line": 37,
-            "column": 62,
+            "file": "src/database.config.ts",
+            "line": 7,
+            "column": 3,
+            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/product/dto/create-product.dto.ts",
+            "line": 9,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/product/dto/create-product.dto.ts",
+            "line": 10,
+            "column": 4,
+            "message": "Cannot find name 'Min'.",
+            "code": "TS2304"
+          },
+          {
+            "file": "src/product/dto/create-product.dto.ts",
+            "line": 13,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/product/dto/create-product.dto.ts",
+            "line": 14,
+            "column": 4,
+            "message": "Cannot find name 'Min'.",
+            "code": "TS2304"
+          },
+          {
+            "file": "src/product/dto/create-product.dto.ts",
+            "line": 17,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/product/dto/update-product.dto.ts",
+            "line": 10,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/product/dto/update-product.dto.ts",
+            "line": 12,
+            "column": 4,
+            "message": "Cannot find name 'Min'.",
+            "code": "TS2304"
+          },
+          {
+            "file": "src/product/dto/update-product.dto.ts",
+            "line": 15,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/product/dto/update-product.dto.ts",
+            "line": 17,
+            "column": 4,
+            "message": "Cannot find name 'Min'.",
+            "code": "TS2304"
+          },
+          {
+            "file": "src/product/dto/update-product.dto.ts",
+            "line": 20,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 18,
+            "column": 47,
             "message": "Expected 1 arguments, but got 2.",
             "code": "TS2554"
           },
           {
-            "file": "src/products/products.service.ts",
-            "line": 43,
-            "column": 62,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
+            "file": "src/product/product.service.ts",
+            "line": 27,
+            "column": 58,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
             "code": "TS2559"
           }
         ]
@@ -928,19 +886,19 @@
         "errors": {
           "build": {
             "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
+            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
             "code": "BUILD_FAILED"
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(DatabaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/categories/categories.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m20\u001b[0m     return this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\u001b[96msrc/categories/categories.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m29\u001b[0m     const category = await this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~\u001b[0m\n\u001b[96msrc/products/dto/create-product.dto.ts\u001b[0m:\u001b[93m5\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'MinLength'. Did you mean 'length'?\n\n\u001b[7m5\u001b[0m   @MinLength(2)\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m38480\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m38480\u001b[0m declare var length: number;\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'length' is declared here.\n\u001b[96msrc/products/dto/create-product.dto.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'MaxLength'. Did you mean 'length'?\n\n\u001b[7m6\u001b[0m   @MaxLength(100)\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m38480\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m38480\u001b[0m declare var length: number;\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'length' is declared here.\n\u001b[96msrc/products/dto/create-product.dto.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m10\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/products/dto/create-product.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m14\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/products/dto/update-product.dto.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'MinLength'. Did you mean 'length'?\n\n\u001b[7m6\u001b[0m   @MinLength(2)\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m38480\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m38480\u001b[0m declare var length: number;\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'length' is declared here.\n\u001b[96msrc/products/dto/update-product.dto.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'MaxLength'. Did you mean 'length'?\n\n\u001b[7m7\u001b[0m   @MaxLength(100)\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m38480\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m38480\u001b[0m declare var length: number;\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'length' is declared here.\n\u001b[96msrc/products/dto/update-product.dto.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m12\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/products/dto/update-product.dto.ts\u001b[0m:\u001b[93m17\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m17\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/products/products.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m47\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.productRepository.findOne(id, { relations: ['category'] });\n\u001b[7m  \u001b[0m \u001b[91m                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/products/products.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m27\u001b[0m     const category = await this.categoryRepository.findOne(createProductDTO.categoryId);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/products/products.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m62\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m37\u001b[0m     const product = await this.productRepository.findOne(id, { relations: ['category'] });\n\u001b[7m  \u001b[0m \u001b[91m                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/products/products.service.ts\u001b[0m:\u001b[93m43\u001b[0m:\u001b[93m62\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m43\u001b[0m       const category = await this.categoryRepository.findOne(updateProductDTO.categoryId);\n\u001b[7m  \u001b[0m \u001b[91m                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(databaseConfig), CategoryModule, ProductModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m18\u001b[0m     return this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m27\u001b[0m     const category = await this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m9\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m9\u001b[0m   @IsNumber()\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m10\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m13\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m14\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m17\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m17\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m10\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m12\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m15\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m17\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m17\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m20\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m47\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m18\u001b[0m     return this.productRepository.findOne(id, { relations: ['category'] });\n\u001b[7m  \u001b[0m \u001b[91m                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m27\u001b[0m     const product = await this.productRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:37:03.538362"
+    "timestamp": "2026-04-07T10:01:51.640836"
   },
   {
     "test_case": "TEST_CASE_8",
@@ -948,12 +906,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.75,
-        "dsl_time": 0.06330013275146484,
-        "total_time": 0.8353736400604248,
+        "llm_time": 0.97,
+        "dsl_time": 0.10952949523925781,
+        "total_time": 1.147063970565796,
         "input_tokens": 713,
-        "output_tokens": 337,
-        "total_tokens": 1050,
+        "output_tokens": 338,
+        "total_tokens": 1051,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -973,7 +931,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:37:27.046414"
+    "timestamp": "2026-04-07T10:02:11.626526"
   },
   {
     "test_case": "TEST_CASE_8",
@@ -981,12 +939,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 5.13,
+        "llm_time": 6.66,
         "dsl_time": 0.0,
-        "total_time": 5.268685817718506,
+        "total_time": 6.8546552658081055,
         "input_tokens": 1421,
-        "output_tokens": 2912,
-        "total_tokens": 4333,
+        "output_tokens": 2977,
+        "total_tokens": 4398,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -994,7 +952,7 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 16,
+        "error_count": 7,
         "errors": [
           {
             "file": "src/app.module.ts",
@@ -1004,6 +962,20 @@
             "code": "TS2345"
           },
           {
+            "file": "src/customers/customers.service.ts",
+            "line": 20,
+            "column": 45,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Customer>'.",
+            "code": "TS2559"
+          },
+          {
+            "file": "src/customers/customers.service.ts",
+            "line": 29,
+            "column": 61,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Customer>'.",
+            "code": "TS2559"
+          },
+          {
             "file": "src/database.config.ts",
             "line": 7,
             "column": 3,
@@ -1011,102 +983,25 @@
             "code": "TS2322"
           },
           {
-            "file": "src/dtos/create-order.dto.ts",
-            "line": 9,
-            "column": 4,
-            "message": "Cannot find name 'IsDate'. Did you mean 'Date'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/dtos/update-order.dto.ts",
-            "line": 7,
-            "column": 4,
-            "message": "Cannot find name 'IsOptional'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/dtos/update-order.dto.ts",
-            "line": 10,
-            "column": 4,
-            "message": "Cannot find name 'IsDate'. Did you mean 'Date'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/dtos/update-order.dto.ts",
-            "line": 11,
-            "column": 4,
-            "message": "Cannot find name 'IsOptional'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/dtos/update-order.dto.ts",
-            "line": 14,
-            "column": 4,
-            "message": "Cannot find name 'IsString'. Did you mean 'String'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/dtos/update-order.dto.ts",
-            "line": 15,
-            "column": 4,
-            "message": "Cannot find name 'IsOptional'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/modules/customer.service.ts",
-            "line": 20,
-            "column": 5,
-            "message": "Type 'Customer | null' is not assignable to type 'Customer'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/modules/customer.service.ts",
-            "line": 20,
-            "column": 44,
-            "message": "Type 'string' has no properties in common with type 'FindOneOptions<Customer>'.",
+            "file": "src/orders/orders.service.ts",
+            "line": 23,
+            "column": 42,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Order>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/modules/customer.service.ts",
-            "line": 29,
-            "column": 60,
-            "message": "Type 'string' has no properties in common with type 'FindOneOptions<Customer>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/modules/order.controller.ts",
-            "line": 22,
-            "column": 30,
-            "message": "Expected 2 arguments, but got 1.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/modules/order.service.ts",
-            "line": 23,
-            "column": 5,
-            "message": "Type 'Order | null' is not assignable to type 'Order'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/modules/order.service.ts",
-            "line": 23,
-            "column": 45,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/modules/order.service.ts",
+            "file": "src/orders/orders.service.ts",
             "line": 27,
-            "column": 60,
-            "message": "Type 'string' has no properties in common with type 'FindOneOptions<Customer>'.",
+            "column": 61,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Customer>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/modules/order.service.ts",
+            "file": "src/orders/orders.service.ts",
             "line": 37,
-            "column": 58,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
+            "column": 55,
+            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Order>'.",
+            "code": "TS2559"
           }
         ]
       },
@@ -1123,14 +1018,14 @@
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(database),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/dtos/create-order.dto.ts\u001b[0m:\u001b[93m9\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsDate'. Did you mean 'Date'?\n\n\u001b[7m9\u001b[0m   @IsDate()\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m961\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m961\u001b[0m declare var Date: DateConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~\u001b[0m\n    'Date' is declared here.\n\u001b[96msrc/dtos/update-order.dto.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'IsOptional'.\n\n\u001b[7m7\u001b[0m   @IsOptional()\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~~~\u001b[0m\n\u001b[96msrc/dtos/update-order.dto.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsDate'. Did you mean 'Date'?\n\n\u001b[7m10\u001b[0m   @IsDate()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m961\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m961\u001b[0m declare var Date: DateConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~\u001b[0m\n    'Date' is declared here.\n\u001b[96msrc/dtos/update-order.dto.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'IsOptional'.\n\n\u001b[7m11\u001b[0m   @IsOptional()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~~~\u001b[0m\n\u001b[96msrc/dtos/update-order.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsString'. Did you mean 'String'?\n\n\u001b[7m14\u001b[0m   @IsString()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m544\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m544\u001b[0m declare var String: StringConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'String' is declared here.\n\u001b[96msrc/dtos/update-order.dto.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'IsOptional'.\n\n\u001b[7m15\u001b[0m   @IsOptional()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/customer.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Customer | null' is not assignable to type 'Customer'.\n  Type 'null' is not assignable to type 'Customer'.\n\n\u001b[7m20\u001b[0m     return this.customerRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/modules/customer.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'string' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m20\u001b[0m     return this.customerRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\u001b[96msrc/modules/customer.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'string' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m29\u001b[0m     const customer = await this.customerRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~\u001b[0m\n\u001b[96msrc/modules/order.controller.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m30\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 2 arguments, but got 1.\n\n\u001b[7m22\u001b[0m     return this.orderService.create(createOrderDto);\n\u001b[7m  \u001b[0m \u001b[91m                             ~~~~~~\u001b[0m\n\n  \u001b[96msrc/modules/order.service.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m48\u001b[0m\n    \u001b[7m26\u001b[0m   async create(createOrderDto: CreateOrderDto, customerId: string): Promise<Order> {\n    \u001b[7m  \u001b[0m \u001b[96m                                               ~~~~~~~~~~~~~~~~~~\u001b[0m\n    An argument for 'customerId' was not provided.\n\u001b[96msrc/modules/order.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Order | null' is not assignable to type 'Order'.\n  Type 'null' is not assignable to type 'Order'.\n\n\u001b[7m23\u001b[0m     return this.orderRepository.findOne(id, { relations: ['customer'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/modules/order.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.orderRepository.findOne(id, { relations: ['customer'] });\n\u001b[7m  \u001b[0m \u001b[91m                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/order.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'string' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m27\u001b[0m     const customer = await this.customerRepository.findOne(customerId);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/order.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m37\u001b[0m     const order = await this.orderRepository.findOne(id, { relations: ['customer'] });\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/customers/customers.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m20\u001b[0m     return this.customersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                            ~~\u001b[0m\n\u001b[96msrc/customers/customers.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m61\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m29\u001b[0m     const customer = await this.customersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                            ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/orders/orders.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Order>'.\n\n\u001b[7m23\u001b[0m     return this.ordersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/orders/orders.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m61\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m27\u001b[0m     const customer = await this.customersRepository.findOne(createOrderDTO.customerId);\n\u001b[7m  \u001b[0m \u001b[91m                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/orders/orders.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Order>'.\n\n\u001b[7m37\u001b[0m     const order = await this.ordersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:37:48.822019"
+    "timestamp": "2026-04-07T10:02:30.561155"
   },
   {
     "test_case": "TEST_CASE_9",
@@ -1138,9 +1033,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.73,
-        "dsl_time": 0.06880617141723633,
-        "total_time": 0.8301095962524414,
+        "llm_time": 0.87,
+        "dsl_time": 0.10891890525817871,
+        "total_time": 1.0294737815856934,
         "input_tokens": 723,
         "output_tokens": 364,
         "total_tokens": 1087,
@@ -1163,7 +1058,7 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:38:13.096615"
+    "timestamp": "2026-04-07T10:02:50.441107"
   },
   {
     "test_case": "TEST_CASE_9",
@@ -1171,12 +1066,12 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 5.23,
+        "llm_time": 5.55,
         "dsl_time": 0.0,
-        "total_time": 5.3442323207855225,
+        "total_time": 5.722554683685303,
         "input_tokens": 1431,
-        "output_tokens": 2950,
-        "total_tokens": 4381,
+        "output_tokens": 2963,
+        "total_tokens": 4394,
         "provider": "Groq (Llama 3.1 8B Instant)"
       }
     },
@@ -1184,7 +1079,7 @@
       "syntactic": {
         "valid": false,
         "total_files": 1,
-        "error_count": 13,
+        "error_count": 22,
         "errors": [
           {
             "file": "src/app.module.ts",
@@ -1194,84 +1089,147 @@
             "code": "TS2345"
           },
           {
-            "file": "src/database.config.ts",
+            "file": "src/courses/course.controller.ts",
+            "line": 3,
+            "column": 33,
+            "message": "Cannot find module '../../dtos/create-course.dto' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.controller.ts",
+            "line": 4,
+            "column": 33,
+            "message": "Cannot find module '../../dtos/update-course.dto' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.module.ts",
+            "line": 3,
+            "column": 24,
+            "message": "Cannot find module '../../entities/course.entity' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.module.ts",
+            "line": 6,
+            "column": 25,
+            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.service.ts",
+            "line": 4,
+            "column": 24,
+            "message": "Cannot find module '../../entities/course.entity' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.service.ts",
+            "line": 5,
+            "column": 33,
+            "message": "Cannot find module '../../dtos/create-course.dto' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.service.ts",
+            "line": 6,
+            "column": 33,
+            "message": "Cannot find module '../../dtos/update-course.dto' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/courses/course.service.ts",
             "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
+            "column": 25,
+            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
+            "code": "TS2307"
           },
           {
-            "file": "src/modules/course/course.service.ts",
+            "file": "src/courses/course.service.ts",
             "line": 23,
-            "column": 42,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Course>'.",
-            "code": "TS2559"
+            "column": 46,
+            "message": "Expected 1 arguments, but got 2.",
+            "code": "TS2554"
           },
           {
-            "file": "src/modules/course/course.service.ts",
-            "line": 27,
-            "column": 58,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/modules/course/course.service.ts",
+            "file": "src/courses/course.service.ts",
             "line": 36,
-            "column": 56,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Course>'.",
-            "code": "TS2559"
+            "column": 60,
+            "message": "Expected 1 arguments, but got 2.",
+            "code": "TS2554"
           },
           {
-            "file": "src/modules/course/course.service.ts",
+            "file": "src/courses/course.service.ts",
             "line": 45,
-            "column": 56,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Course>'.",
-            "code": "TS2559"
+            "column": 60,
+            "message": "Expected 1 arguments, but got 2.",
+            "code": "TS2554"
           },
           {
-            "file": "src/modules/course/dto/create-course.dto.ts",
-            "line": 14,
-            "column": 4,
-            "message": "Cannot find name 'MinValue'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/modules/course/dto/create-course.dto.ts",
+            "file": "src/entities/course.entity.ts",
             "line": 15,
-            "column": 4,
-            "message": "Cannot find name 'MaxValue'.",
-            "code": "TS2304"
+            "column": 13,
+            "message": "No overload matches this call.",
+            "code": "TS2769"
           },
           {
-            "file": "src/modules/course/dto/update-course.dto.ts",
-            "line": 14,
-            "column": 4,
-            "message": "Cannot find name 'MinValue'.",
-            "code": "TS2304"
+            "file": "src/teachers/teacher.controller.ts",
+            "line": 3,
+            "column": 34,
+            "message": "Cannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.",
+            "code": "TS2307"
           },
           {
-            "file": "src/modules/course/dto/update-course.dto.ts",
-            "line": 15,
-            "column": 4,
-            "message": "Cannot find name 'MaxValue'.",
-            "code": "TS2304"
+            "file": "src/teachers/teacher.controller.ts",
+            "line": 4,
+            "column": 34,
+            "message": "Cannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.",
+            "code": "TS2307"
           },
           {
-            "file": "src/modules/teacher/teacher.service.ts",
+            "file": "src/teachers/teacher.module.ts",
+            "line": 3,
+            "column": 25,
+            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/teachers/teacher.service.ts",
+            "line": 4,
+            "column": 25,
+            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/teachers/teacher.service.ts",
+            "line": 5,
+            "column": 34,
+            "message": "Cannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/teachers/teacher.service.ts",
+            "line": 6,
+            "column": 34,
+            "message": "Cannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.",
+            "code": "TS2307"
+          },
+          {
+            "file": "src/teachers/teacher.service.ts",
             "line": 20,
             "column": 43,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/modules/teacher/teacher.service.ts",
+            "file": "src/teachers/teacher.service.ts",
             "line": 29,
             "column": 58,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
             "code": "TS2559"
           },
           {
-            "file": "src/modules/teacher/teacher.service.ts",
+            "file": "src/teachers/teacher.service.ts",
             "line": 38,
             "column": 58,
             "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
@@ -1292,14 +1250,14 @@
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/modules/course/course.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Course>'.\n\n\u001b[7m23\u001b[0m     return this.courseRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/modules/course/course.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m27\u001b[0m     const teacher = await this.teacherRepository.findOne(createCourseDTO.teacherId);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/course/course.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m56\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Course>'.\n\n\u001b[7m36\u001b[0m     const course = await this.courseRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                       ~~\u001b[0m\n\u001b[96msrc/modules/course/course.service.ts\u001b[0m:\u001b[93m45\u001b[0m:\u001b[93m56\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Course>'.\n\n\u001b[7m45\u001b[0m     const course = await this.courseRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                       ~~\u001b[0m\n\u001b[96msrc/modules/course/dto/create-course.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'MinValue'.\n\n\u001b[7m14\u001b[0m   @MinValue(1)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/course/dto/create-course.dto.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'MaxValue'.\n\n\u001b[7m15\u001b[0m   @MaxValue(10)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/course/dto/update-course.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'MinValue'.\n\n\u001b[7m14\u001b[0m   @MinValue(1)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/course/dto/update-course.dto.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'MaxValue'.\n\n\u001b[7m15\u001b[0m   @MaxValue(10)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\u001b[96msrc/modules/teacher/teacher.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m43\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m20\u001b[0m     return this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                          ~~\u001b[0m\n\u001b[96msrc/modules/teacher/teacher.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m29\u001b[0m     const teacher = await this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\u001b[96msrc/modules/teacher/teacher.service.ts\u001b[0m:\u001b[93m38\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m38\u001b[0m     const teacher = await this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(database),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.controller.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-course.dto' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { CreateCourseDto } from '../../dtos/create-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.controller.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-course.dto' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { UpdateCourseDto } from '../../dtos/update-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m24\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/course.entity' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { Course } from '../../entities/course.entity';\n\u001b[7m \u001b[0m \u001b[91m                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.module.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m6\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m24\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/course.entity' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { Course } from '../../entities/course.entity';\n\u001b[7m \u001b[0m \u001b[91m                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m5\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-course.dto' or its corresponding type declarations.\n\n\u001b[7m5\u001b[0m import { CreateCourseDto } from '../../dtos/create-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-course.dto' or its corresponding type declarations.\n\n\u001b[7m6\u001b[0m import { UpdateCourseDto } from '../../dtos/update-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m7\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m46\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.courseRepository.findOne(id, { relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m36\u001b[0m     const course = await this.courseRepository.findOne(id, { relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m45\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m45\u001b[0m     const course = await this.courseRepository.findOne(id, { relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/entities/course.entity.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  The last overload gave the following error.\n    Object literal may only specify known properties, and 'type' does not exist in type '(type?: any) => Function'.\n\n\u001b[7m15\u001b[0m   @Column({ type: 'integer', min: 1, max: 10 })\n\u001b[7m  \u001b[0m \u001b[91m            ~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/decorator/columns/Column.d.ts\u001b[0m:\u001b[93m74\u001b[0m:\u001b[93m25\u001b[0m\n    \u001b[7m74\u001b[0m export declare function Column(type: (type?: any) => Function, options?: ColumnEmbeddedOptions): PropertyDecorator;\n    \u001b[7m  \u001b[0m \u001b[96m                        ~~~~~~\u001b[0m\n    The last overload is declared here.\n\u001b[96msrc/teachers/teacher.controller.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { CreateTeacherDto } from '../../dtos/create-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.controller.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { UpdateTeacherDto } from '../../dtos/update-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m5\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m5\u001b[0m import { CreateTeacherDto } from '../../dtos/create-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m6\u001b[0m import { UpdateTeacherDto } from '../../dtos/update-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m43\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m20\u001b[0m     return this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                          ~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m29\u001b[0m     const teacher = await this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m38\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m38\u001b[0m     const teacher = await this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-03-14T18:38:33.850472"
+    "timestamp": "2026-04-07T10:03:08.074850"
   },
   {
     "test_case": "TEST_CASE_10",
@@ -1307,9 +1265,9 @@
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.74,
-        "dsl_time": 0.059558868408203125,
-        "total_time": 0.8210580348968506,
+        "llm_time": 1.03,
+        "dsl_time": 0.10692667961120605,
+        "total_time": 1.1981325149536133,
         "input_tokens": 739,
         "output_tokens": 339,
         "total_tokens": 1078,
@@ -1332,558 +1290,6 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-03-14T18:38:56.613523"
-  },
-  {
-    "test_case": "TEST_CASE_10",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 6.02,
-        "dsl_time": 0.0,
-        "total_time": 6.13716721534729,
-        "input_tokens": 1447,
-        "output_tokens": 3103,
-        "total_tokens": 4550,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 24,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 10,
-            "column": 35,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/item/item.controller.ts",
-            "line": 18,
-            "column": 15,
-            "message": "Cannot find name 'Item'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/item/item.controller.ts",
-            "line": 30,
-            "column": 55,
-            "message": "Cannot find name 'Item'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/item/item.controller.ts",
-            "line": 38,
-            "column": 14,
-            "message": "Cannot find name 'Item'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/item/item.controller.ts",
-            "line": 46,
-            "column": 14,
-            "message": "Cannot find name 'Item'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/item/item.entity.ts",
-            "line": 12,
-            "column": 13,
-            "message": "No overload matches this call.",
-            "code": "TS2769"
-          },
-          {
-            "file": "src/item/item.entity.ts",
-            "line": 15,
-            "column": 13,
-            "message": "No overload matches this call.",
-            "code": "TS2769"
-          },
-          {
-            "file": "src/item/item.entity.ts",
-            "line": 18,
-            "column": 13,
-            "message": "No overload matches this call.",
-            "code": "TS2769"
-          },
-          {
-            "file": "src/item/item.service.ts",
-            "line": 37,
-            "column": 34,
-            "message": "Argument of type 'string' is not assignable to parameter of type '\"ASC\" | \"DESC\" | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/item/item.service.ts",
-            "line": 39,
-            "column": 38,
-            "message": "Argument of type 'string' is not assignable to parameter of type '\"ASC\" | \"DESC\" | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/item/item.service.ts",
-            "line": 51,
-            "column": 5,
-            "message": "Type 'Item | null' is not assignable to type 'Item'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/item/item.service.ts",
-            "line": 54,
-            "column": 35,
-            "message": "Cannot find name 'CreateItemDTO'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/item/item.service.ts",
-            "line": 61,
-            "column": 5,
-            "message": "Type 'Item[]' is missing the following properties from type 'Item': id, sku, name, quantity, and 3 more.",
-            "code": "TS2740"
-          },
-          {
-            "file": "src/item/item.service.ts",
-            "line": 64,
-            "column": 47,
-            "message": "Cannot find name 'UpdateItemDTO'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/section/section.controller.ts",
-            "line": 11,
-            "column": 35,
-            "message": "Cannot find name 'Section'. Did you mean 'Selection'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/section/section.controller.ts",
-            "line": 16,
-            "column": 58,
-            "message": "Cannot find name 'Section'. Did you mean 'Selection'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/section/section.controller.ts",
-            "line": 21,
-            "column": 76,
-            "message": "Cannot find name 'Section'. Did you mean 'Selection'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/section/section.controller.ts",
-            "line": 29,
-            "column": 14,
-            "message": "Cannot find name 'Section'. Did you mean 'Selection'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/section/section.entity.ts",
-            "line": 12,
-            "column": 13,
-            "message": "No overload matches this call.",
-            "code": "TS2769"
-          },
-          {
-            "file": "src/section/section.service.ts",
-            "line": 18,
-            "column": 5,
-            "message": "Type 'Section | null' is not assignable to type 'Section'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/section/section.service.ts",
-            "line": 21,
-            "column": 41,
-            "message": "Cannot find name 'CreateSectionDTO'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/section/section.service.ts",
-            "line": 23,
-            "column": 5,
-            "message": "Type 'Section[]' is missing the following properties from type 'Section': id, name, floor, createdAt, items",
-            "code": "TS2739"
-          },
-          {
-            "file": "src/section/section.service.ts",
-            "line": 26,
-            "column": 53,
-            "message": "Cannot find name 'UpdateSectionDTO'.",
-            "code": "TS2304"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(databaseConfig), SectionModule, ItemModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/item/item.controller.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m15\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Item'.\n\n\u001b[7m18\u001b[0m   ): Promise<[Item[], number]> {\n\u001b[7m  \u001b[0m \u001b[91m              ~~~~\u001b[0m\n\u001b[96msrc/item/item.controller.ts\u001b[0m:\u001b[93m30\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Item'.\n\n\u001b[7m30\u001b[0m   async getItemById(@Param('id') id: number): Promise<Item> {\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~~~\u001b[0m\n\u001b[96msrc/item/item.controller.ts\u001b[0m:\u001b[93m38\u001b[0m:\u001b[93m14\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Item'.\n\n\u001b[7m38\u001b[0m   ): Promise<Item> {\n\u001b[7m  \u001b[0m \u001b[91m             ~~~~\u001b[0m\n\u001b[96msrc/item/item.controller.ts\u001b[0m:\u001b[93m46\u001b[0m:\u001b[93m14\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Item'.\n\n\u001b[7m46\u001b[0m   ): Promise<Item> {\n\u001b[7m  \u001b[0m \u001b[91m             ~~~~\u001b[0m\n\u001b[96msrc/item/item.entity.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  The last overload gave the following error.\n    Object literal may only specify known properties, and 'length' does not exist in type '(type?: any) => Function'.\n\n\u001b[7m12\u001b[0m   @Column({ length: 100, min: 2 })\n\u001b[7m  \u001b[0m \u001b[91m            ~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/decorator/columns/Column.d.ts\u001b[0m:\u001b[93m74\u001b[0m:\u001b[93m25\u001b[0m\n    \u001b[7m74\u001b[0m export declare function Column(type: (type?: any) => Function, options?: ColumnEmbeddedOptions): PropertyDecorator;\n    \u001b[7m  \u001b[0m \u001b[96m                        ~~~~~~\u001b[0m\n    The last overload is declared here.\n\u001b[96msrc/item/item.entity.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  The last overload gave the following error.\n    Object literal may only specify known properties, and 'type' does not exist in type '(type?: any) => Function'.\n\n\u001b[7m15\u001b[0m   @Column({ type: 'integer', min: 0 })\n\u001b[7m  \u001b[0m \u001b[91m            ~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/decorator/columns/Column.d.ts\u001b[0m:\u001b[93m74\u001b[0m:\u001b[93m25\u001b[0m\n    \u001b[7m74\u001b[0m export declare function Column(type: (type?: any) => Function, options?: ColumnEmbeddedOptions): PropertyDecorator;\n    \u001b[7m  \u001b[0m \u001b[96m                        ~~~~~~\u001b[0m\n    The last overload is declared here.\n\u001b[96msrc/item/item.entity.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  The last overload gave the following error.\n    Object literal may only specify known properties, and 'type' does not exist in type '(type?: any) => Function'.\n\n\u001b[7m18\u001b[0m   @Column({ type: 'integer', min: 0, nullable: true })\n\u001b[7m  \u001b[0m \u001b[91m            ~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/decorator/columns/Column.d.ts\u001b[0m:\u001b[93m74\u001b[0m:\u001b[93m25\u001b[0m\n    \u001b[7m74\u001b[0m export declare function Column(type: (type?: any) => Function, options?: ColumnEmbeddedOptions): PropertyDecorator;\n    \u001b[7m  \u001b[0m \u001b[96m                        ~~~~~~\u001b[0m\n    The last overload is declared here.\n\u001b[96msrc/item/item.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'string' is not assignable to parameter of type '\"ASC\" | \"DESC\" | undefined'.\n\n\u001b[7m37\u001b[0m       query.orderBy('item.name', sortOrder);\n\u001b[7m  \u001b[0m \u001b[91m                                 ~~~~~~~~~\u001b[0m\n\u001b[96msrc/item/item.service.ts\u001b[0m:\u001b[93m39\u001b[0m:\u001b[93m38\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'string' is not assignable to parameter of type '\"ASC\" | \"DESC\" | undefined'.\n\n\u001b[7m39\u001b[0m       query.orderBy('item.quantity', sortOrder);\n\u001b[7m  \u001b[0m \u001b[91m                                     ~~~~~~~~~\u001b[0m\n\u001b[96msrc/item/item.service.ts\u001b[0m:\u001b[93m51\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Item | null' is not assignable to type 'Item'.\n  Type 'null' is not assignable to type 'Item'.\n\n\u001b[7m51\u001b[0m     return this.itemRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/item/item.service.ts\u001b[0m:\u001b[93m54\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'CreateItemDTO'.\n\n\u001b[7m54\u001b[0m   async createItem(createItemDTO: CreateItemDTO, sectionId: number): Promise<Item> {\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/item/item.service.ts\u001b[0m:\u001b[93m61\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2740: \u001b[0mType 'Item[]' is missing the following properties from type 'Item': id, sku, name, quantity, and 3 more.\n\n\u001b[7m61\u001b[0m     return this.itemRepository.save(item);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/item/item.service.ts\u001b[0m:\u001b[93m64\u001b[0m:\u001b[93m47\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'UpdateItemDTO'.\n\n\u001b[7m64\u001b[0m   async updateItem(id: number, updateItemDTO: UpdateItemDTO): Promise<Item> {\n\u001b[7m  \u001b[0m \u001b[91m                                              ~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/section/section.controller.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'Section'. Did you mean 'Selection'?\n\n\u001b[7m11\u001b[0m   async getAllSections(): Promise<Section[]> {\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m30515\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m30515\u001b[0m declare var Selection: {\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~~~~\u001b[0m\n    'Selection' is declared here.\n\u001b[96msrc/section/section.controller.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'Section'. Did you mean 'Selection'?\n\n\u001b[7m16\u001b[0m   async getSectionById(@Param('id') id: number): Promise<Section> {\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m30515\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m30515\u001b[0m declare var Selection: {\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~~~~\u001b[0m\n    'Selection' is declared here.\n\u001b[96msrc/section/section.controller.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m76\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'Section'. Did you mean 'Selection'?\n\n\u001b[7m21\u001b[0m   async createSection(@Body() createSectionDTO: CreateSectionDTO): Promise<Section> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                           ~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m30515\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m30515\u001b[0m declare var Selection: {\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~~~~\u001b[0m\n    'Selection' is declared here.\n\u001b[96msrc/section/section.controller.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m14\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'Section'. Did you mean 'Selection'?\n\n\u001b[7m29\u001b[0m   ): Promise<Section> {\n\u001b[7m  \u001b[0m \u001b[91m             ~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.dom.d.ts\u001b[0m:\u001b[93m30515\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m30515\u001b[0m declare var Selection: {\n    \u001b[7m     \u001b[0m \u001b[96m            ~~~~~~~~~\u001b[0m\n    'Selection' is declared here.\n\u001b[96msrc/section/section.entity.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  The last overload gave the following error.\n    Object literal may only specify known properties, and 'type' does not exist in type '(type?: any) => Function'.\n\n\u001b[7m12\u001b[0m   @Column({ type: 'integer', min: 1, max: 20 })\n\u001b[7m  \u001b[0m \u001b[91m            ~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/decorator/columns/Column.d.ts\u001b[0m:\u001b[93m74\u001b[0m:\u001b[93m25\u001b[0m\n    \u001b[7m74\u001b[0m export declare function Column(type: (type?: any) => Function, options?: ColumnEmbeddedOptions): PropertyDecorator;\n    \u001b[7m  \u001b[0m \u001b[96m                        ~~~~~~\u001b[0m\n    The last overload is declared here.\n\u001b[96msrc/section/section.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Section | null' is not assignable to type 'Section'.\n  Type 'null' is not assignable to type 'Section'.\n\n\u001b[7m18\u001b[0m     return this.sectionRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/section/section.service.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m41\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'CreateSectionDTO'.\n\n\u001b[7m21\u001b[0m   async createSection(createSectionDTO: CreateSectionDTO): Promise<Section> {\n\u001b[7m  \u001b[0m \u001b[91m                                        ~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/section/section.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2739: \u001b[0mType 'Section[]' is missing the following properties from type 'Section': id, name, floor, createdAt, items\n\n\u001b[7m23\u001b[0m     return this.sectionRepository.save(section);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/section/section.service.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m53\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'UpdateSectionDTO'.\n\n\u001b[7m26\u001b[0m   async updateSection(id: number, updateSectionDTO: UpdateSectionDTO): Promise<Section> {\n\u001b[7m  \u001b[0m \u001b[91m                                                    ~~~~~~~~~~~~~~~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-03-14T18:39:18.064579"
-  },
-  {
-    "test_case": "TEST_CASE_11",
-    "approach": "dsl",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 0.97,
-        "dsl_time": 0.0622248649597168,
-        "total_time": 1.0516114234924316,
-        "input_tokens": 802,
-        "output_tokens": 495,
-        "total_tokens": 1297,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": true,
-        "total_files": 1,
-        "error_count": 0,
-        "errors": []
-      },
-      "runtime": {
-        "valid": true,
-        "install_success": true,
-        "build_success": true,
-        "start_success": true,
-        "errors": {}
-      },
-      "overall_valid": true
-    },
-    "timestamp": "2026-03-14T18:39:41.101590"
-  },
-  {
-    "test_case": "TEST_CASE_11",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 7.72,
-        "dsl_time": 0.0,
-        "total_time": 7.848555088043213,
-        "input_tokens": 1510,
-        "output_tokens": 4035,
-        "total_tokens": 5545,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 11,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 13,
-            "column": 27,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/category/category.service.ts",
-            "line": 18,
-            "column": 44,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/category/category.service.ts",
-            "line": 27,
-            "column": 60,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/category/category.service.ts",
-            "line": 36,
-            "column": 60,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/product/product.service.ts",
-            "line": 28,
-            "column": 43,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/product/product.service.ts",
-            "line": 37,
-            "column": 58,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/product/product.service.ts",
-            "line": 46,
-            "column": 58,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/review/review.service.ts",
-            "line": 18,
-            "column": 42,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Review>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/review/review.service.ts",
-            "line": 27,
-            "column": 56,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Review>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/review/review.service.ts",
-            "line": 36,
-            "column": 56,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Review>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m18\u001b[0m     return this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m27\u001b[0m     const category = await this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m36\u001b[0m     const category = await this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m28\u001b[0m:\u001b[93m43\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m28\u001b[0m     return this.productRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                          ~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m37\u001b[0m     const product = await this.productRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m46\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m46\u001b[0m     const product = await this.productRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\u001b[96msrc/review/review.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Review>'.\n\n\u001b[7m18\u001b[0m     return this.reviewRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/review/review.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m56\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Review>'.\n\n\u001b[7m27\u001b[0m     const review = await this.reviewRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                       ~~\u001b[0m\n\u001b[96msrc/review/review.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m56\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Review>'.\n\n\u001b[7m36\u001b[0m     const review = await this.reviewRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                       ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-03-14T18:40:04.164392"
-  },
-  {
-    "test_case": "TEST_CASE_12",
-    "approach": "dsl",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 1.2,
-        "dsl_time": 0.06578373908996582,
-        "total_time": 1.2913143634796143,
-        "input_tokens": 845,
-        "output_tokens": 591,
-        "total_tokens": 1436,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 6,
-        "errors": [
-          {
-            "file": "src/project/dto/create-project.dto.ts",
-            "line": 51,
-            "column": 11,
-            "message": "Type expected.",
-            "code": "TS1110"
-          },
-          {
-            "file": "src/project/entities/project.entity.ts",
-            "line": 28,
-            "column": 11,
-            "message": "Type expected.",
-            "code": "TS1110"
-          },
-          {
-            "file": "src/task/dto/create-task.dto.ts",
-            "line": 51,
-            "column": 13,
-            "message": "Type expected.",
-            "code": "TS1110"
-          },
-          {
-            "file": "src/task/entities/task.entity.ts",
-            "line": 27,
-            "column": 13,
-            "message": "Type expected.",
-            "code": "TS1110"
-          },
-          {
-            "file": "src/user/dto/create-user.dto.ts",
-            "line": 48,
-            "column": 9,
-            "message": "Type expected.",
-            "code": "TS1110"
-          },
-          {
-            "file": "src/user/entities/user.entity.ts",
-            "line": 26,
-            "column": 9,
-            "message": "Type expected.",
-            "code": "TS1110"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/project/dto/create-project.dto.ts\u001b[0m:\u001b[93m51\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m51\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/project/entitie",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/project/dto/create-project.dto.ts\u001b[0m:\u001b[93m51\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m51\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/project/entities/project.entity.ts\u001b[0m:\u001b[93m28\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m28\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/task/dto/create-task.dto.ts\u001b[0m:\u001b[93m51\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m51\u001b[0m   priority: ;\n\u001b[7m  \u001b[0m \u001b[91m            ~\u001b[0m\n\u001b[96msrc/task/entities/task.entity.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m27\u001b[0m   priority: ;\n\u001b[7m  \u001b[0m \u001b[91m            ~\u001b[0m\n\u001b[96msrc/user/dto/create-user.dto.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m9\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m48\u001b[0m   role: ;\n\u001b[7m  \u001b[0m \u001b[91m        ~\u001b[0m\n\u001b[96msrc/user/entities/user.entity.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m9\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m26\u001b[0m   role: ;\n\u001b[7m  \u001b[0m \u001b[91m        ~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-03-14T18:40:20.885625"
-  },
-  {
-    "test_case": "TEST_CASE_12",
-    "approach": "raw",
-    "generation": {
-      "success": false,
-      "error": "Invalid JSON response from LLM: Could not parse JSON even after attempting fixes. Original error: Expecting value: line 1 column 1 (char 0): line 1 column 1 (char 0)",
-      "metrics": {
-        "llm_time": 0.0,
-        "dsl_time": 0.0,
-        "total_time": 7.966136693954468,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "total_tokens": 0,
-        "provider": null
-      }
-    },
-    "validation": {},
-    "timestamp": "2026-03-14T18:40:28.857879"
-  },
-  {
-    "test_case": "TEST_CASE_13",
-    "approach": "dsl",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 1.08,
-        "dsl_time": 0.06837296485900879,
-        "total_time": 1.1749544143676758,
-        "input_tokens": 822,
-        "output_tokens": 568,
-        "total_tokens": 1390,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 2,
-        "errors": [
-          {
-            "file": "src/appointment/dto/create-appointment.dto.ts",
-            "line": 48,
-            "column": 11,
-            "message": "Type expected.",
-            "code": "TS1110"
-          },
-          {
-            "file": "src/appointment/entities/appointment.entity.ts",
-            "line": 27,
-            "column": 11,
-            "message": "Type expected.",
-            "code": "TS1110"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/appointment/dto/create-appointment.dto.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m48\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/appoint",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/appointment/dto/create-appointment.dto.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m48\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/appointment/entities/appointment.entity.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m27\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-03-14T18:40:45.059642"
-  },
-  {
-    "test_case": "TEST_CASE_13",
-    "approach": "raw",
-    "generation": {
-      "success": false,
-      "error": "Invalid JSON response from LLM: Could not parse JSON even after attempting fixes. Original error: Expecting value: line 1 column 1 (char 0): line 1 column 1 (char 0)",
-      "metrics": {
-        "llm_time": 0.0,
-        "dsl_time": 0.0,
-        "total_time": 7.775435924530029,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "total_tokens": 0,
-        "provider": null
-      }
-    },
-    "validation": {},
-    "timestamp": "2026-03-14T18:40:52.840233"
+    "timestamp": "2026-04-07T10:03:28.182095"
   }
 ]
