@@ -13,25 +13,25 @@ load_dotenv()
 
 
 def natural_language_to_yaml(
-    description: str, primary_model: str | None = None
+    description: str, provider: str = "gemini"
 ) -> GenerationResult:
     """Convert natural language to YAML blueprint using LLM.
 
     Args:
         description (str): Plain English description of the desired NestJS application.
-        primary_model (str | None): Provider ID to try first (groq, openrouter, gemini, ollama).
+        provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: gemini.
 
     Returns:
         GenerationResult: The generated YAML content and metadata.
     """
-    client = LLMClient(temperature=0.1)
+    client = LLMClient(provider_id=provider, temperature=0.1)
 
     messages = [
         SystemMessage(content=SYSTEM_PROMPT),
         HumanMessage(content=f"Create a NestJS application for: {description}"),
     ]
 
-    result = client.generate(messages, primary_provider_id=primary_model)
+    result = client.generate(messages)
     result.content = clean_llm_response(result.content)
     return result
 

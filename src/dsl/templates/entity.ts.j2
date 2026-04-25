@@ -24,7 +24,7 @@ export class {{ module | capitalize }} {
     unique: true,
     {%- endif %}
   })
-  {{ field.name }}: {{ field.enum | map('tojson') | join(' | ') }};
+  {{ field.name }}{% if not field.required %}?{% endif %}: {{ (field.enumValues if field.enumValues is defined else field.enum) | map('tojson') | join(' | ') }};
   {%- elif field.type == 'string' %}
   @Column({
     {%- if field.validation and field.validation.maxLength %}

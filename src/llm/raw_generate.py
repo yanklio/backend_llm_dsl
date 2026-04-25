@@ -44,20 +44,20 @@ def read_project_context(project_dir: str) -> str:
 
 
 def natural_language_to_code(
-    description: str, project_dir: str = "./nest_project", primary_model: str | None = None
+    description: str, project_dir: str = "./nest_project", provider: str = "gemini"
 ) -> GenerationResult:
     """Generate code from simple description - vibe coder style.
 
     Args:
         description (str): Plain English description of the desired application.
         project_dir (str): Directory path where the project files should be generated.
-        primary_model (str | None): Provider ID to try first.
+        provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: gemini.
 
     Returns:
         GenerationResult: The generated code content and metadata.
     """
     existing_context = read_project_context(project_dir)
-    client = LLMClient(temperature=0.2)
+    client = LLMClient(provider_id=provider, temperature=0.2)
 
     user_prompt = f"""{existing_context}
 
@@ -72,7 +72,7 @@ Make it production-ready and runnable."""
 
     logger.start("Generating code with LLM...")
 
-    result = client.generate(messages, primary_provider_id=primary_model)
+    result = client.generate(messages)
 
     try:
         cleaned_content = clean_llm_response(result.content)

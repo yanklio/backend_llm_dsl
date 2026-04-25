@@ -22,7 +22,7 @@ export class Create{{ module | capitalize }}Dto {
   {%- if field.type == 'enum' %}
   @ApiProperty({
     description: {% if field.description is defined -%}"{{ field.description }}"{% else %}"{{ field.name | replace("_", " ") | capitalize }}"{% endif -%},
-    enum: [{{ field.enum | map('tojson') | join(', ') }}],
+    enum: [{{ (field.enumValues if field.enumValues is defined else field.enum) | map('tojson') | join(', ') }}],
     {%- if field.example is defined %}
     example: '{{ field.example }}',
     {%- endif %}
@@ -117,7 +117,7 @@ export class Create{{ module | capitalize }}Dto {
   {%- endif %}
   {%- endif %}
   {%- if field.type == 'enum' %}
-  @IsEnum([{{ field.enum | map('tojson') | join(', ') }}])
+  @IsEnum([{{ (field.enumValues if field.enumValues is defined else field.enum) | map('tojson') | join(', ') }}])
   {%- elif field.type == 'string' %}
   @IsString()
   {%- elif field.type == 'number' %}
@@ -132,7 +132,7 @@ export class Create{{ module | capitalize }}Dto {
   {%- else %}
   @IsOptional()
   {%- endif %}
-  {{ field.name }}{% if not field.required %}?{% endif %}: {% if field.type == 'enum' %}{{ field.enum | map('tojson') | join(' | ') }}{% else %}{{ field.type | to_ts_type }}{% endif %};
+  {{ field.name }}{% if not field.required %}?{% endif %}: {% if field.type == 'enum' %}{{ (field.enumValues if field.enumValues is defined else field.enum) | map('tojson') | join(' | ') }}{% else %}{{ field.type | to_ts_type }}{% endif %};
 {% if not loop.last %}
 {% endif -%}
 {%- endfor %}

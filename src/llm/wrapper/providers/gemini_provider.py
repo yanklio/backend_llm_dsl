@@ -29,7 +29,7 @@ class GeminiProvider(BaseProvider):
             raise ValueError("GOOGLE_API_KEY not found")
 
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.0-flash",
+            model="gemma-4-31b-it",
             temperature=temperature,
             timeout=timeout,
         )

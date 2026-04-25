@@ -83,12 +83,13 @@ def mixed_generate(
 
     logger.start("Phase 2: Generating code with blueprint context...")
 
-    client = LLMClient(temperature=0.2)
+    provider = primary_model or "gemini"
+    client = LLMClient(provider_id=provider, temperature=0.2)
 
     user_prompt = _create_mixed_prompt(blueprint_yaml, description)
     messages = [SystemMessage(content=RAW_CODE_SYSTEM_PROMPT), HumanMessage(content=user_prompt)]
 
-    code_result = client.generate(messages, primary_provider_id=primary_model)
+    code_result = client.generate(messages)
     logger.info(f"Phase 2 complete: {code_result.duration_seconds:.2f}s")
 
     try:

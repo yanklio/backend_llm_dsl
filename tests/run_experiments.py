@@ -13,8 +13,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.dsl.generate import main as dsl_generate
 from src.llm.dsl_generate import natural_language_to_yaml
-from src.llm.raw_generate import natural_language_to_code, save_files
 from src.llm.mixed_generate import mixed_generate, save_mixed_files
+from src.llm.raw_generate import natural_language_to_code, save_files
 from src.llm.wrapper import GenerationResult
 from src.shared.utils import try_parse_json
 from src.validators import validate_runtime, validate_syntactic
@@ -51,6 +51,22 @@ def clean_project(project_path: Path):
             subprocess.run(["rm", "-rf", str(dir_path)], check=True)
 
 
+def ensure_base_project(project_path: Path):
+    """Ensure base NestJS project files exist."""
+    base_source = Path(__file__).parent / "nest_project"
+    if not base_source.exists():
+        return
+    
+    for item in base_source.iterdir():
+        dest = project_path / item.name
+        if item.is_dir() and item.name not in ["src", "dist", "data"]:
+            pass
+        elif not dest.exists() or dest.name in ["package.json", "tsconfig.json", "tsconfig.build.json", "nest-cli.json", "eslint.config.mjs"]:
+            if item.is_file():
+                import shutil
+                shutil.copy2(item, dest)
+
+
 def save_results(results: list[dict[str, Any]]):
     output_file = Path(__file__).parent / "test_results.json"
     try:
@@ -61,7 +77,7 @@ def save_results(results: list[dict[str, Any]]):
 
 
 def run_dsl_approach(
-    test_case_name: str, test_case_data: dict[str, Any], project_path: Path
+    test_case_name: str, test_case_data: dict[str, Any], project_path: Path, provider: str = "gemini"
 ) -> dict[str, Any]:
     start_time = time.time()
     metrics = {
@@ -71,7 +87,7 @@ def run_dsl_approach(
         "input_tokens": 0,
         "output_tokens": 0,
         "total_tokens": 0,
-        "provider": None,
+        "provider": provider,
     }
 
     blueprint_path = (
@@ -80,10 +96,10 @@ def run_dsl_approach(
     blueprint_path.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        # We always regenerate for experiments to capture metrics
         with SuppressOutput():
-            # Pass model=None to use default or env var
-            result: GenerationResult = natural_language_to_yaml(test_case_data["requirement"])
+            result: GenerationResult = natural_language_to_yaml(
+                test_case_data["requirement"], provider=provider
+            )
 
         metrics["llm_time"] = result.duration_seconds
         metrics["input_tokens"] = result.input_tokens
@@ -108,25 +124,24 @@ def run_dsl_approach(
 
 
 def run_raw_approach(
-    test_case_name: str, test_case_data: dict[str, Any], project_path: Path
+    test_case_name: str, test_case_data: dict[str, Any], project_path: Path, provider: str = "gemini"
 ) -> dict[str, Any]:
     """Generate project files using the raw LLM approach and return execution metrics."""
     start_time = time.time()
     metrics = {
         "llm_time": 0.0,
-        "dsl_time": 0.0,  # Not applicable, but kept for schema consistency
+        "dsl_time": 0.0,
         "total_time": 0.0,
         "input_tokens": 0,
         "output_tokens": 0,
         "total_tokens": 0,
-        "provider": None,
+        "provider": provider,
     }
 
     try:
         with SuppressOutput():
-            # Pass model=None to use default or env var
             result: GenerationResult = natural_language_to_code(
-                test_case_data["requirement"], str(project_path)
+                test_case_data["requirement"], str(project_path), provider=provider
             )
             files = try_parse_json(result.content)
             save_files(files, str(project_path))
@@ -146,7 +161,7 @@ def run_raw_approach(
 
 
 def run_mixed_approach(
-    test_case_name: str, test_case_data: dict[str, Any], project_path: Path
+    test_case_name: str, test_case_data: dict[str, Any], project_path: Path, provider: str = "gemini"
 ) -> dict[str, Any]:
     """Generate project files using the mixed approach (YAML + raw code context)."""
     start_time = time.time()
@@ -157,7 +172,7 @@ def run_mixed_approach(
         "input_tokens": 0,
         "output_tokens": 0,
         "total_tokens": 0,
-        "provider": None,
+        "provider": provider,
     }
 
     blueprint_path = (
@@ -167,14 +182,13 @@ def run_mixed_approach(
 
     try:
         with SuppressOutput():
-            # Pass model=None to use default or env var
             result = mixed_generate(
                 description=test_case_data["requirement"],
                 output_dir=str(project_path),
                 blueprint_path=str(blueprint_path),
-                primary_model=None
+                primary_model=provider,
             )
-            
+
             if result["success"]:
                 save_mixed_files(result["files"], str(project_path))
             else:
@@ -182,8 +196,8 @@ def run_mixed_approach(
 
         stats = result["statistics"]
         metrics["llm_time"] = stats["total_duration_seconds"]
-        metrics["input_tokens"] = stats.get("phase1_tokens", 0) # Phase 1 input only approx
-        metrics["output_tokens"] = stats.get("phase2_tokens", 0) # Phase 2 total approx
+        metrics["input_tokens"] = stats.get("phase1_tokens", 0)  # Phase 1 input only approx
+        metrics["output_tokens"] = stats.get("phase2_tokens", 0)  # Phase 2 total approx
         metrics["total_tokens"] = stats.get("total_tokens", 0)
         metrics["provider"] = stats.get("provider")
 
@@ -220,30 +234,71 @@ def validate_project(project_path: Path) -> dict[str, Any]:
 
 def main():
     """Execute DSL, raw, and mixed generation experiments across all configured test cases."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run generation experiments.")
+    parser.add_argument(
+        "--approach",
+        choices=["dsl", "raw", "mixed", "all"],
+        default="all",
+        help="Which approach to run",
+    )
+    parser.add_argument(
+        "--provider",
+        choices=["groq", "gemini", "openrouter", "ollama"],
+        default="gemini",
+        help="LLM provider to use (default: gemini)",
+    )
+    args = parser.parse_args()
+
+    approaches_to_run = ["dsl", "raw", "mixed"] if args.approach == "all" else [args.approach]
+    print(f"Using provider: {args.provider}")
+
     test_cases = load_test_cases()
     project_root = Path(__file__).parent.parent
     nest_project_path = project_root / "nest_project"
+    results_file = Path(__file__).parent / "test_results.json"
 
-    # Ensure nest_project exists
     nest_project_path.mkdir(exist_ok=True)
 
     results = []
+    if results_file.exists():
+        try:
+            with open(results_file) as f:
+                results = json.load(f)
+        except Exception:
+            pass
+
+    completed_runs = {(r["test_case"], r["approach"]) for r in results}
 
     print(f"Starting experiments for {len(test_cases)} test cases...")
-    print(f"{'Test Case':<15} {'Tier':<8} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}")
+    print(
+        f"{'Test Case':<15} {'Tier':<8} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}"
+    )
     print("-" * 70)
 
     for case_name, case_data in test_cases.items():
         tier = case_data.get("tier", "unknown")
-        for approach in ["dsl", "raw", "mixed"]:
+        for approach in approaches_to_run:
+            if (case_name, approach) in completed_runs:
+                print(f"Skipping {case_name} ({approach}) - already completed")
+                continue
+
             clean_project(nest_project_path)
+            ensure_base_project(nest_project_path)
 
             if approach == "dsl":
-                gen_result = run_dsl_approach(case_name, case_data, nest_project_path)
+                gen_result = run_dsl_approach(
+                    case_name, case_data, nest_project_path, provider=args.provider
+                )
             elif approach == "raw":
-                gen_result = run_raw_approach(case_name, case_data, nest_project_path)
+                gen_result = run_raw_approach(
+                    case_name, case_data, nest_project_path, provider=args.provider
+                )
             else:
-                gen_result = run_mixed_approach(case_name, case_data, nest_project_path)
+                gen_result = run_mixed_approach(
+                    case_name, case_data, nest_project_path, provider=args.provider
+                )
 
             validation = {}
             if gen_result["success"]:
@@ -272,7 +327,6 @@ def main():
             }
             results.append(current_result)
 
-            # Incremental save
             save_results(results)
 
     print("-" * 70)

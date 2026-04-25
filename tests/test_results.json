@@ -1,17 +1,86 @@
 [
   {
     "test_case": "TEST_CASE_1",
+    "tier": "simple",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 1.7,
-        "dsl_time": 0.09368228912353516,
-        "total_time": 1.9253592491149902,
+        "llm_time": 15.23,
+        "dsl_time": 0.09905338287353516,
+        "total_time": 15.442479133605957,
+        "input_tokens": 659,
+        "output_tokens": 511,
+        "total_tokens": 1170,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 1,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-04-12T10:09:26.155674"
+  },
+  {
+    "test_case": "TEST_CASE_2",
+    "tier": "simple",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 18.97,
+        "dsl_time": 0.10527563095092773,
+        "total_time": 19.164572954177856,
+        "input_tokens": 680,
+        "output_tokens": 646,
+        "total_tokens": 1326,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 1,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-04-12T10:10:03.656971"
+  },
+  {
+    "test_case": "TEST_CASE_3",
+    "tier": "simple",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 19.26,
+        "dsl_time": 0.10111284255981445,
+        "total_time": 19.437801837921143,
         "input_tokens": 653,
-        "output_tokens": 132,
-        "total_tokens": 785,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "output_tokens": 642,
+        "total_tokens": 1295,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -30,327 +99,22 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T09:58:07.626654"
-  },
-  {
-    "test_case": "TEST_CASE_1",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 3.17,
-        "dsl_time": 0.0,
-        "total_time": 3.353517770767212,
-        "input_tokens": 1361,
-        "output_tokens": 1378,
-        "total_tokens": 2739,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 2,
-        "errors": [
-          {
-            "file": "src/users/users.service.ts",
-            "line": 20,
-            "column": 40,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<User>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/users/users.service.ts",
-            "line": 29,
-            "column": 52,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<User>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m20\u001b[0m     return this.us",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m20\u001b[0m     return this.userRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\u001b[96msrc/users/users.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<User>'.\n\n\u001b[7m29\u001b[0m     const user = await this.userRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T09:58:23.670017"
-  },
-  {
-    "test_case": "TEST_CASE_2",
-    "approach": "dsl",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 0.59,
-        "dsl_time": 0.11029505729675293,
-        "total_time": 0.7608850002288818,
-        "input_tokens": 670,
-        "output_tokens": 182,
-        "total_tokens": 852,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": true,
-        "total_files": 1,
-        "error_count": 0,
-        "errors": []
-      },
-      "runtime": {
-        "valid": true,
-        "install_success": true,
-        "build_success": true,
-        "start_success": true,
-        "errors": {}
-      },
-      "overall_valid": true
-    },
-    "timestamp": "2026-04-07T09:58:43.197504"
-  },
-  {
-    "test_case": "TEST_CASE_2",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 3.44,
-        "dsl_time": 0.0,
-        "total_time": 3.620465040206909,
-        "input_tokens": 1378,
-        "output_tokens": 1540,
-        "total_tokens": 2918,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 4,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 10,
-            "column": 35,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/products/products.service.ts",
-            "line": 18,
-            "column": 44,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/products/products.service.ts",
-            "line": 28,
-            "column": 44,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(database), ProductsModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/products/products.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m18\u001b[0m     return this.productsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\u001b[96msrc/products/products.service.ts\u001b[0m:\u001b[93m28\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m28\u001b[0m     return this.productsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T09:58:58.586789"
-  },
-  {
-    "test_case": "TEST_CASE_3",
-    "approach": "dsl",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 0.41,
-        "dsl_time": 0.10449051856994629,
-        "total_time": 0.5653789043426514,
-        "input_tokens": 646,
-        "output_tokens": 138,
-        "total_tokens": 784,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": true,
-        "total_files": 1,
-        "error_count": 0,
-        "errors": []
-      },
-      "runtime": {
-        "valid": true,
-        "install_success": true,
-        "build_success": true,
-        "start_success": true,
-        "errors": {}
-      },
-      "overall_valid": true
-    },
-    "timestamp": "2026-04-07T09:59:17.832637"
-  },
-  {
-    "test_case": "TEST_CASE_3",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 2.99,
-        "dsl_time": 0.0,
-        "total_time": 3.186440944671631,
-        "input_tokens": 1354,
-        "output_tokens": 1422,
-        "total_tokens": 2776,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 9,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 10,
-            "column": 35,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/todo/todo.controller.ts",
-            "line": 11,
-            "column": 28,
-            "message": "Cannot find name 'Todo'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/todo/todo.controller.ts",
-            "line": 16,
-            "column": 51,
-            "message": "Cannot find name 'Todo'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/todo/todo.controller.ts",
-            "line": 21,
-            "column": 63,
-            "message": "Cannot find name 'Todo'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/todo/todo.controller.ts",
-            "line": 26,
-            "column": 88,
-            "message": "Cannot find name 'Todo'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/todo/todo.service.ts",
-            "line": 18,
-            "column": 5,
-            "message": "Type 'Todo | null' is not assignable to type 'Todo'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/todo/todo.service.ts",
-            "line": 18,
-            "column": 40,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Todo>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/todo/todo.service.ts",
-            "line": 23,
-            "column": 5,
-            "message": "Type 'Todo[]' is missing the following properties from type 'Todo': id, title, done, dueDate, createdAt",
-            "code": "TS2739"
-          },
-          {
-            "file": "src/todo/todo.service.ts",
-            "line": 27,
-            "column": 52,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Todo>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(DatabaseConfig), TodoModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m28\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m11\u001b[0m   async findAll(): Promise<Todo[]> {\n\u001b[7m  \u001b[0m \u001b[91m                           ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m51\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m16\u001b[0m   async findOne(@Param('id') id: number): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                  ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m63\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m21\u001b[0m   async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                              ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.controller.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m88\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Todo'.\n\n\u001b[7m26\u001b[0m   async update(@Param('id') id: number, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {\n\u001b[7m  \u001b[0m \u001b[91m                                                                                       ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Todo | null' is not assignable to type 'Todo'.\n  Type 'null' is not assignable to type 'Todo'.\n\n\u001b[7m18\u001b[0m     return this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Todo>'.\n\n\u001b[7m18\u001b[0m     return this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2739: \u001b[0mType 'Todo[]' is missing the following properties from type 'Todo': id, title, done, dueDate, createdAt\n\n\u001b[7m23\u001b[0m     return this.todoRepository.save(todo);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m52\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Todo>'.\n\n\u001b[7m27\u001b[0m     const todo = await this.todoRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                   ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T09:59:32.896282"
+    "timestamp": "2026-04-12T10:10:41.699825"
   },
   {
     "test_case": "TEST_CASE_4",
+    "tier": "simple",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.56,
-        "dsl_time": 0.10445117950439453,
-        "total_time": 0.720745325088501,
-        "input_tokens": 646,
-        "output_tokens": 143,
-        "total_tokens": 789,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 20.75,
+        "dsl_time": 0.060837745666503906,
+        "total_time": 20.83549427986145,
+        "input_tokens": 654,
+        "output_tokens": 719,
+        "total_tokens": 1373,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -369,94 +133,22 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T09:59:52.293440"
-  },
-  {
-    "test_case": "TEST_CASE_4",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 3.46,
-        "dsl_time": 0.0,
-        "total_time": 3.6462602615356445,
-        "input_tokens": 1354,
-        "output_tokens": 1559,
-        "total_tokens": 2913,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 4,
-        "errors": [
-          {
-            "file": "src/database/database.config.ts",
-            "line": 10,
-            "column": 42,
-            "message": "Argument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'DataSourceOptions'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/database/database.module.ts",
-            "line": 6,
-            "column": 35,
-            "message": "Argument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/notes/notes.service.ts",
-            "line": 18,
-            "column": 41,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Note>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/notes/notes.service.ts",
-            "line": 28,
-            "column": 41,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Note>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/database/database.config.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is n",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/database/database.config.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'DataSourceOptions'.\n  Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type 'SpannerConnectionOptions'.\n    Types of property 'type' are incompatible.\n      Type 'string' is not assignable to type '\"spanner\"'.\n\n\u001b[7m10\u001b[0m export const dataSource = new DataSource(databaseConfig);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/database/database.module.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type '({ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>) | ... 16 more ... | ({ ...; } & Partial<...>)'.\n    Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n      Type '{ type: string; database: string; entities: string[]; synchronize: boolean; }' is not assignable to type 'Partial<SpannerConnectionOptions>'.\n        Types of property 'type' are incompatible.\n          Type 'string' is not assignable to type '\"spanner\"'.\n\n\u001b[7m6\u001b[0m   imports: [TypeOrmModule.forRoot(databaseConfig)],\n\u001b[7m \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m41\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m18\u001b[0m     return this.notesRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                        ~~\u001b[0m\n\u001b[96msrc/notes/notes.service.ts\u001b[0m:\u001b[93m28\u001b[0m:\u001b[93m41\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Note>'.\n\n\u001b[7m28\u001b[0m     return this.notesRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                        ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T10:00:07.813982"
+    "timestamp": "2026-04-12T14:29:49.122146"
   },
   {
     "test_case": "TEST_CASE_5",
+    "tier": "simple",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.87,
-        "dsl_time": 0.1070563793182373,
-        "total_time": 1.0319700241088867,
-        "input_tokens": 653,
-        "output_tokens": 159,
-        "total_tokens": 812,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 21.12,
+        "dsl_time": 0.06044578552246094,
+        "total_time": 21.198028326034546,
+        "input_tokens": 661,
+        "output_tokens": 736,
+        "total_tokens": 1397,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -467,8 +159,8 @@
         "errors": [
           {
             "file": "src/event/dto/create-event.dto.ts",
-            "line": 57,
-            "column": 12,
+            "line": 56,
+            "column": 11,
             "message": "Type expected.",
             "code": "TS1110"
           },
@@ -489,113 +181,34 @@
         "errors": {
           "build": {
             "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/event/dto/create-event.dto.ts\u001b[0m:\u001b[93m57\u001b[0m:\u001b[93m12\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m57\u001b[0m   status?: ;\n\u001b[7m  \u001b[0m \u001b[91m           ~\u001b[0m\n\u001b[96msrc/event/entities/ev",
+            "message": "npm run build failed: \u001b[96msrc/event/dto/create-event.dto.ts\u001b[0m:\u001b[93m56\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m56\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/event/entities/even",
             "code": "BUILD_FAILED"
           },
           "start": {
             "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/event/dto/create-event.dto.ts\u001b[0m:\u001b[93m57\u001b[0m:\u001b[93m12\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m57\u001b[0m   status?: ;\n\u001b[7m  \u001b[0m \u001b[91m           ~\u001b[0m\n\u001b[96msrc/event/entities/event.entity.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m29\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\n",
+            "message": "Application crashed: \u001b[96msrc/event/dto/create-event.dto.ts\u001b[0m:\u001b[93m56\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m56\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/event/entities/event.entity.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m29\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\n",
             "code": "START_CRASHED"
           }
         }
       },
       "overall_valid": false
     },
-    "timestamp": "2026-04-07T10:00:20.773168"
-  },
-  {
-    "test_case": "TEST_CASE_5",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 3.87,
-        "dsl_time": 0.0,
-        "total_time": 4.047507286071777,
-        "input_tokens": 1361,
-        "output_tokens": 1594,
-        "total_tokens": 2955,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 5,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 11,
-            "column": 27,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/events/entities/event.entity.ts",
-            "line": 1,
-            "column": 68,
-            "message": "Module '\"typeorm\"' has no exported member 'Enum'.",
-            "code": "TS2305"
-          },
-          {
-            "file": "src/events/events.service.ts",
-            "line": 20,
-            "column": 42,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Event>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/events/events.service.ts",
-            "line": 29,
-            "column": 55,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Event>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m11\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m11\u001b[0m     TypeOrmModule.forRoot(database),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/events/entities/event.entity.ts\u001b[0m:\u001b[93m1\u001b[0m:\u001b[93m68\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2305: \u001b[0mModule '\"typeorm\"' has no exported member 'Enum'.\n\n\u001b[7m1\u001b[0m import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, Enum } from 'typeorm';\n\u001b[7m \u001b[0m \u001b[91m                                                                   ~~~~\u001b[0m\n\u001b[96msrc/events/events.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Event>'.\n\n\u001b[7m20\u001b[0m     return this.eventsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/events/events.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Event>'.\n\n\u001b[7m29\u001b[0m     const event = await this.eventsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T10:00:36.631042"
+    "timestamp": "2026-04-12T14:30:20.665632"
   },
   {
     "test_case": "TEST_CASE_6",
+    "tier": "medium",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.93,
-        "dsl_time": 0.1121373176574707,
-        "total_time": 1.098585844039917,
-        "input_tokens": 702,
-        "output_tokens": 315,
-        "total_tokens": 1017,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 25.72,
+        "dsl_time": 0.06624197959899902,
+        "total_time": 25.809930562973022,
+        "input_tokens": 717,
+        "output_tokens": 891,
+        "total_tokens": 1608,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -614,115 +227,22 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T10:00:56.616922"
-  },
-  {
-    "test_case": "TEST_CASE_6",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 5.89,
-        "dsl_time": 0.0,
-        "total_time": 6.087610721588135,
-        "input_tokens": 1410,
-        "output_tokens": 2787,
-        "total_tokens": 4197,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 7,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 13,
-            "column": 27,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/authors/authors.service.ts",
-            "line": 20,
-            "column": 43,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Author>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/authors/authors.service.ts",
-            "line": 29,
-            "column": 57,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Author>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/posts/posts.service.ts",
-            "line": 23,
-            "column": 45,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/posts/posts.service.ts",
-            "line": 27,
-            "column": 57,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Author>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/posts/posts.service.ts",
-            "line": 37,
-            "column": 53,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Post>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/authors/authors.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m43\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m20\u001b[0m     return this.authorsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                          ~~\u001b[0m\n\u001b[96msrc/authors/authors.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m57\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m29\u001b[0m     const author = await this.authorsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                        ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/posts/posts.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.postsRepository.findOne(id, { relations: ['author'] });\n\u001b[7m  \u001b[0m \u001b[91m                                            ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/posts/posts.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m57\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Author>'.\n\n\u001b[7m27\u001b[0m     const author = await this.authorsRepository.findOne(createPostDTO.authorId);\n\u001b[7m  \u001b[0m \u001b[91m                                                        ~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/posts/posts.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m53\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Post>'.\n\n\u001b[7m37\u001b[0m     const post = await this.postsRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                    ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T10:01:14.678586"
+    "timestamp": "2026-04-12T14:31:03.964676"
   },
   {
     "test_case": "TEST_CASE_7",
+    "tier": "medium",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.96,
-        "dsl_time": 0.11268353462219238,
-        "total_time": 1.143341302871704,
-        "input_tokens": 698,
-        "output_tokens": 305,
-        "total_tokens": 1003,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 24.92,
+        "dsl_time": 0.08006119728088379,
+        "total_time": 25.015108585357666,
+        "input_tokens": 712,
+        "output_tokens": 872,
+        "total_tokens": 1584,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -741,178 +261,22 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T10:01:34.669918"
-  },
-  {
-    "test_case": "TEST_CASE_7",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 4.71,
-        "dsl_time": 0.0,
-        "total_time": 4.8974690437316895,
-        "input_tokens": 1406,
-        "output_tokens": 2590,
-        "total_tokens": 3996,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 16,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 10,
-            "column": 35,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/category/category.service.ts",
-            "line": 18,
-            "column": 44,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/category/category.service.ts",
-            "line": 27,
-            "column": 60,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Category>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/product/dto/create-product.dto.ts",
-            "line": 9,
-            "column": 4,
-            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/product/dto/create-product.dto.ts",
-            "line": 10,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/product/dto/create-product.dto.ts",
-            "line": 13,
-            "column": 4,
-            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/product/dto/create-product.dto.ts",
-            "line": 14,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/product/dto/create-product.dto.ts",
-            "line": 17,
-            "column": 4,
-            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/product/dto/update-product.dto.ts",
-            "line": 10,
-            "column": 4,
-            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/product/dto/update-product.dto.ts",
-            "line": 12,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/product/dto/update-product.dto.ts",
-            "line": 15,
-            "column": 4,
-            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/product/dto/update-product.dto.ts",
-            "line": 17,
-            "column": 4,
-            "message": "Cannot find name 'Min'.",
-            "code": "TS2304"
-          },
-          {
-            "file": "src/product/dto/update-product.dto.ts",
-            "line": 20,
-            "column": 4,
-            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
-            "code": "TS2552"
-          },
-          {
-            "file": "src/product/product.service.ts",
-            "line": 18,
-            "column": 47,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/product/product.service.ts",
-            "line": 27,
-            "column": 58,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Product>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m35\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m10\u001b[0m   imports: [TypeOrmModule.forRoot(databaseConfig), CategoryModule, ProductModule],\n\u001b[7m  \u001b[0m \u001b[91m                                  ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m44\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m18\u001b[0m     return this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                           ~~\u001b[0m\n\u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Category>'.\n\n\u001b[7m27\u001b[0m     const category = await this.categoryRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m9\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m9\u001b[0m   @IsNumber()\n\u001b[7m \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m10\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m13\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m14\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/create-product.dto.ts\u001b[0m:\u001b[93m17\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m17\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m10\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m10\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m12\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m15\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m17\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Min'.\n\n\u001b[7m17\u001b[0m   @Min(0)\n\u001b[7m  \u001b[0m \u001b[91m   ~~~\u001b[0m\n\u001b[96msrc/product/dto/update-product.dto.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m20\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m18\u001b[0m:\u001b[93m47\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m18\u001b[0m     return this.productRepository.findOne(id, { relations: ['category'] });\n\u001b[7m  \u001b[0m \u001b[91m                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Product>'.\n\n\u001b[7m27\u001b[0m     const product = await this.productRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T10:01:51.640836"
+    "timestamp": "2026-04-12T14:31:46.067884"
   },
   {
     "test_case": "TEST_CASE_8",
+    "tier": "medium",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.97,
-        "dsl_time": 0.10952949523925781,
-        "total_time": 1.147063970565796,
-        "input_tokens": 713,
-        "output_tokens": 338,
-        "total_tokens": 1051,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 25.92,
+        "dsl_time": 0.06443047523498535,
+        "total_time": 26.002553462982178,
+        "input_tokens": 725,
+        "output_tokens": 894,
+        "total_tokens": 1619,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -931,115 +295,22 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T10:02:11.626526"
-  },
-  {
-    "test_case": "TEST_CASE_8",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 6.66,
-        "dsl_time": 0.0,
-        "total_time": 6.8546552658081055,
-        "input_tokens": 1421,
-        "output_tokens": 2977,
-        "total_tokens": 4398,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 7,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 13,
-            "column": 27,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/customers/customers.service.ts",
-            "line": 20,
-            "column": 45,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Customer>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/customers/customers.service.ts",
-            "line": 29,
-            "column": 61,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Customer>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/database.config.ts",
-            "line": 7,
-            "column": 3,
-            "message": "Type 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.",
-            "code": "TS2322"
-          },
-          {
-            "file": "src/orders/orders.service.ts",
-            "line": 23,
-            "column": 42,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Order>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/orders/orders.service.ts",
-            "line": 27,
-            "column": 61,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Customer>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/orders/orders.service.ts",
-            "line": 37,
-            "column": 55,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Order>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(databaseConfig),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/customers/customers.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m45\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m20\u001b[0m     return this.customersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                            ~~\u001b[0m\n\u001b[96msrc/customers/customers.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m61\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m29\u001b[0m     const customer = await this.customersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                            ~~\u001b[0m\n\u001b[96msrc/database.config.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'boolean' is not assignable to type '(dropBeforeSync?: boolean | undefined) => Promise<void>'.\n\n\u001b[7m7\u001b[0m   synchronize: true,\n\u001b[7m \u001b[0m \u001b[91m  ~~~~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/data-source/DataSource.d.ts\u001b[0m:\u001b[93m153\u001b[0m:\u001b[93m5\u001b[0m\n    \u001b[7m153\u001b[0m     synchronize(dropBeforeSync?: boolean): Promise<void>;\n    \u001b[7m   \u001b[0m \u001b[96m    ~~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'synchronize' which is declared here on type 'DataSource'\n\u001b[96msrc/orders/orders.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m42\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Order>'.\n\n\u001b[7m23\u001b[0m     return this.ordersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                         ~~\u001b[0m\n\u001b[96msrc/orders/orders.service.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m61\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Customer>'.\n\n\u001b[7m27\u001b[0m     const customer = await this.customersRepository.findOne(createOrderDTO.customerId);\n\u001b[7m  \u001b[0m \u001b[91m                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/orders/orders.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Order>'.\n\n\u001b[7m37\u001b[0m     const order = await this.ordersRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                      ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T10:02:30.561155"
+    "timestamp": "2026-04-12T14:32:29.137949"
   },
   {
     "test_case": "TEST_CASE_9",
+    "tier": "medium",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 0.87,
-        "dsl_time": 0.10891890525817871,
-        "total_time": 1.0294737815856934,
-        "input_tokens": 723,
-        "output_tokens": 364,
-        "total_tokens": 1087,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 28.3,
+        "dsl_time": 0.07511711120605469,
+        "total_time": 28.393898725509644,
+        "input_tokens": 741,
+        "output_tokens": 998,
+        "total_tokens": 1739,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -1058,220 +329,22 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T10:02:50.441107"
-  },
-  {
-    "test_case": "TEST_CASE_9",
-    "approach": "raw",
-    "generation": {
-      "success": true,
-      "metrics": {
-        "llm_time": 5.55,
-        "dsl_time": 0.0,
-        "total_time": 5.722554683685303,
-        "input_tokens": 1431,
-        "output_tokens": 2963,
-        "total_tokens": 4394,
-        "provider": "Groq (Llama 3.1 8B Instant)"
-      }
-    },
-    "validation": {
-      "syntactic": {
-        "valid": false,
-        "total_files": 1,
-        "error_count": 22,
-        "errors": [
-          {
-            "file": "src/app.module.ts",
-            "line": 13,
-            "column": 27,
-            "message": "Argument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.",
-            "code": "TS2345"
-          },
-          {
-            "file": "src/courses/course.controller.ts",
-            "line": 3,
-            "column": 33,
-            "message": "Cannot find module '../../dtos/create-course.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.controller.ts",
-            "line": 4,
-            "column": 33,
-            "message": "Cannot find module '../../dtos/update-course.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.module.ts",
-            "line": 3,
-            "column": 24,
-            "message": "Cannot find module '../../entities/course.entity' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.module.ts",
-            "line": 6,
-            "column": 25,
-            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 4,
-            "column": 24,
-            "message": "Cannot find module '../../entities/course.entity' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 5,
-            "column": 33,
-            "message": "Cannot find module '../../dtos/create-course.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 6,
-            "column": 33,
-            "message": "Cannot find module '../../dtos/update-course.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 7,
-            "column": 25,
-            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 23,
-            "column": 46,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 36,
-            "column": 60,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/courses/course.service.ts",
-            "line": 45,
-            "column": 60,
-            "message": "Expected 1 arguments, but got 2.",
-            "code": "TS2554"
-          },
-          {
-            "file": "src/entities/course.entity.ts",
-            "line": 15,
-            "column": 13,
-            "message": "No overload matches this call.",
-            "code": "TS2769"
-          },
-          {
-            "file": "src/teachers/teacher.controller.ts",
-            "line": 3,
-            "column": 34,
-            "message": "Cannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/teachers/teacher.controller.ts",
-            "line": 4,
-            "column": 34,
-            "message": "Cannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/teachers/teacher.module.ts",
-            "line": 3,
-            "column": 25,
-            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/teachers/teacher.service.ts",
-            "line": 4,
-            "column": 25,
-            "message": "Cannot find module '../../entities/teacher.entity' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/teachers/teacher.service.ts",
-            "line": 5,
-            "column": 34,
-            "message": "Cannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/teachers/teacher.service.ts",
-            "line": 6,
-            "column": 34,
-            "message": "Cannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.",
-            "code": "TS2307"
-          },
-          {
-            "file": "src/teachers/teacher.service.ts",
-            "line": 20,
-            "column": 43,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/teachers/teacher.service.ts",
-            "line": 29,
-            "column": 58,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
-            "code": "TS2559"
-          },
-          {
-            "file": "src/teachers/teacher.service.ts",
-            "line": 38,
-            "column": 58,
-            "message": "Type 'number' has no properties in common with type 'FindOneOptions<Teacher>'.",
-            "code": "TS2559"
-          }
-        ]
-      },
-      "runtime": {
-        "valid": false,
-        "install_success": true,
-        "build_success": false,
-        "start_success": false,
-        "errors": {
-          "build": {
-            "stage": "build",
-            "message": "npm run build failed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'Da",
-            "code": "BUILD_FAILED"
-          },
-          "start": {
-            "stage": "start",
-            "message": "Application crashed: \u001b[96msrc/app.module.ts\u001b[0m:\u001b[93m13\u001b[0m:\u001b[93m27\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'DataSource' is not assignable to parameter of type 'TypeOrmModuleOptions | undefined'.\n  Type 'DataSource' is not assignable to type '{ retryAttempts?: number | undefined; retryDelay?: number | undefined; toRetry?: ((err: any) => boolean) | undefined; autoLoadEntities?: boolean | undefined; verboseRetryLog?: boolean | undefined; manualInitialization?: boolean | undefined; } & Partial<...>'.\n    Type 'DataSource' is not assignable to type 'Partial<SqlServerConnectionOptions>'.\n      Types of property 'subscribers' are incompatible.\n        Type 'EntitySubscriberInterface<any>[]' is not assignable to type 'MixedList<string | Function> | undefined'.\n          Type 'EntitySubscriberInterface<any>[]' is not assignable to type '(string | Function)[]'.\n            Type 'EntitySubscriberInterface<any>' is not assignable to type 'string | Function'.\n\n\u001b[7m13\u001b[0m     TypeOrmModule.forRoot(database),\n\u001b[7m  \u001b[0m \u001b[91m                          ~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.controller.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-course.dto' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { CreateCourseDto } from '../../dtos/create-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.controller.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-course.dto' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { UpdateCourseDto } from '../../dtos/update-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m24\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/course.entity' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { Course } from '../../entities/course.entity';\n\u001b[7m \u001b[0m \u001b[91m                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.module.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m6\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m24\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/course.entity' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { Course } from '../../entities/course.entity';\n\u001b[7m \u001b[0m \u001b[91m                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m5\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-course.dto' or its corresponding type declarations.\n\n\u001b[7m5\u001b[0m import { CreateCourseDto } from '../../dtos/create-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-course.dto' or its corresponding type declarations.\n\n\u001b[7m6\u001b[0m import { UpdateCourseDto } from '../../dtos/update-course.dto';\n\u001b[7m \u001b[0m \u001b[91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m7\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m7\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m46\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m23\u001b[0m     return this.courseRepository.findOne(id, { relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m36\u001b[0m     const course = await this.courseRepository.findOne(id, { relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/courses/course.service.ts\u001b[0m:\u001b[93m45\u001b[0m:\u001b[93m60\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2554: \u001b[0mExpected 1 arguments, but got 2.\n\n\u001b[7m45\u001b[0m     const course = await this.courseRepository.findOne(id, { relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/entities/course.entity.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m13\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  The last overload gave the following error.\n    Object literal may only specify known properties, and 'type' does not exist in type '(type?: any) => Function'.\n\n\u001b[7m15\u001b[0m   @Column({ type: 'integer', min: 1, max: 10 })\n\u001b[7m  \u001b[0m \u001b[91m            ~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typeorm/decorator/columns/Column.d.ts\u001b[0m:\u001b[93m74\u001b[0m:\u001b[93m25\u001b[0m\n    \u001b[7m74\u001b[0m export declare function Column(type: (type?: any) => Function, options?: ColumnEmbeddedOptions): PropertyDecorator;\n    \u001b[7m  \u001b[0m \u001b[96m                        ~~~~~~\u001b[0m\n    The last overload is declared here.\n\u001b[96msrc/teachers/teacher.controller.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { CreateTeacherDto } from '../../dtos/create-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.controller.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { UpdateTeacherDto } from '../../dtos/update-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m3\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m4\u001b[0m:\u001b[93m25\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../entities/teacher.entity' or its corresponding type declarations.\n\n\u001b[7m4\u001b[0m import { Teacher } from '../../entities/teacher.entity';\n\u001b[7m \u001b[0m \u001b[91m                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m5\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/create-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m5\u001b[0m import { CreateTeacherDto } from '../../dtos/create-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m6\u001b[0m:\u001b[93m34\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2307: \u001b[0mCannot find module '../../dtos/update-teacher.dto' or its corresponding type declarations.\n\n\u001b[7m6\u001b[0m import { UpdateTeacherDto } from '../../dtos/update-teacher.dto';\n\u001b[7m \u001b[0m \u001b[91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m43\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m20\u001b[0m     return this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                          ~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m29\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m29\u001b[0m     const teacher = await this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\u001b[96msrc/teachers/teacher.service.ts\u001b[0m:\u001b[93m38\u001b[0m:\u001b[93m58\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2559: \u001b[0mType 'number' has no properties in common with type 'FindOneOptions<Teacher>'.\n\n\u001b[7m38\u001b[0m     const teacher = await this.teacherRepository.findOne(id);\n\u001b[7m  \u001b[0m \u001b[91m                                                         ~~\u001b[0m\n\n",
-            "code": "START_CRASHED"
-          }
-        }
-      },
-      "overall_valid": false
-    },
-    "timestamp": "2026-04-07T10:03:08.074850"
+    "timestamp": "2026-04-12T14:33:14.621177"
   },
   {
     "test_case": "TEST_CASE_10",
+    "tier": "medium",
     "approach": "dsl",
     "generation": {
       "success": true,
       "metrics": {
-        "llm_time": 1.03,
-        "dsl_time": 0.10692667961120605,
-        "total_time": 1.1981325149536133,
-        "input_tokens": 739,
-        "output_tokens": 339,
-        "total_tokens": 1078,
-        "provider": "Groq (Llama 3.1 8B Instant)"
+        "llm_time": 27.07,
+        "dsl_time": 0.06794595718383789,
+        "total_time": 27.158334732055664,
+        "input_tokens": 753,
+        "output_tokens": 947,
+        "total_tokens": 1700,
+        "provider": "Google Gemini"
       }
     },
     "validation": {
@@ -1290,6 +363,755 @@
       },
       "overall_valid": true
     },
-    "timestamp": "2026-04-07T10:03:28.182095"
+    "timestamp": "2026-04-12T14:33:58.493126"
+  },
+  {
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 35.93,
+        "dsl_time": 0.06883883476257324,
+        "total_time": 36.02250003814697,
+        "input_tokens": 825,
+        "output_tokens": 1283,
+        "total_tokens": 2108,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 1,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-04-12T14:34:52.407686"
+  },
+  {
+    "test_case": "TEST_CASE_12",
+    "tier": "complex",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 39.54,
+        "dsl_time": 0.06978583335876465,
+        "total_time": 39.619786739349365,
+        "input_tokens": 865,
+        "output_tokens": 1396,
+        "total_tokens": 2261,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 1,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-04-12T14:35:48.959502"
+  },
+  {
+    "test_case": "TEST_CASE_13",
+    "tier": "complex",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 41.07,
+        "dsl_time": 0.06679677963256836,
+        "total_time": 41.1588830947876,
+        "input_tokens": 844,
+        "output_tokens": 1465,
+        "total_tokens": 2309,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 2,
+        "errors": [
+          {
+            "file": "src/appointment/dto/create-appointment.dto.ts",
+            "line": 48,
+            "column": 11,
+            "message": "Type expected.",
+            "code": "TS1110"
+          },
+          {
+            "file": "src/appointment/entities/appointment.entity.ts",
+            "line": 26,
+            "column": 11,
+            "message": "Type expected.",
+            "code": "TS1110"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/appointment/dto/create-appointment.dto.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m48\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/appoint",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/appointment/dto/create-appointment.dto.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m48\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/appointment/entities/appointment.entity.ts\u001b[0m:\u001b[93m26\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m26\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T14:36:40.300322"
+  },
+  {
+    "test_case": "TEST_CASE_14",
+    "tier": "complex",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 38.15,
+        "dsl_time": 0.062281131744384766,
+        "total_time": 38.23708963394165,
+        "input_tokens": 840,
+        "output_tokens": 1356,
+        "total_tokens": 2196,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 2,
+        "errors": [
+          {
+            "file": "src/loan/dto/create-loan.dto.ts",
+            "line": 60,
+            "column": 12,
+            "message": "Type expected.",
+            "code": "TS1110"
+          },
+          {
+            "file": "src/loan/entities/loan.entity.ts",
+            "line": 32,
+            "column": 12,
+            "message": "Type expected.",
+            "code": "TS1110"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/loan/dto/create-loan.dto.ts\u001b[0m:\u001b[93m60\u001b[0m:\u001b[93m12\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m60\u001b[0m   status?: ;\n\u001b[7m  \u001b[0m \u001b[91m           ~\u001b[0m\n\u001b[96msrc/loan/entities/loan.",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/loan/dto/create-loan.dto.ts\u001b[0m:\u001b[93m60\u001b[0m:\u001b[93m12\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m60\u001b[0m   status?: ;\n\u001b[7m  \u001b[0m \u001b[91m           ~\u001b[0m\n\u001b[96msrc/loan/entities/loan.entity.ts\u001b[0m:\u001b[93m32\u001b[0m:\u001b[93m12\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m32\u001b[0m   status?: ;\n\u001b[7m  \u001b[0m \u001b[91m           ~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T14:37:28.523723"
+  },
+  {
+    "test_case": "TEST_CASE_15",
+    "tier": "complex",
+    "approach": "dsl",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 39.0,
+        "dsl_time": 0.06864666938781738,
+        "total_time": 39.08867073059082,
+        "input_tokens": 852,
+        "output_tokens": 1393,
+        "total_tokens": 2245,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 4,
+        "errors": [
+          {
+            "file": "src/employee/dto/create-employee.dto.ts",
+            "line": 83,
+            "column": 11,
+            "message": "Type expected.",
+            "code": "TS1110"
+          },
+          {
+            "file": "src/employee/entities/employee.entity.ts",
+            "line": 44,
+            "column": 11,
+            "message": "Type expected.",
+            "code": "TS1110"
+          },
+          {
+            "file": "src/skill/dto/create-skill.dto.ts",
+            "line": 40,
+            "column": 10,
+            "message": "Type expected.",
+            "code": "TS1110"
+          },
+          {
+            "file": "src/skill/entities/skill.entity.ts",
+            "line": 22,
+            "column": 10,
+            "message": "Type expected.",
+            "code": "TS1110"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/employee/dto/create-employee.dto.ts\u001b[0m:\u001b[93m83\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m83\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/employee/enti",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/employee/dto/create-employee.dto.ts\u001b[0m:\u001b[93m83\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m83\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/employee/entities/employee.entity.ts\u001b[0m:\u001b[93m44\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m44\u001b[0m   status: ;\n\u001b[7m  \u001b[0m \u001b[91m          ~\u001b[0m\n\u001b[96msrc/skill/dto/create-skill.dto.ts\u001b[0m:\u001b[93m40\u001b[0m:\u001b[93m10\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m40\u001b[0m   level: ;\n\u001b[7m  \u001b[0m \u001b[91m         ~\u001b[0m\n\u001b[96msrc/skill/entities/skill.entity.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m10\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1110: \u001b[0mType expected.\n\n\u001b[7m22\u001b[0m   level: ;\n\u001b[7m  \u001b[0m \u001b[91m         ~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T14:38:17.650634"
+  },
+  {
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "approach": "mixed",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 71.72,
+        "dsl_time": 0.0,
+        "total_time": 71.76111268997192,
+        "input_tokens": 659,
+        "output_tokens": 2877,
+        "total_tokens": 4095,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/user/user.module.ts",
+            "line": 12,
+            "column": 3,
+            "message": "Declaration expected.",
+            "code": "TS1146"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/user/user.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m12\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/user/user.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m12\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:15:07.540094"
+  },
+  {
+    "test_case": "TEST_CASE_2",
+    "tier": "simple",
+    "approach": "mixed",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 80.18,
+        "dsl_time": 0.0,
+        "total_time": 80.21848225593567,
+        "input_tokens": 680,
+        "output_tokens": 3157,
+        "total_tokens": 4492,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/product/product.module.ts",
+            "line": 14,
+            "column": 3,
+            "message": "Declaration expected.",
+            "code": "TS1146"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/product/product.module.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m14\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/product/product.module.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m14\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:16:39.261062"
+  },
+  {
+    "test_case": "TEST_CASE_3",
+    "tier": "simple",
+    "approach": "mixed",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 75.41,
+        "dsl_time": 0.0,
+        "total_time": 75.44283747673035,
+        "input_tokens": 653,
+        "output_tokens": 2922,
+        "total_tokens": 4230,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/todo/todo.module.ts",
+            "line": 2,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/todo/todo.module.ts",
+            "line": 3,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/todo/todo.module.ts",
+            "line": 12,
+            "column": 3,
+            "message": "Declaration expected.",
+            "code": "TS1146"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.module.ts\u001b[0m",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m3\u001b[0m import { Todo } from './todo.entity';\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m12\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:18:04.658715"
+  },
+  {
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "approach": "raw",
+    "generation": {
+      "success": false,
+      "error": "Invalid JSON response from LLM: [JSON001] Could not parse JSON even after attempting repairs. Original error: Expecting value: line 1 column 1 (char 0)",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 90.38459038734436,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider": "gemini"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-04-12T15:40:06.979428"
+  },
+  {
+    "test_case": "TEST_CASE_2",
+    "tier": "simple",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 58.8,
+        "dsl_time": 0.0,
+        "total_time": 58.82275867462158,
+        "input_tokens": 673,
+        "output_tokens": 2109,
+        "total_tokens": 2782,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "unknown",
+            "line": 0,
+            "column": 0,
+            "message": "TypeScript compilation error: ",
+            "code": "ERROR"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/product/product.module.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m14\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/product/product.module.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m14\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:41:42.237026"
+  },
+  {
+    "test_case": "TEST_CASE_3",
+    "tier": "simple",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 61.01,
+        "dsl_time": 0.0,
+        "total_time": 61.13118243217468,
+        "input_tokens": 646,
+        "output_tokens": 2164,
+        "total_tokens": 2810,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/todo/todo.module.ts",
+            "line": 2,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/todo/todo.module.ts",
+            "line": 3,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/todo/todo.module.ts",
+            "line": 12,
+            "column": 3,
+            "message": "Declaration expected.",
+            "code": "TS1146"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.module.ts\u001b[0m",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m3\u001b[0m import { Todo } from './todo.entity';\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m12\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:42:53.395367"
+  },
+  {
+    "test_case": "TEST_CASE_4",
+    "tier": "simple",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 59.74,
+        "dsl_time": 0.0,
+        "total_time": 59.85374689102173,
+        "input_tokens": 647,
+        "output_tokens": 2127,
+        "total_tokens": 2774,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/notes/note.module.ts",
+            "line": 2,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/notes/note.module.ts",
+            "line": 3,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/notes/note.module.ts",
+            "line": 12,
+            "column": 3,
+            "message": "Declaration expected.",
+            "code": "TS1146"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/notes/note.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/notes/note.module.ts\u001b[",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/notes/note.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/notes/note.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m3\u001b[0m import { Note } from './note.entity';\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/notes/note.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m12\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:44:03.327270"
+  },
+  {
+    "test_case": "TEST_CASE_5",
+    "tier": "simple",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 66.85,
+        "dsl_time": 0.0,
+        "total_time": 66.97590827941895,
+        "input_tokens": 654,
+        "output_tokens": 2372,
+        "total_tokens": 3026,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 1,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/event/event.module.ts",
+            "line": 2,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/event/event.module.ts",
+            "line": 3,
+            "column": 1,
+            "message": "'from' expected.",
+            "code": "TS1005"
+          },
+          {
+            "file": "src/event/event.module.ts",
+            "line": 12,
+            "column": 3,
+            "message": "Declaration expected.",
+            "code": "TS1146"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/event/event.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/event/event.module.ts",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/event/event.module.ts\u001b[0m:\u001b[93m2\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m2\u001b[0m import { TypeOrmModule }\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/event/event.module.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m1\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1005: \u001b[0m'from' expected.\n\n\u001b[7m3\u001b[0m import { Event } from './event.entity';\n\u001b[7m \u001b[0m \u001b[91m~~~~~~\u001b[0m\n\u001b[96msrc/event/event.module.ts\u001b[0m:\u001b[93m12\u001b[0m:\u001b[93m3\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS1146: \u001b[0mDeclaration expected.\n\n\u001b[7m12\u001b[0m })\n\u001b[7m  \u001b[0m \u001b[91m  \u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:45:20.422401"
+  },
+  {
+    "test_case": "TEST_CASE_6",
+    "tier": "medium",
+    "approach": "raw",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 110.31,
+        "dsl_time": 0.0,
+        "total_time": 110.44556641578674,
+        "input_tokens": 710,
+        "output_tokens": 3921,
+        "total_tokens": 4631,
+        "provider": "Google Gemini"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 1,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": true,
+        "start_success": false,
+        "errors": {
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: node:internal/modules/cjs/loader:1459\n  throw err;\n  ^\n\nError: Cannot find module '/home/yanklio/Projects/Thesis/Practice/nest_project/dist/main'\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1456:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1066:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1071:22)\n    at Module._load (node:internal/modules/cjs/loader:1242:25)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v24.14.0\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-04-12T15:47:24.224132"
   }
 ]
