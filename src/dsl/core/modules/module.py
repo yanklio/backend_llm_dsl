@@ -6,8 +6,25 @@ from typing import Any
 from jinja2 import Environment
 
 from src.shared.exceptions import TemplateException
-from src.shared.logs.logger import logger
-from src.shared.template_helper import TemplateRenderer
+from src.shared.logger import logger
+from src.shared.template import TemplateRenderer
+
+DTO_TEMPLATES = [
+    ("dto/create-dto.ts.j2", "create-{module}.dto.ts", "create DTO"),
+    ("dto/update-dto.ts.j2", "update-{module}.dto.ts", "update DTO"),
+]
+SPECIAL_FILE_GENERATORS = {
+    "dto": lambda template_data, module_dirs, env: handle_dto_file(
+        template_data,
+        module_dirs["dto"],
+        env,
+    ),
+    "entity": lambda template_data, module_dirs, env: handle_entity_file(
+        template_data,
+        module_dirs["entities"],
+        env,
+    ),
+}
 
 
 def handle_dto_file(
@@ -23,23 +40,15 @@ def handle_dto_file(
     renderer = TemplateRenderer(env)
     module_lower = template_data["module"].lower()
 
-    # Generate create DTO
-    try:
-        file_name = f"create-{module_lower}.dto.ts"
-        renderer.render_template(
-            "dto/create-dto.ts.j2", template_data, dto_dir / file_name
-        )
-    except TemplateException as e:
-        logger.error(f"Failed to generate create DTO: {e}")
-
-    # Generate update DTO
-    try:
-        file_name = f"update-{module_lower}.dto.ts"
-        renderer.render_template(
-            "dto/update-dto.ts.j2", template_data, dto_dir / file_name
-        )
-    except TemplateException as e:
-        logger.error(f"Failed to generate update DTO: {e}")
+    for template_name, file_pattern, label in DTO_TEMPLATES:
+        try:
+            renderer.render_template(
+                template_name,
+                template_data,
+                dto_dir / file_pattern.format(module=module_lower),
+            )
+        except TemplateException as e:
+            logger.error(f"Failed to generate {label}: {e}")
 
 
 def handle_entity_file(
@@ -77,16 +86,9 @@ def generate_module(
     logger.start(f"Generating {module_name} module...")
 
     module_dir = base_output_dir / module_name.lower()
-    module_dir.mkdir(parents=True, exist_ok=True)
-
-    dto_dir = module_dir / "dto"
-    dto_dir.mkdir(parents=True, exist_ok=True)
-
-    entities_dir = module_dir / "entities"
-    entities_dir.mkdir(parents=True, exist_ok=True)
+    module_dirs = _create_module_directories(module_dir)
 
     files_to_generate = module_data.get("generate", [])
-
     template_data = {
         "module": module_name,
         "entity": module_data.get("entity", {}),
@@ -97,17 +99,11 @@ def generate_module(
     renderer = TemplateRenderer(env)
 
     for file_key in files_to_generate:
-        template_name = f"{file_key}.ts.j2"
-
-        if file_key == "dto":
-            handle_dto_file(template_data, dto_dir, env)
-            continue
-
-        if file_key == "entity":
-            handle_entity_file(template_data, entities_dir, env)
+        if _generate_special_module_file(file_key, template_data, module_dirs, env):
             continue
 
         try:
+            template_name = f"{file_key}.ts.j2"
             file_name = f"{module_name.lower()}.{file_key}.ts"
             renderer.render_template(
                 template_name, template_data, module_dir / file_name
@@ -116,3 +112,30 @@ def generate_module(
             logger.error(f"Failed to generate {file_key}: {e}")
 
     logger.end(f"{module_name} module generated")
+
+
+def _create_module_directories(module_dir: Path) -> dict[str, Path]:
+    """Create and return the standard directory layout for a module."""
+    module_dir.mkdir(parents=True, exist_ok=True)
+    module_dirs = {
+        "module": module_dir,
+        "dto": module_dir / "dto",
+        "entities": module_dir / "entities",
+    }
+    for directory in module_dirs.values():
+        directory.mkdir(parents=True, exist_ok=True)
+    return module_dirs
+
+
+def _generate_special_module_file(
+    file_key: str,
+    template_data: dict[str, Any],
+    module_dirs: dict[str, Path],
+    env: Environment,
+) -> bool:
+    """Generate files handled by dedicated helper functions."""
+    generator = SPECIAL_FILE_GENERATORS.get(file_key)
+    if generator is None:
+        return False
+    generator(template_data, module_dirs, env)
+    return True

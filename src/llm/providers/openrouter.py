@@ -9,7 +9,7 @@ from .base import BaseProvider, GenerationResult
 
 
 class OpenRouterProvider(BaseProvider):
-    """OpenRouter LLM provider using Gemini 2.0 Flash (free tier).
+    """OpenRouter LLM provider using the free gpt-oss-20b variant.
 
     Provides access to various LLM models through OpenRouter's unified API.
     """
@@ -30,7 +30,7 @@ class OpenRouterProvider(BaseProvider):
             raise ValueError("OPENROUTER_API_KEY not found")
 
         self.llm = ChatOpenAI(
-            model="google/gemini-2.0-flash:free",
+            model="openai/gpt-oss-20b:free",
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
             temperature=temperature,
@@ -46,7 +46,7 @@ class OpenRouterProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return "OpenRouter (Gemini Free)"
+        return "OpenRouter (gpt-oss-20b:free)"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using OpenRouter."""

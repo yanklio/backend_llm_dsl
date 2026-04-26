@@ -3,8 +3,53 @@
 from pathlib import Path
 from typing import Optional
 
-from src.validators.shared.command import run_command
-from src.validators.shared.error_types import ErrorCodes, ValidationError, create_error
+from src.validators.command import run_command
+from src.validators.error_types import ErrorCodes, ValidationError, create_error
+
+
+def _format_syntactic_error(error: ValidationError) -> dict[str, object]:
+    """Convert a ValidationError into the public syntax result format."""
+    return {
+        "file": error.get("file", "unknown"),
+        "line": error.get("line", 0),
+        "column": error.get("column", 0),
+        "message": error.get("message", ""),
+        "code": error.get("code", ""),
+    }
+
+
+def _fallback_typescript_error(stderr: str) -> ValidationError:
+    """Build a generic compile error when TypeScript output is unparseable."""
+    stderr_lower = stderr.lower()
+
+    if "timeout" in stderr_lower:
+        return create_error("compile", "TypeScript compilation timeout", ErrorCodes.TIMEOUT)
+    if "not found" in stderr_lower or "command not found" in stderr_lower:
+        return create_error(
+            "compile",
+            "TypeScript compiler not found (npx tsc)",
+            ErrorCodes.TSC_NOT_FOUND,
+        )
+    return create_error("compile", f"TypeScript compilation error: {stderr[:200]}", ErrorCodes.ERROR)
+
+
+def validate_syntactic(project_path: Path) -> dict[str, object]:
+    """Validate TypeScript syntax for the generated project.
+
+    Args:
+        project_path (Path): Path to the NestJS project.
+
+    Returns:
+        dict[str, object]: Structured syntax validation result.
+    """
+    errors = check_typescript(project_path)
+
+    return {
+        "valid": len(errors) == 0,
+        "total_files": 1,
+        "error_count": len(errors),
+        "errors": [_format_syntactic_error(error) for error in errors],
+    }
 
 
 def check_typescript(project_path: Path) -> list[ValidationError]:
@@ -30,19 +75,7 @@ def check_typescript(project_path: Path) -> list[ValidationError]:
             errors.append(error)
 
     if not errors and not result.success:
-        stderr_lower = result.stderr.lower()
-
-        if "timeout" in stderr_lower:
-            error_msg = "TypeScript compilation timeout"
-            error_code = ErrorCodes.TIMEOUT
-        elif "not found" in stderr_lower or "command not found" in stderr_lower:
-            error_msg = "TypeScript compiler not found (npx tsc)"
-            error_code = ErrorCodes.TSC_NOT_FOUND
-        else:
-            error_msg = f"TypeScript compilation error: {result.stderr[:200]}"
-            error_code = ErrorCodes.ERROR
-
-        errors.append(create_error("compile", error_msg, error_code))
+        errors.append(_fallback_typescript_error(result.stderr))
 
     return errors
 

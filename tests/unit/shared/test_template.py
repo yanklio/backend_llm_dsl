@@ -8,7 +8,7 @@ from src.shared.exceptions import (
     TemplateNotFoundException,
     TemplateRenderException,
 )
-from src.shared.template_helper import (
+from src.shared.template import (
     TemplateRenderer,
     render_single_template,
 )

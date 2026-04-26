@@ -1,8 +1,41 @@
 from pathlib import Path
 from typing import Any
 
-from .runtime_validators import validate_runtime
-from .syntactic_validators import validate_syntactic
+from .runtime import validate_runtime
+from .syntax import validate_syntactic
+
+RUNTIME_ERROR_PREFIX = "Runtime error during"
+
+
+def _format_syntactic_errors(result: dict[str, Any]) -> list[str]:
+    """Convert syntactic validation results into display strings."""
+    if result.get("valid", False):
+        return []
+
+    return [
+        f"{error.get('file', '?')}:{error.get('line', '?')} - {error.get('message', 'Unknown error')}"
+        for error in result.get("errors", [])
+    ]
+
+
+def _runtime_error_message(output: Any) -> str:
+    """Extract a displayable message from a runtime error payload."""
+    if isinstance(output, dict):
+        return output.get("message", str(output))
+    return str(output)
+
+
+def _format_runtime_errors(result: dict[str, Any]) -> list[str]:
+    """Convert runtime validation results into display strings."""
+    if result.get("valid", False):
+        return []
+
+    errors = []
+    for stage, output in result.get("errors", {}).items():
+        if output:
+            message = _runtime_error_message(output)
+            errors.append(f"{RUNTIME_ERROR_PREFIX} {stage}: {message[:200]}...")
+    return errors
 
 
 def main(project_path: Path) -> list[str]:
@@ -14,25 +47,9 @@ def main(project_path: Path) -> list[str]:
     Returns:
         list[str]: A list of validation errors.
     """
-    all_errors: list[str] = []
-
-    syn_result: dict[str, Any] = validate_syntactic(project_path)
-    if not syn_result.get("valid", False):
-        for e in syn_result.get("errors", []):
-            msg = f"{e.get('file', '?')}:{e.get('line', '?')} - {e.get('message', 'Unknown error')}"
-            all_errors.append(msg)
-
-    run_result: dict[str, Any] = validate_runtime(project_path)
-    if not run_result.get("valid", False):
-        runtime_errors = run_result.get("errors", {})
-        for stage, output in runtime_errors.items():
-            if output:
-                message = (
-                    output.get("message", str(output)) if isinstance(output, dict) else str(output)
-                )
-                all_errors.append(f"Runtime error during {stage}: {message[:200]}...")
-
-    return all_errors
+    syntactic_result: dict[str, Any] = validate_syntactic(project_path)
+    runtime_result: dict[str, Any] = validate_runtime(project_path)
+    return _format_syntactic_errors(syntactic_result) + _format_runtime_errors(runtime_result)
 
 
 if __name__ == "__main__":

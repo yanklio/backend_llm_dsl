@@ -5,10 +5,10 @@ for various LLM services (Groq, Gemini, OpenRouter, Ollama).
 """
 
 from .base import BaseProvider, GenerationResult
-from .gemini_provider import GeminiProvider
-from .groq_provider import GroqProvider
-from .ollama_provider import OllamaProvider
-from .openrouter_provider import OpenRouterProvider
+from .gemini import GeminiProvider
+from .groq import GroqProvider
+from .ollama import OllamaProvider
+from .openrouter import OpenRouterProvider
 
 __all__ = [
     "BaseProvider",

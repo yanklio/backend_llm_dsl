@@ -15,28 +15,28 @@ from .providers import (
 load_dotenv()
 
 
-def get_provider(provider_id: str, temperature: float, timeout: int) -> BaseProvider:
-    """Get provider by ID."""
-    from .providers import (
-        GeminiProvider,
-        GroqProvider,
-        OllamaProvider,
-        OpenRouterProvider,
-    )
-    
-    providers = {
+def _provider_registry() -> dict[str, type[BaseProvider]]:
+    """Return the mapping of provider IDs to provider classes."""
+    from .providers import GeminiProvider, GroqProvider, OllamaProvider, OpenRouterProvider
+
+    return {
         "gemini": GeminiProvider,
         "groq": GroqProvider,
         "ollama": OllamaProvider,
         "openrouter": OpenRouterProvider,
     }
-    
+
+
+def get_provider(provider_id: str, temperature: float, timeout: int) -> BaseProvider:
+    """Get provider by ID."""
+    providers = _provider_registry()
+
     if provider_id not in providers:
         raise LLMException(
             f"Unknown provider: {provider_id}. Available: {list(providers.keys())}",
             code="LLM001",
         )
-    
+
     return providers[provider_id](temperature, timeout)
 
 
@@ -45,7 +45,7 @@ class LLMClient:
 
     def __init__(
         self,
-        provider_id: str = "gemini",
+        provider_id: str = "openrouter",
         temperature: Optional[float] = None,
         timeout: Optional[int] = None,
     ):

@@ -85,15 +85,26 @@ modules:
 
 Only respond with valid YAML. No explanations. No markdown code blocks. Just raw YAML."""
 
-RAW_CODE_SYSTEM_PROMPT = """You are an expert NestJS developer. Generate feature modules ONLY.
+RAW_CODE_SYSTEM_PROMPT = """You are an expert NestJS developer. Generate a complete runnable NestJS application.
 
 🚨 CRITICAL RULES:
-1. DO NOT generate or modify: main.ts, app.module.ts, app.controller.ts, app.service.ts
-2. DO NOT generate: package.json, tsconfig.json, nest-cli.json
-3. ONLY generate feature files inside src/{entity}/ directory
+1. DO NOT generate: package.json, tsconfig.json, nest-cli.json
+2. ALWAYS generate the application bootstrap files required for a runnable NestJS app
+3. Generate feature files inside src/{entity}/ directory and root app files inside src/
 
 OUTPUT FORMAT: JSON object mapping paths to content.
 Example: {"src/user/user.entity.ts":"import { Entity } from 'typeorm';\\n@Entity()\\nexport class User {}"}
+
+REQUIRED ROOT FILES:
+- src/main.ts
+- src/app.module.ts
+
+ROOT FILE CONVENTIONS:
+- main.ts must bootstrap NestFactory with AppModule
+- main.ts should enable CORS
+- main.ts should use ValidationPipe
+- app.module.ts must import generated feature modules
+- app.module.ts must configure TypeOrmModule.forRoot for sqlite using ./data/app.db
 
 REQUIRED FILE STRUCTURE per entity (lowercase entity name):
 - src/{entity}/{entity}.entity.ts      - TypeORM entity with decorators

@@ -13,6 +13,11 @@ from typing import Optional
 
 from src.shared.config import get_config
 
+PORT_PID_COMMANDS = [
+    ["lsof", "-ti"],
+    ["fuser"],
+]
+
 
 class SubprocessResult:
     """Result of a subprocess execution."""
@@ -22,6 +27,54 @@ class SubprocessResult:
         self.stdout = stdout
         self.stderr = stderr
         self.returncode = returncode
+
+
+def _run_port_pid_command(command: list[str], port: int) -> subprocess.CompletedProcess[str] | None:
+    """Run a command that may report process IDs for a port."""
+    port_arg = f":{port}" if command[0] == "lsof" else f"{port}/tcp"
+
+    try:
+        return subprocess.run(
+            [*command, port_arg],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return None
+
+
+def _parse_port_pids(command_name: str, stdout: str) -> list[str]:
+    """Parse process IDs returned by a port lookup command."""
+    if not stdout.strip():
+        return []
+    if command_name == "lsof":
+        return [pid.strip() for pid in stdout.strip().split("\n") if pid.strip()]
+    return stdout.strip().split()
+
+
+def _wait_for_process_exit(process: subprocess.Popen, timeout: int) -> None:
+    """Wait for process exit and force kill on timeout."""
+    try:
+        process.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
+
+
+def _send_interrupt(process: subprocess.Popen) -> None:
+    """Send SIGINT to a running process, ignoring signal errors."""
+    try:
+        process.send_signal(signal.SIGINT)
+    except Exception:
+        pass
+
+
+def _cleanup_port(port: int) -> None:
+    """Wait for a port to free up and force cleanup if needed."""
+    wait_for_port_free(port, timeout=5)
+    if is_port_in_use(port):
+        force_kill_port(port)
 
 
 def run_command(
@@ -108,29 +161,16 @@ def get_pids_on_port(port: int) -> list:
     Returns:
         List of process IDs
     """
-    pids = []
+    for command in PORT_PID_COMMANDS:
+        result = _run_port_pid_command(command, port)
+        if result is None or result.returncode != 0:
+            continue
 
-    # Try lsof first
-    try:
-        result = subprocess.run(
-            ["lsof", "-ti", f":{port}"], capture_output=True, text=True, timeout=5
-        )
-        if result.returncode == 0 and result.stdout.strip():
-            pids = [p.strip() for p in result.stdout.strip().split("\n") if p.strip()]
+        pids = _parse_port_pids(command[0], result.stdout)
+        if pids:
             return pids
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        pass
 
-    # Try fuser as fallback
-    try:
-        result = subprocess.run(["fuser", f"{port}/tcp"], capture_output=True, text=True, timeout=5)
-        if result.returncode == 0 and result.stdout.strip():
-            pids = result.stdout.strip().split()
-            return pids
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        pass
-
-    return pids
+    return []
 
 
 def kill_process_on_port(port: int) -> bool:
@@ -224,31 +264,15 @@ def terminate_process(
     Returns:
         True if successful, False otherwise
     """
-    # Step 1: Send interrupt signal (SIGINT - like Ctrl+C)
     if process.poll() is None:
-        try:
-            process.send_signal(signal.SIGINT)
-        except Exception:
-            pass
+        _send_interrupt(process)
+        _wait_for_process_exit(process, timeout)
 
-        try:
-            process.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            # Timeout: force kill
-            process.kill()
-            process.wait()
-
-    # Step 2: Wait for cleanup delay
     if delay_cleanup > 0:
         time.sleep(delay_cleanup)
 
-    # Step 3: Wait for port to naturally free up
     if port is not None:
-        wait_for_port_free(port, timeout=5)
-
-        # Step 4: Force kill port if still in use
-        if is_port_in_use(port):
-            force_kill_port(port)
+        _cleanup_port(port)
 
     return True
 
