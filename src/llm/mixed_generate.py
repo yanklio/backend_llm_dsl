@@ -8,6 +8,7 @@ Two-phase approach:
 import argparse
 import sys
 import traceback
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -31,13 +32,22 @@ from src.shared import logger
 load_dotenv()
 
 
-MIXED_STATS_FIELDS = {
-    "phase1_duration": lambda blueprint_result, code_result: blueprint_result.duration_seconds,
-    "phase2_duration": lambda blueprint_result, code_result: code_result.duration_seconds,
-    "phase1_tokens": lambda blueprint_result, code_result: blueprint_result.input_tokens,
-    "phase2_tokens": lambda blueprint_result, code_result: code_result.total_tokens,
-    "provider": lambda blueprint_result, code_result: code_result.provider,
-}
+@dataclass(frozen=True)
+class TokenUsage:
+    """Normalized token usage values for one LLM generation phase."""
+
+    input_tokens: int
+    output_tokens: int
+    total_tokens: int
+
+
+def _token_usage(result: Any) -> TokenUsage:
+    """Normalize nullable provider token fields into integers."""
+    return TokenUsage(
+        input_tokens=result.input_tokens or 0,
+        output_tokens=result.output_tokens or 0,
+        total_tokens=result.total_tokens or 0,
+    )
 
 
 def _create_mixed_prompt(blueprint_yaml: str, description: str) -> str:
@@ -73,13 +83,24 @@ Newlines must be represented as \\n, double quotes as \\".
 
 def _build_mixed_statistics(blueprint_result: Any, code_result: Any) -> dict[str, Any]:
     """Build the mixed-generation statistics payload."""
-    statistics = {
+    phase1_tokens = _token_usage(blueprint_result)
+    phase2_tokens = _token_usage(code_result)
+
+    return {
+        "phase1_duration": blueprint_result.duration_seconds,
+        "phase2_duration": code_result.duration_seconds,
         "total_duration_seconds": blueprint_result.duration_seconds + code_result.duration_seconds,
-        "total_tokens": (blueprint_result.total_tokens or 0) + (code_result.total_tokens or 0),
+        "phase1_input_tokens": phase1_tokens.input_tokens,
+        "phase1_output_tokens": phase1_tokens.output_tokens,
+        "phase1_total_tokens": phase1_tokens.total_tokens,
+        "phase2_input_tokens": phase2_tokens.input_tokens,
+        "phase2_output_tokens": phase2_tokens.output_tokens,
+        "phase2_total_tokens": phase2_tokens.total_tokens,
+        "input_tokens": phase1_tokens.input_tokens + phase2_tokens.input_tokens,
+        "output_tokens": phase1_tokens.output_tokens + phase2_tokens.output_tokens,
+        "total_tokens": phase1_tokens.total_tokens + phase2_tokens.total_tokens,
+        "provider": code_result.provider,
     }
-    for field_name, resolver in MIXED_STATS_FIELDS.items():
-        statistics[field_name] = resolver(blueprint_result, code_result)
-    return statistics
 
 
 def _log_mixed_statistics(stats: dict[str, Any]) -> None:

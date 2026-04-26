@@ -80,6 +80,32 @@ def _build_raw_prompt(existing_context: str, description: str) -> str:
     )
 
 
+def generate_code_files(
+    description: str,
+    project_dir: str = "./nest_project",
+    provider: str = "openrouter",
+) -> tuple[GenerationResult, dict[str, Any]]:
+    """Generate and parse a complete NestJS file map from natural language."""
+    existing_context = read_project_context(project_dir)
+    client = LLMClient(provider_id=provider, temperature=0.2)
+
+    messages = [
+        SystemMessage(content=RAW_CODE_SYSTEM_PROMPT),
+        HumanMessage(content=_build_raw_prompt(existing_context, description)),
+    ]
+
+    logger.start("Generating code with LLM...")
+    result = client.generate(messages)
+
+    try:
+        result, files = parse_generated_files(result)
+        logger.success(f"Generated {len(files)} files via {result.provider}")
+        return result, files
+    except Exception as e:
+        log_json_parse_failure(result.content, e)
+        raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
+
+
 def natural_language_to_code(
     description: str, project_dir: str = "./nest_project", provider: str = "openrouter"
 ) -> GenerationResult:
@@ -93,25 +119,8 @@ def natural_language_to_code(
     Returns:
         GenerationResult: The generated code content and metadata.
     """
-    existing_context = read_project_context(project_dir)
-    client = LLMClient(provider_id=provider, temperature=0.2)
-
-    messages = [
-        SystemMessage(content=RAW_CODE_SYSTEM_PROMPT),
-        HumanMessage(content=_build_raw_prompt(existing_context, description)),
-    ]
-
-    logger.start("Generating code with LLM...")
-
-    result = client.generate(messages)
-
-    try:
-        result, files = parse_generated_files(result)
-        logger.success(f"Generated {len(files)} files via {result.provider}")
-        return result
-    except Exception as e:
-        log_json_parse_failure(result.content, e)
-        raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
+    result, _ = generate_code_files(description, project_dir, provider)
+    return result
 
 
 def save_files(files: dict[str, Any], output_dir: str) -> None:
@@ -155,10 +164,8 @@ def main() -> None:
         logger.info(f"Preferred Model: {args.model}")
 
     try:
-        result = natural_language_to_code(args.description, args.output, args.model)
-
+        result, files = generate_code_files(args.description, args.output, args.model)
         log_generation_statistics(result)
-        _, files = parse_generated_files(result)
         save_files(files, args.output)
         log_run_instructions(args.output)
 

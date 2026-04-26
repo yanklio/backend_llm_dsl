@@ -1,10 +1,16 @@
 """TypeScript validator module."""
 
+import re
 from pathlib import Path
 from typing import Optional
 
 from src.validators.command import run_command
 from src.validators.error_types import ErrorCodes, ValidationError, create_error
+
+TSC_TIMEOUT_SECONDS = 60
+TYPESCRIPT_ERROR_PATTERN = re.compile(
+    r"^(?P<file>.+)\((?P<line>\d+),(?P<column>\d+)\): error (?P<error>.+)$"
+)
 
 
 def _format_syntactic_error(error: ValidationError) -> dict[str, object]:
@@ -33,7 +39,7 @@ def _fallback_typescript_error(stderr: str) -> ValidationError:
     return create_error("compile", f"TypeScript compilation error: {stderr[:200]}", ErrorCodes.ERROR)
 
 
-def validate_syntactic(project_path: Path) -> dict[str, object]:
+def validate_syntactic(project_path: Path | str) -> dict[str, object]:
     """Validate TypeScript syntax for the generated project.
 
     Args:
@@ -42,14 +48,20 @@ def validate_syntactic(project_path: Path) -> dict[str, object]:
     Returns:
         dict[str, object]: Structured syntax validation result.
     """
-    errors = check_typescript(project_path)
+    normalized_path = Path(project_path)
+    errors = check_typescript(normalized_path)
 
     return {
         "valid": len(errors) == 0,
-        "total_files": 1,
+        "total_files": _count_typescript_files(normalized_path),
         "error_count": len(errors),
         "errors": [_format_syntactic_error(error) for error in errors],
     }
+
+
+def _count_typescript_files(project_path: Path) -> int:
+    """Count project TypeScript source files excluding dependencies."""
+    return sum(1 for file_path in project_path.rglob("*.ts") if "node_modules" not in file_path.parts)
 
 
 def check_typescript(project_path: Path) -> list[ValidationError]:
@@ -61,18 +73,13 @@ def check_typescript(project_path: Path) -> list[ValidationError]:
     Returns:
         list[ValidationError]: List of validation errors.
     """
-    result = run_command(["npx", "tsc", "--noEmit"], cwd=project_path, timeout=60)
+    result = run_command(["npx", "tsc", "--noEmit"], cwd=project_path, timeout=TSC_TIMEOUT_SECONDS)
 
     if result.success and not result.stdout and not result.stderr:
         return []
 
-    errors = []
     output = result.stdout + result.stderr
-
-    for line in output.splitlines():
-        error = _parse_typescript_error(line)
-        if error:
-            errors.append(error)
+    errors = [error for line in output.splitlines() if (error := _parse_typescript_error(line))]
 
     if not errors and not result.success:
         errors.append(_fallback_typescript_error(result.stderr))
@@ -154,17 +161,14 @@ def _parse_typescript_error(line: str) -> Optional[ValidationError]:
         return None
 
     try:
-        parts = line.split("): error ")
-        if len(parts) != 2:
+        match = TYPESCRIPT_ERROR_PATTERN.match(line.strip())
+        if match is None:
             return None
 
-        file_loc_result = _parse_file_location(parts[0])
-        if file_loc_result is None:
-            return None
-
-        file_path, line_col = file_loc_result
-        line_num, col_num = _parse_line_column(line_col)
-        code, message = _parse_error_code_and_message(parts[1])
+        file_path = match.group("file").strip()
+        line_num = int(match.group("line"))
+        col_num = int(match.group("column"))
+        code, message = _parse_error_code_and_message(match.group("error"))
 
         return create_error("compile", message, code, file=file_path, line=line_num, column=col_num)
 

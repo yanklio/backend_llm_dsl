@@ -24,6 +24,11 @@ def _print_run_header(test_cases_count: int) -> None:
     print("-" * 70)
 
 
+def _completed_run_keys(results: list[dict[str, Any]]) -> set[tuple[str, str]]:
+    """Build the resume keys for completed experiment runs."""
+    return {(result["test_case"], result["approach"]) for result in results}
+
+
 def _build_result_record(
     case_name: str,
     tier: str,
@@ -69,6 +74,44 @@ def _print_run_result(
         print(f"  Error: {generation.get('error', 'Unknown')}")
 
 
+def _prepare_project() -> None:
+    """Reset and scaffold the generated Nest project directory."""
+    clean_project(NEST_PROJECT_DIR)
+    ensure_base_project(NEST_PROJECT_DIR)
+
+
+def _run_case(
+    case_name: str,
+    case_data: dict[str, Any],
+    tier: str,
+    current_approach: str,
+    provider: str,
+    results: list[dict[str, Any]],
+) -> None:
+    """Run, validate, print, and persist one experiment case."""
+    _prepare_project()
+    generation = APPROACH_RUNNERS[current_approach](
+        case_name,
+        case_data,
+        NEST_PROJECT_DIR,
+        provider=provider,
+    )
+
+    validation, status = _validate_generation(generation)
+    _print_run_result(case_name, tier, current_approach, status, generation)
+
+    results.append(
+        _build_result_record(
+            case_name,
+            tier,
+            current_approach,
+            generation,
+            validation,
+        )
+    )
+    save_results(results)
+
+
 def run_experiments(approach: str = "all", provider: str = "openrouter") -> None:
     """Execute generation experiments across the configured test cases."""
     approaches_to_run = _selected_approaches(approach)
@@ -78,7 +121,7 @@ def run_experiments(approach: str = "all", provider: str = "openrouter") -> None
     NEST_PROJECT_DIR.mkdir(exist_ok=True)
 
     results = load_results()
-    completed_runs = {(result["test_case"], result["approach"]) for result in results}
+    completed_runs = _completed_run_keys(results)
 
     _print_run_header(len(test_cases))
 
@@ -89,28 +132,14 @@ def run_experiments(approach: str = "all", provider: str = "openrouter") -> None
                 print(f"Skipping {case_name} ({current_approach}) - already completed")
                 continue
 
-            clean_project(NEST_PROJECT_DIR)
-            ensure_base_project(NEST_PROJECT_DIR)
-            generation = APPROACH_RUNNERS[current_approach](
+            _run_case(
                 case_name,
                 case_data,
-                NEST_PROJECT_DIR,
-                provider=provider,
+                tier,
+                current_approach,
+                provider,
+                results,
             )
-
-            validation, status = _validate_generation(generation)
-            _print_run_result(case_name, tier, current_approach, status, generation)
-
-            results.append(
-                _build_result_record(
-                    case_name,
-                    tier,
-                    current_approach,
-                    generation,
-                    validation,
-                )
-            )
-            save_results(results)
 
     print("-" * 70)
     print(f"Results saved to {RESULTS_FILE}")

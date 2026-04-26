@@ -27,6 +27,29 @@ def _failure_result(stage: str, message: str, code: str) -> dict[str, Any]:
     return {"success": False, "error": create_error(stage, message, code)}
 
 
+def _run_npm_command(
+    project_path: Path,
+    *,
+    stage: str,
+    command: list[str],
+    timeout: int,
+    success_message: str,
+    failure_message: str,
+    classify_error: Any,
+) -> dict[str, Any]:
+    """Run one npm command and normalize its success or failure payload."""
+    logger.debug(f"Running {' '.join(command)}...")
+    result = run_command(command, cwd=project_path, timeout=timeout)
+
+    if result.success:
+        logger.success(success_message)
+        return _success_result()
+
+    error_message = result.stderr[:200] if result.stderr else failure_message
+    code, message = classify_error(error_message)
+    return _failure_result(stage, message, code)
+
+
 def _resolve_start_options(
     wait_time: Optional[int],
     port: Optional[int],
@@ -147,21 +170,15 @@ def _run_npm_install(project_path: Path) -> dict[str, Any]:
         dict[str, Any]: Dictionary with success status and optional error.
     """
     config = get_config()
-    logger.debug("Running npm install...")
-    result = run_command(
-        ["npm", "install", "--legacy-peer-deps"],
-        cwd=project_path,
+    return _run_npm_command(
+        project_path,
+        stage="install",
+        command=["npm", "install", "--legacy-peer-deps"],
         timeout=config.validation.npm_install_timeout,
+        success_message="npm install completed",
+        failure_message="npm install failed",
+        classify_error=_classify_install_error,
     )
-
-    if not result.success:
-        error_message = result.stderr[:200] if result.stderr else "npm install failed"
-
-        code, message = _classify_install_error(error_message)
-        return _failure_result("install", message, code)
-
-    logger.success("npm install completed")
-    return _success_result()
 
 
 def _run_npm_build(project_path: Path) -> dict[str, Any]:
@@ -174,19 +191,15 @@ def _run_npm_build(project_path: Path) -> dict[str, Any]:
         dict[str, Any]: Dictionary with success status and optional error.
     """
     config = get_config()
-    logger.debug("Running npm run build...")
-    result = run_command(
-        ["npm", "run", "build"], cwd=project_path, timeout=config.validation.tsc_timeout
+    return _run_npm_command(
+        project_path,
+        stage="build",
+        command=["npm", "run", "build"],
+        timeout=config.validation.tsc_timeout,
+        success_message="Build completed",
+        failure_message="Build failed",
+        classify_error=_classify_build_error,
     )
-
-    if not result.success:
-        error_message = result.stderr[:200] if result.stderr else "Build failed"
-
-        code, message = _classify_build_error(error_message)
-        return _failure_result("build", message, code)
-
-    logger.success("Build completed")
-    return _success_result()
 
 
 def _run_npm_start(

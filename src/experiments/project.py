@@ -19,6 +19,17 @@ BASE_PROJECT_FILES = {
 }
 
 
+def _runtime_exception_result(exc: Exception) -> dict[str, Any]:
+    """Build a normalized runtime-validation failure payload."""
+    return {
+        "valid": False,
+        "install_success": False,
+        "build_success": False,
+        "start_success": False,
+        "errors": {"runtime": {"message": str(exc)}},
+    }
+
+
 def clean_project(project_path: Path) -> None:
     """Clean generated directories between experiment runs."""
     for directory_name in CLEAN_DIRS:
@@ -49,13 +60,7 @@ def validate_project(project_path: Path) -> dict[str, Any]:
         try:
             runtime = validate_runtime(str(project_path))
         except Exception as exc:
-            runtime = {
-                "valid": False,
-                "install_success": False,
-                "build_success": False,
-                "start_success": False,
-                "error": str(exc),
-            }
+            runtime = _runtime_exception_result(exc)
         syntactic = validate_syntactic(str(project_path))
 
     return {

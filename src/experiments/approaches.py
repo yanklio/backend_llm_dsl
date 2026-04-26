@@ -8,8 +8,7 @@ from src.dsl.generate import main as dsl_generate
 from src.llm import GenerationResult
 from src.llm.dsl_generate import natural_language_to_yaml
 from src.llm.mixed_generate import mixed_generate, save_mixed_files
-from src.llm.raw_generate import natural_language_to_code, save_files
-from src.llm.response_parser import try_parse_json
+from src.llm.raw_generate import generate_code_files, save_files
 
 from .io import SuppressOutput
 from .paths import blueprint_path_for
@@ -41,6 +40,15 @@ def _apply_generation_metrics(metrics: dict[str, Any], result: GenerationResult)
     metrics["output_tokens"] = result.output_tokens
     metrics["total_tokens"] = result.total_tokens
     metrics["provider"] = result.provider
+
+
+def _apply_mixed_metrics(metrics: dict[str, Any], stats: dict[str, Any]) -> None:
+    """Copy normalized mixed-phase stats into the shared metrics payload."""
+    metrics["llm_time"] = stats["total_duration_seconds"]
+    metrics["input_tokens"] = stats.get("input_tokens", 0)
+    metrics["output_tokens"] = stats.get("output_tokens", 0)
+    metrics["total_tokens"] = stats.get("total_tokens", 0)
+    metrics["provider"] = stats.get("provider")
 
 
 def _run_with_timing(
@@ -102,10 +110,9 @@ def run_raw_approach(
 
     def operation(metrics: dict[str, Any]) -> None:
         with SuppressOutput():
-            result: GenerationResult = natural_language_to_code(
+            result, files = generate_code_files(
                 test_case_data["requirement"], str(project_path), provider=provider
             )
-            files = try_parse_json(result.content)
             save_files(files, str(project_path))
 
         _apply_generation_metrics(metrics, result)
@@ -137,12 +144,7 @@ def run_mixed_approach(
             else:
                 raise Exception(result.get("error", "Unknown mixed generation error"))
 
-        stats = result["statistics"]
-        metrics["llm_time"] = stats["total_duration_seconds"]
-        metrics["input_tokens"] = stats.get("phase1_tokens", 0)
-        metrics["output_tokens"] = stats.get("phase2_tokens", 0)
-        metrics["total_tokens"] = stats.get("total_tokens", 0)
-        metrics["provider"] = stats.get("provider")
+        _apply_mixed_metrics(metrics, result["statistics"])
 
     return _run_with_timing(provider, operation)
 
