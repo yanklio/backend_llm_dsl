@@ -14,6 +14,8 @@ class GroqProvider(BaseProvider):
     Provides fast inference using Groq's optimized LLM infrastructure.
     """
 
+    MODEL_NAME = "llama-3.3-70b-versatile"
+
     def __init__(self, temperature: float = 0.1, timeout: int = 120):
         """Initialize Groq provider.
 
@@ -30,7 +32,7 @@ class GroqProvider(BaseProvider):
             raise ValueError("GROQ_API_KEY not found")
 
         self.llm = ChatGroq(
-            model="llama-3.3-70b-versatile",
+            model=self.MODEL_NAME,
             api_key=api_key,
             temperature=temperature,
             timeout=timeout,
@@ -45,7 +47,7 @@ class GroqProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return "Groq (Llama 3.1 8B Instant)"
+        return f"Groq ({self.MODEL_NAME})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Groq."""

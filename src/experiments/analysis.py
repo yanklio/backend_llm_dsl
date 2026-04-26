@@ -1,7 +1,9 @@
 """Result summarization for thesis experiment outputs."""
 
+import argparse
 import statistics
 from collections import defaultdict
+from pathlib import Path
 from typing import Any
 
 from .io import load_results
@@ -128,11 +130,11 @@ def _print_approach_summary(
     _print_generation_errors(experiments, errors)
 
 
-def analyze() -> None:
+def analyze(results_file: Path = RESULTS_FILE) -> None:
     """Print aggregate metrics from the saved experiment results."""
-    results = load_results()
+    results = load_results(results_file)
     if not results:
-        print(f"No results found at {RESULTS_FILE}")
+        print(f"No results found at {results_file}")
         return
 
     by_approach, by_approach_tier = _group_results(results)
@@ -144,5 +146,18 @@ def analyze() -> None:
         _print_approach_summary(approach, experiments, by_approach_tier)
 
 
+def main() -> None:
+    """Parse CLI arguments and print experiment analysis."""
+    parser = argparse.ArgumentParser(description="Analyze experiment result records.")
+    parser.add_argument(
+        "--results",
+        type=Path,
+        default=RESULTS_FILE,
+        help="Path to a results.json file, e.g. tests/experiment_runs/<run_id>/results.json",
+    )
+    args = parser.parse_args()
+    analyze(args.results)
+
+
 if __name__ == "__main__":
-    analyze()
+    main()

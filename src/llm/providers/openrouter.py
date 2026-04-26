@@ -14,6 +14,8 @@ class OpenRouterProvider(BaseProvider):
     Provides access to various LLM models through OpenRouter's unified API.
     """
 
+    MODEL_NAME = "openai/gpt-oss-20b:free"
+
     def __init__(self, temperature: float = 0.1, timeout: int = 120):
         """Initialize OpenRouter provider.
 
@@ -30,7 +32,7 @@ class OpenRouterProvider(BaseProvider):
             raise ValueError("OPENROUTER_API_KEY not found")
 
         self.llm = ChatOpenAI(
-            model="openai/gpt-oss-20b:free",
+            model=self.MODEL_NAME,
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
             temperature=temperature,
@@ -46,7 +48,7 @@ class OpenRouterProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return "OpenRouter (gpt-oss-20b:free)"
+        return f"OpenRouter ({self.MODEL_NAME})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using OpenRouter."""

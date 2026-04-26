@@ -50,17 +50,7 @@ def _token_usage(result: Any) -> TokenUsage:
     )
 
 
-def _create_mixed_prompt(blueprint_yaml: str, description: str) -> str:
-    """Create a user prompt that includes both the description and blueprint.
-
-    Args:
-        blueprint_yaml (str): The generated YAML blueprint.
-        description (str): Original natural language description.
-
-    Returns:
-        str: Combined prompt for raw code generation.
-    """
-    return f"""=== NATURAL LANGUAGE REQUEST ===
+MIXED_REQUEST_TEMPLATE = """=== NATURAL LANGUAGE REQUEST ===
 {description}
 
 === GENERATED BLUEPRINT (use this structure) ===
@@ -79,6 +69,22 @@ Values are the FULL FILE CONTENT as properly escaped JSON strings.
 Newlines must be represented as \\n, double quotes as \\".
 
     Only generate .ts source files in src/ directory."""
+
+
+def _create_mixed_prompt(blueprint_yaml: str, description: str) -> str:
+    """Create a user prompt that includes both the description and blueprint.
+
+    Args:
+        blueprint_yaml (str): The generated YAML blueprint.
+        description (str): Original natural language description.
+
+    Returns:
+        str: Combined prompt for raw code generation.
+    """
+    return MIXED_REQUEST_TEMPLATE.format(
+        blueprint_yaml=blueprint_yaml,
+        description=description,
+    )
 
 
 def _build_mixed_statistics(blueprint_result: Any, code_result: Any) -> dict[str, Any]:
@@ -100,6 +106,7 @@ def _build_mixed_statistics(blueprint_result: Any, code_result: Any) -> dict[str
         "output_tokens": phase1_tokens.output_tokens + phase2_tokens.output_tokens,
         "total_tokens": phase1_tokens.total_tokens + phase2_tokens.total_tokens,
         "provider": code_result.provider,
+        "model_name": code_result.model_name,
     }
 
 

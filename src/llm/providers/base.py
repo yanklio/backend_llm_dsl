@@ -46,6 +46,8 @@ class GenerationResult:
 class BaseProvider(ABC):
     """Abstract base class for LLM providers."""
 
+    MODEL_NAME = "unknown"
+
     def __init__(self, temperature: float = 0.1, timeout: int = 120):
         """Initialize the provider.
 
@@ -67,6 +69,11 @@ class BaseProvider(ABC):
     def name(self) -> str:
         """Display name for the provider."""
         pass
+
+    @property
+    def model_name(self) -> str:
+        """Exact model identifier used by this provider."""
+        return self.MODEL_NAME
 
     @abstractmethod
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
@@ -109,6 +116,7 @@ class BaseProvider(ABC):
             input_tokens=token_stats["input_tokens"],
             output_tokens=token_stats["output_tokens"],
             total_tokens=token_stats["total_tokens"],
+            model_name=self.model_name,
         )
 
 

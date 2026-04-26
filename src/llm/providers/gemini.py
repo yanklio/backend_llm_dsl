@@ -14,6 +14,8 @@ class GeminiProvider(BaseProvider):
     Provides fast and efficient inference using Google's Gemini models.
     """
 
+    MODEL_NAME = "gemma-4-31b-it"
+
     def __init__(self, temperature: float = 0.1, timeout: int = 120):
         """Initialize Gemini provider.
 
@@ -29,7 +31,7 @@ class GeminiProvider(BaseProvider):
             raise ValueError("GOOGLE_API_KEY not found")
 
         self.llm = ChatGoogleGenerativeAI(
-            model="gemma-4-31b-it",
+            model=self.MODEL_NAME,
             temperature=temperature,
             timeout=timeout,
         )
@@ -42,7 +44,7 @@ class GeminiProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return "Google Gemini"
+        return f"Google Gemini ({self.MODEL_NAME})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Gemini."""

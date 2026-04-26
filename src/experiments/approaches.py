@@ -11,7 +11,17 @@ from src.llm.mixed_generate import mixed_generate, save_mixed_files
 from src.llm.raw_generate import generate_code_files, save_files
 
 from .io import SuppressOutput
+from .metadata import model_name_for_provider
 from .paths import blueprint_path_for
+
+MIXED_PHASE_METRIC_FIELDS = (
+    "phase1_input_tokens",
+    "phase1_output_tokens",
+    "phase1_total_tokens",
+    "phase2_input_tokens",
+    "phase2_output_tokens",
+    "phase2_total_tokens",
+)
 
 
 def _base_metrics(provider: str) -> dict[str, Any]:
@@ -23,7 +33,9 @@ def _base_metrics(provider: str) -> dict[str, Any]:
         "input_tokens": 0,
         "output_tokens": 0,
         "total_tokens": 0,
+        "provider_id": provider,
         "provider": provider,
+        "model_name": model_name_for_provider(provider),
     }
 
 
@@ -40,6 +52,7 @@ def _apply_generation_metrics(metrics: dict[str, Any], result: GenerationResult)
     metrics["output_tokens"] = result.output_tokens
     metrics["total_tokens"] = result.total_tokens
     metrics["provider"] = result.provider
+    metrics["model_name"] = result.model_name
 
 
 def _apply_mixed_metrics(metrics: dict[str, Any], stats: dict[str, Any]) -> None:
@@ -49,6 +62,9 @@ def _apply_mixed_metrics(metrics: dict[str, Any], stats: dict[str, Any]) -> None
     metrics["output_tokens"] = stats.get("output_tokens", 0)
     metrics["total_tokens"] = stats.get("total_tokens", 0)
     metrics["provider"] = stats.get("provider")
+    metrics["model_name"] = stats.get("model_name")
+    for field_name in MIXED_PHASE_METRIC_FIELDS:
+        metrics[field_name] = stats.get(field_name, 0)
 
 
 def _run_with_timing(

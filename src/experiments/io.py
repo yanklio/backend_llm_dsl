@@ -2,6 +2,7 @@
 
 import json
 import sys
+from pathlib import Path
 from typing import Any
 
 import yaml
@@ -32,22 +33,28 @@ def load_test_cases() -> dict[str, Any]:
         return yaml.safe_load(file_handle)
 
 
-def load_results() -> list[dict[str, Any]]:
+def load_results(results_file: Path = RESULTS_FILE) -> list[dict[str, Any]]:
     """Load persisted experiment results if they exist."""
-    if not RESULTS_FILE.exists():
+    if not results_file.exists():
         return []
 
     try:
-        with open(RESULTS_FILE) as file_handle:
+        with open(results_file) as file_handle:
             return json.load(file_handle)
     except Exception:
         return []
 
 
-def save_results(results: list[dict[str, Any]]) -> None:
+def save_json(path: Path, payload: Any) -> None:
+    """Persist a JSON payload to disk."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w") as file_handle:
+        json.dump(payload, file_handle, indent=2)
+
+
+def save_results(results: list[dict[str, Any]], results_file: Path = RESULTS_FILE) -> None:
     """Persist experiment results to disk."""
     try:
-        with open(RESULTS_FILE, "w") as file_handle:
-            json.dump(results, file_handle, indent=2)
+        save_json(results_file, results)
     except Exception as exc:
         print(f"Failed to save results: {exc}")

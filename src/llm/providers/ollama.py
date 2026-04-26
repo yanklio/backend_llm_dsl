@@ -13,6 +13,8 @@ class OllamaProvider(BaseProvider):
     Provides local LLM inference using Ollama running on localhost.
     """
 
+    MODEL_NAME = "llama3.1"
+
     def __init__(self, temperature: float = 0.1, timeout: int = 120):
         """Initialize Ollama provider.
 
@@ -32,7 +34,7 @@ class OllamaProvider(BaseProvider):
             raise ConnectionError("Ollama is not running on localhost:11434")
 
         self.llm = ChatOllama(
-            model="llama3.1",
+            model=self.MODEL_NAME,
             temperature=temperature,
             timeout=timeout,
         )
@@ -45,7 +47,7 @@ class OllamaProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return "Ollama (Local)"
+        return f"Ollama ({self.MODEL_NAME})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Ollama."""
