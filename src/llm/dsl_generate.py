@@ -20,9 +20,7 @@ load_dotenv()
 DSL_REQUEST_TEMPLATE = "Create a NestJS application for: {description}"
 
 
-def natural_language_to_yaml(
-    description: str, provider: str = "openrouter"
-) -> GenerationResult:
+def natural_language_to_yaml(description: str, provider: str = "openrouter") -> GenerationResult:
     """Convert natural language to YAML blueprint using LLM.
 
     Args:

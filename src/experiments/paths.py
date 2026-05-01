@@ -4,13 +4,15 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 TESTS_DIR = PROJECT_ROOT / "tests"
-TEST_CASES_FILE = TESTS_DIR / "test_cases.yaml"
-TEST_CASES_DIR = TESTS_DIR / "test_cases"
-RESULTS_FILE = TESTS_DIR / "test_results.json"
-RUNS_DIR = TESTS_DIR / "experiment_runs"
-DEBUG_LOG_FILE = PROJECT_ROOT / "experiments_debug.log"
+RESULTS_DIR = PROJECT_ROOT / "results"
+ANALYTICS_DIR = RESULTS_DIR / "analytics"
+TEST_CASES_FILE = RESULTS_DIR / "test_cases.yaml"
+TEST_CASES_DIR = RESULTS_DIR / "generated_blueprints"
+RESULTS_FILE = RESULTS_DIR / "test_results.json"
+RUNS_DIR = RESULTS_DIR / "runs"
+DEBUG_LOG_FILE = RESULTS_DIR / "experiments_debug.log"
 NEST_PROJECT_DIR = PROJECT_ROOT / "nest_project"
-BASE_NEST_PROJECT_DIR = TESTS_DIR / "nest_project"
+BASE_NEST_PROJECT_DIR = RESULTS_DIR / "base_nest_project"
 
 
 def blueprint_path_for(test_case_name: str, suffix: str = "") -> Path:

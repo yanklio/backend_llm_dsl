@@ -153,7 +153,7 @@ def main() -> None:
         "--results",
         type=Path,
         default=RESULTS_FILE,
-        help="Path to a results.json file, e.g. tests/experiment_runs/<run_id>/results.json",
+        help="Path to a results.json file, e.g. results/runs/<run_id>/results.json",
     )
     args = parser.parse_args()
     analyze(args.results)
