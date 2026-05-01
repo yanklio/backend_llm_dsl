@@ -1,0 +1,96 @@
+root:
+  name: ProjectManagement
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: User
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 100}
+        - name: email
+          type: string
+          required: true
+          unique: true
+          validation: {format: email}
+        - name: role
+          type: enum
+          required: true
+          enum: [admin, manager, developer, viewer]
+          default: developer
+      relations:
+        - type: ManyToMany
+          model: Project
+          field: projects
+          description: Projects the user is assigned to
+  - name: Project
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 150}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 500}
+        - name: status
+          type: enum
+          required: true
+          enum: [planning, active, on_hold, completed]
+          default: planning
+        - name: startDate
+          type: date
+          required: false
+      relations:
+        - type: ManyToMany
+          model: User
+          field: users
+          description: Users assigned to this project
+        - type: OneToMany
+          model: Task
+          field: tasks
+          description: Tasks belonging to this project
+          cascade: true
+  - name: Task
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: title
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 200}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 1000}
+        - name: priority
+          type: enum
+          required: true
+          enum: [low, medium, high, critical]
+          default: medium
+        - name: completed
+          type: boolean
+          required: true
+          default: false
+        - name: dueDate
+          type: date
+          required: false
+      relations:
+        - type: ManyToOne
+          model: Project
+          field: project
+          description: The project this task belongs to
+          cascadeDelete: true

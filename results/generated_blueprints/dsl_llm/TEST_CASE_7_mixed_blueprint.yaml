@@ -1,0 +1,52 @@
+root:
+  name: PetAdministration
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Category
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          unique: true
+          validation: {minLength: 2, maxLength: 50}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 300}
+      relations:
+        - type: OneToMany
+          model: Product
+          field: products
+          description: A list of products belonging to this category
+  - name: Product
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 100}
+        - name: price
+          type: number
+          required: true
+          validation: {min: 0}
+        - name: stock
+          type: number
+          required: true
+          validation: {min: 0}
+      relations:
+        - type: ManyToOne
+          model: Category
+          field: category
+          description: The category this product belongs to

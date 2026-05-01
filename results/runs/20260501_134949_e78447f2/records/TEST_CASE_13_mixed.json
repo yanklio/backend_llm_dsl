@@ -1,0 +1,80 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "mixed",
+  "test_case": "TEST_CASE_13",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "96a41c775f",
+  "run_id": "20260501_134949_e78447f2",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 103.07,
+      "dsl_time": 0.0,
+      "total_time": 103.08084768299886,
+      "input_tokens": 2482,
+      "output_tokens": 5205,
+      "total_tokens": 7687,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free",
+      "phase1_input_tokens": 877,
+      "phase1_output_tokens": 631,
+      "phase1_total_tokens": 1508,
+      "phase2_input_tokens": 1605,
+      "phase2_output_tokens": 4574,
+      "phase2_total_tokens": 6179
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": false,
+      "total_files": 40,
+      "error_count": 3,
+      "errors": [
+        {
+          "file": "src/appointment/appointment.service.ts",
+          "line": 52,
+          "column": 5,
+          "message": "Type 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.",
+          "code": "TS2322"
+        },
+        {
+          "file": "src/doctor/doctor.service.ts",
+          "line": 25,
+          "column": 5,
+          "message": "Type 'Promise<Doctor | null>' is not assignable to type 'Promise<Doctor>'.",
+          "code": "TS2322"
+        },
+        {
+          "file": "src/patient/patient.service.ts",
+          "line": 25,
+          "column": 5,
+          "message": "Type 'Promise<Patient | null>' is not assignable to type 'Promise<Patient>'.",
+          "code": "TS2322"
+        }
+      ]
+    },
+    "runtime": {
+      "valid": false,
+      "install_success": true,
+      "build_success": false,
+      "start_success": false,
+      "errors": {
+        "build": {
+          "stage": "build",
+          "message": "npm run build failed: \u001b[96msrc/appointment/appointment.service.ts\u001b[0m:\u001b[93m52\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.\n  Type 'Ap",
+          "code": "BUILD_FAILED"
+        },
+        "start": {
+          "stage": "start",
+          "message": "Application crashed: \u001b[96msrc/appointment/appointment.service.ts\u001b[0m:\u001b[93m52\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.\n  Type 'Appointment | null' is not assignable to type 'Appointment'.\n    Type 'null' is not assignable to type 'Appointment'.\n\n\u001b[7m52\u001b[0m     return this.appointmentRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/doctor/doctor.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Doctor | null>' is not assignable to type 'Promise<Doctor>'.\n  Type 'Doctor | null' is not assignable to type 'Doctor'.\n    Type 'null' is not assignable to type 'Doctor'.\n\n\u001b[7m25\u001b[0m     return this.doctorRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/patient/patient.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Patient | null>' is not assignable to type 'Promise<Patient>'.\n  Type 'Patient | null' is not assignable to type 'Patient'.\n    Type 'null' is not assignable to type 'Patient'.\n\n\u001b[7m25\u001b[0m     return this.patientRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+          "code": "START_CRASHED"
+        }
+      }
+    },
+    "overall_valid": false
+  },
+  "timestamp": "2026-05-01T16:10:07.080374"
+}

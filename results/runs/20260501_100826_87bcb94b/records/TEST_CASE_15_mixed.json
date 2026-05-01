@@ -1,0 +1,101 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "mixed",
+  "test_case": "TEST_CASE_15",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "96a41c775f",
+  "run_id": "20260501_100826_87bcb94b",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 103.48,
+      "dsl_time": 0.0,
+      "total_time": 103.48529842999778,
+      "input_tokens": 2475,
+      "output_tokens": 5498,
+      "total_tokens": 7973,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free",
+      "phase1_input_tokens": 890,
+      "phase1_output_tokens": 604,
+      "phase1_total_tokens": 1494,
+      "phase2_input_tokens": 1585,
+      "phase2_output_tokens": 4894,
+      "phase2_total_tokens": 6479
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": false,
+      "total_files": 40,
+      "error_count": 6,
+      "errors": [
+        {
+          "file": "src/department/department.service.ts",
+          "line": 25,
+          "column": 5,
+          "message": "Type 'Promise<Department | null>' is not assignable to type 'Promise<Department>'.",
+          "code": "TS2322"
+        },
+        {
+          "file": "src/employee/employee.service.ts",
+          "line": 24,
+          "column": 7,
+          "message": "Type 'Department | null' is not assignable to type 'Department'.",
+          "code": "TS2322"
+        },
+        {
+          "file": "src/employee/employee.service.ts",
+          "line": 50,
+          "column": 5,
+          "message": "Type 'Promise<Employee | null>' is not assignable to type 'Promise<Employee>'.",
+          "code": "TS2322"
+        },
+        {
+          "file": "src/employee/employee.service.ts",
+          "line": 57,
+          "column": 7,
+          "message": "Type 'Department | null' is not assignable to type 'Department'.",
+          "code": "TS2322"
+        },
+        {
+          "file": "src/skill/create-skill.dto.ts",
+          "line": 14,
+          "column": 4,
+          "message": "Cannot find name 'IsOptional'.",
+          "code": "TS2304"
+        },
+        {
+          "file": "src/skill/skill.service.ts",
+          "line": 25,
+          "column": 5,
+          "message": "Type 'Promise<Skill | null>' is not assignable to type 'Promise<Skill>'.",
+          "code": "TS2322"
+        }
+      ]
+    },
+    "runtime": {
+      "valid": false,
+      "install_success": true,
+      "build_success": false,
+      "start_success": false,
+      "errors": {
+        "build": {
+          "stage": "build",
+          "message": "npm run build failed: \u001b[96msrc/department/department.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Department | null>' is not assignable to type 'Promise<Department>'.\n  Type 'Depart",
+          "code": "BUILD_FAILED"
+        },
+        "start": {
+          "stage": "start",
+          "message": "Application crashed: \u001b[96msrc/department/department.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Department | null>' is not assignable to type 'Promise<Department>'.\n  Type 'Department | null' is not assignable to type 'Department'.\n    Type 'null' is not assignable to type 'Department'.\n\n\u001b[7m25\u001b[0m     return this.departmentRepository.findOne({ where: { id }, relations: ['employees'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/employee/employee.service.ts\u001b[0m:\u001b[93m24\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Department | null' is not assignable to type 'Department'.\n  Type 'null' is not assignable to type 'Department'.\n\n\u001b[7m24\u001b[0m       employee.department = await this.departmentRepository.findOneBy({ id: dto.departmentId });\n\u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/employee/employee.service.ts\u001b[0m:\u001b[93m50\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Employee | null>' is not assignable to type 'Promise<Employee>'.\n  Type 'Employee | null' is not assignable to type 'Employee'.\n    Type 'null' is not assignable to type 'Employee'.\n\n\u001b[7m50\u001b[0m     return this.employeeRepository.findOne({ where: { id }, relations: ['department', 'skills'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/employee/employee.service.ts\u001b[0m:\u001b[93m57\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Department | null' is not assignable to type 'Department'.\n  Type 'null' is not assignable to type 'Department'.\n\n\u001b[7m57\u001b[0m       employee.department = await this.departmentRepository.findOneBy({ id: dto.departmentId });\n\u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/skill/create-skill.dto.ts\u001b[0m:\u001b[93m14\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'IsOptional'.\n\n\u001b[7m14\u001b[0m   @IsOptional()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~~~\u001b[0m\n\u001b[96msrc/skill/skill.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Skill | null>' is not assignable to type 'Promise<Skill>'.\n  Type 'Skill | null' is not assignable to type 'Skill'.\n    Type 'null' is not assignable to type 'Skill'.\n\n\u001b[7m25\u001b[0m     return this.skillRepository.findOne({ where: { id }, relations: ['employees'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+          "code": "START_CRASHED"
+        }
+      }
+    },
+    "overall_valid": false
+  },
+  "timestamp": "2026-05-01T12:29:43.327125"
+}

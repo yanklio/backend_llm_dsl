@@ -1,0 +1,27 @@
+root:
+  name: UserManagement
+  database:
+    type: sqlite
+    database: ./data/users.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: User
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: email
+          type: string
+          required: true
+        - name: name
+          type: string
+          required: true
+        - name: createdAt
+          type: date
+          required: true
+      relations: []

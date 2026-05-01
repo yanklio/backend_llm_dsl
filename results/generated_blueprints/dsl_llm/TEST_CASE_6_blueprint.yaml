@@ -1,0 +1,54 @@
+root:
+  name: BlogPlatform
+  database:
+    type: sqlite
+    database: ./data/blog.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Author
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 100}
+        - name: email
+          type: string
+          required: true
+          validation: {unique: true, format: email}
+        - name: bio
+          type: string
+          required: false
+          validation: {maxLength: 500}
+      relations:
+        - type: OneToMany
+          model: Post
+          field: posts
+          description: A list of posts written by this author
+  - name: Post
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: title
+          type: string
+          required: true
+          validation: {minLength: 5, maxLength: 200}
+        - name: content
+          type: string
+          required: true
+        - name: published
+          type: boolean
+          required: true
+          default: false
+      relations:
+        - type: ManyToOne
+          model: Author
+          field: author
+          description: The author of this post

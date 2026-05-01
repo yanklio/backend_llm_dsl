@@ -1,0 +1,29 @@
+root:
+  name: NoteManagement
+  database:
+    type: sqlite
+    database: ./data/notes.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Note
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: title
+          type: string
+          required: true
+          validation: {minLength: 1, maxLength: 150}
+        - name: content
+          type: string
+          required: true
+        - name: pinned
+          type: boolean
+          required: false
+          default: false
+      relations: []

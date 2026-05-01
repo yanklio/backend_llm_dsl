@@ -1,0 +1,67 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "raw",
+  "test_case": "TEST_CASE_12",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "b005b51722",
+  "run_id": "20260501_094454_ffc520fa",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 88.1,
+      "dsl_time": 0.0,
+      "total_time": 88.18442389700067,
+      "input_tokens": 993,
+      "output_tokens": 4832,
+      "total_tokens": 5825,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": false,
+      "total_files": 40,
+      "error_count": 2,
+      "errors": [
+        {
+          "file": "src/task/task.controller.ts",
+          "line": 22,
+          "column": 67,
+          "message": "Cannot find name 'Task'.",
+          "code": "TS2304"
+        },
+        {
+          "file": "src/task/task.controller.ts",
+          "line": 25,
+          "column": 67,
+          "message": "Argument of type 'string | number | symbol' is not assignable to parameter of type 'keyof Task | undefined'.",
+          "code": "TS2345"
+        }
+      ]
+    },
+    "runtime": {
+      "valid": false,
+      "install_success": true,
+      "build_success": false,
+      "start_success": false,
+      "errors": {
+        "build": {
+          "stage": "build",
+          "message": "npm run build failed: \u001b[96msrc/task/task.controller.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m67\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Task'.\n\n\u001b[7m22\u001b[0m     @Query('sortBy', new DefaultValuePipe('title')) sortBy: keyof Ta",
+          "code": "BUILD_FAILED"
+        },
+        "start": {
+          "stage": "start",
+          "message": "Application crashed: \u001b[96msrc/task/task.controller.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m67\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'Task'.\n\n\u001b[7m22\u001b[0m     @Query('sortBy', new DefaultValuePipe('title')) sortBy: keyof Task = 'title',\n\u001b[7m  \u001b[0m \u001b[91m                                                                  ~~~~\u001b[0m\n\u001b[96msrc/task/task.controller.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m67\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'string | number | symbol' is not assignable to parameter of type 'keyof Task | undefined'.\n  Type 'string' is not assignable to type 'keyof Task | undefined'.\n\n\u001b[7m25\u001b[0m     return this.taskService.findAll(title, priority, page, limit, sortBy, order);\n\u001b[7m  \u001b[0m \u001b[91m                                                                  ~~~~~~\u001b[0m\n\n",
+          "code": "START_CRASHED"
+        }
+      }
+    },
+    "overall_valid": false
+  },
+  "timestamp": "2026-05-01T11:58:02.382661"
+}
