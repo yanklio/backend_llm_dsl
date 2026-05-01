@@ -41,7 +41,7 @@ def _base_metrics(provider: str) -> dict[str, Any]:
 
 def _finish_metrics(metrics: dict[str, Any], start_time: float) -> dict[str, Any]:
     """Set total runtime before returning metrics."""
-    metrics["total_time"] = time.time() - start_time
+    metrics["total_time"] = time.perf_counter() - start_time
     return metrics
 
 
@@ -72,7 +72,7 @@ def _run_with_timing(
     operation: Callable[[dict[str, Any]], None],
 ) -> dict[str, Any]:
     """Run one approach operation with shared timing and error handling."""
-    start_time = time.time()
+    start_time = time.perf_counter()
     metrics = _base_metrics(provider)
 
     try:
@@ -107,10 +107,10 @@ def run_dsl_approach(
         with open(blueprint_path, "w") as file_handle:
             file_handle.write(result.content)
 
-        dsl_start = time.time()
+        dsl_start = time.perf_counter()
         with SuppressOutput():
             dsl_generate(str(blueprint_path), str(project_path))
-        metrics["dsl_time"] = time.time() - dsl_start
+        metrics["dsl_time"] = time.perf_counter() - dsl_start
 
     return _run_with_timing(provider, operation)
 

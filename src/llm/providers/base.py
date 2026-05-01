@@ -99,9 +99,9 @@ class BaseProvider(ABC):
         Returns:
             GenerationResult with tracked metrics
         """
-        start_time = time.time()
+        start_time = time.perf_counter()
         response = llm_invoke_func(messages)
-        duration_seconds = round(time.time() - start_time, 2)
+        duration_seconds = round(time.perf_counter() - start_time, 2)
         usage = _extract_usage_metadata(response)
 
         token_stats = {
