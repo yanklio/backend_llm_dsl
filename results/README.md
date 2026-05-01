@@ -10,7 +10,7 @@ The `tests/` directory is reserved for automated tests of the pipeline code.
 - `generated_blueprints/`: intermediate DSL and Mixed YAML blueprints
 - `runs/`: timestamped run folders with `metadata.json`, `results.json`, and per-record JSON files
 - `archives/`: archived smoke, aborted, or contaminated runs
-- `analytics/`: exported CSV summaries
+- `analytics/`: exported CSV summaries and PNG charts
 - `test_results.json`: aggregate result file updated by the runner
 - `experiments_debug.log`: detailed suppressed stdout/stderr from generation and validation
 

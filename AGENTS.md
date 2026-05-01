@@ -93,11 +93,11 @@ Practice/
 │   │   ├── mixed_generate.py # Blueprint-guided raw generation
 │   │   ├── prompts.py        # Shared prompt definitions
 │   │   └── providers/        # Individual provider implementations
-│   ├── experiments/          # Experiment runner, analysis, and CSV export logic
+│   ├── experiments/          # Experiment runner, analysis, and analytics export logic
 │   │   ├── runner.py         # Batch experiment orchestration
 │   │   ├── approaches.py     # DSL/Raw/Mixed execution logic
 │   │   ├── analysis.py       # Result summarization
-│   │   ├── export_analytics.py # CSV export for thesis tables
+│   │   ├── export_analytics.py # CSV and PNG export for thesis tables/figures
 │   │   ├── project.py        # Project setup and validation helpers
 │   │   └── io.py             # Test case and result persistence
 │   ├── shared/               # Shared infrastructure helpers
@@ -117,7 +117,7 @@ Practice/
 │   ├── generated_blueprints/ # Intermediate DSL/Mixed YAML blueprints
 │   ├── runs/                 # Timestamped experiment run folders
 │   ├── archives/             # Archived smoke, aborted, or contaminated runs
-│   ├── analytics/            # Exported CSV files
+│   ├── analytics/            # Exported CSV files and PNG charts
 │   ├── experiments_debug.log # Detailed suppressed generation/validation logs
 │   └── test_results.json     # Aggregate experiment output
 ├── 🧪 tests/                 # Automated test suite only
