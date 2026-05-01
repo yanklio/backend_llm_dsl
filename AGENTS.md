@@ -93,10 +93,11 @@ Practice/
 │   │   ├── mixed_generate.py # Blueprint-guided raw generation
 │   │   ├── prompts.py        # Shared prompt definitions
 │   │   └── providers/        # Individual provider implementations
-│   ├── experiments/          # Experiment runner and analysis logic
+│   ├── experiments/          # Experiment runner, analysis, and CSV export logic
 │   │   ├── runner.py         # Batch experiment orchestration
 │   │   ├── approaches.py     # DSL/Raw/Mixed execution logic
 │   │   ├── analysis.py       # Result summarization
+│   │   ├── export_analytics.py # CSV export for thesis tables
 │   │   ├── project.py        # Project setup and validation helpers
 │   │   └── io.py             # Test case and result persistence
 │   ├── shared/               # Shared infrastructure helpers
@@ -110,11 +111,17 @@ Practice/
 │       ├── command.py        # Shared validator subprocess helpers
 │       ├── error_types.py    # Shared validator error models
 │       └── main.py           # Main validation entry point
-├── 🧪 tests/                 # Testing Suite
+├── 📊 results/               # Thesis benchmark inputs, outputs, and analytics
 │   ├── test_cases.yaml       # Thesis benchmark definitions
-│   ├── run_experiments.py    # Thin CLI wrapper for experiment runner
-│   ├── analyze_results.py    # Thin CLI wrapper for result analysis
-│   ├── test_results.json     # Experiment output
+│   ├── base_nest_project/    # NestJS scaffold copied before each generation run
+│   ├── generated_blueprints/ # Intermediate DSL/Mixed YAML blueprints
+│   ├── runs/                 # Timestamped experiment run folders
+│   ├── archives/             # Archived smoke, aborted, or contaminated runs
+│   ├── analytics/            # Exported CSV files
+│   ├── experiments_debug.log # Detailed suppressed generation/validation logs
+│   └── test_results.json     # Aggregate experiment output
+├── 🧪 tests/                 # Automated test suite only
+│   ├── unit/                 # Unit tests
 │   └── helpers/              # Test environment setup helpers
 ├── 🏃 nest_project/          # Generated NestJS Application
 ├── 📄 pyproject.toml         # Python Tooling Config (Ruff)
@@ -221,7 +228,7 @@ The system uses prompt templates in `src/llm/prompts.py` that:
 - Enforce strict YAML output for the DSL pipeline
 - Enforce strict JSON file-map output for raw and mixed pipelines
 - Include entity relationship modeling guidance
-- Restrict raw/mixed generation to feature-module source files
+- Require raw/mixed outputs to include runnable NestJS bootstrap files (`src/main.ts`, `src/app.module.ts`)
 
 ## 🔧 Code Generation Templates
 
@@ -265,9 +272,12 @@ python src/dsl/generate.py blueprint.yaml ./nest_project
 
 3. **Run Experiment Batch**:
 ```bash
-python tests/run_experiments.py --approach all --provider gemini
-python tests/analyze_results.py
+python -m src.experiments.runner --approach all --provider openrouter
+python -m src.experiments.analysis --results results/test_results.json
+python -m src.experiments.export_analytics
 ```
+
+Experiment code lives in `src/experiments/`. Experiment inputs, outputs, archives, logs, and analytics live in `results/`.
 
 4. **Run Generated Application**:
 ```bash
@@ -451,6 +461,6 @@ sqlite3
 3. **Generated Code**: The `nest_project/src/` directory is auto-generated - don't manually edit
 4. **Blueprint Persistence**: Generated blueprints are saved to `blueprint.yaml` by default
 5. **Error Handling**: Check logs for template rendering errors or API failures
-6. **Experiment Results**: `tests/test_results.json` is append/resume oriented, so clear or archive it before running a fresh benchmark campaign
+6. **Experiment Results**: `results/test_results.json` is append/resume oriented, so clear or archive it before running a fresh benchmark campaign. Timestamped source-of-truth runs are stored in `results/runs/`.
 
 This documentation serves as a comprehensive guide for AI agents working with the NestJS code generation system. The project demonstrates the power of combining AI language understanding with structured code generation templates to automate software development workflows.
