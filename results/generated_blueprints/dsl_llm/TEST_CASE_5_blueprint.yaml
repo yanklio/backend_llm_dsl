@@ -1,0 +1,37 @@
+root:
+  name: EventManagement
+  database:
+    type: sqlite
+    database: ./data/events.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Event
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: title
+          type: string
+          required: true
+          validation: {maxLength: 200}
+        - name: location
+          type: string
+          required: true
+        - name: startDate
+          type: date
+          required: true
+        - name: status
+          type: enum
+          required: true
+          enum: [draft, published, cancelled]
+          default: draft
+        - name: createdAt
+          type: date
+          required: true
+          default: now
+      relations: []

@@ -1,18 +1,40 @@
 import argparse
-import json
+import sys
 import traceback
 from pathlib import Path
 from typing import Any
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.llm import GenerationResult, LLMClient
+from src.llm.output import (
+    log_generation_statistics,
+    log_json_parse_failure,
+    log_run_instructions,
+    parse_generated_files,
+    save_generated_files,
+)
 from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT
-from src.llm.wrapper import GenerationResult, LLMClient
 from src.shared import logger
-from src.shared.utils import clean_llm_response, try_parse_json
 
 load_dotenv()
+
+
+PROJECT_CONTEXT_HEADER = "=== EXISTING PROJECT FILES ===\n\n"
+RAW_REQUEST_TEMPLATE = """{existing_context}
+
+=== REQUEST ===
+{description}
+
+Generate ALL files needed for a COMPLETE, WORKING NestJS application inside src/ directory.
+Include root bootstrap files `src/main.ts` and `src/app.module.ts`.
+Configure the app so `npm run build` and `npm run start` can work in the provided Nest scaffold.
+Every file must have FULL implementation - no placeholders or TODOs.
+Make it production-ready and runnable."""
 
 
 def read_project_context(project_dir: str) -> str:
@@ -29,71 +51,76 @@ def read_project_context(project_dir: str) -> str:
     if not project_path.exists():
         return "No existing project found."
 
-    context = "=== EXISTING PROJECT FILES ===\n\n"
+    context_parts = [PROJECT_CONTEXT_HEADER]
 
     for file_path in project_path.rglob("*.ts"):
-        if "node_modules" not in str(file_path):
-            try:
-                rel_path = file_path.relative_to(project_path)
-                content = file_path.read_text()
-                context += f"\n--- {rel_path} ---\n{content}\n"
-            except Exception:
-                pass
+        if "node_modules" in str(file_path):
+            continue
+        file_context = _read_typescript_context_file(project_path, file_path)
+        if file_context is not None:
+            context_parts.append(file_context)
 
-    return context
+    return "".join(context_parts)
+
+
+def _read_typescript_context_file(project_path: Path, file_path: Path) -> str | None:
+    """Read one TypeScript file for inclusion in the raw-generation prompt."""
+    try:
+        relative_path = file_path.relative_to(project_path)
+        return f"\n--- {relative_path} ---\n{file_path.read_text()}\n"
+    except Exception:
+        return None
+
+
+def _build_raw_prompt(existing_context: str, description: str) -> str:
+    """Build the user prompt for raw code generation."""
+    return RAW_REQUEST_TEMPLATE.format(
+        existing_context=existing_context,
+        description=description,
+    )
+
+
+def generate_code_files(
+    description: str,
+    project_dir: str = "./nest_project",
+    provider: str = "openrouter",
+) -> tuple[GenerationResult, dict[str, Any]]:
+    """Generate and parse a complete NestJS file map from natural language."""
+    existing_context = read_project_context(project_dir)
+    client = LLMClient(provider_id=provider, temperature=0.2)
+
+    messages = [
+        SystemMessage(content=RAW_CODE_SYSTEM_PROMPT),
+        HumanMessage(content=_build_raw_prompt(existing_context, description)),
+    ]
+
+    logger.start("Generating code with LLM...")
+    result = client.generate(messages)
+
+    try:
+        result, files = parse_generated_files(result)
+        logger.success(f"Generated {len(files)} files via {result.provider}")
+        return result, files
+    except Exception as e:
+        log_json_parse_failure(result.content, e)
+        raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
 
 
 def natural_language_to_code(
-    description: str, project_dir: str = "./nest_project", provider: str = "gemini"
+    description: str, project_dir: str = "./nest_project", provider: str = "openrouter"
 ) -> GenerationResult:
     """Generate code from simple description - vibe coder style.
 
     Args:
         description (str): Plain English description of the desired application.
         project_dir (str): Directory path where the project files should be generated.
-        provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: gemini.
+        provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: openrouter.
 
     Returns:
         GenerationResult: The generated code content and metadata.
     """
-    existing_context = read_project_context(project_dir)
-    client = LLMClient(provider_id=provider, temperature=0.2)
-
-    user_prompt = f"""{existing_context}
-
-=== REQUEST ===
-{description}
-
-Generate ALL files needed for a COMPLETE, WORKING NestJS application inside src/ directory.
-Every file must have FULL implementation - no placeholders or TODOs.
-Make it production-ready and runnable."""
-
-    messages = [SystemMessage(content=RAW_CODE_SYSTEM_PROMPT), HumanMessage(content=user_prompt)]
-
-    logger.start("Generating code with LLM...")
-
-    result = client.generate(messages)
-
-    try:
-        cleaned_content = clean_llm_response(result.content)
-        result.content = cleaned_content
-        files = try_parse_json(cleaned_content)
-        logger.success(f"Generated {len(files)} files via {result.provider}")
-        return result
-    except Exception as e:
-        logger.error("Failed to parse LLM response as JSON")
-        logger.error(f"Parse error: {str(e)}")
-
-        # Save to file for debugging
-        debug_file = Path("/tmp/llm_response_debug.json")
-        debug_file.write_text(cleaned_content)
-        logger.error(f"Saved malformed response to {debug_file}")
-
-        logger.error("First 2000 chars of cleaned response:")
-        logger.error(cleaned_content[:2000])
-        logger.error("Last 500 chars of cleaned response:")
-        logger.error(cleaned_content[-500:])
-        raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
+    result, _ = generate_code_files(description, project_dir, provider)
+    return result
 
 
 def save_files(files: dict[str, Any], output_dir: str) -> None:
@@ -103,50 +130,7 @@ def save_files(files: dict[str, Any], output_dir: str) -> None:
         files (dict[str, Any]): Dictionary of file paths to content.
         output_dir (str): Base directory to save files in.
     """
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
-
-    logger.start(f"Saving files to {output_dir}...")
-
-    saved_count = 0
-    for file_path, content in files.items():
-        try:
-            full_path = output_path / file_path
-            full_path.parent.mkdir(parents=True, exist_ok=True)
-
-            content = _prepare_file_content(content, file_path)
-
-            full_path.write_text(content, encoding="utf-8")
-            logger.success(f"Saved {file_path}")
-            saved_count += 1
-        except Exception as e:
-            logger.error(f"Failed to save {file_path}: {e}")
-
-    logger.end(f"Saved {saved_count}/{len(files)} files")
-
-
-def _prepare_file_content(content: Any, file_path: str) -> str:
-    """Prepare file content for writing, handling JSON and escape sequences.
-
-    Args:
-        content: Raw content from JSON file map.
-        file_path: File path for logging purposes.
-
-    Returns:
-        Prepared string content ready to write.
-    """
-    if isinstance(content, (dict, list)):
-        return json.dumps(content, indent=2)
-
-    if isinstance(content, str) and "\\n" in content:
-        if content.count("\\n") > content.count("\n") * 2:
-            logger.warn(f"Detected literal escape sequences in {file_path}, fixing...")
-            content = content.replace("\\n", "\n")
-            content = content.replace("\\t", "\t")
-            content = content.replace('\\"', '"')
-            content = content.replace("\\\\", "\\")
-
-    return content
+    save_generated_files(files, output_dir)
 
 
 def main() -> None:
@@ -180,25 +164,10 @@ def main() -> None:
         logger.info(f"Preferred Model: {args.model}")
 
     try:
-        result = natural_language_to_code(args.description, args.output, args.model)
-
-        # Log statistics
-        logger.info("=== Generation Statistics ===")
-        logger.info(f"Provider: {result.provider}")
-        logger.info(f"Time: {result.duration_seconds:.2f}s")
-        if result.total_tokens:
-            logger.info(
-                f"Tokens: {result.total_tokens} (In: {result.input_tokens}, Out: {result.output_tokens})"
-            )
-
-        cleaned_content = clean_llm_response(result.content)
-        files = try_parse_json(cleaned_content)
+        result, files = generate_code_files(args.description, args.output, args.model)
+        log_generation_statistics(result)
         save_files(files, args.output)
-
-        logger.success("Done! Run with:")
-        logger.info(f"  cd {args.output}")
-        logger.info("  npm install")
-        logger.info("  npm run start:dev")
+        log_run_instructions(args.output)
 
     except Exception as e:
         logger.error(f"Error: {e}")

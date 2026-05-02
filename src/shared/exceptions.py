@@ -6,6 +6,21 @@ and provide better error handling throughout the application.
 
 from typing import Any, Optional
 
+__all__ = [
+    "DSLGeneratorException",
+    "LLMException",
+    "LLMProviderException",
+    "LLMTimeoutException",
+    "LLMConnectionException",
+    "ValidationException",
+    "ValidationTimeoutException",
+    "TemplateException",
+    "TemplateNotFoundException",
+    "TemplateRenderException",
+    "ConfigurationException",
+    "JSONParseException",
+]
+
 
 class DSLGeneratorException(Exception):
     """Base exception for all DSL Generator errors.
@@ -22,7 +37,7 @@ class DSLGeneratorException(Exception):
         self,
         message: str,
         code: Optional[str] = None,
-        context: Optional[dict[str, Any]] = None
+        context: Optional[dict[str, Any]] = None,
     ) -> None:
         """Initialize the exception.
 
@@ -43,10 +58,21 @@ class DSLGeneratorException(Exception):
         return self.message
 
 
-# === LLM-related exceptions ===
-
 class LLMException(DSLGeneratorException):
     """Base exception for LLM-related errors."""
+
+    pass
+
+
+class ValidationException(DSLGeneratorException):
+    """Base exception for validation errors."""
+
+    pass
+
+
+class TemplateException(DSLGeneratorException):
+    """Base exception for template rendering errors."""
+
     pass
 
 
@@ -80,25 +106,11 @@ class LLMConnectionException(LLMException):
     pass
 
 
-# === Validation exceptions ===
-
-class ValidationException(DSLGeneratorException):
-    """Base exception for validation errors."""
-    pass
-
-
 class ValidationTimeoutException(ValidationException):
     """Exception for validation timeouts.
 
     Raised when validation operations (npm install, tsc, etc.) exceed timeout.
     """
-    pass
-
-
-# === Template exceptions ===
-
-class TemplateException(DSLGeneratorException):
-    """Base exception for template rendering errors."""
     pass
 
 
@@ -121,8 +133,6 @@ class TemplateRenderException(TemplateException):
     pass
 
 
-# === Configuration exceptions ===
-
 class ConfigurationException(DSLGeneratorException):
     """Exception for configuration errors.
 
@@ -133,8 +143,6 @@ class ConfigurationException(DSLGeneratorException):
     """
     pass
 
-
-# === JSON parsing exceptions ===
 
 class JSONParseException(DSLGeneratorException):
     """Exception for JSON parsing failures.

@@ -1,0 +1,66 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "mixed",
+  "test_case": "TEST_CASE_11",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "96a41c775f",
+  "run_id": "20260501_134949_e78447f2",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 100.50999999999999,
+      "dsl_time": 0.0,
+      "total_time": 100.50737101199775,
+      "input_tokens": 2343,
+      "output_tokens": 4886,
+      "total_tokens": 7229,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free",
+      "phase1_input_tokens": 851,
+      "phase1_output_tokens": 604,
+      "phase1_total_tokens": 1455,
+      "phase2_input_tokens": 1492,
+      "phase2_output_tokens": 4282,
+      "phase2_total_tokens": 5774
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": false,
+      "total_files": 40,
+      "error_count": 1,
+      "errors": [
+        {
+          "file": "src/product/product.service.ts",
+          "line": 3,
+          "column": 55,
+          "message": "'\"typeorm\"' has no exported member named 'FindConditions'. Did you mean 'FindOptions'?",
+          "code": "TS2724"
+        }
+      ]
+    },
+    "runtime": {
+      "valid": false,
+      "install_success": true,
+      "build_success": false,
+      "start_success": false,
+      "errors": {
+        "build": {
+          "stage": "build",
+          "message": "npm run build failed: \u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2724: \u001b[0m'\"typeorm\"' has no exported member named 'FindConditions'. Did you mean 'FindOptions'?\n\n\u001b[7m3\u001b[0m impor",
+          "code": "BUILD_FAILED"
+        },
+        "start": {
+          "stage": "start",
+          "message": "Application crashed: \u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2724: \u001b[0m'\"typeorm\"' has no exported member named 'FindConditions'. Did you mean 'FindOptions'?\n\n\u001b[7m3\u001b[0m import { Repository, FindManyOptions, FindOneOptions, FindConditions } from 'typeorm';\n\u001b[7m \u001b[0m \u001b[91m                                                      ~~~~~~~~~~~~~~\u001b[0m\n\n",
+          "code": "START_CRASHED"
+        }
+      }
+    },
+    "overall_valid": false
+  },
+  "timestamp": "2026-05-01T16:05:47.824682"
+}

@@ -86,24 +86,42 @@ Practice/
 │   │   ├── utils/            # Utility functions
 │   │   └── generate.py       # Main DSL generator entry
 │   ├── llm/                  # AI/LLM Integration Layer
+│   │   ├── client.py         # Selected-provider client
+│   │   ├── response_parser.py # LLM response cleaning and JSON repair
 │   │   ├── raw_generate.py   # Direct code generation
 │   │   ├── dsl_generate.py   # Natural language to YAML blueprint
 │   │   ├── mixed_generate.py # Blueprint-guided raw generation
 │   │   ├── prompts.py        # Shared prompt definitions
-│   │   └── wrapper/          # LLM Provider Abstraction
-│   │       ├── llm_client.py # Selected-provider client
-│   │       └── providers/    # Individual provider implementations
-│   ├── shared/               # Shared utilities (logging, etc.)
+│   │   └── providers/        # Individual provider implementations
+│   ├── experiments/          # Experiment runner, analysis, and analytics export logic
+│   │   ├── runner.py         # Batch experiment orchestration
+│   │   ├── approaches.py     # DSL/Raw/Mixed execution logic
+│   │   ├── analysis.py       # Result summarization
+│   │   ├── export_analytics.py # CSV and PNG export for thesis tables/figures
+│   │   ├── project.py        # Project setup and validation helpers
+│   │   └── io.py             # Test case and result persistence
+│   ├── shared/               # Shared infrastructure helpers
+│   │   ├── logger.py         # Project-wide logger
+│   │   ├── template.py       # Template rendering helpers
+│   │   ├── config.py         # Typed application configuration
+│   │   └── exceptions.py     # Shared exception hierarchy
 │   └── validators/           # Verification & Testing Tools
-│       ├── runtime_validators/   # NPM & Runtime Checks
-│       ├── syntactic_validators/ # TypeScript Syntax Checks
-│       ├── shared/               # Shared validator utilities
-│       └── main.py              # Main validation entry point
-├── 🧪 tests/                 # Testing Suite
+│       ├── runtime.py        # NPM & runtime checks
+│       ├── syntax.py         # TypeScript syntax checks
+│       ├── command.py        # Shared validator subprocess helpers
+│       ├── error_types.py    # Shared validator error models
+│       └── main.py           # Main validation entry point
+├── 📊 results/               # Thesis benchmark inputs, outputs, and analytics
 │   ├── test_cases.yaml       # Thesis benchmark definitions
-│   ├── run_experiments.py    # Batch runner for DSL/Raw/Mixed pipelines
-│   ├── analyze_results.py    # Result summarization
-│   ├── test_results.json     # Experiment output
+│   ├── base_nest_project/    # NestJS scaffold copied before each generation run
+│   ├── generated_blueprints/ # Intermediate DSL/Mixed YAML blueprints
+│   ├── runs/                 # Timestamped experiment run folders
+│   ├── archives/             # Archived smoke, aborted, or contaminated runs
+│   ├── analytics/            # Exported CSV files and PNG charts
+│   ├── experiments_debug.log # Detailed suppressed generation/validation logs
+│   └── test_results.json     # Aggregate experiment output
+├── 🧪 tests/                 # Automated test suite only
+│   ├── unit/                 # Unit tests
 │   └── helpers/              # Test environment setup helpers
 ├── 🏃 nest_project/          # Generated NestJS Application
 ├── 📄 pyproject.toml         # Python Tooling Config (Ruff)
@@ -210,7 +228,7 @@ The system uses prompt templates in `src/llm/prompts.py` that:
 - Enforce strict YAML output for the DSL pipeline
 - Enforce strict JSON file-map output for raw and mixed pipelines
 - Include entity relationship modeling guidance
-- Restrict raw/mixed generation to feature-module source files
+- Require raw/mixed outputs to include runnable NestJS bootstrap files (`src/main.ts`, `src/app.module.ts`)
 
 ## 🔧 Code Generation Templates
 
@@ -254,9 +272,12 @@ python src/dsl/generate.py blueprint.yaml ./nest_project
 
 3. **Run Experiment Batch**:
 ```bash
-python tests/run_experiments.py --approach all --provider gemini
-python tests/analyze_results.py
+python -m src.experiments.runner --approach all --provider openrouter
+python -m src.experiments.analysis --results results/test_results.json
+python -m src.experiments.export_analytics
 ```
+
+Experiment code lives in `src/experiments/`. Experiment inputs, outputs, archives, logs, and analytics live in `results/`.
 
 4. **Run Generated Application**:
 ```bash
@@ -281,14 +302,14 @@ def natural_language_to_yaml(description: str, provider: str = "gemini") -> Gene
     # Returns GenerationResult with content and statistics
 ```
 
-### 2. LLM Provider Wrapper (`src/llm/wrapper/llm_client.py`)
+### 2. LLM Provider Wrapper (`src/llm/client.py`)
 ```python
 class LLMClient:
     # Manages a single configured provider for the current run
     # Returns GenerationResult with provider info and token stats
 ```
 
-### 3. State Machine Repair (`src/shared/utils.py`)
+### 3. State Machine Repair (`src/llm/response_parser.py`)
 ```python
 def clean_llm_response(content: str) -> str:
     # Removes markdown code blocks and provider-specific thinking wrappers
@@ -440,6 +461,6 @@ sqlite3
 3. **Generated Code**: The `nest_project/src/` directory is auto-generated - don't manually edit
 4. **Blueprint Persistence**: Generated blueprints are saved to `blueprint.yaml` by default
 5. **Error Handling**: Check logs for template rendering errors or API failures
-6. **Experiment Results**: `tests/test_results.json` is append/resume oriented, so clear or archive it before running a fresh benchmark campaign
+6. **Experiment Results**: `results/test_results.json` is append/resume oriented, so clear or archive it before running a fresh benchmark campaign. Timestamped source-of-truth runs are stored in `results/runs/`.
 
 This documentation serves as a comprehensive guide for AI agents working with the NestJS code generation system. The project demonstrates the power of combining AI language understanding with structured code generation templates to automate software development workflows.

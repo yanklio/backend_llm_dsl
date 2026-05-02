@@ -2,9 +2,11 @@
 nest_project/
 **/nest_project/
 **/node_modules/
-tests/test_cases/
 tests/metrics_output/
 metrics_output/
+results/analytics/
+results/archives/
+results/experiments_debug.log
 
 # Python virtual environments
 thesis_env/
@@ -27,5 +29,3 @@ __pycache__/
 .coverage
 htmlcov/
 *.pyc
-tests/test_results_copy.json
-tests/test_single_case_copy.py

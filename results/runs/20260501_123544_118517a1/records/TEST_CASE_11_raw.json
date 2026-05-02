@@ -1,0 +1,47 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "raw",
+  "test_case": "TEST_CASE_11",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "b005b51722",
+  "run_id": "20260501_123544_118517a1",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 89.79,
+      "dsl_time": 0.0,
+      "total_time": 89.88178774300104,
+      "input_tokens": 949,
+      "output_tokens": 4640,
+      "total_tokens": 5589,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": true,
+      "total_files": 40,
+      "error_count": 0,
+      "errors": []
+    },
+    "runtime": {
+      "valid": false,
+      "install_success": true,
+      "build_success": true,
+      "start_success": false,
+      "errors": {
+        "start": {
+          "stage": "start",
+          "message": "Application crashed: \u001b[31m[Nest] 74070  - \u001b[39m05/01/2026, 2:48:13 PM \u001b[31m  ERROR\u001b[39m \u001b[38;5;3m[ExceptionHandler] \u001b[39mUnknownDependenciesException [Error]: Nest can't resolve dependencies of the ReviewService (ReviewRepository, ?). Please make sure that the argument \"ProductRepository\" at index [1] is available in the ReviewModule context.\n\nPotential solutions:\n- Is ReviewModule a valid NestJS module?\n- If \"ProductRepository\" is a provider, is it part of the current ReviewModule?\n- If \"ProductRepository\" is exported from a separate @Module, is that module imported within ReviewModule?\n  @Module({\n    imports: [ /* the Module containing \"ProductRepository\" */ ]\n  })\n\nFor more common dependency resolution issues, see: https://docs.nestjs.com/faq/common-errors\n    at Injector.lookupComponentInParentModules \u001b[90m(/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/injector.js:290:19\u001b[90m)\u001b[39m\n    at async resolveParam \u001b[90m(/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/injector.js:140:38\u001b[90m)\u001b[39m\n    at async Promise.all (index 1)\n    at async Injector.resolveConstructorParams \u001b[90m(/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/injector.js:169:27\u001b[90m)\u001b[39m\n    at async Injector.loadInstance \u001b[90m(/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/injector.js:75:13\u001b[90m)\u001b[39m\n    at async Injector.loadProvider \u001b[90m(/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/injector.js:103:9\u001b[90m)\u001b[39m\n    at async \u001b[90m/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/instance-loader.js:56:13\n    at async Promise.all (index 3)\n    at async InstanceLoader.createInstancesOfProviders \u001b[90m(/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/instance-loader.js:55:9\u001b[90m)\u001b[39m\n    at async \u001b[90m/home/yanklio/Projects/Thesis/Practice/nest_project/\u001b[39mnode_modules/\u001b[4m@nestjs/core\u001b[24m/injector/instance-loader.js:40:13 {\n  type: \u001b[32m'ReviewService'\u001b[39m,\n  context: {\n    index: \u001b[33m1\u001b[39m,\n    dependencies: [\n      \u001b[32m'ReviewRepository'\u001b[39m,\n      \u001b[32m'ProductRepository'\u001b[39m\n    ],\n    name: \u001b[32m'ProductRepository'\u001b[39m\n  },\n  metadata: {\n    id: \u001b[32m'ea979cd22a1cde8f5f5c7'\u001b[39m\n  },\n  moduleRef: {\n    id: \u001b[32m'fa1f4c8fbb72550e0e637'\u001b[39m\n  }\n}\n",
+          "code": "START_CRASHED"
+        }
+      }
+    },
+    "overall_valid": false
+  },
+  "timestamp": "2026-05-01T14:48:17.288134"
+}

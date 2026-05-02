@@ -1,0 +1,787 @@
+[
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 28.31,
+        "dsl_time": 0.0,
+        "total_time": 28.5687880780024,
+        "input_tokens": 794,
+        "output_tokens": 1380,
+        "total_tokens": 2174,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:28:44.574146"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_2",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 34.38,
+        "dsl_time": 0.0,
+        "total_time": 34.48428707099811,
+        "input_tokens": 810,
+        "output_tokens": 1572,
+        "total_tokens": 2382,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:29:37.516578"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_3",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 27.25,
+        "dsl_time": 0.0,
+        "total_time": 27.344181268003013,
+        "input_tokens": 786,
+        "output_tokens": 1561,
+        "total_tokens": 2347,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 16,
+        "error_count": 5,
+        "errors": [
+          {
+            "file": "src/todo/todo.service.ts",
+            "line": 16,
+            "column": 38,
+            "message": "No overload matches this call.",
+            "code": "TS2769"
+          },
+          {
+            "file": "src/todo/todo.service.ts",
+            "line": 20,
+            "column": 5,
+            "message": "Type 'Todo[]' is missing the following properties from type 'Todo': id, title, done, createdAt",
+            "code": "TS2739"
+          },
+          {
+            "file": "src/todo/todo.service.ts",
+            "line": 41,
+            "column": 7,
+            "message": "Type 'Date | null' is not assignable to type 'Date | undefined'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/todo/todo.service.ts",
+            "line": 43,
+            "column": 23,
+            "message": "Property 'done' does not exist on type 'UpdateTodoDto'.",
+            "code": "TS2339"
+          },
+          {
+            "file": "src/todo/todo.service.ts",
+            "line": 44,
+            "column": 33,
+            "message": "Property 'done' does not exist on type 'UpdateTodoDto'.",
+            "code": "TS2339"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m38\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Todo>[]): Todo[]', gave the",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m16\u001b[0m:\u001b[93m38\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Todo>[]): Todo[]', gave the following error.\n    Object literal may only specify known properties, and 'title' does not exist in type 'DeepPartial<Todo>[]'.\n  Overload 2 of 3, '(entityLike: DeepPartial<Todo>): Todo', gave the following error.\n    Type 'Date | null' is not assignable to type 'DeepPartial<Date | undefined>'.\n      Type 'null' is not assignable to type 'DeepPartial<Date | undefined>'.\n\n\u001b[7m16\u001b[0m     const todo = this.todoRepository.create({\n\u001b[7m  \u001b[0m \u001b[91m                                     ~~~~~~\u001b[0m\n\n  \u001b[96msrc/todo/todo.entity.ts\u001b[0m:\u001b[93m15\u001b[0m:\u001b[93m3\u001b[0m\n    \u001b[7m15\u001b[0m   dueDate?: Date;\n    \u001b[7m  \u001b[0m \u001b[96m  ~~~~~~~\u001b[0m\n    The expected type comes from property 'dueDate' which is declared here on type 'DeepPartial<Todo>'\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m20\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2739: \u001b[0mType 'Todo[]' is missing the following properties from type 'Todo': id, title, done, createdAt\n\n\u001b[7m20\u001b[0m     return this.todoRepository.save(todo);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m41\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Date | null' is not assignable to type 'Date | undefined'.\n  Type 'null' is not assignable to type 'Date | undefined'.\n\n\u001b[7m41\u001b[0m       todo.dueDate = updateTodoDto.dueDate ? new Date(updateTodoDto.dueDate) : null;\n\u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m43\u001b[0m:\u001b[93m23\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'done' does not exist on type 'UpdateTodoDto'.\n\n\u001b[7m43\u001b[0m     if (updateTodoDto.done !== undefined) {\n\u001b[7m  \u001b[0m \u001b[91m                      ~~~~\u001b[0m\n\u001b[96msrc/todo/todo.service.ts\u001b[0m:\u001b[93m44\u001b[0m:\u001b[93m33\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'done' does not exist on type 'UpdateTodoDto'.\n\n\u001b[7m44\u001b[0m       todo.done = updateTodoDto.done;\n\u001b[7m  \u001b[0m \u001b[91m                                ~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:30:16.785491"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_4",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 33.49,
+        "dsl_time": 0.0,
+        "total_time": 33.5850027589986,
+        "input_tokens": 787,
+        "output_tokens": 1514,
+        "total_tokens": 2301,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:31:10.261821"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_5",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 33.83,
+        "dsl_time": 0.0,
+        "total_time": 33.91800996900565,
+        "input_tokens": 794,
+        "output_tokens": 1648,
+        "total_tokens": 2442,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:31:56.749406"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_6",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 59.66,
+        "dsl_time": 0.0,
+        "total_time": 59.758247098005086,
+        "input_tokens": 847,
+        "output_tokens": 3183,
+        "total_tokens": 4030,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:33:15.225142"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_7",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 56.43,
+        "dsl_time": 0.0,
+        "total_time": 56.524098926005536,
+        "input_tokens": 843,
+        "output_tokens": 2931,
+        "total_tokens": 3774,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:34:30.450276"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_8",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 52.82,
+        "dsl_time": 0.0,
+        "total_time": 52.9230698340034,
+        "input_tokens": 859,
+        "output_tokens": 2945,
+        "total_tokens": 3804,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 2,
+        "errors": [
+          {
+            "file": "src/order/order.service.ts",
+            "line": 19,
+            "column": 40,
+            "message": "No overload matches this call.",
+            "code": "TS2769"
+          },
+          {
+            "file": "src/order/order.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Order[]' is missing the following properties from type 'Order': id, totalPrice, status, orderDate, and 2 more.",
+            "code": "TS2740"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/order/order.service.ts\u001b[0m:\u001b[93m19\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Order>[]): Order[]', gave",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/order/order.service.ts\u001b[0m:\u001b[93m19\u001b[0m:\u001b[93m40\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Order>[]): Order[]', gave the following error.\n    Object literal may only specify known properties, and 'totalPrice' does not exist in type 'DeepPartial<Order>[]'.\n  Overload 2 of 3, '(entityLike: DeepPartial<Order>): Order', gave the following error.\n    Type '\"pending\" | OrderStatus' is not assignable to type 'OrderStatus | undefined'.\n      Type '\"pending\"' is not assignable to type 'OrderStatus | undefined'.\n\n\u001b[7m19\u001b[0m     const order = this.orderRepository.create({\n\u001b[7m  \u001b[0m \u001b[91m                                       ~~~~~~\u001b[0m\n\n  \u001b[96msrc/order/order.entity.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m3\u001b[0m\n    \u001b[7m21\u001b[0m   status: OrderStatus;\n    \u001b[7m  \u001b[0m \u001b[96m  ~~~~~~\u001b[0m\n    The expected type comes from property 'status' which is declared here on type 'DeepPartial<Order>'\n\u001b[96msrc/order/order.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2740: \u001b[0mType 'Order[]' is missing the following properties from type 'Order': id, totalPrice, status, orderDate, and 2 more.\n\n\u001b[7m25\u001b[0m     return this.orderRepository.save(order);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:35:35.591858"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_9",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 58.32,
+        "dsl_time": 0.0,
+        "total_time": 58.41850779000379,
+        "input_tokens": 870,
+        "output_tokens": 2878,
+        "total_tokens": 3748,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:36:53.778797"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_10",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 70.34,
+        "dsl_time": 0.0,
+        "total_time": 70.43695487399964,
+        "input_tokens": 884,
+        "output_tokens": 3318,
+        "total_tokens": 4202,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:38:22.861262"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 97.61,
+        "dsl_time": 0.0,
+        "total_time": 97.70610289199976,
+        "input_tokens": 949,
+        "output_tokens": 4892,
+        "total_tokens": 5841,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 2,
+        "errors": [
+          {
+            "file": "src/product/product.service.ts",
+            "line": 61,
+            "column": 11,
+            "message": "Property 'categories' does not exist on type 'UpdateProductDto'. Did you mean 'categoryIds'?",
+            "code": "TS2551"
+          },
+          {
+            "file": "src/review/review.service.ts",
+            "line": 40,
+            "column": 11,
+            "message": "Property 'product' does not exist on type 'UpdateReviewDto'. Did you mean 'productId'?",
+            "code": "TS2551"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m61\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'categories' does not exist on type 'UpdateProductDto'. Did you mean 'categoryIds'?\n\n\u001b[7m61\u001b[",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m61\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'categories' does not exist on type 'UpdateProductDto'. Did you mean 'categoryIds'?\n\n\u001b[7m61\u001b[0m       dto.categories = categories;\n\u001b[7m  \u001b[0m \u001b[91m          ~~~~~~~~~~\u001b[0m\n\u001b[96msrc/review/review.service.ts\u001b[0m:\u001b[93m40\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'product' does not exist on type 'UpdateReviewDto'. Did you mean 'productId'?\n\n\u001b[7m40\u001b[0m       dto.product = product;\n\u001b[7m  \u001b[0m \u001b[91m          ~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:40:12.862997"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_12",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 90.7,
+        "dsl_time": 0.0,
+        "total_time": 90.79507029399974,
+        "input_tokens": 993,
+        "output_tokens": 4915,
+        "total_tokens": 5908,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 40,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:41:57.146214"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_13",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 128.24,
+        "dsl_time": 0.0,
+        "total_time": 128.3401804219975,
+        "input_tokens": 975,
+        "output_tokens": 5056,
+        "total_tokens": 6031,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/patient/dto/create-patient.dto.ts",
+            "line": 23,
+            "column": 18,
+            "message": "Argument of type 'null' is not assignable to parameter of type 'CountryCode | undefined'.",
+            "code": "TS2345"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/patient/dto/create-patient.dto.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m18\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'null' is not assignable to parameter of type 'CountryCode | undefined'.\n\n\u001b[7m",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/patient/dto/create-patient.dto.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m18\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2345: \u001b[0mArgument of type 'null' is not assignable to parameter of type 'CountryCode | undefined'.\n\n\u001b[7m23\u001b[0m   @IsPhoneNumber(null)\n\u001b[7m  \u001b[0m \u001b[91m                 ~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:44:17.836350"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_14",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 192.67,
+        "dsl_time": 0.0,
+        "total_time": 192.76229267999588,
+        "input_tokens": 964,
+        "output_tokens": 5327,
+        "total_tokens": 6291,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/loan/loan.service.ts",
+            "line": 23,
+            "column": 38,
+            "message": "No overload matches this call.",
+            "code": "TS2769"
+          },
+          {
+            "file": "src/loan/loan.service.ts",
+            "line": 30,
+            "column": 5,
+            "message": "Type 'Loan[]' is missing the following properties from type 'Loan': id, borrowerName, borrowDate, status, and 2 more.",
+            "code": "TS2740"
+          },
+          {
+            "file": "src/loan/loan.service.ts",
+            "line": 53,
+            "column": 39,
+            "message": "Type 'Date | null' is not assignable to type 'Date | undefined'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/loan/loan.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m38\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Loan>[]): Loan[]', gave the",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/loan/loan.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m38\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Loan>[]): Loan[]', gave the following error.\n    Object literal may only specify known properties, and 'borrowerName' does not exist in type 'DeepPartial<Loan>[]'.\n  Overload 2 of 3, '(entityLike: DeepPartial<Loan>): Loan', gave the following error.\n    Type 'Date | null' is not assignable to type 'DeepPartial<Date | undefined>'.\n      Type 'null' is not assignable to type 'DeepPartial<Date | undefined>'.\n\n\u001b[7m23\u001b[0m     const loan = this.loanRepository.create({\n\u001b[7m  \u001b[0m \u001b[91m                                     ~~~~~~\u001b[0m\n\n  \u001b[96msrc/loan/loan.entity.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m3\u001b[0m\n    \u001b[7m22\u001b[0m   returnDate?: Date;\n    \u001b[7m  \u001b[0m \u001b[96m  ~~~~~~~~~~\u001b[0m\n    The expected type comes from property 'returnDate' which is declared here on type 'DeepPartial<Loan>'\n\u001b[96msrc/loan/loan.service.ts\u001b[0m:\u001b[93m30\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2740: \u001b[0mType 'Loan[]' is missing the following properties from type 'Loan': id, borrowerName, borrowDate, status, and 2 more.\n\n\u001b[7m30\u001b[0m     return this.loanRepository.save(loan);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/loan/loan.service.ts\u001b[0m:\u001b[93m53\u001b[0m:\u001b[93m39\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Date | null' is not assignable to type 'Date | undefined'.\n  Type 'null' is not assignable to type 'Date | undefined'.\n\n\u001b[7m53\u001b[0m     if (dto.returnDate !== undefined) loan.returnDate = dto.returnDate ? new Date(dto.returnDate) : null;\n\u001b[7m  \u001b[0m \u001b[91m                                      ~~~~~~~~~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:47:44.171711"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_15",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260501_132757_f6ba325d",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 97.59,
+        "dsl_time": 0.0,
+        "total_time": 97.68756669799768,
+        "input_tokens": 988,
+        "output_tokens": 4763,
+        "total_tokens": 5751,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/skill/dto/create-skill.dto.ts",
+            "line": 3,
+            "column": 10,
+            "message": "Module '\"../skill.entity\"' declares 'SkillLevel' locally, but it is not exported.",
+            "code": "TS2459"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/skill/dto/create-skill.dto.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m10\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2459: \u001b[0mModule '\"../skill.entity\"' declares 'SkillLevel' locally, but it is not exported.\n\n\u001b[7m3\u001b[0m import ",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/skill/dto/create-skill.dto.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m10\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2459: \u001b[0mModule '\"../skill.entity\"' declares 'SkillLevel' locally, but it is not exported.\n\n\u001b[7m3\u001b[0m import { SkillLevel } from '../skill.entity';\n\u001b[7m \u001b[0m \u001b[91m         ~~~~~~~~~~\u001b[0m\n\n  \u001b[96msrc/skill/skill.entity.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m10\u001b[0m\n    \u001b[7m3\u001b[0m import { SkillLevel } from '../employee/employee.entity';\n    \u001b[7m \u001b[0m \u001b[96m         ~~~~~~~~~~\u001b[0m\n    'SkillLevel' is declared here.\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:49:34.054564"
+  }
+]

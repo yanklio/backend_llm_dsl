@@ -1,25 +1,31 @@
 import argparse
 import sys
+from pathlib import Path
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.llm import GenerationResult, LLMClient
+from src.llm.output import log_generation_statistics
 from src.llm.prompts import SYSTEM_PROMPT
-from src.llm.wrapper import GenerationResult, LLMClient
+from src.llm.response_parser import clean_llm_response
 from src.shared import logger
-from src.shared.utils import clean_llm_response
 
 load_dotenv()
 
 
-def natural_language_to_yaml(
-    description: str, provider: str = "gemini"
-) -> GenerationResult:
+DSL_REQUEST_TEMPLATE = "Create a NestJS application for: {description}"
+
+
+def natural_language_to_yaml(description: str, provider: str = "openrouter") -> GenerationResult:
     """Convert natural language to YAML blueprint using LLM.
 
     Args:
         description (str): Plain English description of the desired NestJS application.
-        provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: gemini.
+        provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: openrouter.
 
     Returns:
         GenerationResult: The generated YAML content and metadata.
@@ -28,7 +34,7 @@ def natural_language_to_yaml(
 
     messages = [
         SystemMessage(content=SYSTEM_PROMPT),
-        HumanMessage(content=f"Create a NestJS application for: {description}"),
+        HumanMessage(content=DSL_REQUEST_TEMPLATE.format(description=description)),
     ]
 
     result = client.generate(messages)
@@ -84,15 +90,7 @@ def main() -> None:
 
     try:
         result = natural_language_to_yaml(args.description, args.model)
-
-        logger.info("=== Generation Statistics ===")
-        logger.info(f"Provider: {result.provider}")
-        logger.info(f"Time: {result.duration_seconds:.2f}s")
-        if result.total_tokens:
-            logger.info(
-                f"Tokens: {result.total_tokens} (In: {result.input_tokens}, Out: {result.output_tokens})"
-            )
-
+        log_generation_statistics(result)
         save_blueprint(result.content, args.blueprint)
 
         logger.debug("Generated Blueprint:")

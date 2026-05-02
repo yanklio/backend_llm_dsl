@@ -1,0 +1,80 @@
+root:
+  name: ECommercePlatform
+  database:
+    type: sqlite
+    database: ./data/ecommerce.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Category
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 80}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 300}
+      relations:
+        - type: ManyToMany
+          model: Product
+          field: products
+          description: Products belonging to this category
+  - name: Product
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 150}
+        - name: price
+          type: number
+          required: true
+          validation: {min: 0}
+        - name: description
+          type: string
+          required: false
+          validation: {maxLength: 1000}
+        - name: inStock
+          type: boolean
+          required: true
+          default: true
+      relations:
+        - type: ManyToMany
+          model: Category
+          field: categories
+          description: Categories this product belongs to
+        - type: OneToMany
+          model: Review
+          field: reviews
+          description: Reviews for this product
+  - name: Review
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: rating
+          type: number
+          required: true
+          validation: {min: 1, max: 5}
+        - name: comment
+          type: string
+          required: false
+          validation: {maxLength: 500}
+        - name: reviewerName
+          type: string
+          required: true
+          validation: {maxLength: 100}
+      relations:
+        - type: ManyToOne
+          model: Product
+          field: product
+          description: Product this review belongs to

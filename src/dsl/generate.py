@@ -8,12 +8,14 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 from src.shared.exceptions import ConfigurationException
-from src.shared.logs.logger import logger
+from src.shared.logger import logger
 
 from .core.modules.module import generate_module
 from .core.modules.relation import handle_relations
 from .core.root import generate_root_module
-from .utils.type import to_ts_type
+from .utils.ts_types import to_ts_type
+
+RELATION_COPY_FIELDS = ["inverseField", "joinTable", "joinColumn"]
 
 
 def _read_blueprint(blueprint_file: str) -> dict[str, Any]:
@@ -103,19 +105,33 @@ def _enrich_modules_with_relations(
             for relation in module_data["entity"]["relations"]:
                 related_model = relation["model"]
                 relation_key = (module_name, related_model)
-                if relation_key in relations_map:
-                    if "inverseField" in relations_map[relation_key]:
-                        relation["inverseField"] = relations_map[relation_key]["inverseField"]
-                    if "joinTable" in relations_map[relation_key]:
-                        relation["joinTable"] = relations_map[relation_key]["joinTable"]
-                    if "joinColumn" in relations_map[relation_key]:
-                        relation["joinColumn"] = relations_map[relation_key]["joinColumn"]
+                relation_data = relations_map.get(relation_key)
+                if relation_data is not None:
+                    _copy_relation_metadata(relation, relation_data)
 
-        related_entities = []
-        for (src, _dest), rel_data in relations_map.items():
-            if src == module_name:
-                related_entities.append(rel_data["model"])
-        module_data["relatedEntities"] = related_entities
+        module_data["relatedEntities"] = _related_entities_for_module(module_name, relations_map)
+
+
+def _copy_relation_metadata(
+    relation: dict[str, Any],
+    relation_data: dict[str, Any],
+) -> None:
+    """Copy derived relation metadata into the original module blueprint."""
+    for field_name in RELATION_COPY_FIELDS:
+        if field_name in relation_data:
+            relation[field_name] = relation_data[field_name]
+
+
+def _related_entities_for_module(
+    module_name: str,
+    relations_map: dict[tuple, dict[str, Any]],
+) -> list[str]:
+    """Return the related entity names for one module."""
+    return [
+        relation_data["model"]
+        for (source_name, _destination_name), relation_data in relations_map.items()
+        if source_name == module_name
+    ]
 
 
 def main(blueprint_file: str, nest_project_path: Optional[str] = None) -> None:

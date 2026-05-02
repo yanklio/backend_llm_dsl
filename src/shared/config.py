@@ -11,6 +11,19 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+def _settings_config(prefix: str) -> SettingsConfigDict:
+    """Build the shared settings configuration for a section."""
+    return SettingsConfigDict(
+        env_prefix=prefix,
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
+
+
+SUB_CONFIG_FIELDS = ["llm", "validation", "template", "log"]
+
+
 class LLMConfig(BaseSettings):
     """Configuration for LLM providers and API calls.
 
@@ -26,12 +39,7 @@ class LLMConfig(BaseSettings):
     temperature: float = Field(default=0.1, ge=0.0, le=2.0)
     fallback_enabled: bool = Field(default=True)
 
-    model_config = SettingsConfigDict(
-        env_prefix="LLM_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
+    model_config = _settings_config("LLM_")
 
 
 class ValidationConfig(BaseSettings):
@@ -53,12 +61,7 @@ class ValidationConfig(BaseSettings):
     port_wait_time: int = Field(default=5, ge=1, le=30)
     port_check_retries: int = Field(default=10, ge=1, le=50)
 
-    model_config = SettingsConfigDict(
-        env_prefix="VALIDATION_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
+    model_config = _settings_config("VALIDATION_")
 
 
 class TemplateConfig(BaseSettings):
@@ -76,12 +79,7 @@ class TemplateConfig(BaseSettings):
     trim_blocks: bool = Field(default=True)
     lstrip_blocks: bool = Field(default=True)
 
-    model_config = SettingsConfigDict(
-        env_prefix="TEMPLATE_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
+    model_config = _settings_config("TEMPLATE_")
 
     def get_templates_path(self) -> Path:
         """Get the absolute path to templates directory.
@@ -119,12 +117,7 @@ class LogConfig(BaseSettings):
     format: str = Field(default="%(message)s")
     show_timestamps: bool = Field(default=False)
 
-    model_config = SettingsConfigDict(
-        env_prefix="LOG_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
+    model_config = _settings_config("LOG_")
 
 
 class AppConfig(BaseSettings):
@@ -146,12 +139,7 @@ class AppConfig(BaseSettings):
     log: LogConfig = Field(default_factory=LogConfig)
     debug: bool = Field(default=False)
 
-    model_config = SettingsConfigDict(
-        env_prefix="APP_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
-    )
+    model_config = _settings_config("APP_")
 
     def __init__(self, **data):
         """Initialize app config.
@@ -159,15 +147,20 @@ class AppConfig(BaseSettings):
         Loads configuration from environment variables and .env file.
         """
         super().__init__(**data)
-        # Initialize sub-configs if not provided
-        if not isinstance(self.llm, LLMConfig):
-            self.llm = LLMConfig()
-        if not isinstance(self.validation, ValidationConfig):
-            self.validation = ValidationConfig()
-        if not isinstance(self.template, TemplateConfig):
-            self.template = TemplateConfig()
-        if not isinstance(self.log, LogConfig):
-            self.log = LogConfig()
+        self._ensure_sub_configs()
+
+    def _ensure_sub_configs(self) -> None:
+        """Recreate nested configs if Pydantic did not instantiate them."""
+        config_types = {
+            "llm": LLMConfig,
+            "validation": ValidationConfig,
+            "template": TemplateConfig,
+            "log": LogConfig,
+        }
+        for field_name in SUB_CONFIG_FIELDS:
+            config_type = config_types[field_name]
+            if not isinstance(getattr(self, field_name), config_type):
+                setattr(self, field_name, config_type())
 
 
 # Global configuration instance

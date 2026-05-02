@@ -6,33 +6,51 @@ Two-phase approach:
 """
 
 import argparse
+import sys
 import traceback
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
+from src.llm import LLMClient
 from src.llm.dsl_generate import natural_language_to_yaml, save_blueprint
+from src.llm.output import (
+    log_json_parse_failure,
+    log_run_instructions,
+    save_generated_files,
+)
 from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT
-from src.llm.wrapper import LLMClient
+from src.llm.response_parser import clean_llm_response, try_parse_json
 from src.shared import logger
-from src.shared.utils import clean_llm_response, try_parse_json
 
 load_dotenv()
 
 
-def _create_mixed_prompt(blueprint_yaml: str, description: str) -> str:
-    """Create a user prompt that includes both the description and blueprint.
+@dataclass(frozen=True)
+class TokenUsage:
+    """Normalized token usage values for one LLM generation phase."""
 
-    Args:
-        blueprint_yaml (str): The generated YAML blueprint.
-        description (str): Original natural language description.
+    input_tokens: int
+    output_tokens: int
+    total_tokens: int
 
-    Returns:
-        str: Combined prompt for raw code generation.
-    """
-    return f"""=== NATURAL LANGUAGE REQUEST ===
+
+def _token_usage(result: Any) -> TokenUsage:
+    """Normalize nullable provider token fields into integers."""
+    return TokenUsage(
+        input_tokens=result.input_tokens or 0,
+        output_tokens=result.output_tokens or 0,
+        total_tokens=result.total_tokens or 0,
+    )
+
+
+MIXED_REQUEST_TEMPLATE = """=== NATURAL LANGUAGE REQUEST ===
 {description}
 
 === GENERATED BLUEPRINT (use this structure) ===
@@ -50,7 +68,56 @@ Keys are file paths (e.g., "src/user/user.entity.ts")
 Values are the FULL FILE CONTENT as properly escaped JSON strings.
 Newlines must be represented as \\n, double quotes as \\".
 
-Only generate .ts source files in src/ directory."""
+    Only generate .ts source files in src/ directory."""
+
+
+def _create_mixed_prompt(blueprint_yaml: str, description: str) -> str:
+    """Create a user prompt that includes both the description and blueprint.
+
+    Args:
+        blueprint_yaml (str): The generated YAML blueprint.
+        description (str): Original natural language description.
+
+    Returns:
+        str: Combined prompt for raw code generation.
+    """
+    return MIXED_REQUEST_TEMPLATE.format(
+        blueprint_yaml=blueprint_yaml,
+        description=description,
+    )
+
+
+def _build_mixed_statistics(blueprint_result: Any, code_result: Any) -> dict[str, Any]:
+    """Build the mixed-generation statistics payload."""
+    phase1_tokens = _token_usage(blueprint_result)
+    phase2_tokens = _token_usage(code_result)
+
+    return {
+        "phase1_duration": blueprint_result.duration_seconds,
+        "phase2_duration": code_result.duration_seconds,
+        "total_duration_seconds": blueprint_result.duration_seconds + code_result.duration_seconds,
+        "phase1_input_tokens": phase1_tokens.input_tokens,
+        "phase1_output_tokens": phase1_tokens.output_tokens,
+        "phase1_total_tokens": phase1_tokens.total_tokens,
+        "phase2_input_tokens": phase2_tokens.input_tokens,
+        "phase2_output_tokens": phase2_tokens.output_tokens,
+        "phase2_total_tokens": phase2_tokens.total_tokens,
+        "input_tokens": phase1_tokens.input_tokens + phase2_tokens.input_tokens,
+        "output_tokens": phase1_tokens.output_tokens + phase2_tokens.output_tokens,
+        "total_tokens": phase1_tokens.total_tokens + phase2_tokens.total_tokens,
+        "provider": code_result.provider,
+        "model_name": code_result.model_name,
+    }
+
+
+def _log_mixed_statistics(stats: dict[str, Any]) -> None:
+    """Log the mixed-generation phase timings and token counts."""
+    logger.info("=== Generation Statistics ===")
+    logger.info(f"Total time: {stats['total_duration_seconds']:.2f}s")
+    logger.info(f"  Phase 1 (blueprint): {stats['phase1_duration']:.2f}s")
+    logger.info(f"  Phase 2 (code): {stats['phase2_duration']:.2f}s")
+    if stats["total_tokens"]:
+        logger.info(f"Total tokens: {stats['total_tokens']}")
 
 
 def mixed_generate(
@@ -83,7 +150,7 @@ def mixed_generate(
 
     logger.start("Phase 2: Generating code with blueprint context...")
 
-    provider = primary_model or "gemini"
+    provider = primary_model or "openrouter"
     client = LLMClient(provider_id=provider, temperature=0.2)
 
     user_prompt = _create_mixed_prompt(blueprint_yaml, description)
@@ -96,25 +163,15 @@ def mixed_generate(
         cleaned_content = clean_llm_response(code_result.content)
         files = try_parse_json(cleaned_content)
 
-        total_duration = blueprint_result.duration_seconds + code_result.duration_seconds
-        total_tokens = (blueprint_result.total_tokens or 0) + (code_result.total_tokens or 0)
-
         return {
             "success": True,
             "files": files,
             "blueprint": blueprint_yaml,
-            "statistics": {
-                "total_duration_seconds": total_duration,
-                "phase1_duration": blueprint_result.duration_seconds,
-                "phase2_duration": code_result.duration_seconds,
-                "total_tokens": total_tokens,
-                "phase1_tokens": blueprint_result.input_tokens,
-                "phase2_tokens": code_result.total_tokens,
-                "provider": code_result.provider,
-            },
+            "statistics": _build_mixed_statistics(blueprint_result, code_result),
         }
     except Exception as e:
         logger.error(f"Phase 2 failed to parse code: {e}")
+        log_json_parse_failure(cleaned_content, e)
         return {
             "success": False,
             "error": str(e),
@@ -133,29 +190,7 @@ def save_mixed_files(files: dict[str, Any], output_dir: str) -> int:
     Returns:
         int: Number of files saved.
     """
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
-
-    from src.llm.raw_generate import _prepare_file_content
-
-    logger.start(f"Saving files to {output_dir}...")
-
-    saved_count = 0
-    for file_path, content in files.items():
-        try:
-            full_path = output_path / file_path
-            full_path.parent.mkdir(parents=True, exist_ok=True)
-
-            content = _prepare_file_content(content, file_path)
-
-            full_path.write_text(content, encoding="utf-8")
-            logger.success(f"Saved {file_path}")
-            saved_count += 1
-        except Exception as e:
-            logger.error(f"Failed to save {file_path}: {e}")
-
-    logger.end(f"Saved {saved_count}/{len(files)} files")
-    return saved_count
+    return save_generated_files(files, output_dir)
 
 
 def main() -> None:
@@ -205,19 +240,9 @@ def main() -> None:
 
         if result["success"]:
             stats = result["statistics"]
-            logger.info("=== Generation Statistics ===")
-            logger.info(f"Total time: {stats['total_duration_seconds']:.2f}s")
-            logger.info(f"  Phase 1 (blueprint): {stats['phase1_duration']:.2f}s")
-            logger.info(f"  Phase 2 (code): {stats['phase2_duration']:.2f}s")
-            if stats["total_tokens"]:
-                logger.info(f"Total tokens: {stats['total_tokens']}")
-
+            _log_mixed_statistics(stats)
             save_mixed_files(result["files"], args.output)
-
-            logger.success("Done! Run with:")
-            logger.info(f"  cd {args.output}")
-            logger.info("  npm install")
-            logger.info("  npm run start:dev")
+            log_run_instructions(args.output)
         else:
             logger.error(f"Generation failed: {result.get('error')}")
             logger.info(f"Blueprint saved to: {args.blueprint}")

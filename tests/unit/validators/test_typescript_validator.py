@@ -2,15 +2,15 @@
 
 from unittest.mock import patch
 
-from src.validators.shared.command import SubprocessResult
-from src.validators.shared.error_types import ErrorCodes
-from src.validators.syntactic_validators.typescript import check_typescript
+from src.validators.command import SubprocessResult
+from src.validators.error_types import ErrorCodes
+from src.validators.syntax import check_typescript
 
 
 class TestCheckTypescript:
     """Tests for check_typescript function."""
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_successful_compilation(self, mock_run_command, temp_dir):
         """Test successful TypeScript compilation with no errors."""
         mock_run_command.return_value = SubprocessResult(
@@ -28,7 +28,7 @@ class TestCheckTypescript:
             timeout=60
         )
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_typescript_compilation_errors(self, mock_run_command, temp_dir):
         """Test TypeScript compilation with syntax errors."""
         mock_run_command.return_value = SubprocessResult(
@@ -49,7 +49,7 @@ class TestCheckTypescript:
         assert errors[1]["line"] == 20
         assert "Type 'string' is not assignable to type 'number'" in errors[1]["message"]
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_typescript_timeout(self, mock_run_command, temp_dir):
         """Test TypeScript compilation timeout."""
         mock_run_command.return_value = SubprocessResult(
@@ -65,7 +65,7 @@ class TestCheckTypescript:
         assert "timeout" in errors[0]["message"].lower()
         assert errors[0]["code"] == ErrorCodes.TIMEOUT
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_typescript_not_found(self, mock_run_command, temp_dir):
         """Test TypeScript compiler not found."""
         mock_run_command.return_value = SubprocessResult(
@@ -81,7 +81,7 @@ class TestCheckTypescript:
         assert "not found" in errors[0]["message"].lower()
         assert errors[0]["code"] == ErrorCodes.TSC_NOT_FOUND
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_generic_compilation_error(self, mock_run_command, temp_dir):
         """Test generic TypeScript compilation error."""
         mock_run_command.return_value = SubprocessResult(
@@ -101,7 +101,7 @@ class TestCheckTypescript:
 class TestTypescriptErrorParsing:
     """Tests for TypeScript error parsing."""
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_parse_error_with_line_and_column(self, mock_run_command, temp_dir):
         """Test parsing error with line and column numbers."""
         mock_run_command.return_value = SubprocessResult(
@@ -117,7 +117,7 @@ class TestTypescriptErrorParsing:
         assert errors[0]["line"] == 42
         assert "Argument of type 'string'" in errors[0]["message"]
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_parse_multiple_errors_same_file(self, mock_run_command, temp_dir):
         """Test parsing multiple errors from the same file."""
         mock_run_command.return_value = SubprocessResult(
@@ -136,7 +136,7 @@ class TestTypescriptErrorParsing:
         assert all(e["file"] == "src/app.ts" for e in errors)
         assert [e["line"] for e in errors] == [10, 15, 20]
 
-    @patch('src.validators.syntactic_validators.typescript.run_command')
+    @patch('src.validators.syntax.run_command')
     def test_ignore_non_error_lines(self, mock_run_command, temp_dir):
         """Test that non-error lines are ignored."""
         mock_run_command.return_value = SubprocessResult(

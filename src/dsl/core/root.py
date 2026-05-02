@@ -6,8 +6,8 @@ from typing import Any
 from jinja2 import Environment
 
 from src.shared.exceptions import TemplateException
-from src.shared.logs.logger import logger
-from src.shared.template_helper import TemplateRenderer
+from src.shared.logger import logger
+from src.shared.template import TemplateRenderer
 
 
 def _prepare_template_data(
