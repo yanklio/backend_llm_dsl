@@ -174,16 +174,17 @@ Return ONLY one valid JSON object with this exact shape:
 }
 
 Score meaning:
-0 = no meaningful alignment with the prompt
-1 = very poor alignment
-2 = partial alignment, many important prompt requirements missing
-3 = moderate alignment, main idea present but gaps remain
-4 = good alignment, most prompt requirements implemented
-5 = excellent alignment, prompt requirements are essentially covered
+0 = no meaningful alignment with the prompt; generated code is unrelated or unusable for the requested scope
+1 = very poor alignment; only a small part of the requested domain or API is recognizable
+2 = partial alignment; some requested entities/endpoints/fields are present, but major explicit requirements are missing
+3 = moderate alignment; the main requested idea is present, but at least one important entity, relation, endpoint, or constraint is missing or wrong
+4 = exact prompt alignment; explicit prompt requirements are covered, with no meaningful production-supporting additions beyond the requested scope
+5 = prompt alignment plus useful production-supporting additions; explicit prompt requirements are covered and extras such as Swagger setup, CORS, validation pipes, health endpoints, timestamps, or PATCH aliases are acceptable when they do not conflict with the prompt
 
 Rules:
 - alignment_score must be an integer from 0 to 5.
 - missing_requirements must list prompt requirements that are absent from the code.
-- extra_features must list generated features that were not requested and materially change the requested scope.
+- extra_features must list only unrequested features that conflict with the prompt, replace requested behavior, or materially change the requested scope.
+- Do not penalize harmless production-supporting extras when all explicit prompt requirements are covered.
 - rationale must be concise and mention only prompt-alignment evidence.
 - Do not include markdown, explanations outside JSON, or additional keys."""
