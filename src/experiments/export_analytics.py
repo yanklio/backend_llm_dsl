@@ -205,7 +205,9 @@ def _prompt_alignment_fields(record: dict[str, Any]) -> dict[str, Any]:
         "alignment_prompt_version": alignment.get("prompt_version", "") if isinstance(alignment, dict) else "",
         "alignment_prompt_hash": alignment.get("prompt_hash", "") if isinstance(alignment, dict) else "",
         "alignment_score": result.get("alignment_score", ""),
-        "alignment_missing_requirements_count": len(missing_requirements) if isinstance(missing_requirements, list) else 0,
+        "alignment_missing_requirements_count": len(missing_requirements)
+        if isinstance(missing_requirements, list)
+        else 0,
         "alignment_extra_features_count": len(extra_features) if isinstance(extra_features, list) else 0,
         "alignment_rationale": result.get("rationale", ""),
         "alignment_error": alignment.get("error", "") if isinstance(alignment, dict) else "",

@@ -14,7 +14,7 @@ from src.llm.prompt_alignment import (
 )
 
 from .approaches import APPROACH_RUNNERS
-from .io import load_results, load_test_cases, save_json, save_results
+from .io import SuppressOutput, load_results, load_test_cases, save_json, save_results
 from .metadata import build_run_metadata, record_identity, resume_key
 from .paths import NEST_PROJECT_DIR, RESULTS_FILE, RUNS_DIR
 from .project import clean_project, ensure_base_project, validate_project
