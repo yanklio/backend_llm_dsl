@@ -16,8 +16,76 @@ STATUS_ORDER = ["PASS", "FAIL", "ERR"]
 APPROACH_LABELS = {"dsl": "DSL", "raw": "Raw", "mixed": "Mixed"}
 TIER_LABELS = {"simple": "Proste", "medium": "Średnie", "complex": "Złożone"}
 STATUS_LABELS = {"PASS": "Poprawne", "FAIL": "Niepoprawne", "ERR": "Błąd generacji"}
-STATUS_COLORS = {"PASS": "#2E7D32", "FAIL": "#EF6C00", "ERR": "#C62828"}
-APPROACH_COLORS = {"dsl": "#1565C0", "raw": "#6A1B9A", "mixed": "#00897B"}
+STATUS_COLORS = {"PASS": "#4E79A7", "FAIL": "#A0A0A0", "ERR": "#6B6B6B"}
+APPROACH_COLORS = {"dsl": "#4E79A7", "raw": "#7F7F7F", "mixed": "#59A14F"}
+ERROR_CATEGORY_ORDER = [
+    "generation_error",
+    "typescript_syntax",
+    "dependency_install",
+    "build_validation",
+    "runtime_startup",
+    "validation_other",
+]
+ERROR_CATEGORY_LABELS = {
+    "generation_error": "Generowanie",
+    "typescript_syntax": "TypeScript",
+    "dependency_install": "Instalacja zależności",
+    "build_validation": "Build",
+    "runtime_startup": "Uruchomienie",
+    "validation_other": "Inna walidacja",
+}
+ERROR_CATEGORY_COLORS = {
+    "generation_error": "#4E79A7",
+    "typescript_syntax": "#7F7F7F",
+    "dependency_install": "#A0A0A0",
+    "build_validation": "#B8B8B8",
+    "runtime_startup": "#59A14F",
+    "validation_other": "#6B6B6B",
+}
+TYPESCRIPT_ERROR_GROUP_ORDER = [
+    "nullability_return",
+    "nullability_assignment",
+    "missing_module_import",
+    "missing_symbol_import",
+    "dto_property_mismatch",
+    "typeorm_query_typing",
+    "library_api_mismatch",
+    "duplicate_declaration",
+    "invalid_function_signature",
+    "invalid_computed_property",
+    "enum_export_issue",
+    "typescript_other",
+]
+TYPESCRIPT_ERROR_GROUP_LABELS = {
+    "nullability_return": "Nullable return type",
+    "nullability_assignment": "Nullable assignment",
+    "missing_module_import": "Missing module import",
+    "missing_symbol_import": "Missing symbol/import",
+    "dto_property_mismatch": "DTO/property mismatch",
+    "typeorm_query_typing": "TypeORM query typing",
+    "library_api_mismatch": "Library API mismatch",
+    "duplicate_declaration": "Duplicate declaration",
+    "invalid_function_signature": "Invalid function signature",
+    "invalid_computed_property": "Invalid computed property",
+    "enum_export_issue": "Enum/export issue",
+    "typescript_other": "Other TypeScript",
+}
+TYPESCRIPT_ERROR_GROUP_COLORS = {
+    "nullability_return": "#4E79A7",
+    "nullability_assignment": "#A0CBE8",
+    "missing_module_import": "#7F7F7F",
+    "missing_symbol_import": "#B8B8B8",
+    "dto_property_mismatch": "#59A14F",
+    "typeorm_query_typing": "#8CD17D",
+    "library_api_mismatch": "#9C755F",
+    "duplicate_declaration": "#BAB0AC",
+    "invalid_function_signature": "#F1CE63",
+    "invalid_computed_property": "#D4A6C8",
+    "enum_export_issue": "#D7B5A6",
+    "typescript_other": "#6B6B6B",
+}
+SYSTEMATIC_MIN_AFFECTED_RECORDS = 3
+SYSTEMATIC_MIN_APPROACHES = 2
 
 
 def _load_json(path: Path) -> Any:
@@ -72,9 +140,12 @@ def _flatten_record(record: dict[str, Any], metadata: dict[str, Any], repetition
     syntactic = validation.get("syntactic", {})
     runtime = validation.get("runtime", {})
     status = _status_for(record)
-    first_error = _first_error(validation)
+    first_error = _first_error(record)
+    error_category = _error_category_for(record)
+    typescript_errors = _typescript_error_rows(record)
 
     return {
+        "_typescript_errors": typescript_errors,
         "repetition": repetition,
         "run_id": record.get("run_id", metadata.get("run_id", "")),
         "run_created_at": metadata.get("created_at", ""),
@@ -111,6 +182,8 @@ def _flatten_record(record: dict[str, Any], metadata: dict[str, Any], repetition
         "first_error_file": first_error.get("file", ""),
         "first_error_code": first_error.get("code", ""),
         "first_error_message": first_error.get("message", ""),
+        "error_category": error_category,
+        "error_category_label": _error_category_label(error_category),
     }
 
 
@@ -125,8 +198,17 @@ def _status_for(record: dict[str, Any]) -> str:
     return "FAIL"
 
 
-def _first_error(validation: dict[str, Any]) -> dict[str, Any]:
-    """Return the first available validation error for qualitative CSV output."""
+def _first_error(record: dict[str, Any]) -> dict[str, Any]:
+    """Return the first available generation or validation error."""
+    generation = record.get("generation", {})
+    if not generation.get("success", False):
+        return {
+            "file": "generation",
+            "code": "GENERATION_ERROR",
+            "message": generation.get("error", "Unknown generation error"),
+        }
+
+    validation = record.get("validation", {})
     syntactic_errors = validation.get("syntactic", {}).get("errors", [])
     if syntactic_errors:
         return syntactic_errors[0]
@@ -138,15 +220,98 @@ def _first_error(validation: dict[str, Any]) -> dict[str, Any]:
     return {}
 
 
+def _error_category_for(record: dict[str, Any]) -> str:
+    """Assign one stable, thesis-friendly error category to a result record."""
+    generation = record.get("generation", {})
+    if not generation.get("success", False):
+        return "generation_error"
+
+    validation = record.get("validation", {})
+    if validation.get("overall_valid", False):
+        return ""
+
+    syntactic = validation.get("syntactic", {})
+    if not syntactic.get("valid", True):
+        return "typescript_syntax"
+
+    runtime = validation.get("runtime", {})
+    runtime_errors = runtime.get("errors", {})
+    if runtime_errors.get("install") or not runtime.get("install_success", True):
+        return "dependency_install"
+    if runtime_errors.get("build") or not runtime.get("build_success", True):
+        return "build_validation"
+    if runtime_errors.get("start") or not runtime.get("start_success", True):
+        return "runtime_startup"
+    return "validation_other"
+
+
+def _typescript_error_rows(record: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return classified TypeScript error rows for one experiment record."""
+    errors = record.get("validation", {}).get("syntactic", {}).get("errors", [])
+    rows = []
+    for index, error in enumerate(errors, start=1):
+        code = error.get("code", "")
+        message = error.get("message", "")
+        group = _typescript_error_group_for(code, message)
+        rows.append(
+            {
+                "error_index": index,
+                "typescript_error_group": group,
+                "typescript_error_group_label": _typescript_error_group_label(group),
+                "typescript_error_code": code,
+                "typescript_error_file": error.get("file", ""),
+                "typescript_error_line": error.get("line", ""),
+                "typescript_error_column": error.get("column", ""),
+                "typescript_error_message": message,
+            }
+        )
+    return rows
+
+
+def _typescript_error_group_for(code: str, message: str) -> str:
+    """Map TypeScript compiler errors to thesis-level root-cause groups."""
+    normalized_message = message.lower()
+
+    if code == "TS2322" and "promise<" in normalized_message and "| null" in normalized_message:
+        return "nullability_return"
+    if code in {"TS2322", "TS2345"} and "null" in normalized_message and "not assignable" in normalized_message:
+        return "nullability_assignment"
+    if code == "TS2307" or "cannot find module" in normalized_message:
+        return "missing_module_import"
+    if code in {"TS2304", "TS2552"} or "cannot find name" in normalized_message:
+        return "missing_symbol_import"
+    if code == "TS2551" or "does not exist on type" in normalized_message:
+        return "dto_property_mismatch"
+    if code == "TS2769" or "no overload matches this call" in normalized_message:
+        return "typeorm_query_typing"
+    if "no exported member" in normalized_message:
+        return "library_api_mismatch"
+    if code == "TS2300" or "duplicate identifier" in normalized_message:
+        return "duplicate_declaration"
+    if code == "TS1016" or "required parameter cannot follow an optional parameter" in normalized_message:
+        return "invalid_function_signature"
+    if code == "TS2464" or "computed property name" in normalized_message:
+        return "invalid_computed_property"
+    if code == "TS2459" or "declares" in normalized_message and "not exported" in normalized_message:
+        return "enum_export_issue"
+    return "typescript_other"
+
+
 def _write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
     """Write dictionaries to CSV, creating an empty file if no rows exist."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = list(rows[0].keys()) if rows else []
+    public_rows = [_public_row(row) for row in rows]
+    fieldnames = list(public_rows[0].keys()) if public_rows else []
     with open(path, "w", newline="") as file_handle:
         writer = csv.DictWriter(file_handle, fieldnames=fieldnames)
         if fieldnames:
             writer.writeheader()
-            writer.writerows(rows)
+            writer.writerows(public_rows)
+
+
+def _public_row(row: dict[str, Any]) -> dict[str, Any]:
+    """Remove internal analytics fields before writing public CSV output."""
+    return {key: value for key, value in row.items() if not key.startswith("_")}
 
 
 def _group_rows(records: list[dict[str, Any]], keys: tuple[str, ...]) -> list[dict[str, Any]]:
@@ -180,6 +345,122 @@ def _group_rows(records: list[dict[str, Any]], keys: tuple[str, ...]) -> list[di
     return rows
 
 
+def _group_error_category_rows(records: list[dict[str, Any]], keys: tuple[str, ...]) -> list[dict[str, Any]]:
+    """Aggregate non-passing records by error category and selected keys."""
+    error_records = [record for record in records if record["error_category"]]
+    grouped: dict[tuple[Any, ...], list[dict[str, Any]]] = defaultdict(list)
+    for record in error_records:
+        grouped[tuple(record[key] for key in keys)].append(record)
+
+    rows = []
+    for group_values, group_records in sorted(grouped.items(), key=_error_group_sort_key):
+        row = dict(zip(keys, group_values))
+        row["error_category_label"] = _error_category_label(row["error_category"])
+        row["count"] = len(group_records)
+        rows.append(row)
+    return rows
+
+
+def _typescript_error_detail_rows(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Flatten every TypeScript compiler error into a dedicated CSV row."""
+    rows = []
+    base_fields = (
+        "repetition",
+        "run_id",
+        "provider",
+        "model_name",
+        "approach",
+        "test_case",
+        "tier",
+        "prompt_version",
+        "prompt_hash",
+    )
+    for record in records:
+        for error in record.get("_typescript_errors", []):
+            row = {field: record[field] for field in base_fields}
+            row.update(error)
+            rows.append(row)
+    return rows
+
+
+def _group_typescript_error_rows(rows: list[dict[str, Any]], keys: tuple[str, ...]) -> list[dict[str, Any]]:
+    """Aggregate TypeScript error detail rows by selected dimensions."""
+    grouped: dict[tuple[Any, ...], list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        grouped[tuple(row[key] for key in keys)].append(row)
+
+    summary_rows = []
+    for group_values, group_rows in sorted(grouped.items(), key=_typescript_error_sort_key):
+        row = dict(zip(keys, group_values))
+        if "typescript_error_group" in row:
+            row["typescript_error_group_label"] = _typescript_error_group_label(row["typescript_error_group"])
+        row["count"] = len(group_rows)
+        row["affected_records"] = len({(item["run_id"], item["approach"], item["test_case"]) for item in group_rows})
+        summary_rows.append(row)
+    return summary_rows
+
+
+def _systematic_typescript_error_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return TypeScript error groups that repeat across records or approaches."""
+    grouped_rows = _group_typescript_error_rows(rows, ("typescript_error_group",))
+    approaches_by_group: dict[str, set[str]] = defaultdict(set)
+    cases_by_group: dict[str, set[str]] = defaultdict(set)
+    for row in rows:
+        group = row["typescript_error_group"]
+        approaches_by_group[group].add(row["approach"])
+        cases_by_group[group].add(row["test_case"])
+
+    systematic_rows = []
+    for row in grouped_rows:
+        group = row["typescript_error_group"]
+        approach_count = len(approaches_by_group[group])
+        is_systematic = (
+            row["affected_records"] >= SYSTEMATIC_MIN_AFFECTED_RECORDS or approach_count >= SYSTEMATIC_MIN_APPROACHES
+        )
+        if not is_systematic:
+            continue
+
+        systematic_rows.append(
+            {
+                **row,
+                "affected_cases": len(cases_by_group[group]),
+                "affected_approaches": ",".join(sorted(approaches_by_group[group])),
+                "classification": "systematic",
+            }
+        )
+    return sorted(systematic_rows, key=lambda item: (-item["count"], item["typescript_error_group"]))
+
+
+def _typescript_error_sort_key(item: tuple[tuple[Any, ...], list[dict[str, Any]]]) -> tuple[Any, ...]:
+    """Sort TypeScript error summaries in stable display order."""
+    group_values = item[0]
+    sort_values = []
+    for value in group_values:
+        if value in APPROACH_ORDER:
+            sort_values.append(APPROACH_ORDER.index(value))
+        elif value in TYPESCRIPT_ERROR_GROUP_ORDER:
+            sort_values.append(TYPESCRIPT_ERROR_GROUP_ORDER.index(value))
+        elif value in TIER_ORDER:
+            sort_values.append(TIER_ORDER.index(value))
+        else:
+            sort_values.append(value)
+    return tuple(sort_values)
+
+
+def _error_group_sort_key(item: tuple[tuple[Any, ...], list[dict[str, Any]]]) -> tuple[Any, ...]:
+    """Sort error category summaries in approach and category display order."""
+    group_values = item[0]
+    sort_values = []
+    for value in group_values:
+        if value in APPROACH_ORDER:
+            sort_values.append(APPROACH_ORDER.index(value))
+        elif value in ERROR_CATEGORY_ORDER:
+            sort_values.append(ERROR_CATEGORY_ORDER.index(value))
+        else:
+            sort_values.append(value)
+    return tuple(sort_values)
+
+
 def _mean(values: Any) -> float:
     """Compute mean for an iterable of numeric values."""
     value_list = [float(value or 0) for value in values]
@@ -190,12 +471,20 @@ def export_csvs(records: list[dict[str, Any]], output_dir: Path) -> dict[str, Pa
     """Export normalized records and summaries to CSV files."""
     csv_dir = output_dir / "csv"
     failure_rows = [record for record in records if record["status"] != "PASS"]
+    typescript_error_rows = _typescript_error_detail_rows(records)
     files = {
         "records": csv_dir / "records.csv",
         "summary_by_approach": csv_dir / "summary_by_approach.csv",
         "summary_by_approach_tier": csv_dir / "summary_by_approach_tier.csv",
         "summary_by_repetition_approach": csv_dir / "summary_by_repetition_approach.csv",
         "failures": csv_dir / "failures.csv",
+        "error_categories": csv_dir / "error_categories.csv",
+        "error_categories_by_approach": csv_dir / "error_categories_by_approach.csv",
+        "typescript_errors": csv_dir / "typescript_errors.csv",
+        "typescript_error_groups": csv_dir / "typescript_error_groups.csv",
+        "typescript_error_groups_by_approach": csv_dir / "typescript_error_groups_by_approach.csv",
+        "typescript_error_groups_by_tier": csv_dir / "typescript_error_groups_by_tier.csv",
+        "systematic_typescript_error_groups": csv_dir / "systematic_typescript_error_groups.csv",
     }
 
     _write_csv(files["records"], records)
@@ -203,6 +492,28 @@ def export_csvs(records: list[dict[str, Any]], output_dir: Path) -> dict[str, Pa
     _write_csv(files["summary_by_approach_tier"], _group_rows(records, ("approach", "tier")))
     _write_csv(files["summary_by_repetition_approach"], _group_rows(records, ("repetition", "approach")))
     _write_csv(files["failures"], failure_rows)
+    _write_csv(files["error_categories"], _group_error_category_rows(records, ("error_category",)))
+    _write_csv(
+        files["error_categories_by_approach"],
+        _group_error_category_rows(records, ("approach", "error_category")),
+    )
+    _write_csv(files["typescript_errors"], typescript_error_rows)
+    _write_csv(
+        files["typescript_error_groups"],
+        _group_typescript_error_rows(typescript_error_rows, ("typescript_error_group",)),
+    )
+    _write_csv(
+        files["typescript_error_groups_by_approach"],
+        _group_typescript_error_rows(typescript_error_rows, ("approach", "typescript_error_group")),
+    )
+    _write_csv(
+        files["typescript_error_groups_by_tier"],
+        _group_typescript_error_rows(typescript_error_rows, ("tier", "typescript_error_group")),
+    )
+    _write_csv(
+        files["systematic_typescript_error_groups"],
+        _systematic_typescript_error_rows(typescript_error_rows),
+    )
     return files
 
 
@@ -222,12 +533,18 @@ def export_charts(records: list[dict[str, Any]], output_dir: Path) -> dict[str, 
         "success_by_tier": chart_dir / "success_by_tier.png",
         "status_by_approach": chart_dir / "status_by_approach.png",
         "average_costs": chart_dir / "average_costs.png",
+        "errors_by_category": chart_dir / "errors_by_category.png",
+        "typescript_errors_by_group": chart_dir / "typescript_errors_by_group.png",
+        "systematic_typescript_errors": chart_dir / "systematic_typescript_errors.png",
     }
 
     _plot_success_by_approach(plt, approach_rows, files["success_by_approach"])
     _plot_success_by_tier(plt, approach_tier_rows, files["success_by_tier"])
     _plot_status_by_approach(plt, approach_rows, files["status_by_approach"])
     _plot_average_costs(plt, approach_rows, files["average_costs"])
+    _plot_errors_by_category(plt, records, files["errors_by_category"])
+    _plot_typescript_errors_by_group(plt, records, files["typescript_errors_by_group"])
+    _plot_systematic_typescript_errors(plt, records, files["systematic_typescript_errors"])
     return files
 
 
@@ -299,7 +616,7 @@ def _plot_success_by_tier(plt: Any, rows: list[dict[str, Any]], path: Path) -> N
 
     for approach_index, approach in enumerate(APPROACH_ORDER):
         offset = (approach_index - 1) * width
-        values = [row_by_key[(approach, tier)]["success_rate"] * 100 for tier in TIER_ORDER]
+        values = [row_by_key.get((approach, tier), {"success_rate": 0})["success_rate"] * 100 for tier in TIER_ORDER]
         bars = ax.bar(
             [position + offset for position in x_positions],
             values,
@@ -390,6 +707,149 @@ def _plot_average_costs(plt: Any, rows: list[dict[str, Any]], path: Path) -> Non
     _save_figure(plt, fig, path)
 
 
+def _plot_errors_by_category(plt: Any, records: list[dict[str, Any]], path: Path) -> None:
+    """Plot non-passing result counts by error category and approach."""
+    fig, ax = plt.subplots(figsize=(10.8, 5.8))
+    labels = [_approach_label(approach) for approach in APPROACH_ORDER]
+    bottoms = [0] * len(APPROACH_ORDER)
+    counts = _error_category_counts(records)
+
+    for category in ERROR_CATEGORY_ORDER:
+        values = [counts[(approach, category)] for approach in APPROACH_ORDER]
+        bars = ax.bar(
+            labels,
+            values,
+            bottom=bottoms,
+            color=ERROR_CATEGORY_COLORS[category],
+            label=_error_category_label(category),
+        )
+        for bar, value, bottom in zip(bars, values, bottoms):
+            if value:
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    bottom + value / 2,
+                    str(value),
+                    ha="center",
+                    va="center",
+                    color="white",
+                    fontweight="bold",
+                )
+        bottoms = [bottom + value for bottom, value in zip(bottoms, values)]
+
+    ax.set_title("Kategorie błędów według podejścia")
+    ax.set_ylabel("Liczba niepoprawnych wyników")
+    ax.set_ylim(0, max(bottoms) * 1.14 if bottoms else 1)
+    ax.grid(axis="y", alpha=0.28)
+    ax.legend(title="Kategoria błędu", ncols=2, loc="upper center", bbox_to_anchor=(0.5, -0.12))
+    ax.spines[["top", "right"]].set_visible(False)
+
+    _save_figure(plt, fig, path)
+
+
+def _plot_typescript_errors_by_group(plt: Any, records: list[dict[str, Any]], path: Path) -> None:
+    """Plot grouped TypeScript compiler error counts by approach."""
+    fig, ax = plt.subplots(figsize=(12.4, 6.4))
+    labels = [_approach_label(approach) for approach in APPROACH_ORDER]
+    bottoms = [0] * len(APPROACH_ORDER)
+    counts = _typescript_error_group_counts(records)
+
+    for group in TYPESCRIPT_ERROR_GROUP_ORDER:
+        values = [counts[(approach, group)] for approach in APPROACH_ORDER]
+        if not any(values):
+            continue
+
+        bars = ax.bar(
+            labels,
+            values,
+            bottom=bottoms,
+            color=TYPESCRIPT_ERROR_GROUP_COLORS[group],
+            label=_typescript_error_group_label(group),
+        )
+        for bar, value, bottom in zip(bars, values, bottoms):
+            if value:
+                ax.text(
+                    bar.get_x() + bar.get_width() / 2,
+                    bottom + value / 2,
+                    str(value),
+                    ha="center",
+                    va="center",
+                    color="white",
+                    fontsize=9,
+                    fontweight="bold",
+                )
+        bottoms = [bottom + value for bottom, value in zip(bottoms, values)]
+
+    ax.set_title("Typy błędów TypeScript według podejścia")
+    ax.set_ylabel("Liczba błędów kompilatora")
+    ax.set_ylim(0, max(bottoms) * 1.14 if bottoms else 1)
+    ax.grid(axis="y", alpha=0.28)
+    ax.legend(title="Typ błędu", ncols=2, loc="upper center", bbox_to_anchor=(0.5, -0.12))
+    ax.spines[["top", "right"]].set_visible(False)
+
+    _save_figure(plt, fig, path)
+
+
+def _plot_systematic_typescript_errors(plt: Any, records: list[dict[str, Any]], path: Path) -> None:
+    """Plot repeated TypeScript error groups ordered by compiler error count."""
+    rows = _systematic_typescript_error_rows(_typescript_error_detail_rows(records))
+    fig, ax = plt.subplots(figsize=(12, 6.6))
+
+    labels = [row["typescript_error_group_label"] for row in rows]
+    values = [row["count"] for row in rows]
+    colors = [TYPESCRIPT_ERROR_GROUP_COLORS[row["typescript_error_group"]] for row in rows]
+    y_positions = list(range(len(rows)))
+    bars = ax.barh(y_positions, values, color=colors)
+
+    max_value = max(values) if values else 1
+    for bar, row, value in zip(bars, rows, values):
+        ax.text(
+            value + max_value * 0.02,
+            bar.get_y() + bar.get_height() / 2,
+            f"{value} bł., {row['affected_records']} wyn., {row['affected_cases']} przyp.",
+            va="center",
+            fontsize=9,
+        )
+
+    ax.set_title("Systematyczne typy błędów TypeScript")
+    ax.set_xlabel("Liczba błędów kompilatora")
+    ax.set_yticks(y_positions, labels)
+    ax.invert_yaxis()
+    ax.set_xlim(0, max_value * 1.42)
+    ax.grid(axis="x", alpha=0.28)
+    ax.spines[["top", "right"]].set_visible(False)
+
+    _save_figure(plt, fig, path)
+
+
+def _error_category_counts(records: list[dict[str, Any]]) -> dict[tuple[str, str], int]:
+    """Count non-passing results for each approach/category pair."""
+    counts: dict[tuple[str, str], int] = defaultdict(int)
+    for approach in APPROACH_ORDER:
+        for category in ERROR_CATEGORY_ORDER:
+            counts[(approach, category)] = 0
+
+    for record in records:
+        category = record.get("error_category", "")
+        approach = record.get("approach", "")
+        if category:
+            counts[(approach, category)] += 1
+    return counts
+
+
+def _typescript_error_group_counts(records: list[dict[str, Any]]) -> dict[tuple[str, str], int]:
+    """Count TypeScript compiler errors for each approach/group pair."""
+    counts: dict[tuple[str, str], int] = defaultdict(int)
+    for approach in APPROACH_ORDER:
+        for group in TYPESCRIPT_ERROR_GROUP_ORDER:
+            counts[(approach, group)] = 0
+
+    for record in records:
+        approach = record.get("approach", "")
+        for error in record.get("_typescript_errors", []):
+            counts[(approach, error["typescript_error_group"])] += 1
+    return counts
+
+
 def _plot_metric_bars(
     ax: Any,
     labels: list[str],
@@ -432,6 +892,16 @@ def _approach_label(approach: str) -> str:
 def _tier_label(tier: str) -> str:
     """Return display label for a difficulty tier."""
     return TIER_LABELS.get(tier, tier)
+
+
+def _error_category_label(category: str) -> str:
+    """Return display label for an error category."""
+    return ERROR_CATEGORY_LABELS.get(category, category)
+
+
+def _typescript_error_group_label(group: str) -> str:
+    """Return display label for a TypeScript error group."""
+    return TYPESCRIPT_ERROR_GROUP_LABELS.get(group, group)
 
 
 def _status_value(row: dict[str, Any], status: str) -> int:
