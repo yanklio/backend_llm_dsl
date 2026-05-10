@@ -143,6 +143,7 @@ def _flatten_record(record: dict[str, Any], metadata: dict[str, Any], repetition
     first_error = _first_error(record)
     error_category = _error_category_for(record)
     typescript_errors = _typescript_error_rows(record)
+    alignment = _prompt_alignment_fields(record)
 
     return {
         "_typescript_errors": typescript_errors,
@@ -184,6 +185,36 @@ def _flatten_record(record: dict[str, Any], metadata: dict[str, Any], repetition
         "first_error_message": first_error.get("message", ""),
         "error_category": error_category,
         "error_category_label": _error_category_label(error_category),
+        **alignment,
+    }
+
+
+def _prompt_alignment_fields(record: dict[str, Any]) -> dict[str, Any]:
+    """Return flattened prompt-alignment fields for one record."""
+    alignment = record.get("prompt_alignment", {})
+    result = alignment.get("result") if isinstance(alignment, dict) else None
+    result = result if isinstance(result, dict) else {}
+    missing_requirements = result.get("missing_requirements", [])
+    extra_features = result.get("extra_features", [])
+    metrics = alignment.get("metrics", {}) if isinstance(alignment, dict) else {}
+    source_files = alignment.get("source_files", {}) if isinstance(alignment, dict) else {}
+
+    return {
+        "alignment_provider": alignment.get("provider", "") if isinstance(alignment, dict) else "",
+        "alignment_model_name": alignment.get("model_name", "") if isinstance(alignment, dict) else "",
+        "alignment_prompt_version": alignment.get("prompt_version", "") if isinstance(alignment, dict) else "",
+        "alignment_prompt_hash": alignment.get("prompt_hash", "") if isinstance(alignment, dict) else "",
+        "alignment_score": result.get("alignment_score", ""),
+        "alignment_missing_requirements_count": len(missing_requirements) if isinstance(missing_requirements, list) else 0,
+        "alignment_extra_features_count": len(extra_features) if isinstance(extra_features, list) else 0,
+        "alignment_rationale": result.get("rationale", ""),
+        "alignment_error": alignment.get("error", "") if isinstance(alignment, dict) else "",
+        "alignment_duration_seconds": metrics.get("duration_seconds", 0),
+        "alignment_input_tokens": metrics.get("input_tokens", 0),
+        "alignment_output_tokens": metrics.get("output_tokens", 0),
+        "alignment_total_tokens": metrics.get("total_tokens", 0),
+        "alignment_source_file_count": source_files.get("count", 0),
+        "alignment_source_total_characters": source_files.get("total_characters", 0),
     }
 
 
@@ -339,6 +370,8 @@ def _group_rows(records: list[dict[str, Any]], keys: tuple[str, ...]) -> list[di
                 "avg_input_tokens": round(_mean(record["input_tokens"] for record in group_records), 2),
                 "avg_output_tokens": round(_mean(record["output_tokens"] for record in group_records), 2),
                 "avg_total_tokens": round(_mean(record["total_tokens"] for record in group_records), 2),
+                "alignment_scored_records": _count_present_scores(group_records),
+                "avg_alignment_score": round(_mean_present_scores(group_records), 2),
             }
         )
         rows.append(row)
@@ -465,6 +498,28 @@ def _mean(values: Any) -> float:
     """Compute mean for an iterable of numeric values."""
     value_list = [float(value or 0) for value in values]
     return sum(value_list) / len(value_list) if value_list else 0.0
+
+
+def _alignment_scores(records: list[dict[str, Any]]) -> list[float]:
+    """Return present prompt-alignment scores from flattened records."""
+    scores = []
+    for record in records:
+        score = record.get("alignment_score", "")
+        if score == "":
+            continue
+        scores.append(float(score))
+    return scores
+
+
+def _count_present_scores(records: list[dict[str, Any]]) -> int:
+    """Count records with a prompt-alignment score."""
+    return len(_alignment_scores(records))
+
+
+def _mean_present_scores(records: list[dict[str, Any]]) -> float:
+    """Compute the mean prompt-alignment score for judged records only."""
+    scores = _alignment_scores(records)
+    return sum(scores) / len(scores) if scores else 0.0
 
 
 def export_csvs(records: list[dict[str, Any]], output_dir: Path) -> dict[str, Path]:
