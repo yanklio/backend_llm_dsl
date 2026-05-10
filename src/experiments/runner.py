@@ -5,6 +5,14 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from src.llm.prompt_alignment import (
+    DEFAULT_ALIGNMENT_MODEL,
+    DEFAULT_ALIGNMENT_PROVIDER,
+    PROMPT_ALIGNMENT_VERSION,
+    evaluate_prompt_alignment,
+    prompt_alignment_prompt_hash,
+)
+
 from .approaches import APPROACH_RUNNERS
 from .io import load_results, load_test_cases, save_json, save_results
 from .metadata import build_run_metadata, record_identity, resume_key
@@ -39,6 +47,7 @@ def _build_result_record(
     generation: dict[str, Any],
     validation: dict[str, Any],
     run_id: str,
+    prompt_alignment: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Create the persisted result payload for one run."""
     identity = record_identity(
@@ -47,13 +56,16 @@ def _build_result_record(
         test_case=case_name,
         tier=tier,
     )
-    return {
+    record = {
         **identity,
         "run_id": run_id,
         "generation": generation,
         "validation": validation,
         "timestamp": datetime.now().isoformat(),
     }
+    if prompt_alignment is not None:
+        record["prompt_alignment"] = prompt_alignment
+    return record
 
 
 def _validate_generation(generation: dict[str, Any]) -> tuple[dict[str, Any], str]:
@@ -64,6 +76,62 @@ def _validate_generation(generation: dict[str, Any]) -> tuple[dict[str, Any], st
     validation = validate_project(NEST_PROJECT_DIR)
     status = "PASS" if validation["overall_valid"] else "FAIL"
     return validation, status
+
+
+def _empty_prompt_alignment(
+    *,
+    provider: str,
+    model_name: str,
+    error: str,
+) -> dict[str, Any]:
+    """Create a recorded prompt-alignment payload when judging cannot run."""
+    return {
+        "provider": provider,
+        "model_name": model_name,
+        "prompt_version": PROMPT_ALIGNMENT_VERSION,
+        "prompt_hash": prompt_alignment_prompt_hash(),
+        "metrics": {
+            "duration_seconds": 0,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+        },
+        "source_files": {"count": 0, "total_characters": 0},
+        "result": None,
+        "error": error,
+    }
+
+
+def _run_prompt_alignment(
+    *,
+    case_data: dict[str, Any],
+    generation: dict[str, Any],
+    provider: str,
+    model_name: str,
+) -> dict[str, Any]:
+    """Run prompt-alignment judging without changing validation status."""
+    if not generation["success"]:
+        return _empty_prompt_alignment(
+            provider=provider,
+            model_name=model_name,
+            error="generation_failed",
+        )
+
+    try:
+        with SuppressOutput():
+            return evaluate_prompt_alignment(
+                requirement=case_data["requirement"],
+                endpoints=case_data.get("endpoints", []),
+                project_dir=NEST_PROJECT_DIR,
+                provider=provider,
+                model_name=model_name,
+            )
+    except Exception as exc:
+        return _empty_prompt_alignment(
+            provider=provider,
+            model_name=model_name,
+            error=str(exc),
+        )
 
 
 def _print_run_result(
@@ -150,6 +218,9 @@ def _run_case(
     run_dir: Path,
     run_results: list[dict[str, Any]],
     legacy_results: list[dict[str, Any]],
+    judge_enabled: bool,
+    judge_provider: str,
+    judge_model: str,
 ) -> None:
     """Run, validate, print, and persist one experiment case."""
     _prepare_project()
@@ -162,6 +233,14 @@ def _run_case(
 
     validation, status = _validate_generation(generation)
     _print_run_result(case_name, tier, current_approach, status, generation)
+    prompt_alignment = None
+    if judge_enabled:
+        prompt_alignment = _run_prompt_alignment(
+            case_data=case_data,
+            generation=generation,
+            provider=judge_provider,
+            model_name=judge_model,
+        )
 
     record = _build_result_record(
         case_name,
@@ -171,6 +250,7 @@ def _run_case(
         generation,
         validation,
         run_metadata["run_id"],
+        prompt_alignment,
     )
     _save_record(
         record,
@@ -185,11 +265,21 @@ def run_experiments(
     provider: str = "openrouter",
     case_id: str | None = None,
     limit: int | None = None,
+    judge_enabled: bool = False,
+    judge_provider: str = DEFAULT_ALIGNMENT_PROVIDER,
+    judge_model: str = DEFAULT_ALIGNMENT_MODEL,
 ) -> None:
     """Execute generation experiments across the configured test cases."""
     approaches_to_run = _selected_approaches(approach)
     print(f"Using provider: {provider}")
     run_metadata = build_run_metadata(provider, approaches_to_run)
+    run_metadata["prompt_alignment"] = {
+        "enabled": judge_enabled,
+        "provider": judge_provider if judge_enabled else None,
+        "model_name": judge_model if judge_enabled else None,
+        "prompt_version": PROMPT_ALIGNMENT_VERSION if judge_enabled else None,
+        "prompt_hash": prompt_alignment_prompt_hash() if judge_enabled else None,
+    }
     run_dir = _create_run_dir(run_metadata)
     print(f"Run ID: {run_metadata['run_id']}")
     print(f"Run directory: {run_dir}")
@@ -226,6 +316,9 @@ def run_experiments(
                 run_dir,
                 run_results,
                 legacy_results,
+                judge_enabled,
+                judge_provider,
+                judge_model,
             )
 
     print("-" * 70)
@@ -260,12 +353,31 @@ def main() -> None:
         default=None,
         help="Run only the first N test cases for smoke testing",
     )
+    parser.add_argument(
+        "--judge",
+        action="store_true",
+        help="Record LLM prompt-alignment scores after generation and validation",
+    )
+    parser.add_argument(
+        "--judge-provider",
+        choices=["groq", "gemini", "openrouter", "ollama"],
+        default=DEFAULT_ALIGNMENT_PROVIDER,
+        help="LLM provider for prompt-alignment judging",
+    )
+    parser.add_argument(
+        "--judge-model",
+        default=DEFAULT_ALIGNMENT_MODEL,
+        help="Exact model for prompt-alignment judging",
+    )
     args = parser.parse_args()
     run_experiments(
         approach=args.approach,
         provider=args.provider,
         case_id=args.case_id,
         limit=args.limit,
+        judge_enabled=args.judge,
+        judge_provider=args.judge_provider,
+        judge_model=args.judge_model,
     )
 
 

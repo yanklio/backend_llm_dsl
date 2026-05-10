@@ -1,5 +1,6 @@
 """LLM-based prompt-alignment evaluation for generated NestJS code."""
 
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -48,6 +49,7 @@ def evaluate_prompt_alignment(
         "provider": provider,
         "model_name": result.model_name or model_name,
         "prompt_version": PROMPT_ALIGNMENT_VERSION,
+        "prompt_hash": prompt_alignment_prompt_hash(),
         "metrics": {
             "duration_seconds": result.duration_seconds,
             "input_tokens": result.input_tokens or 0,
@@ -75,6 +77,14 @@ def collect_generated_typescript(project_dir: Path) -> dict[str, str]:
         relative_path = file_path.relative_to(project_dir).as_posix()
         files[relative_path] = file_path.read_text()
     return files
+
+
+def prompt_alignment_prompt_hash() -> str:
+    """Return a stable hash for the prompt-alignment judge prompt."""
+    prompt_text = "\n---PROMPT-PART---\n".join(
+        [PROMPT_ALIGNMENT_VERSION, PROMPT_ALIGNMENT_SYSTEM_PROMPT, PROMPT_ALIGNMENT_REQUEST_TEMPLATE]
+    )
+    return hashlib.sha256(prompt_text.encode("utf-8")).hexdigest()[:10]
 
 
 def parse_alignment_response(content: str) -> dict[str, Any]:
