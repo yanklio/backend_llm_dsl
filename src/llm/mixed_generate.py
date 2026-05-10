@@ -106,7 +106,7 @@ def _build_mixed_statistics(blueprint_result: Any, code_result: Any) -> dict[str
         "output_tokens": phase1_tokens.output_tokens + phase2_tokens.output_tokens,
         "total_tokens": phase1_tokens.total_tokens + phase2_tokens.total_tokens,
         "provider": code_result.provider,
-        "model_name": code_result.model_name,
+        "model_name": getattr(code_result, "model_name", None),
     }
 
 

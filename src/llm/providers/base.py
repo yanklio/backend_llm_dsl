@@ -48,15 +48,22 @@ class BaseProvider(ABC):
 
     MODEL_NAME = "unknown"
 
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+    def __init__(
+        self,
+        temperature: float = 0.1,
+        timeout: int = 120,
+        model_name: Optional[str] = None,
+    ):
         """Initialize the provider.
 
         Args:
             temperature: Temperature for generation (0.0-2.0)
             timeout: Timeout in seconds for API calls
+            model_name: Optional model override for this provider instance
         """
         self.temperature = temperature
         self.timeout = timeout
+        self._model_name = model_name or self.MODEL_NAME
 
     @property
     @abstractmethod
@@ -73,7 +80,7 @@ class BaseProvider(ABC):
     @property
     def model_name(self) -> str:
         """Exact model identifier used by this provider."""
-        return self.MODEL_NAME
+        return self._model_name
 
     @abstractmethod
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:

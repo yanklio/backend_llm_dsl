@@ -16,23 +16,29 @@ class OpenRouterProvider(BaseProvider):
 
     MODEL_NAME = "openai/gpt-oss-20b:free"
 
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+    def __init__(
+        self,
+        temperature: float = 0.1,
+        timeout: int = 120,
+        model_name: str | None = None,
+    ):
         """Initialize OpenRouter provider.
 
         Args:
             temperature: Generation temperature (0.0-2.0)
             timeout: Timeout in seconds for API calls
+            model_name: Optional OpenRouter model override
 
         Raises:
             ValueError: If OPENROUTER_API_KEY environment variable is not set
         """
-        super().__init__(temperature, timeout)
+        super().__init__(temperature, timeout, model_name=model_name)
         api_key = os.getenv("OPENROUTER_API_KEY")
         if not api_key:
             raise ValueError("OPENROUTER_API_KEY not found")
 
         self.llm = ChatOpenAI(
-            model=self.MODEL_NAME,
+            model=self.model_name,
             api_key=api_key,
             base_url="https://openrouter.ai/api/v1",
             temperature=temperature,

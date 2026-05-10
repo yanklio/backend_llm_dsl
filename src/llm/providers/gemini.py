@@ -16,22 +16,28 @@ class GeminiProvider(BaseProvider):
 
     MODEL_NAME = "gemma-4-31b-it"
 
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+    def __init__(
+        self,
+        temperature: float = 0.1,
+        timeout: int = 120,
+        model_name: str | None = None,
+    ):
         """Initialize Gemini provider.
 
         Args:
             temperature: Generation temperature (0.0-2.0)
             timeout: Timeout in seconds for API calls
+            model_name: Optional model override
 
         Raises:
             ValueError: If GOOGLE_API_KEY environment variable is not set
         """
-        super().__init__(temperature, timeout)
+        super().__init__(temperature, timeout, model_name=model_name)
         if not os.getenv("GOOGLE_API_KEY"):
             raise ValueError("GOOGLE_API_KEY not found")
 
         self.llm = ChatGoogleGenerativeAI(
-            model=self.MODEL_NAME,
+            model=self.model_name,
             temperature=temperature,
             timeout=timeout,
         )

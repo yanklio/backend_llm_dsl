@@ -15,17 +15,23 @@ class OllamaProvider(BaseProvider):
 
     MODEL_NAME = "llama3.1"
 
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+    def __init__(
+        self,
+        temperature: float = 0.1,
+        timeout: int = 120,
+        model_name: str | None = None,
+    ):
         """Initialize Ollama provider.
 
         Args:
             temperature: Generation temperature (0.0-2.0)
             timeout: Timeout in seconds for API calls
+            model_name: Optional model override
 
         Raises:
             ConnectionError: If Ollama is not running on localhost:11434
         """
-        super().__init__(temperature, timeout)
+        super().__init__(temperature, timeout, model_name=model_name)
 
         # Check connection eagerly
         try:
@@ -34,7 +40,7 @@ class OllamaProvider(BaseProvider):
             raise ConnectionError("Ollama is not running on localhost:11434")
 
         self.llm = ChatOllama(
-            model=self.MODEL_NAME,
+            model=self.model_name,
             temperature=temperature,
             timeout=timeout,
         )

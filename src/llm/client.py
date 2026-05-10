@@ -27,7 +27,12 @@ def _provider_registry() -> dict[str, type[BaseProvider]]:
     }
 
 
-def get_provider(provider_id: str, temperature: float, timeout: int) -> BaseProvider:
+def get_provider(
+    provider_id: str,
+    temperature: float,
+    timeout: int,
+    model_name: Optional[str] = None,
+) -> BaseProvider:
     """Get provider by ID."""
     providers = _provider_registry()
 
@@ -37,7 +42,7 @@ def get_provider(provider_id: str, temperature: float, timeout: int) -> BaseProv
             code="LLM001",
         )
 
-    return providers[provider_id](temperature, timeout)
+    return providers[provider_id](temperature, timeout, model_name=model_name)
 
 
 class LLMClient:
@@ -48,6 +53,7 @@ class LLMClient:
         provider_id: str = "openrouter",
         temperature: Optional[float] = None,
         timeout: Optional[int] = None,
+        model_name: Optional[str] = None,
     ):
         """Initialize LLM client.
 
@@ -55,12 +61,18 @@ class LLMClient:
             provider_id: Provider to use (gemini, groq, ollama, openrouter)
             temperature: Generation temperature
             timeout: Timeout in seconds
+            model_name: Optional provider model override
         """
         config = get_config()
         self.temperature = temperature if temperature is not None else config.llm.temperature
         self.timeout = timeout if timeout is not None else config.llm.timeout
         self.provider_id = provider_id
-        self.provider = get_provider(provider_id, self.temperature, self.timeout)
+        self.provider = get_provider(
+            provider_id,
+            self.temperature,
+            self.timeout,
+            model_name=model_name,
+        )
         logger.info(f"✓ Using {self.provider.name}")
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:

@@ -16,23 +16,29 @@ class GroqProvider(BaseProvider):
 
     MODEL_NAME = "llama-3.3-70b-versatile"
 
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+    def __init__(
+        self,
+        temperature: float = 0.1,
+        timeout: int = 120,
+        model_name: str | None = None,
+    ):
         """Initialize Groq provider.
 
         Args:
             temperature: Generation temperature (0.0-2.0)
             timeout: Timeout in seconds for API calls
+            model_name: Optional model override
 
         Raises:
             ValueError: If GROQ_API_KEY environment variable is not set
         """
-        super().__init__(temperature, timeout)
+        super().__init__(temperature, timeout, model_name=model_name)
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             raise ValueError("GROQ_API_KEY not found")
 
         self.llm = ChatGroq(
-            model=self.MODEL_NAME,
+            model=self.model_name,
             api_key=api_key,
             temperature=temperature,
             timeout=timeout,
