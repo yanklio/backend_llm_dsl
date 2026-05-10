@@ -11,7 +11,7 @@ from src.llm.prompts import PROMPT_ALIGNMENT_SYSTEM_PROMPT
 from src.llm.response_parser import clean_llm_response, try_parse_json
 
 DEFAULT_ALIGNMENT_PROVIDER = "openrouter"
-DEFAULT_ALIGNMENT_MODEL = "openai/gpt-oss-120b"
+DEFAULT_ALIGNMENT_MODEL = "openai/gpt-oss-120b:free"
 PROMPT_ALIGNMENT_VERSION = "prompt-alignment-v1"
 
 PROMPT_ALIGNMENT_REQUEST_TEMPLATE = """=== USER REQUIREMENT ===

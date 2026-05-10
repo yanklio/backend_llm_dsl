@@ -53,7 +53,7 @@ class OllamaProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return f"Ollama ({self.MODEL_NAME})"
+        return f"Ollama ({self.model_name})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Ollama."""

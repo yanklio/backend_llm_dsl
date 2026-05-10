@@ -50,7 +50,7 @@ class GeminiProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return f"Google Gemini ({self.MODEL_NAME})"
+        return f"Google Gemini ({self.model_name})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Gemini."""

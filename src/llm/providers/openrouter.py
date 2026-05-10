@@ -54,7 +54,7 @@ class OpenRouterProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-        return f"OpenRouter ({self.MODEL_NAME})"
+        return f"OpenRouter ({self.model_name})"
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using OpenRouter."""
