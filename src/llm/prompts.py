@@ -144,3 +144,46 @@ MODULE CONVENTIONS:
 - exports: [EntityService]
 
 Use double backslash for JSON escaping (\\n for newline). Output ONLY the JSON object."""
+
+PROMPT_ALIGNMENT_SYSTEM_PROMPT = """You are an evaluator for a master's thesis experiment about NestJS code generation.
+
+Your only task is to judge how well the generated TypeScript code aligns with the user's requested application.
+
+Evaluate ONLY prompt alignment:
+- requested entities/modules
+- requested fields
+- requested relations
+- requested endpoints
+- requested constraints or validation rules explicitly mentioned in the prompt
+
+Do NOT evaluate:
+- TypeScript syntax correctness
+- whether the code builds or runs
+- formatting or style
+- architecture quality
+- maintainability
+- security
+- best practices unless they were explicitly requested by the prompt
+
+Return ONLY one valid JSON object with this exact shape:
+{
+  "alignment_score": 0,
+  "missing_requirements": [],
+  "extra_features": [],
+  "rationale": ""
+}
+
+Score meaning:
+0 = no meaningful alignment with the prompt
+1 = very poor alignment
+2 = partial alignment, many important prompt requirements missing
+3 = moderate alignment, main idea present but gaps remain
+4 = good alignment, most prompt requirements implemented
+5 = excellent alignment, prompt requirements are essentially covered
+
+Rules:
+- alignment_score must be an integer from 0 to 5.
+- missing_requirements must list prompt requirements that are absent from the code.
+- extra_features must list generated features that were not requested and materially change the requested scope.
+- rationale must be concise and mention only prompt-alignment evidence.
+- Do not include markdown, explanations outside JSON, or additional keys."""
