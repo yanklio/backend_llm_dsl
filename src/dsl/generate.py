@@ -13,6 +13,7 @@ from src.shared.logger import logger
 from .core.modules.module import generate_module
 from .core.modules.relation import handle_relations
 from .core.root import generate_root_module
+from .textual.compiler import compile_file
 from .utils.ts_types import to_ts_type
 
 RELATION_COPY_FIELDS = ["inverseField", "joinTable", "joinColumn"]
@@ -31,8 +32,11 @@ def _read_blueprint(blueprint_file: str) -> dict[str, Any]:
         ConfigurationException: If file cannot be read or parsed.
     """
     try:
-        with open(blueprint_file) as f:
-            data = yaml.safe_load(f)
+        if Path(blueprint_file).suffix == ".dsl":
+            data = compile_file(blueprint_file)
+        else:
+            with open(blueprint_file) as f:
+                data = yaml.safe_load(f)
     except FileNotFoundError as e:
         raise ConfigurationException(
             f"Blueprint file not found: {blueprint_file}",
