@@ -133,11 +133,9 @@ class Lexer:
         start_index = self.index
         start_line = self.line
         start_column = self.column
-        while not self._is_at_end() and (
-            self._peek().isalnum() or self._peek() in ["_", "-"]
-        ):
+        while not self._is_at_end() and (self._peek().isalnum() or self._peek() in ["_", "-"]):
             self._advance()
-        value = self.source[start_index:self.index]
+        value = self.source[start_index : self.index]
         return Token(KEYWORDS.get(value, TokenType.IDENT), value, start_line, start_column)
 
     def _number(self) -> Token:
@@ -152,7 +150,7 @@ class Lexer:
                 self._advance()
         return Token(
             TokenType.NUMBER,
-            self.source[start_index:self.index],
+            self.source[start_index : self.index],
             start_line,
             start_column,
         )

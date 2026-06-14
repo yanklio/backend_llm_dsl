@@ -4,21 +4,14 @@ import hashlib
 from datetime import datetime, timezone
 from typing import Any
 
+from src.llm.client import get_default_model_name
 from src.llm.mixed_generate import MIXED_REQUEST_TEMPLATE
 from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT, SYSTEM_PROMPT
-from src.llm.providers.gemini import GeminiProvider
-from src.llm.providers.groq import GroqProvider
-from src.llm.providers.ollama import OllamaProvider
-from src.llm.providers.openrouter import OpenRouterProvider
 from src.llm.raw_generate import RAW_REQUEST_TEMPLATE
 
 PROMPT_VERSION = "full-app-scaffold-v1"
-PROVIDER_MODELS = {
-    "gemini": GeminiProvider.MODEL_NAME,
-    "groq": GroqProvider.MODEL_NAME,
-    "ollama": OllamaProvider.MODEL_NAME,
-    "openrouter": OpenRouterProvider.MODEL_NAME,
-}
+PROVIDER_IDS = ["gemini", "groq", "ollama", "openrouter"]
+PROVIDER_MODELS = {pid: get_default_model_name(pid) for pid in PROVIDER_IDS}
 APPROACH_PROMPT_SOURCES = {
     "dsl": [SYSTEM_PROMPT],
     "raw": [RAW_CODE_SYSTEM_PROMPT, RAW_REQUEST_TEMPLATE],
@@ -59,9 +52,7 @@ def build_run_metadata(provider: str, approaches: list[str]) -> dict[str, Any]:
         "model_name": model_name_for_provider(provider),
         "approaches": approaches,
         "prompt_version": PROMPT_VERSION,
-        "prompt_hashes": {
-            approach: prompt_hash_for(approach) for approach in approaches
-        },
+        "prompt_hashes": {approach: prompt_hash_for(approach) for approach in approaches},
     }
 
 

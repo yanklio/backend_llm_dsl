@@ -16,12 +16,7 @@ class TestSubprocessResult:
 
     def test_success_result(self):
         """Test creating a successful result."""
-        result = SubprocessResult(
-            success=True,
-            stdout="output",
-            stderr="",
-            returncode=0
-        )
+        result = SubprocessResult(success=True, stdout="output", stderr="", returncode=0)
         assert result.success is True
         assert result.stdout == "output"
         assert result.stderr == ""
@@ -29,12 +24,7 @@ class TestSubprocessResult:
 
     def test_failure_result(self):
         """Test creating a failure result."""
-        result = SubprocessResult(
-            success=False,
-            stdout="",
-            stderr="error message",
-            returncode=1
-        )
+        result = SubprocessResult(success=False, stdout="", stderr="error message", returncode=1)
         assert result.success is False
         assert result.stderr == "error message"
         assert result.returncode == 1
@@ -84,8 +74,9 @@ class TestIsPortInUse:
         """Test checking a port that is not in use."""
         # Find a free port
         import socket
+
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('localhost', 0))
+            s.bind(("localhost", 0))
             free_port = s.getsockname()[1]
 
         assert is_port_in_use(free_port) is False
@@ -93,9 +84,10 @@ class TestIsPortInUse:
     def test_port_in_use(self):
         """Test checking a port that is in use."""
         import socket
+
         # Bind to a port
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('localhost', 0))
+            s.bind(("localhost", 0))
             used_port = s.getsockname()[1]
             # Port is in use within this context
             assert is_port_in_use(used_port) is True
@@ -108,8 +100,9 @@ class TestWaitForPortFree:
         """Test waiting for a port that is already free."""
         # Find a free port
         import socket
+
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('localhost', 0))
+            s.bind(("localhost", 0))
             free_port = s.getsockname()[1]
 
         # Should return immediately
@@ -120,8 +113,9 @@ class TestWaitForPortFree:
         """Test timeout when waiting for a port."""
         # Bind to a port and hold it
         import socket
+
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('localhost', 0))
+            s.bind(("localhost", 0))
             used_port = s.getsockname()[1]
 
             # Should timeout while port is held

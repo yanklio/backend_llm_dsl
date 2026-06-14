@@ -74,7 +74,7 @@ class TemplateConfig(BaseSettings):
         lstrip_blocks: Whether to lstrip blocks in templates
     """
 
-    templates_dir: Path = Field(default=Path(__file__).parent.parent.parent / "templates")
+    templates_dir: Path = Field(default=Path(__file__).parent.parent / "dsl" / "templates")
     autoescape: bool = Field(default=False)
     trim_blocks: bool = Field(default=True)
     lstrip_blocks: bool = Field(default=True)
@@ -97,7 +97,7 @@ class TemplateConfig(BaseSettings):
             raise ConfigurationException(
                 f"Templates directory not found: {templates_path}",
                 code="TEMPLATE001",
-                context={"path": str(templates_path)}
+                context={"path": str(templates_path)},
             )
         return templates_path
 

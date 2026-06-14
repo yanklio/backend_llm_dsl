@@ -130,11 +130,7 @@ def check_base_npm(project_path: Path) -> dict[str, Any]:
         dict[str, Any]: Dictionary with success status and errors.
     """
     stage_results = _run_stage_checks(project_path)
-    errors = {
-        stage_name: result["error"]
-        for stage_name, result in stage_results.items()
-        if "error" in result
-    }
+    errors = {stage_name: result["error"] for stage_name, result in stage_results.items() if "error" in result}
 
     return {
         "install_success": stage_results["install"]["success"],

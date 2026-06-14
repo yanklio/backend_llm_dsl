@@ -11,9 +11,7 @@ RELATION_FLAG_RULES = {
 RELATION_DEFAULTS = {"onDelete": "CASCADE"}
 
 
-def handle_relations(
-    modules_data: list[dict[str, Any]]
-) -> dict[tuple, dict[str, Any]]:
+def handle_relations(modules_data: list[dict[str, Any]]) -> dict[tuple, dict[str, Any]]:
     """Process and validate entity relations.
 
     Args:
@@ -85,10 +83,7 @@ def _filter_valid_relations(
             valid_relations[(module_name, related_model)] = relation_data
             continue
 
-        logger.warn(
-            f"Removing invalid relation: {module_name} -> {related_model} "
-            f"(module '{related_model}' not found)"
-        )
+        logger.warn(f"Removing invalid relation: {module_name} -> {related_model} (module '{related_model}' not found)")
 
     return valid_relations
 

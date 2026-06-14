@@ -31,10 +31,7 @@ class TextualDSLError(Exception):
         prefix = f"[{self.code}] " if self.code else ""
         if self.location is None:
             return f"{prefix}{self.message}"
-        return (
-            f"{prefix}{self.message} "
-            f"at {self.location.line}:{self.location.column}"
-        )
+        return f"{prefix}{self.message} at {self.location.line}:{self.location.column}"
 
 
 class LexError(TextualDSLError):

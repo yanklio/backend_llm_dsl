@@ -27,9 +27,7 @@ SPECIAL_FILE_GENERATORS = {
 }
 
 
-def handle_dto_file(
-    template_data: dict[str, Any], dto_dir: Path, env: Environment
-) -> None:
+def handle_dto_file(template_data: dict[str, Any], dto_dir: Path, env: Environment) -> None:
     """Generate DTO files for the module.
 
     Args:
@@ -51,9 +49,7 @@ def handle_dto_file(
             logger.error(f"Failed to generate {label}: {e}")
 
 
-def handle_entity_file(
-    template_data: dict[str, Any], entities_dir: Path, env: Environment
-) -> None:
+def handle_entity_file(template_data: dict[str, Any], entities_dir: Path, env: Environment) -> None:
     """Generate entity files for the module.
 
     Args:
@@ -65,16 +61,12 @@ def handle_entity_file(
     file_name = f"{template_data['module'].lower()}.entity.ts"
 
     try:
-        renderer.render_template(
-            "entity.ts.j2", template_data, entities_dir / file_name
-        )
+        renderer.render_template("entity.ts.j2", template_data, entities_dir / file_name)
     except TemplateException as e:
         logger.error(f"Failed to generate entity file: {e}")
 
 
-def generate_module(
-    module_data: dict[str, Any], env: Environment, base_output_dir: Path
-) -> None:
+def generate_module(module_data: dict[str, Any], env: Environment, base_output_dir: Path) -> None:
     """Generate a single sub-module (entity module).
 
     Args:
@@ -105,9 +97,7 @@ def generate_module(
         try:
             template_name = f"{file_key}.ts.j2"
             file_name = f"{module_name.lower()}.{file_key}.ts"
-            renderer.render_template(
-                template_name, template_data, module_dir / file_name
-            )
+            renderer.render_template(template_name, template_data, module_dir / file_name)
         except TemplateException as e:
             logger.error(f"Failed to generate {file_key}: {e}")
 

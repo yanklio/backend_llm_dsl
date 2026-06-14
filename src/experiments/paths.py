@@ -3,7 +3,6 @@
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-TESTS_DIR = PROJECT_ROOT / "tests"
 RESULTS_DIR = PROJECT_ROOT / "results"
 ANALYTICS_DIR = RESULTS_DIR / "analytics"
 TEST_CASES_FILE = RESULTS_DIR / "test_cases.yaml"

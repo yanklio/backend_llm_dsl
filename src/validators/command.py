@@ -99,9 +99,7 @@ def run_command(
         timeout = config.validation.tsc_timeout
 
     try:
-        result = subprocess.run(
-            command, cwd=cwd, capture_output=capture_output, text=True, timeout=timeout
-        )
+        result = subprocess.run(command, cwd=cwd, capture_output=capture_output, text=True, timeout=timeout)
 
         return SubprocessResult(
             success=result.returncode == 0,
@@ -130,9 +128,7 @@ def start_process(command: list, cwd: Path) -> subprocess.Popen:
     Returns:
         Popen process object
     """
-    return subprocess.Popen(
-        command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
-    )
+    return subprocess.Popen(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
 
 def is_port_in_use(port: int) -> bool:

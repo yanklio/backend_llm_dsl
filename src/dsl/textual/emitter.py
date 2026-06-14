@@ -45,9 +45,7 @@ class BlueprintEmitter:
         }
 
     def _modules_to_emit(self, resolved: ResolvedProgram) -> list[ModuleNode]:
-        declared_modules = {
-            module.entity_name: module for module in resolved.program.modules
-        }
+        declared_modules = {module.entity_name: module for module in resolved.program.modules}
         return [
             declared_modules.get(
                 entity.name,

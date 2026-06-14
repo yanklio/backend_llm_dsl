@@ -9,9 +9,7 @@ from src.llm.dsl_generate import natural_language_to_yaml, save_blueprint
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate NestJS application from description"
-    )
+    parser = argparse.ArgumentParser(description="Generate NestJS application from description")
 
     parser.add_argument(
         "-b",

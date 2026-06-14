@@ -235,7 +235,7 @@ def _ensure_json_has_opening_brace(content: str) -> str:
 
     match = JSON_START_PATTERN.search(content)
     if match:
-        return "{" + content[match.start():]
+        return "{" + content[match.start() :]
     return content
 
 

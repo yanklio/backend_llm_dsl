@@ -27,6 +27,14 @@ def _provider_registry() -> dict[str, type[BaseProvider]]:
     }
 
 
+def get_default_model_name(provider_id: str) -> str:
+    """Return the default model name for a provider, or 'unknown'."""
+    providers = _provider_registry()
+    if provider_id not in providers:
+        return "unknown"
+    return providers[provider_id].MODEL_NAME
+
+
 def get_provider(
     provider_id: str,
     temperature: float,

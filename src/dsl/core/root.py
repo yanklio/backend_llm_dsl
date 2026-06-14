@@ -10,9 +10,7 @@ from src.shared.logger import logger
 from src.shared.template import TemplateRenderer
 
 
-def _prepare_template_data(
-    root_config: dict[str, Any], modules_data: list[dict[str, Any]]
-) -> dict[str, Any]:
+def _prepare_template_data(root_config: dict[str, Any], modules_data: list[dict[str, Any]]) -> dict[str, Any]:
     """Prepare template data for rendering.
 
     Args:

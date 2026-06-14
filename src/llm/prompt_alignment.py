@@ -94,9 +94,7 @@ def parse_alignment_response(content: str) -> dict[str, Any]:
 
     return {
         "alignment_score": score,
-        "missing_requirements": _normalize_string_list(
-            parsed.get("missing_requirements", [])
-        ),
+        "missing_requirements": _normalize_string_list(parsed.get("missing_requirements", [])),
         "extra_features": _normalize_string_list(parsed.get("extra_features", [])),
         "rationale": str(parsed.get("rationale", "")),
     }
@@ -141,10 +139,7 @@ def _format_generated_files(files: dict[str, str]) -> str:
     if not files:
         return "No generated TypeScript source files found."
 
-    return "\n\n".join(
-        f"--- {path} ---\n```typescript\n{content}\n```"
-        for path, content in files.items()
-    )
+    return "\n\n".join(f"--- {path} ---\n```typescript\n{content}\n```" for path, content in files.items())
 
 
 def _normalize_alignment_score(value: Any) -> int:

@@ -48,9 +48,7 @@ def ensure_base_project(project_path: Path) -> None:
         if item.is_dir() and item.name not in CLEAN_DIRS:
             continue
 
-        if item.is_file() and (
-            not destination.exists() or destination.name in BASE_PROJECT_FILES
-        ):
+        if item.is_file() and (not destination.exists() or destination.name in BASE_PROJECT_FILES):
             shutil.copy2(item, destination)
 
 

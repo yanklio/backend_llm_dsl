@@ -1,6 +1,5 @@
 """Tests for template rendering helper."""
 
-
 import pytest
 from jinja2 import Environment, FileSystemLoader
 
@@ -22,11 +21,7 @@ class TestTemplateRenderer:
         renderer = TemplateRenderer(jinja_env)
         output_path = temp_dir / "output.txt"
 
-        renderer.render_template(
-            "simple.j2",
-            {"name": "World"},
-            output_path
-        )
+        renderer.render_template("simple.j2", {"name": "World"}, output_path)
 
         assert output_path.exists()
         assert output_path.read_text() == "Hello World!"
@@ -36,11 +31,7 @@ class TestTemplateRenderer:
         renderer = TemplateRenderer(jinja_env)
         output_path = temp_dir / "complex.txt"
 
-        renderer.render_template(
-            "complex.j2",
-            {"module": "User", "fields": ["id", "name", "email"]},
-            output_path
-        )
+        renderer.render_template("complex.j2", {"module": "User", "fields": ["id", "name", "email"]}, output_path)
 
         assert output_path.exists()
         content = output_path.read_text()
@@ -52,11 +43,7 @@ class TestTemplateRenderer:
         renderer = TemplateRenderer(jinja_env)
         output_path = temp_dir / "nested" / "dir" / "output.txt"
 
-        renderer.render_template(
-            "simple.j2",
-            {"name": "Test"},
-            output_path
-        )
+        renderer.render_template("simple.j2", {"name": "Test"}, output_path)
 
         assert output_path.exists()
         assert output_path.parent.exists()
@@ -67,11 +54,7 @@ class TestTemplateRenderer:
         output_path = temp_dir / "output.txt"
 
         with pytest.raises(TemplateNotFoundException) as exc_info:
-            renderer.render_template(
-                "nonexistent.j2",
-                {"name": "Test"},
-                output_path
-            )
+            renderer.render_template("nonexistent.j2", {"name": "Test"}, output_path)
 
         assert "not found" in str(exc_info.value).lower()
         assert exc_info.value.code == "TEMPLATE002"
@@ -84,10 +67,8 @@ class TestTemplateRenderer:
 
         # Use StrictUndefined to make undefined variables raise errors
         from jinja2 import StrictUndefined
-        env = Environment(
-            loader=FileSystemLoader(str(sample_template_dir)),
-            undefined=StrictUndefined
-        )
+
+        env = Environment(loader=FileSystemLoader(str(sample_template_dir)), undefined=StrictUndefined)
         renderer = TemplateRenderer(env)
         output_path = temp_dir / "output.txt"
 
@@ -95,7 +76,7 @@ class TestTemplateRenderer:
             renderer.render_template(
                 "requires_var.j2",
                 {},  # Missing required_var
-                output_path
+                output_path,
             )
 
         assert exc_info.value.code == "TEMPLATE004"
@@ -110,11 +91,7 @@ class TestTemplateRenderer:
             ("simple.j2", "second.txt"),
         ]
 
-        renderer.render_templates(
-            templates,
-            {"name": "Test"},
-            output_dir
-        )
+        renderer.render_templates(templates, {"name": "Test"}, output_dir)
 
         assert (output_dir / "first.txt").exists()
         assert (output_dir / "second.txt").exists()
@@ -128,11 +105,7 @@ class TestTemplateRenderer:
 
         templates = [("simple.j2", "output.txt")]
 
-        renderer.render_templates(
-            templates,
-            {"name": "Test"},
-            output_dir
-        )
+        renderer.render_templates(templates, {"name": "Test"}, output_dir)
 
         assert output_dir.exists()
         assert (output_dir / "output.txt").exists()
@@ -149,11 +122,7 @@ class TestTemplateRenderer:
         ]
 
         with pytest.raises(TemplateNotFoundException):
-            renderer.render_templates(
-                templates,
-                {"name": "Test"},
-                output_dir
-            )
+            renderer.render_templates(templates, {"name": "Test"}, output_dir)
 
         # First file should exist
         assert (output_dir / "first.txt").exists()
@@ -168,12 +137,7 @@ class TestRenderSingleTemplate:
         """Test the standalone render_single_template function."""
         output_path = temp_dir / "output.txt"
 
-        render_single_template(
-            jinja_env,
-            "simple.j2",
-            {"name": "Function"},
-            output_path
-        )
+        render_single_template(jinja_env, "simple.j2", {"name": "Function"}, output_path)
 
         assert output_path.exists()
         assert output_path.read_text() == "Hello Function!"
@@ -183,9 +147,4 @@ class TestRenderSingleTemplate:
         output_path = temp_dir / "output.txt"
 
         with pytest.raises(TemplateNotFoundException):
-            render_single_template(
-                jinja_env,
-                "missing.j2",
-                {"name": "Test"},
-                output_path
-            )
+            render_single_template(jinja_env, "missing.j2", {"name": "Test"}, output_path)

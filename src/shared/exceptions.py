@@ -84,6 +84,7 @@ class LLMProviderException(LLMException):
     - Provider API returns an error
     - Provider-specific errors occur
     """
+
     pass
 
 
@@ -92,6 +93,7 @@ class LLMTimeoutException(LLMException):
 
     Raised when an LLM API call exceeds the configured timeout period.
     """
+
     pass
 
 
@@ -103,6 +105,7 @@ class LLMConnectionException(LLMException):
     - DNS resolution fails
     - Connection is refused
     """
+
     pass
 
 
@@ -111,6 +114,7 @@ class ValidationTimeoutException(ValidationException):
 
     Raised when validation operations (npm install, tsc, etc.) exceed timeout.
     """
+
     pass
 
 
@@ -119,6 +123,7 @@ class TemplateNotFoundException(TemplateException):
 
     Raised when a requested Jinja2 template file cannot be found.
     """
+
     pass
 
 
@@ -130,6 +135,7 @@ class TemplateRenderException(TemplateException):
     - Template variables are missing or invalid
     - Template rendering fails for any reason
     """
+
     pass
 
 
@@ -141,6 +147,7 @@ class ConfigurationException(DSLGeneratorException):
     - Environment variables are missing
     - Configuration validation fails
     """
+
     pass
 
 
@@ -149,4 +156,5 @@ class JSONParseException(DSLGeneratorException):
 
     Raised when JSON content cannot be parsed even after attempting repairs.
     """
+
     pass

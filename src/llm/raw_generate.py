@@ -11,12 +11,12 @@ from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from src.llm import GenerationResult, LLMClient
+from src.llm.file_writer import save_generated_files
 from src.llm.output import (
     log_generation_statistics,
     log_json_parse_failure,
     log_run_instructions,
     parse_generated_files,
-    save_generated_files,
 )
 from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT
 from src.shared import logger
@@ -135,9 +135,7 @@ def save_files(files: dict[str, Any], output_dir: str) -> None:
 
 def main() -> None:
     """Main execution entry point."""
-    parser = argparse.ArgumentParser(
-        description="Vibe coder - generate NestJS code from simple descriptions"
-    )
+    parser = argparse.ArgumentParser(description="Vibe coder - generate NestJS code from simple descriptions")
 
     parser.add_argument(
         "description",

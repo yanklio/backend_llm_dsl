@@ -1,6 +1,5 @@
 """Type mappings used by DSL template rendering."""
 
-
 TS_TYPE_MAP = {
     "string": "string",
     "number": "number",

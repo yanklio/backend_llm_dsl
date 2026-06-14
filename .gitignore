@@ -4,9 +4,20 @@ nest_project/
 **/node_modules/
 tests/metrics_output/
 metrics_output/
+
+# experiment outputs
 results/analytics/
 results/archives/
+results/runs/
+results/test_results.json
 results/experiments_debug.log
+
+# generated & development artifacts
+blueprint.yaml
+mixed_blueprint.yaml
+TEXTUAL_DSL_ACHIEVED_RESULT.md
+outputs/
+**/*.egg-info/
 
 # Python virtual environments
 thesis_env/
