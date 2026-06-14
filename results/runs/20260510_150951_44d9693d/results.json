@@ -1,0 +1,137 @@
+[
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_150951_44d9693d",
+    "generation": {
+      "success": false,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 1.7110840460081818,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider_id": "openrouter",
+        "provider": "openrouter",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-05-10T17:09:53.559389",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "generation_failed"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_150951_44d9693d",
+    "generation": {
+      "success": false,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 0.023947777997818775,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider_id": "openrouter",
+        "provider": "openrouter",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-05-10T17:09:53.604756",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "generation_failed"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_150951_44d9693d",
+    "generation": {
+      "success": false,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 0.022067219004384242,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider_id": "openrouter",
+        "provider": "openrouter",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-05-10T17:09:53.650092",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "generation_failed"
+    }
+  }
+]

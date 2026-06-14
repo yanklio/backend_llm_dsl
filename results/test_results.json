@@ -7085,5 +7085,1048 @@
       "overall_valid": true
     },
     "timestamp": "2026-05-01T16:14:09.622417"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_150951_44d9693d",
+    "generation": {
+      "success": false,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 1.7110840460081818,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider_id": "openrouter",
+        "provider": "openrouter",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-05-10T17:09:53.559389",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "generation_failed"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_150951_44d9693d",
+    "generation": {
+      "success": false,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 0.023947777997818775,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider_id": "openrouter",
+        "provider": "openrouter",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-05-10T17:09:53.604756",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "generation_failed"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_150951_44d9693d",
+    "generation": {
+      "success": false,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+      "metrics": {
+        "llm_time": 0.0,
+        "dsl_time": 0.0,
+        "total_time": 0.022067219004384242,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "provider_id": "openrouter",
+        "provider": "openrouter",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {},
+    "timestamp": "2026-05-10T17:09:53.650092",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "generation_failed"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_151844_5c55ac1f",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 6.36,
+        "dsl_time": 0.20934869200573303,
+        "total_time": 7.158736156008672,
+        "input_tokens": 696,
+        "output_tokens": 222,
+        "total_tokens": 918,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 11,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:19:38.042846",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 403 - {'error': {'message': 'Key limit exceeded (weekly limit). Manage it using https://openrouter.ai/settings/keys', 'code': 403}}"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_151844_5c55ac1f",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 34.95,
+        "dsl_time": 0.0,
+        "total_time": 35.291476486003376,
+        "input_tokens": 794,
+        "output_tokens": 1342,
+        "total_tokens": 2136,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:20:39.023543",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 403 - {'error': {'message': 'Key limit exceeded (weekly limit). Manage it using https://openrouter.ai/settings/keys', 'code': 403}}"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_151844_5c55ac1f",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 58.010000000000005,
+        "dsl_time": 0.0,
+        "total_time": 58.018384292998235,
+        "input_tokens": 1684,
+        "output_tokens": 1756,
+        "total_tokens": 3440,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 243,
+        "phase1_total_tokens": 939,
+        "phase2_input_tokens": 988,
+        "phase2_output_tokens": 1513,
+        "phase2_total_tokens": 2501
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:22:01.020876",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      },
+      "source_files": {
+        "count": 0,
+        "total_characters": 0
+      },
+      "result": null,
+      "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 403 - {'error': {'message': 'Key limit exceeded (weekly limit). Manage it using https://openrouter.ai/settings/keys', 'code': 403}}"
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_152413_fbfd242c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 8.05,
+        "dsl_time": 0.20130321699252818,
+        "total_time": 8.830094354998437,
+        "input_tokens": 696,
+        "output_tokens": 232,
+        "total_tokens": 928,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 11,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:25:14.333522",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 25.67,
+        "input_tokens": 2348,
+        "output_tokens": 347,
+        "total_tokens": 2695
+      },
+      "source_files": {
+        "count": 11,
+        "total_characters": 6971
+      },
+      "result": {
+        "alignment_score": 3,
+        "missing_requirements": [
+          "PUT /users/:id endpoint (using @Put decorator)"
+        ],
+        "extra_features": [
+          "updatedAt column in User entity",
+          "PATCH endpoint instead of requested PUT",
+          "health endpoint in AppController"
+        ],
+        "rationale": "The generated code includes the User entity with id, email, name, createdAt and a service with CRUD methods, and a controller exposing GET, POST, DELETE and a PATCH route that uses UserService. However, the required PUT endpoint is missing and a PATCH route is provided instead. Additionally, an extra updatedAt field and unrelated health endpoint are present."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_152413_fbfd242c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 40.35,
+        "dsl_time": 0.0,
+        "total_time": 40.67552944600175,
+        "input_tokens": 794,
+        "output_tokens": 1431,
+        "total_tokens": 2225,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:26:39.290627",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 19.79,
+        "input_tokens": 1607,
+        "output_tokens": 130,
+        "total_tokens": 1737
+      },
+      "source_files": {
+        "count": 8,
+        "total_characters": 4189
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "The code defines a User entity with id, email, name, createdAt, provides a UserService, and implements all requested endpoints (GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id) using the service. No required elements are missing or extraneous."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_152413_fbfd242c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 49.199999999999996,
+        "dsl_time": 0.0,
+        "total_time": 49.21263927700056,
+        "input_tokens": 1652,
+        "output_tokens": 1805,
+        "total_tokens": 3457,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 223,
+        "phase1_total_tokens": 919,
+        "phase2_input_tokens": 956,
+        "phase2_output_tokens": 1582,
+        "phase2_total_tokens": 2538
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:28:01.618056",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 9.26,
+        "input_tokens": 1761,
+        "output_tokens": 141,
+        "total_tokens": 1902
+      },
+      "source_files": {
+        "count": 8,
+        "total_characters": 4830
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "The code defines a User entity with id, email, name, createdAt, provides a UserService, and implements all requested endpoints (GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id) that use the service. No required elements are missing or unnecessary."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_153514_bd3f956c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 10.82,
+        "dsl_time": 0.17928972600202542,
+        "total_time": 11.518244247999974,
+        "input_tokens": 696,
+        "output_tokens": 223,
+        "total_tokens": 919,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 11,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:36:22.994805",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 31.65,
+        "input_tokens": 2394,
+        "output_tokens": 309,
+        "total_tokens": 2703
+      },
+      "source_files": {
+        "count": 11,
+        "total_characters": 7124
+      },
+      "result": {
+        "alignment_score": 4,
+        "missing_requirements": [],
+        "extra_features": [
+          "updatedAt column in User entity",
+          "PATCH /users/:id endpoint",
+          "health endpoint in AppController",
+          "AppController with hello and health routes",
+          "Swagger documentation setup",
+          "global CORS and validation pipe configuration"
+        ],
+        "rationale": "All required entity fields and the five specified endpoints are present and use UserService. Additional unrelated endpoints, extra entity field, and Swagger/CORS setup go beyond the request."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_153842_55b5b879",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 18.92,
+        "dsl_time": 0.19591624999884516,
+        "total_time": 19.57395632599946,
+        "input_tokens": 696,
+        "output_tokens": 245,
+        "total_tokens": 941,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 11,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:39:33.743723",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "db20611f7e",
+      "metrics": {
+        "duration_seconds": 8.68,
+        "input_tokens": 2551,
+        "output_tokens": 201,
+        "total_tokens": 2752
+      },
+      "source_files": {
+        "count": 11,
+        "total_characters": 7211
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "All requested entity fields and CRUD endpoints are present and use UserService; extra health endpoint and PATCH route do not conflict with requirements."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_153842_55b5b879",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 53.4,
+        "dsl_time": 0.0,
+        "total_time": 53.6812064449914,
+        "input_tokens": 794,
+        "output_tokens": 1471,
+        "total_tokens": 2265,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:41:17.857789",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "db20611f7e",
+      "metrics": {
+        "duration_seconds": 26.09,
+        "input_tokens": 1756,
+        "output_tokens": 135,
+        "total_tokens": 1891
+      },
+      "source_files": {
+        "count": 8,
+        "total_characters": 4305
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "The code defines a User entity with id, email, name, createdAt, provides a UserService, and implements all required endpoints (GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id) using the service. No requested elements are missing or altered."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_153842_55b5b879",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 116.97,
+        "dsl_time": 0.0,
+        "total_time": 116.97971969700302,
+        "input_tokens": 1892,
+        "output_tokens": 4046,
+        "total_tokens": 5938,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 419,
+        "phase1_total_tokens": 1115,
+        "phase2_input_tokens": 1196,
+        "phase2_output_tokens": 3627,
+        "phase2_total_tokens": 4823
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 20,
+        "error_count": 4,
+        "errors": [
+          {
+            "file": "src/owner/owner.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Owner | null>' is not assignable to type 'Promise<Owner>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/pet/pet.service.ts",
+            "line": 28,
+            "column": 5,
+            "message": "Type 'Promise<Pet | null>' is not assignable to type 'Promise<Pet>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/pet/pet.service.ts",
+            "line": 34,
+            "column": 20,
+            "message": "Property 'owner' does not exist on type 'UpdatePetDto'. Did you mean 'ownerId'?",
+            "code": "TS2551"
+          },
+          {
+            "file": "src/user/user.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<User | null>' is not assignable to type 'Promise<User>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": true,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/owner/owner.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Owner | null>' is not assignable to type 'Promise<Owner>'.\n  Type 'Owner | null' is not assig",
+            "code": "BUILD_FAILED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-10T17:43:44.390235",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "db20611f7e",
+      "metrics": {
+        "duration_seconds": 5.89,
+        "input_tokens": 3728,
+        "output_tokens": 182,
+        "total_tokens": 3910
+      },
+      "source_files": {
+        "count": 20,
+        "total_characters": 11373
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "User entity includes id, email, name, createdAt as requested; UserController provides all required endpoints using UserService; UserService implements CRUD methods. Extra updatedAt field does not conflict."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_154432_36c1a9fd",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 20.79,
+        "dsl_time": 0.18812165899726097,
+        "total_time": 21.48713651399885,
+        "input_tokens": 851,
+        "output_tokens": 600,
+        "total_tokens": 1451,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 23,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:45:41.681002",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "db20611f7e",
+      "metrics": {
+        "duration_seconds": 24.47,
+        "input_tokens": 5626,
+        "output_tokens": 528,
+        "total_tokens": 6154
+      },
+      "source_files": {
+        "count": 23,
+        "total_characters": 18640
+      },
+      "result": {
+        "alignment_score": 2,
+        "missing_requirements": [
+          "Category endpoint path should be /categories (controller uses 'categorys')",
+          "Category name uniqueness constraint",
+          "Product filtering by name with pagination (limit, page) and sorting by name or price",
+          "Product DTO should include relation handling for categories (e.g., category IDs)",
+          "Review DTO should include product association (productId) to link review to a product",
+          "Category entity missing unique constraint on name"
+        ],
+        "extra_features": [],
+        "rationale": "Entities and basic CRUD endpoints are present, but several explicit requirements such as correct endpoint paths, uniqueness validation, pagination/sorting for products, and relation handling in DTOs are missing."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_154432_36c1a9fd",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 115.58,
+        "dsl_time": 0.0,
+        "total_time": 115.87230661899957,
+        "input_tokens": 949,
+        "output_tokens": 4347,
+        "total_tokens": 5296,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 20,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:48:19.927155",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "db20611f7e",
+      "metrics": {
+        "duration_seconds": 18.17,
+        "input_tokens": 4482,
+        "output_tokens": 372,
+        "total_tokens": 4854
+      },
+      "source_files": {
+        "count": 20,
+        "total_characters": 14036
+      },
+      "result": {
+        "alignment_score": 3,
+        "missing_requirements": [
+          "CreateReviewDto does not include a product identifier, so reviews cannot be linked to a product as required by the relation"
+        ],
+        "extra_features": [
+          "PATCH endpoints for categories, products, and reviews are provided but were not requested"
+        ],
+        "rationale": "Entities, fields, validations, relations, and main CRUD endpoints are present, but review creation lacks product association and extra PATCH routes go beyond the specified endpoints."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_154432_36c1a9fd",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 162.81,
+        "dsl_time": 0.0,
+        "total_time": 162.81557719501143,
+        "input_tokens": 2344,
+        "output_tokens": 6202,
+        "total_tokens": 8546,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 851,
+        "phase1_output_tokens": 603,
+        "phase1_total_tokens": 1454,
+        "phase2_input_tokens": 1493,
+        "phase2_output_tokens": 5599,
+        "phase2_total_tokens": 7092
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 20,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/review/dto/create-review.dto.ts",
+            "line": 19,
+            "column": 4,
+            "message": "Cannot find name 'MaxLength'. Did you mean 'length'?",
+            "code": "TS2552"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": true,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/review/dto/create-review.dto.ts\u001b[0m:\u001b[93m19\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'MaxLength'. Did you mean 'length'?\n\n\u001b[7m19\u001b[0m   @MaxLength(100)\n\u001b[7m  \u001b[0m \u001b[91",
+            "code": "BUILD_FAILED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-10T17:51:33.780746",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "db20611f7e",
+      "metrics": {
+        "duration_seconds": 8.81,
+        "input_tokens": 4410,
+        "output_tokens": 199,
+        "total_tokens": 4609
+      },
+      "source_files": {
+        "count": 20,
+        "total_characters": 14008
+      },
+      "result": {
+        "alignment_score": 3,
+        "missing_requirements": [
+          "PUT endpoint for updating categories (/categories/:id)",
+          "PUT endpoint for updating products (/products/:id)",
+          "PUT endpoint for updating reviews (/reviews/:id)"
+        ],
+        "extra_features": [],
+        "rationale": "Entities, fields, relations, validation, and product filtering/pagination are implemented, but the generated controllers use PATCH instead of the required PUT for update endpoints."
+      }
+    }
   }
 ]

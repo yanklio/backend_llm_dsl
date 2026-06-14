@@ -1,0 +1,70 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "dsl",
+  "test_case": "TEST_CASE_11",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "7238f5ac8b",
+  "run_id": "20260510_154432_36c1a9fd",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 20.79,
+      "dsl_time": 0.18812165899726097,
+      "total_time": 21.48713651399885,
+      "input_tokens": 851,
+      "output_tokens": 600,
+      "total_tokens": 1451,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": true,
+      "total_files": 23,
+      "error_count": 0,
+      "errors": []
+    },
+    "runtime": {
+      "valid": true,
+      "install_success": true,
+      "build_success": true,
+      "start_success": true,
+      "errors": {}
+    },
+    "overall_valid": true
+  },
+  "timestamp": "2026-05-10T17:45:41.681002",
+  "prompt_alignment": {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-120b:free",
+    "prompt_version": "prompt-alignment-v1",
+    "prompt_hash": "db20611f7e",
+    "metrics": {
+      "duration_seconds": 24.47,
+      "input_tokens": 5626,
+      "output_tokens": 528,
+      "total_tokens": 6154
+    },
+    "source_files": {
+      "count": 23,
+      "total_characters": 18640
+    },
+    "result": {
+      "alignment_score": 2,
+      "missing_requirements": [
+        "Category endpoint path should be /categories (controller uses 'categorys')",
+        "Category name uniqueness constraint",
+        "Product filtering by name with pagination (limit, page) and sorting by name or price",
+        "Product DTO should include relation handling for categories (e.g., category IDs)",
+        "Review DTO should include product association (productId) to link review to a product",
+        "Category entity missing unique constraint on name"
+      ],
+      "extra_features": [],
+      "rationale": "Entities and basic CRUD endpoints are present, but several explicit requirements such as correct endpoint paths, uniqueness validation, pagination/sorting for products, and relation handling in DTOs are missing."
+    }
+  }
+}

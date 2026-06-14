@@ -1,0 +1,45 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "raw",
+  "test_case": "TEST_CASE_1",
+  "tier": "simple",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "b005b51722",
+  "run_id": "20260510_150951_44d9693d",
+  "generation": {
+    "success": false,
+    "error": "[LLM002] OpenRouter (openai/gpt-oss-20b:free) failed: Error code: 401 - {'error': {'message': 'User not found.', 'code': 401}}",
+    "metrics": {
+      "llm_time": 0.0,
+      "dsl_time": 0.0,
+      "total_time": 0.023947777997818775,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "provider_id": "openrouter",
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {},
+  "timestamp": "2026-05-10T17:09:53.604756",
+  "prompt_alignment": {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-120b",
+    "prompt_version": "prompt-alignment-v1",
+    "prompt_hash": "d488537fc6",
+    "metrics": {
+      "duration_seconds": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "source_files": {
+      "count": 0,
+      "total_characters": 0
+    },
+    "result": null,
+    "error": "generation_failed"
+  }
+}

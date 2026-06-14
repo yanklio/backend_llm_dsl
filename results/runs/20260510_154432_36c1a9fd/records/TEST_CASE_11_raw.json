@@ -1,0 +1,67 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "raw",
+  "test_case": "TEST_CASE_11",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "b005b51722",
+  "run_id": "20260510_154432_36c1a9fd",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 115.58,
+      "dsl_time": 0.0,
+      "total_time": 115.87230661899957,
+      "input_tokens": 949,
+      "output_tokens": 4347,
+      "total_tokens": 5296,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": true,
+      "total_files": 20,
+      "error_count": 0,
+      "errors": []
+    },
+    "runtime": {
+      "valid": true,
+      "install_success": true,
+      "build_success": true,
+      "start_success": true,
+      "errors": {}
+    },
+    "overall_valid": true
+  },
+  "timestamp": "2026-05-10T17:48:19.927155",
+  "prompt_alignment": {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-120b:free",
+    "prompt_version": "prompt-alignment-v1",
+    "prompt_hash": "db20611f7e",
+    "metrics": {
+      "duration_seconds": 18.17,
+      "input_tokens": 4482,
+      "output_tokens": 372,
+      "total_tokens": 4854
+    },
+    "source_files": {
+      "count": 20,
+      "total_characters": 14036
+    },
+    "result": {
+      "alignment_score": 3,
+      "missing_requirements": [
+        "CreateReviewDto does not include a product identifier, so reviews cannot be linked to a product as required by the relation"
+      ],
+      "extra_features": [
+        "PATCH endpoints for categories, products, and reviews are provided but were not requested"
+      ],
+      "rationale": "Entities, fields, validations, relations, and main CRUD endpoints are present, but review creation lacks product association and extra PATCH routes go beyond the specified endpoints."
+    }
+  }
+}

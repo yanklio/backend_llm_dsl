@@ -1,0 +1,203 @@
+[
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "dsl",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "7238f5ac8b",
+    "run_id": "20260510_152413_fbfd242c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 8.05,
+        "dsl_time": 0.20130321699252818,
+        "total_time": 8.830094354998437,
+        "input_tokens": 696,
+        "output_tokens": 232,
+        "total_tokens": 928,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 11,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:25:14.333522",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 25.67,
+        "input_tokens": 2348,
+        "output_tokens": 347,
+        "total_tokens": 2695
+      },
+      "source_files": {
+        "count": 11,
+        "total_characters": 6971
+      },
+      "result": {
+        "alignment_score": 3,
+        "missing_requirements": [
+          "PUT /users/:id endpoint (using @Put decorator)"
+        ],
+        "extra_features": [
+          "updatedAt column in User entity",
+          "PATCH endpoint instead of requested PUT",
+          "health endpoint in AppController"
+        ],
+        "rationale": "The generated code includes the User entity with id, email, name, createdAt and a service with CRUD methods, and a controller exposing GET, POST, DELETE and a PATCH route that uses UserService. However, the required PUT endpoint is missing and a PATCH route is provided instead. Additionally, an extra updatedAt field and unrelated health endpoint are present."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "raw",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "b005b51722",
+    "run_id": "20260510_152413_fbfd242c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 40.35,
+        "dsl_time": 0.0,
+        "total_time": 40.67552944600175,
+        "input_tokens": 794,
+        "output_tokens": 1431,
+        "total_tokens": 2225,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free"
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:26:39.290627",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 19.79,
+        "input_tokens": 1607,
+        "output_tokens": 130,
+        "total_tokens": 1737
+      },
+      "source_files": {
+        "count": 8,
+        "total_characters": 4189
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "The code defines a User entity with id, email, name, createdAt, provides a UserService, and implements all requested endpoints (GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id) using the service. No required elements are missing or extraneous."
+      }
+    }
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260510_152413_fbfd242c",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 49.199999999999996,
+        "dsl_time": 0.0,
+        "total_time": 49.21263927700056,
+        "input_tokens": 1652,
+        "output_tokens": 1805,
+        "total_tokens": 3457,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 223,
+        "phase1_total_tokens": 919,
+        "phase2_input_tokens": 956,
+        "phase2_output_tokens": 1582,
+        "phase2_total_tokens": 2538
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 8,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-10T17:28:01.618056",
+    "prompt_alignment": {
+      "provider": "openrouter",
+      "model_name": "openai/gpt-oss-120b:free",
+      "prompt_version": "prompt-alignment-v1",
+      "prompt_hash": "d488537fc6",
+      "metrics": {
+        "duration_seconds": 9.26,
+        "input_tokens": 1761,
+        "output_tokens": 141,
+        "total_tokens": 1902
+      },
+      "source_files": {
+        "count": 8,
+        "total_characters": 4830
+      },
+      "result": {
+        "alignment_score": 5,
+        "missing_requirements": [],
+        "extra_features": [],
+        "rationale": "The code defines a User entity with id, email, name, createdAt, provides a UserService, and implements all requested endpoints (GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id) that use the service. No required elements are missing or unnecessary."
+      }
+    }
+  }
+]

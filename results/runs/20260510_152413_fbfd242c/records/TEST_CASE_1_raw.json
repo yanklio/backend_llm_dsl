@@ -1,0 +1,63 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "raw",
+  "test_case": "TEST_CASE_1",
+  "tier": "simple",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "b005b51722",
+  "run_id": "20260510_152413_fbfd242c",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 40.35,
+      "dsl_time": 0.0,
+      "total_time": 40.67552944600175,
+      "input_tokens": 794,
+      "output_tokens": 1431,
+      "total_tokens": 2225,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": true,
+      "total_files": 8,
+      "error_count": 0,
+      "errors": []
+    },
+    "runtime": {
+      "valid": true,
+      "install_success": true,
+      "build_success": true,
+      "start_success": true,
+      "errors": {}
+    },
+    "overall_valid": true
+  },
+  "timestamp": "2026-05-10T17:26:39.290627",
+  "prompt_alignment": {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-120b:free",
+    "prompt_version": "prompt-alignment-v1",
+    "prompt_hash": "d488537fc6",
+    "metrics": {
+      "duration_seconds": 19.79,
+      "input_tokens": 1607,
+      "output_tokens": 130,
+      "total_tokens": 1737
+    },
+    "source_files": {
+      "count": 8,
+      "total_characters": 4189
+    },
+    "result": {
+      "alignment_score": 5,
+      "missing_requirements": [],
+      "extra_features": [],
+      "rationale": "The code defines a User entity with id, email, name, createdAt, provides a UserService, and implements all requested endpoints (GET /users, GET /users/:id, POST /users, PUT /users/:id, DELETE /users/:id) using the service. No required elements are missing or extraneous."
+    }
+  }
+}

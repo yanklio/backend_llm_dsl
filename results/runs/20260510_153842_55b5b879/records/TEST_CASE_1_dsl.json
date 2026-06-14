@@ -1,0 +1,63 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "dsl",
+  "test_case": "TEST_CASE_1",
+  "tier": "simple",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "7238f5ac8b",
+  "run_id": "20260510_153842_55b5b879",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 18.92,
+      "dsl_time": 0.19591624999884516,
+      "total_time": 19.57395632599946,
+      "input_tokens": 696,
+      "output_tokens": 245,
+      "total_tokens": 941,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free"
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": true,
+      "total_files": 11,
+      "error_count": 0,
+      "errors": []
+    },
+    "runtime": {
+      "valid": true,
+      "install_success": true,
+      "build_success": true,
+      "start_success": true,
+      "errors": {}
+    },
+    "overall_valid": true
+  },
+  "timestamp": "2026-05-10T17:39:33.743723",
+  "prompt_alignment": {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-120b:free",
+    "prompt_version": "prompt-alignment-v1",
+    "prompt_hash": "db20611f7e",
+    "metrics": {
+      "duration_seconds": 8.68,
+      "input_tokens": 2551,
+      "output_tokens": 201,
+      "total_tokens": 2752
+    },
+    "source_files": {
+      "count": 11,
+      "total_characters": 7211
+    },
+    "result": {
+      "alignment_score": 5,
+      "missing_requirements": [],
+      "extra_features": [],
+      "rationale": "All requested entity fields and CRUD endpoints are present and use UserService; extra health endpoint and PATCH route do not conflict with requirements."
+    }
+  }
+}

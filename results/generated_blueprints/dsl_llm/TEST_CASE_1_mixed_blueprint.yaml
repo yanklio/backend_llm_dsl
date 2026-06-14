@@ -1,8 +1,8 @@
 root:
-  name: UserManagement
+  name: PetAdministration
   database:
     type: sqlite
-    database: ./data/users.db
+    database: ./data/app.db
     synchronize: true
     logging: false
 
@@ -11,6 +11,39 @@ root:
     swagger: true
 
 modules:
+  - name: Owner
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 3, maxLength: 100}
+        - name: age
+          type: number
+          required: true
+          validation: {min: 0}
+      relations:
+        - type: OneToMany
+          model: Pet
+          field: pets
+          description: A list of pets belonging to this owner
+  - name: Pet
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 1, maxLength: 50}
+        - name: breed
+          type: string
+          required: false
+      relations:
+        - type: ManyToOne
+          model: Owner
+          field: owner
+          description: The owner of this pet
   - name: User
     generate: [controller, service, module, entity, dto]
     entity:
@@ -18,13 +51,8 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {minLength: 5, maxLength: 255}
+          validation: {email: true}
         - name: name
           type: string
           required: true
           validation: {minLength: 1, maxLength: 100}
-        - name: createdAt
-          type: Date
-          required: true
-          default: now
-      relations: []
