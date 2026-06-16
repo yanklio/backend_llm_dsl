@@ -230,6 +230,9 @@ def _extract_and_repair_json(content: str) -> dict[str, Any] | None:
 
 def _ensure_json_has_opening_brace(content: str) -> str:
     """Add a leading opening brace when the JSON body starts mid-stream."""
+    if content.strip().startswith("{"):
+        return content
+
     if content.strip().startswith('"'):
         return "{" + content
 

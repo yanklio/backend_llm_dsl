@@ -6,7 +6,7 @@ from typing import Any
 
 from src.llm.client import get_default_model_name
 from src.llm.mixed_generate import MIXED_REQUEST_TEMPLATE
-from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT, SYSTEM_PROMPT
+from src.llm.prompts import RAW_CODE_SYSTEM_PROMPT, SYSTEM_PROMPT, TEXTUAL_GEN_SYSTEM_PROMPT
 from src.llm.raw_generate import RAW_REQUEST_TEMPLATE
 
 PROMPT_VERSION = "full-app-scaffold-v1"
@@ -16,6 +16,7 @@ APPROACH_PROMPT_SOURCES = {
     "dsl": [SYSTEM_PROMPT],
     "raw": [RAW_CODE_SYSTEM_PROMPT, RAW_REQUEST_TEMPLATE],
     "mixed": [SYSTEM_PROMPT, RAW_CODE_SYSTEM_PROMPT, MIXED_REQUEST_TEMPLATE],
+    "textual-gen": [TEXTUAL_GEN_SYSTEM_PROMPT],
 }
 
 

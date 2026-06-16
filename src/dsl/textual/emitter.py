@@ -23,9 +23,7 @@ class BlueprintEmitter:
         program = resolved.program
         return {
             "root": self._emit_root(program.app),
-            "modules": [
-                self._emit_module(module, resolved) for module in self._modules_to_emit(resolved)
-            ],
+            "modules": [self._emit_module(module, resolved) for module in self._modules_to_emit(resolved)],
         }
 
     def _emit_root(self, app: AppNode | None) -> dict[str, Any]:

@@ -10,14 +10,26 @@ from typing import Any
 
 from .paths import ANALYTICS_DIR, RUNS_DIR
 
-APPROACH_ORDER = ["dsl", "raw", "mixed"]
+APPROACH_ORDER = ["dsl", "textual_dsl", "textual-gen", "raw", "mixed"]
 TIER_ORDER = ["simple", "medium", "complex"]
 STATUS_ORDER = ["PASS", "FAIL", "ERR"]
-APPROACH_LABELS = {"dsl": "DSL", "raw": "Raw", "mixed": "Mixed"}
+APPROACH_LABELS = {
+    "dsl": "DSL",
+    "textual_dsl": "Textual DSL",
+    "textual-gen": "Textual Gen",
+    "raw": "Raw",
+    "mixed": "Mixed",
+}
 TIER_LABELS = {"simple": "Proste", "medium": "Średnie", "complex": "Złożone"}
 STATUS_LABELS = {"PASS": "Poprawne", "FAIL": "Niepoprawne", "ERR": "Błąd generacji"}
 STATUS_COLORS = {"PASS": "#4E79A7", "FAIL": "#A0A0A0", "ERR": "#6B6B6B"}
-APPROACH_COLORS = {"dsl": "#4E79A7", "raw": "#7F7F7F", "mixed": "#59A14F"}
+APPROACH_COLORS = {
+    "dsl": "#4E79A7",
+    "textual_dsl": "#F28E2B",
+    "textual-gen": "#E15759",
+    "raw": "#7F7F7F",
+    "mixed": "#59A14F",
+}
 ERROR_CATEGORY_ORDER = [
     "generation_error",
     "typescript_syntax",

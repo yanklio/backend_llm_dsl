@@ -56,9 +56,7 @@ def save_blueprint(generated_yaml: str, blueprint_file: str = "./blueprint.yaml"
 
 def main() -> None:
     """Main entry point for CLI."""
-    parser = argparse.ArgumentParser(
-        description="Generate NestJS application blueprint (DSL) from natural language"
-    )
+    parser = argparse.ArgumentParser(description="Generate NestJS application blueprint (DSL) from natural language")
 
     parser.add_argument(
         "description",

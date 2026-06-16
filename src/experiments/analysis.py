@@ -33,9 +33,7 @@ def _group_results(
 ) -> tuple[dict[str, list[dict[str, Any]]], dict[str, dict[str, list[dict[str, Any]]]]]:
     """Group experiment results by approach and tier."""
     by_approach: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    by_approach_tier: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(
-        lambda: defaultdict(list)
-    )
+    by_approach_tier: dict[str, dict[str, list[dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
 
     for result in results:
         approach = result["approach"]
@@ -49,9 +47,7 @@ def _group_results(
 def _metric_means(experiments: list[dict[str, Any]]) -> dict[str, float]:
     """Compute mean values for the main experiment metrics."""
     return {
-        "time": statistics.mean(
-            experiment["generation"]["metrics"]["total_time"] for experiment in experiments
-        ),
+        "time": statistics.mean(experiment["generation"]["metrics"]["total_time"] for experiment in experiments),
         "llm_time": statistics.mean(
             experiment["generation"]["metrics"].get("llm_time", 0) for experiment in experiments
         ),
@@ -122,9 +118,7 @@ def _print_approach_summary(
     print("-" * 40)
 
     passed, failed, errors = _count_statuses(experiments)
-    print(
-        f"Overall Success Rate: {passed}/{len(experiments)} ({(passed / len(experiments)) * 100:.1f}%)"
-    )
+    print(f"Overall Success Rate: {passed}/{len(experiments)} ({(passed / len(experiments)) * 100:.1f}%)")
     print(f"Overall Status: {passed} PASS, {failed} FAIL, {errors} ERR")
     _print_tier_breakdown(approach, by_approach_tier)
     _print_average_metrics(approach, experiments)

@@ -165,8 +165,65 @@ def run_mixed_approach(
     return _run_with_timing(provider, operation)
 
 
+def run_textual_gen_approach(
+    test_case_name: str,
+    test_case_data: dict[str, Any],
+    project_path: Path,
+    provider: str = "openrouter",
+) -> dict[str, Any]:
+    """Run the LLM-generates-textual-DSL approach.
+
+    LLM generates textual DSL source code from natural language.
+    Deterministic compiler converts DSL -> YAML blueprint.
+    Jinja2 generator converts blueprint -> NestJS code.
+    """
+    from langchain_core.messages import HumanMessage, SystemMessage
+
+    from src.dsl.textual.compiler import compile_textual_dsl
+    from src.llm import LLMClient
+    from src.llm.prompts import TEXTUAL_GEN_SYSTEM_PROMPT
+    from src.llm.response_parser import clean_llm_response
+
+    blueprint_path = blueprint_path_for(test_case_name, "_textual_gen_blueprint")
+    blueprint_path.parent.mkdir(parents=True, exist_ok=True)
+
+    def operation(metrics: dict[str, Any]) -> None:
+        client = LLMClient(provider_id=provider, temperature=0.1)
+        messages = [
+            SystemMessage(content=TEXTUAL_GEN_SYSTEM_PROMPT),
+            HumanMessage(
+                content=(
+                    f"Generate textual DSL source code for this NestJS application:\n\n"
+                    f"{test_case_data['requirement']}"
+                )
+            ),
+        ]
+
+        with SuppressOutput():
+            result = client.generate(messages)
+        result.content = clean_llm_response(result.content)
+
+        _apply_generation_metrics(metrics, result)
+
+        with SuppressOutput():
+            blueprint = compile_textual_dsl(result.content)
+
+        with open(blueprint_path, "w") as f:
+            import yaml
+
+            yaml.safe_dump(blueprint, f, sort_keys=False)
+
+        dsl_start = time.perf_counter()
+        with SuppressOutput():
+            dsl_generate(str(blueprint_path), str(project_path))
+        metrics["dsl_time"] = time.perf_counter() - dsl_start
+
+    return _run_with_timing(provider, operation)
+
+
 APPROACH_RUNNERS = {
     "dsl": run_dsl_approach,
     "raw": run_raw_approach,
+    "textual-gen": run_textual_gen_approach,
     "mixed": run_mixed_approach,
 }

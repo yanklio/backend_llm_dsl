@@ -22,6 +22,7 @@ class TokenType(str, Enum):
     GET = "GET"
     POST = "POST"
     PATCH = "PATCH"
+    PUT = "PUT"
     DELETE = "DELETE"
     IDENT = "IDENT"
     STRING = "STRING"
@@ -56,6 +57,7 @@ KEYWORDS = {
     "POST": TokenType.POST,
     "PATCH": TokenType.PATCH,
     "DELETE": TokenType.DELETE,
+    "PUT": TokenType.PUT,
 }
 SINGLE_CHAR_TOKENS = {
     "{": TokenType.LBRACE,

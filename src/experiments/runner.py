@@ -22,15 +22,13 @@ from .project import clean_project, ensure_base_project, validate_project
 
 def _selected_approaches(approach: str) -> list[str]:
     """Normalize CLI approach selection into a concrete list."""
-    return ["dsl", "raw", "mixed"] if approach == "all" else [approach]
+    return ["dsl", "raw", "mixed", "textual-gen"] if approach == "all" else [approach]
 
 
 def _print_run_header(test_cases_count: int) -> None:
     """Print the standard experiment table header."""
     print(f"Starting experiments for {test_cases_count} test cases...")
-    print(
-        f"{'Test Case':<15} {'Tier':<8} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}"
-    )
+    print(f"{'Test Case':<15} {'Tier':<8} {'Approach':<10} {'Status':<10} {'Time':<8} {'Tokens':<8}")
     print("-" * 70)
 
 
@@ -331,7 +329,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run generation experiments.")
     parser.add_argument(
         "--approach",
-        choices=["dsl", "raw", "mixed", "all"],
+        choices=["dsl", "raw", "mixed", "textual-gen", "all"],
         default="all",
         help="Which approach to run",
     )

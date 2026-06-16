@@ -204,7 +204,7 @@ class Parser:
     def _parse_route(self) -> RouteNode:
         route = self._consume(TokenType.ROUTE, "Expected route declaration")
         method = self._consume_any(
-            [TokenType.GET, TokenType.POST, TokenType.PATCH, TokenType.DELETE],
+            [TokenType.GET, TokenType.POST, TokenType.PUT, TokenType.PATCH, TokenType.DELETE],
             "Expected HTTP method",
         ).value
         path = self._parse_route_path()
