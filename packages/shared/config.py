@@ -8,7 +8,36 @@ from pathlib import Path
 from typing import Optional
 
 from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+
+try:
+    from pydantic_settings import BaseSettings, SettingsConfigDict
+except ModuleNotFoundError:
+    import os
+    from typing import Any
+
+    from pydantic import BaseModel
+
+    class BaseSettings(BaseModel):
+        def __init__(self, **data: Any) -> None:
+            prefix = getattr(self, "model_config", {}).get("env_prefix", "")
+            values = dict(data)
+            for name, field in self.__class__.model_fields.items():
+                env_name = f"{prefix}{name}".upper()
+                if name not in values and env_name in os.environ:
+                    raw = os.environ[env_name]
+                    annotation = field.annotation
+                    if annotation is bool:
+                        values[name] = raw.lower() in {"1", "true", "yes", "on"}
+                    elif annotation is int:
+                        values[name] = int(raw)
+                    elif annotation is float:
+                        values[name] = float(raw)
+                    else:
+                        values[name] = raw
+            super().__init__(**values)
+
+    def SettingsConfigDict(**kwargs: Any) -> dict[str, Any]:
+        return kwargs
 
 
 def _settings_config(prefix: str) -> SettingsConfigDict:

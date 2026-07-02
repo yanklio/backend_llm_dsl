@@ -22,7 +22,11 @@ from .project import clean_project, ensure_base_project, validate_project
 
 def _selected_approaches(approach: str) -> list[str]:
     """Normalize CLI approach selection into a concrete list."""
-    return ["dsl", "raw", "mixed", "textual-gen"] if approach == "all" else [approach]
+    return (
+        ["dsl", "raw", "mixed", "textual-gen-baseline", "textual-gen-spec", "textual-gen-fewshot"]
+        if approach == "all"
+        else [approach]
+    )
 
 
 def _print_run_header(test_cases_count: int) -> None:
@@ -45,14 +49,19 @@ def _build_result_record(
     generation: dict[str, Any],
     validation: dict[str, Any],
     run_id: str,
+    repetition: int | dict[str, Any] = 1,
     prompt_alignment: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Create the persisted result payload for one run."""
+    if isinstance(repetition, dict) and prompt_alignment is None:
+        prompt_alignment = repetition
+        repetition = 1
     identity = record_identity(
         provider=provider,
         approach=approach,
         test_case=case_name,
         tier=tier,
+        repetition=int(repetition),
     )
     record = {
         **identity,
@@ -160,9 +169,14 @@ def _run_results_file(run_dir: Path) -> Path:
     return run_dir / "results.json"
 
 
-def _record_file(run_dir: Path, case_name: str, approach: str) -> Path:
+def _record_file(run_dir: Path, case_name: str, approach: str, repetition: int) -> Path:
     """Return the per-case result record path inside a run directory."""
-    return run_dir / "records" / f"{case_name}_{approach}.json"
+    return run_dir / "records" / f"{case_name}_{approach}_rep-{repetition}.json"
+
+
+def _artifact_dir(run_dir: Path, case_name: str, approach: str, repetition: int) -> Path:
+    """Return the complete artifact directory for one record."""
+    return run_dir / "cases" / case_name / approach / f"rep-{repetition}"
 
 
 def _create_run_dir(run_metadata: dict[str, Any]) -> Path:
@@ -184,9 +198,42 @@ def _save_record(
     """Persist one record to both the immutable run folder and legacy aggregate file."""
     run_results.append(record)
     legacy_results.append(record)
-    save_json(_record_file(run_dir, record["test_case"], record["approach"]), record)
+    save_json(_record_file(run_dir, record["test_case"], record["approach"], record["repetition"]), record)
     save_results(run_results, _run_results_file(run_dir))
-    save_results(legacy_results, RESULTS_FILE)
+    save_json(run_dir / "latest.json", {"results": str(_run_results_file(run_dir))})
+
+
+def _copytree_ignore(_dir: str, names: list[str]) -> set[str]:
+    return {name for name in names if name in {"node_modules", "dist", ".coverage"}}
+
+
+def _save_artifacts(
+    artifact_dir: Path,
+    case_data: dict[str, Any],
+    generation: dict[str, Any],
+    validation: dict[str, Any],
+    prompt_alignment: dict[str, Any] | None,
+) -> None:
+    """Persist best-effort artifacts for a case/approach/repetition."""
+    import shutil
+
+    generation_dir = artifact_dir / "generation"
+    logs_dir = artifact_dir / "logs"
+    generation_dir.mkdir(parents=True, exist_ok=True)
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    (artifact_dir / "requirement.txt").write_text(case_data.get("requirement", ""))
+    save_json(artifact_dir / "validation.json", validation)
+    save_json(artifact_dir / "judge.json", prompt_alignment or {"enabled": False})
+    save_json(artifact_dir / "record.json", generation)
+    (logs_dir / "generation.log").write_text(generation.get("error", ""))
+    (logs_dir / "validation.log").write_text(str(validation))
+    if NEST_PROJECT_DIR.exists():
+        shutil.copytree(
+            NEST_PROJECT_DIR,
+            artifact_dir / "generated-project",
+            dirs_exist_ok=True,
+            ignore=_copytree_ignore,
+        )
 
 
 def _selected_test_cases(
@@ -219,6 +266,7 @@ def _run_case(
     judge_enabled: bool,
     judge_provider: str,
     judge_model: str,
+    repetition: int,
 ) -> None:
     """Run, validate, print, and persist one experiment case."""
     _prepare_project()
@@ -248,8 +296,11 @@ def _run_case(
         generation,
         validation,
         run_metadata["run_id"],
+        repetition,
         prompt_alignment,
     )
+    artifact_dir = _artifact_dir(run_dir, case_name, current_approach, repetition)
+    _save_artifacts(artifact_dir, case_data, generation, validation, prompt_alignment)
     _save_record(
         record,
         run_dir=run_dir,
@@ -266,11 +317,12 @@ def run_experiments(
     judge_enabled: bool = False,
     judge_provider: str = DEFAULT_ALIGNMENT_PROVIDER,
     judge_model: str = DEFAULT_ALIGNMENT_MODEL,
+    repetitions: int = 1,
 ) -> None:
     """Execute generation experiments across the configured test cases."""
     approaches_to_run = _selected_approaches(approach)
     print(f"Using provider: {provider}")
-    run_metadata = build_run_metadata(provider, approaches_to_run)
+    run_metadata = build_run_metadata(provider, approaches_to_run, repetitions)
     run_metadata["prompt_alignment"] = {
         "enabled": judge_enabled,
         "provider": judge_provider if judge_enabled else None,
@@ -291,33 +343,36 @@ def run_experiments(
 
     _print_run_header(len(test_cases))
 
-    for case_name, case_data in test_cases.items():
-        tier = case_data.get("tier", "unknown")
-        for current_approach in approaches_to_run:
-            current_identity = record_identity(
-                provider=provider,
-                approach=current_approach,
-                test_case=case_name,
-                tier=tier,
-            )
-            if resume_key(current_identity) in completed_runs:
-                print(f"Skipping {case_name} ({current_approach}) - already completed")
-                continue
+    for repetition in range(1, repetitions + 1):
+        for case_name, case_data in test_cases.items():
+            tier = case_data.get("tier", "unknown")
+            for current_approach in approaches_to_run:
+                current_identity = record_identity(
+                    provider=provider,
+                    approach=current_approach,
+                    test_case=case_name,
+                    tier=tier,
+                    repetition=repetition,
+                )
+                if resume_key(current_identity) in completed_runs:
+                    print(f"Skipping {case_name} ({current_approach}) rep-{repetition} - already completed")
+                    continue
 
-            _run_case(
-                case_name,
-                case_data,
-                tier,
-                current_approach,
-                provider,
-                run_metadata,
-                run_dir,
-                run_results,
-                legacy_results,
-                judge_enabled,
-                judge_provider,
-                judge_model,
-            )
+                _run_case(
+                    case_name,
+                    case_data,
+                    tier,
+                    current_approach,
+                    provider,
+                    run_metadata,
+                    run_dir,
+                    run_results,
+                    legacy_results,
+                    judge_enabled,
+                    judge_provider,
+                    judge_model,
+                    repetition,
+                )
 
     print("-" * 70)
     print(f"Run results saved to {_run_results_file(run_dir)}")
@@ -329,7 +384,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run generation experiments.")
     parser.add_argument(
         "--approach",
-        choices=["dsl", "raw", "mixed", "textual-gen", "all"],
+        choices=["dsl", "raw", "mixed", "textual-gen-baseline", "textual-gen-spec", "textual-gen-fewshot", "all"],
         default="all",
         help="Which approach to run",
     )
@@ -367,6 +422,7 @@ def main() -> None:
         default=DEFAULT_ALIGNMENT_MODEL,
         help="Exact model for prompt-alignment judging",
     )
+    parser.add_argument("--repetitions", type=int, default=1)
     args = parser.parse_args()
     run_experiments(
         approach=args.approach,
@@ -376,6 +432,7 @@ def main() -> None:
         judge_enabled=args.judge,
         judge_provider=args.judge_provider,
         judge_model=args.judge_model,
+        repetitions=args.repetitions,
     )
 
 

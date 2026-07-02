@@ -11,12 +11,12 @@ def test_dsl_core_facade_exports_compiler_frontend() -> None:
     assert callable(dsl_core.compile_textual_dsl)
 
 
-def test_ir_facade_exports_loader() -> None:
-    """IR facade should expose normalized IR helpers."""
-    import packages.intermediate_representation as ir
+def test_blueprint_facade_exports_loader() -> None:
+    """Blueprint facade should expose canonical blueprint helpers."""
+    import packages.blueprint as blueprint
 
-    assert callable(ir.load_ir)
-    assert callable(ir.validate_ir)
+    assert callable(blueprint.load_blueprint)
+    assert callable(blueprint.validate_blueprint_structure)
 
 
 def test_generator_facade_exports_nestjs_generator() -> None:

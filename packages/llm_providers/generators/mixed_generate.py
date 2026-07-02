@@ -6,27 +6,22 @@ Two-phase approach:
 """
 
 import argparse
-import sys
 import traceback
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any
-
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from packages.llm_providers import LLMClient
+from packages.llm_providers.core.prompts import RAW_CODE_SYSTEM_PROMPT
+from packages.llm_providers.core.response_parser import clean_llm_response, try_parse_json
 from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml, save_blueprint
 from packages.llm_providers.generators.file_writer import save_generated_files
 from packages.llm_providers.generators.output import (
     log_json_parse_failure,
     log_run_instructions,
 )
-from packages.llm_providers.core.prompts import RAW_CODE_SYSTEM_PROMPT
-from packages.llm_providers.core.response_parser import clean_llm_response, try_parse_json
 from packages.shared import logger
 
 load_dotenv()

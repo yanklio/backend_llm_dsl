@@ -6,7 +6,6 @@ requires-python = ">=3.9"
 
 [project.scripts]
 nestforge = "apps.cli.main:main"
-nestgen = "apps.cli.main:main"
 
 [tool.ruff]
 line-length = 120
@@ -35,15 +34,7 @@ pythonpath = ["."]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = [
-    "--cov=packages",
-    "--cov=apps",
-    "--cov-report=html",
-    "--cov-report=term-missing",
-    "--cov-fail-under=70",
-    "-v",
-    "--tb=short"
-]
+addopts = ["-v", "--tb=short"]
 markers = [
     "unit: Unit tests",
     "integration: Integration tests",

@@ -22,7 +22,7 @@ class TestBuildParser:
         subactions = [a for a in parser._actions if isinstance(a, argparse._SubParsersAction)]
         assert len(subactions) == 1
         choices = subactions[0].choices
-        assert set(choices.keys()) == {"dsl", "raw", "mixed"}
+        assert {"compile", "validate", "generate-file", "experiments"}.issubset(choices.keys())
 
     def test_dsl_subparser_arguments(self):
         parser = build_parser()

@@ -1,17 +1,13 @@
 import argparse
 import sys
-from pathlib import Path
-
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from packages.llm_providers import GenerationResult, LLMClient
-from packages.llm_providers.generators.output import log_generation_statistics
 from packages.llm_providers.core.prompts import SYSTEM_PROMPT
 from packages.llm_providers.core.response_parser import clean_llm_response
+from packages.llm_providers.generators.output import log_generation_statistics
 from packages.shared import logger
 
 load_dotenv()

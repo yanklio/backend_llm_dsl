@@ -57,7 +57,7 @@ This is an **AI-powered NestJS application generator** that transforms natural l
 - **Textual DSL**: natural language -> textual DSL source -> deterministic compiler -> YAML blueprint -> Jinja2 rendering
 
 ### Core Value Proposition
-- **Natural Language to Code**: Describe your application in plain English, get production-ready NestJS code
+- **Natural Language to Code**: Describe your application in plain English, get runnable NestJS application scaffold
 - **Template-Driven**: Jinja2-based templates ensure consistent, maintainable code patterns
 - **Full-Stack Generation**: Creates controllers, services, entities, DTOs, and modules
 - **Database Integration**: Automatic TypeORM entity generation with relations
@@ -92,7 +92,7 @@ Practice/
 │   │   ├── core/             # Module/relation/root generation logic
 │   │   ├── utils/            # TypeScript type utilities
 │   │   └── templates/        # Jinja2 template files
-│   ├── intermediate_representation/ # Blueprint IR loading and validation
+│   ├── blueprint/             # Blueprint loading and structural validation
 │   └── validator/            # NPM/TypeScript runtime validation
 ├── 🏃 apps/                  # Application entry points
 │   ├── cli/                  # nestforge CLI (main.py + build_parser)

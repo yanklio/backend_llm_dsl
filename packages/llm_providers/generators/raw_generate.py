@@ -1,16 +1,13 @@
 import argparse
-import sys
 import traceback
 from pathlib import Path
 from typing import Any
-
-if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 
 from packages.llm_providers import GenerationResult, LLMClient
+from packages.llm_providers.core.prompts import RAW_CODE_SYSTEM_PROMPT
 from packages.llm_providers.generators.file_writer import save_generated_files
 from packages.llm_providers.generators.output import (
     log_generation_statistics,
@@ -18,7 +15,6 @@ from packages.llm_providers.generators.output import (
     log_run_instructions,
     parse_generated_files,
 )
-from packages.llm_providers.core.prompts import RAW_CODE_SYSTEM_PROMPT
 from packages.shared import logger
 
 load_dotenv()

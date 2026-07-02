@@ -4,8 +4,8 @@ from pathlib import Path
 
 import yaml
 
-from packages.generator_nestjs.generate import main as generate_project
 from packages.dsl_core.compiler import compile_file, compile_textual_dsl
+from packages.generator_nestjs.generate import main as generate_project
 
 
 def test_emitter_matches_simple_blueprint_snapshot() -> None:
@@ -30,9 +30,7 @@ entity Post {
   author: User @ManyToOne(inverse: posts) @onDelete(CASCADE)
 }
 
-module Users for User {
-  route GET /users -> User[]
-}
+module Users for User
 """
 
     blueprint = compile_textual_dsl(source)

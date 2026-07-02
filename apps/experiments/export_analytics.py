@@ -10,13 +10,15 @@ from typing import Any
 
 from .paths import ANALYTICS_DIR, RUNS_DIR
 
-APPROACH_ORDER = ["dsl", "textual_dsl", "textual-gen", "raw", "mixed"]
+APPROACH_ORDER = ["dsl", "textual-gen-baseline", "textual-gen-spec", "textual-gen-fewshot", "raw", "mixed"]
 TIER_ORDER = ["simple", "medium", "complex"]
 STATUS_ORDER = ["PASS", "FAIL", "ERR"]
 APPROACH_LABELS = {
     "dsl": "DSL",
     "textual_dsl": "Textual DSL",
-    "textual-gen": "Textual Gen",
+    "textual-gen-baseline": "Textual Baseline",
+    "textual-gen-spec": "Textual Spec",
+    "textual-gen-fewshot": "Textual Few-shot",
     "raw": "Raw",
     "mixed": "Mixed",
 }
@@ -26,7 +28,9 @@ STATUS_COLORS = {"PASS": "#4E79A7", "FAIL": "#A0A0A0", "ERR": "#6B6B6B"}
 APPROACH_COLORS = {
     "dsl": "#4E79A7",
     "textual_dsl": "#F28E2B",
-    "textual-gen": "#E15759",
+    "textual-gen-baseline": "#E15759",
+    "textual-gen-spec": "#B07AA1",
+    "textual-gen-fewshot": "#FF9DA7",
     "raw": "#7F7F7F",
     "mixed": "#59A14F",
 }

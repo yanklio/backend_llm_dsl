@@ -46,42 +46,11 @@ class EnumNode:
 
 
 @dataclass(frozen=True)
-class TypeNode:
-    """Named structural type declaration."""
-
-    name: str
-    fields: list[FieldNode]
-    location: SourceLocation
-
-
-@dataclass(frozen=True)
-class DtoNode:
-    """DTO declaration validated against a target entity."""
-
-    name: str
-    entity_name: str
-    fields: list[str]
-    location: SourceLocation
-
-
-@dataclass(frozen=True)
-class RouteNode:
-    """HTTP route declaration used for semantic specification."""
-
-    method: str
-    path: str
-    return_type: str
-    returns_array: bool
-    location: SourceLocation
-
-
-@dataclass(frozen=True)
 class ModuleNode:
     """Generated NestJS module declaration."""
 
     name: str
     entity_name: str
-    routes: list[RouteNode]
     location: SourceLocation
 
 
@@ -103,7 +72,5 @@ class ProgramNode:
     app: AppNode | None
     entities: list[EntityNode]
     modules: list[ModuleNode]
-    dtos: list[DtoNode]
     enums: list[EnumNode]
-    types: list[TypeNode]
     location: SourceLocation

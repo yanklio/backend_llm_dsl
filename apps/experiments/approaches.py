@@ -4,7 +4,7 @@ import time
 from pathlib import Path
 from typing import Any, Callable
 
-from packages.generator_nestjs.generate import main as dsl_generate
+from packages.generator_nestjs.generate import generate_from_file
 from packages.llm_providers import GenerationResult
 from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml
 from packages.llm_providers.generators.mixed_generate import mixed_generate, save_mixed_files
@@ -98,9 +98,7 @@ def run_dsl_approach(
 
     def operation(metrics: dict[str, Any]) -> None:
         with SuppressOutput():
-            result: GenerationResult = natural_language_to_yaml(
-                test_case_data["requirement"], provider=provider
-            )
+            result: GenerationResult = natural_language_to_yaml(test_case_data["requirement"], provider=provider)
 
         _apply_generation_metrics(metrics, result)
 
@@ -109,7 +107,7 @@ def run_dsl_approach(
 
         dsl_start = time.perf_counter()
         with SuppressOutput():
-            dsl_generate(str(blueprint_path), str(project_path))
+            generate_from_file(str(blueprint_path), str(project_path))
         metrics["dsl_time"] = time.perf_counter() - dsl_start
 
     return _run_with_timing(provider, operation)
@@ -126,9 +124,7 @@ def run_raw_approach(
 
     def operation(metrics: dict[str, Any]) -> None:
         with SuppressOutput():
-            result, files = generate_code_files(
-                test_case_data["requirement"], str(project_path), provider=provider
-            )
+            result, files = generate_code_files(test_case_data["requirement"], str(project_path), provider=provider)
             save_files(files, str(project_path))
 
         _apply_generation_metrics(metrics, result)
@@ -170,6 +166,7 @@ def run_textual_gen_approach(
     test_case_data: dict[str, Any],
     project_path: Path,
     provider: str = "openrouter",
+    variant: str = "spec",
 ) -> dict[str, Any]:
     """Run the LLM-generates-textual-DSL approach.
 
@@ -177,11 +174,12 @@ def run_textual_gen_approach(
     Deterministic compiler converts DSL -> YAML blueprint.
     Jinja2 generator converts blueprint -> NestJS code.
     """
-    from langchain_core.messages import HumanMessage, SystemMessage
-
     from packages.dsl_core.compiler import compile_textual_dsl
     from packages.llm_providers import LLMClient
-    from packages.llm_providers.core.prompts import TEXTUAL_GEN_SYSTEM_PROMPT
+    from packages.llm_providers.core.prompts import (
+        TextualPromptVariant,
+        build_textual_generation_messages,
+    )
     from packages.llm_providers.core.response_parser import clean_llm_response
 
     blueprint_path = blueprint_path_for(test_case_name, "_textual_gen_blueprint")
@@ -189,15 +187,7 @@ def run_textual_gen_approach(
 
     def operation(metrics: dict[str, Any]) -> None:
         client = LLMClient(provider_id=provider, temperature=0.1)
-        messages = [
-            SystemMessage(content=TEXTUAL_GEN_SYSTEM_PROMPT),
-            HumanMessage(
-                content=(
-                    f"Generate textual DSL source code for this NestJS application:\n\n"
-                    f"{test_case_data['requirement']}"
-                )
-            ),
-        ]
+        messages = build_textual_generation_messages(test_case_data["requirement"], TextualPromptVariant(variant))
 
         with SuppressOutput():
             result = client.generate(messages)
@@ -215,15 +205,32 @@ def run_textual_gen_approach(
 
         dsl_start = time.perf_counter()
         with SuppressOutput():
-            dsl_generate(str(blueprint_path), str(project_path))
+            generate_from_file(str(blueprint_path), str(project_path))
         metrics["dsl_time"] = time.perf_counter() - dsl_start
 
     return _run_with_timing(provider, operation)
 
 
+def run_textual_gen_baseline_approach(*args: Any, **kwargs: Any) -> dict[str, Any]:
+    """Run baseline textual generation."""
+    return run_textual_gen_approach(*args, variant="baseline", **kwargs)
+
+
+def run_textual_gen_spec_approach(*args: Any, **kwargs: Any) -> dict[str, Any]:
+    """Run specification textual generation."""
+    return run_textual_gen_approach(*args, variant="spec", **kwargs)
+
+
+def run_textual_gen_fewshot_approach(*args: Any, **kwargs: Any) -> dict[str, Any]:
+    """Run few-shot textual generation."""
+    return run_textual_gen_approach(*args, variant="fewshot", **kwargs)
+
+
 APPROACH_RUNNERS = {
     "dsl": run_dsl_approach,
     "raw": run_raw_approach,
-    "textual-gen": run_textual_gen_approach,
+    "textual-gen-baseline": run_textual_gen_baseline_approach,
+    "textual-gen-spec": run_textual_gen_spec_approach,
+    "textual-gen-fewshot": run_textual_gen_fewshot_approach,
     "mixed": run_mixed_approach,
 }

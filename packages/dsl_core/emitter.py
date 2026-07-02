@@ -47,7 +47,7 @@ class BlueprintEmitter:
         return [
             declared_modules.get(
                 entity.name,
-                ModuleNode(entity.name, entity.name, [], entity.location),
+                ModuleNode(entity.name, entity.name, entity.location),
             )
             for entity in resolved.program.entities
         ]
@@ -99,7 +99,7 @@ class BlueprintEmitter:
     ) -> str:
         if field.type_name in resolved.enums:
             return "enum"
-        if field.type_name in resolved.types or field.type_name in resolved.entities:
+        if field.type_name in resolved.entities:
             return "custom"
         return field.type_name
 

@@ -2,11 +2,6 @@
 """Script to verify provider configuration."""
 
 import argparse
-import sys
-from pathlib import Path
-
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml
 

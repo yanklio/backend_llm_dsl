@@ -6,7 +6,11 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from packages.llm_providers.generators.dsl_generate import DSL_REQUEST_TEMPLATE, natural_language_to_yaml, save_blueprint
+from packages.llm_providers.generators.dsl_generate import (
+    DSL_REQUEST_TEMPLATE,
+    natural_language_to_yaml,
+    save_blueprint,
+)
 
 
 class TestConstants:
@@ -138,7 +142,9 @@ class TestMain:
     def test_exits_on_exception(self, monkeypatch):
         monkeypatch.setattr(sys, "argv", ["prog", "my api"])
         with (
-            patch("packages.llm_providers.generators.dsl_generate.natural_language_to_yaml", side_effect=Exception("fail")),
+            patch(
+                "packages.llm_providers.generators.dsl_generate.natural_language_to_yaml", side_effect=Exception("fail")
+            ),
             patch("packages.llm_providers.generators.dsl_generate.logger"),
         ):
             from packages.llm_providers.generators.dsl_generate import main
