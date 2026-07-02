@@ -1,0 +1,66 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "mixed",
+  "test_case": "TEST_CASE_12",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "96a41c775f",
+  "run_id": "20260501_100826_87bcb94b",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 117.55,
+      "dsl_time": 0.0,
+      "total_time": 117.55703032899692,
+      "input_tokens": 2528,
+      "output_tokens": 5063,
+      "total_tokens": 7591,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free",
+      "phase1_input_tokens": 895,
+      "phase1_output_tokens": 657,
+      "phase1_total_tokens": 1552,
+      "phase2_input_tokens": 1633,
+      "phase2_output_tokens": 4406,
+      "phase2_total_tokens": 6039
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": false,
+      "total_files": 40,
+      "error_count": 1,
+      "errors": [
+        {
+          "file": "src/task/dto/create-task.dto.ts",
+          "line": 34,
+          "column": 4,
+          "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+          "code": "TS2552"
+        }
+      ]
+    },
+    "runtime": {
+      "valid": false,
+      "install_success": true,
+      "build_success": false,
+      "start_success": false,
+      "errors": {
+        "build": {
+          "stage": "build",
+          "message": "npm run build failed: \u001b[96msrc/task/dto/create-task.dto.ts\u001b[0m:\u001b[93m34\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m34\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~",
+          "code": "BUILD_FAILED"
+        },
+        "start": {
+          "stage": "start",
+          "message": "Application crashed: \u001b[96msrc/task/dto/create-task.dto.ts\u001b[0m:\u001b[93m34\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m34\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\n",
+          "code": "START_CRASHED"
+        }
+      }
+    },
+    "overall_valid": false
+  },
+  "timestamp": "2026-05-01T12:24:02.986113"
+}

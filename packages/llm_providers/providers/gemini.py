@@ -16,12 +16,16 @@ class GeminiProvider(BaseProvider):
 
     MODEL_NAME = "gemma-4-31b-it"
 
+<<<<<<<< HEAD:packages/llm_providers/providers/gemini.py
     def __init__(
         self,
         temperature: float = 0.1,
         timeout: int = 120,
         model_name: str | None = None,
     ):
+========
+    def __init__(self, temperature: float = 0.1, timeout: int = 120):
+>>>>>>>> origin/main:packages/llm_providers/generators/providers/gemini.py
         """Initialize Gemini provider.
 
         Args:
@@ -37,7 +41,11 @@ class GeminiProvider(BaseProvider):
             raise ValueError("GOOGLE_API_KEY not found")
 
         self.llm = ChatGoogleGenerativeAI(
+<<<<<<<< HEAD:packages/llm_providers/providers/gemini.py
             model=self.model_name,
+========
+            model=self.MODEL_NAME,
+>>>>>>>> origin/main:packages/llm_providers/generators/providers/gemini.py
             temperature=temperature,
             timeout=timeout,
         )
@@ -50,7 +58,11 @@ class GeminiProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
+<<<<<<<< HEAD:packages/llm_providers/providers/gemini.py
         return f"Google Gemini ({self.model_name})"
+========
+        return f"Google Gemini ({self.MODEL_NAME})"
+>>>>>>>> origin/main:packages/llm_providers/generators/providers/gemini.py
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Gemini."""

@@ -1,0 +1,999 @@
+[
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 32.98,
+        "dsl_time": 0.0,
+        "total_time": 33.126493797004514,
+        "input_tokens": 1684,
+        "output_tokens": 1722,
+        "total_tokens": 3406,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 213,
+        "phase1_total_tokens": 909,
+        "phase2_input_tokens": 988,
+        "phase2_output_tokens": 1509,
+        "phase2_total_tokens": 2497
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T14:56:30.662826"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_2",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 40.6,
+        "dsl_time": 0.0,
+        "total_time": 40.60413941000297,
+        "input_tokens": 1760,
+        "output_tokens": 1762,
+        "total_tokens": 3522,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 712,
+        "phase1_output_tokens": 243,
+        "phase1_total_tokens": 955,
+        "phase2_input_tokens": 1048,
+        "phase2_output_tokens": 1519,
+        "phase2_total_tokens": 2567
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T14:57:30.420417"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_3",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 42.56,
+        "dsl_time": 0.0,
+        "total_time": 42.56807330199808,
+        "input_tokens": 1691,
+        "output_tokens": 1652,
+        "total_tokens": 3343,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 688,
+        "phase1_output_tokens": 213,
+        "phase1_total_tokens": 901,
+        "phase2_input_tokens": 1003,
+        "phase2_output_tokens": 1439,
+        "phase2_total_tokens": 2442
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T14:58:25.055747"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_4",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 37.65,
+        "dsl_time": 0.0,
+        "total_time": 37.64832025200303,
+        "input_tokens": 1676,
+        "output_tokens": 1735,
+        "total_tokens": 3411,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 689,
+        "phase1_output_tokens": 234,
+        "phase1_total_tokens": 923,
+        "phase2_input_tokens": 987,
+        "phase2_output_tokens": 1501,
+        "phase2_total_tokens": 2488
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T14:59:20.603872"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_5",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 34.44,
+        "dsl_time": 0.0,
+        "total_time": 34.44095765199745,
+        "input_tokens": 1710,
+        "output_tokens": 1772,
+        "total_tokens": 3482,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 216,
+        "phase1_total_tokens": 912,
+        "phase2_input_tokens": 1014,
+        "phase2_output_tokens": 1556,
+        "phase2_total_tokens": 2570
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:00:06.881812"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_6",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 75.07,
+        "dsl_time": 0.0,
+        "total_time": 75.07029010599945,
+        "input_tokens": 1962,
+        "output_tokens": 3224,
+        "total_tokens": 5186,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 749,
+        "phase1_output_tokens": 373,
+        "phase1_total_tokens": 1122,
+        "phase2_input_tokens": 1213,
+        "phase2_output_tokens": 2851,
+        "phase2_total_tokens": 4064
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 4,
+        "errors": [
+          {
+            "file": "src/author/author.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Author | null>' is not assignable to type 'Promise<Author>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/post/post.service.ts",
+            "line": 23,
+            "column": 7,
+            "message": "Type 'Author | null' is not assignable to type 'Author'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/post/post.service.ts",
+            "line": 33,
+            "column": 5,
+            "message": "Type 'Promise<Post | null>' is not assignable to type 'Promise<Post>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/post/post.service.ts",
+            "line": 42,
+            "column": 7,
+            "message": "Type 'Author | null' is not assignable to type 'Author'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/author/author.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Author | null>' is not assignable to type 'Promise<Author>'.\n  Type 'Author | null' is not ",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/author/author.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Author | null>' is not assignable to type 'Promise<Author>'.\n  Type 'Author | null' is not assignable to type 'Author'.\n    Type 'null' is not assignable to type 'Author'.\n\n\u001b[7m25\u001b[0m     return this.authorRepository.findOne({ where: { id }, relations: ['posts'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/post/post.service.ts\u001b[0m:\u001b[93m23\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Author | null' is not assignable to type 'Author'.\n  Type 'null' is not assignable to type 'Author'.\n\n\u001b[7m23\u001b[0m       post.author = author;\n\u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~\u001b[0m\n\u001b[96msrc/post/post.service.ts\u001b[0m:\u001b[93m33\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Post | null>' is not assignable to type 'Promise<Post>'.\n  Type 'Post | null' is not assignable to type 'Post'.\n    Type 'null' is not assignable to type 'Post'.\n\n\u001b[7m33\u001b[0m     return this.postRepository.findOne({ where: { id } });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/post/post.service.ts\u001b[0m:\u001b[93m42\u001b[0m:\u001b[93m7\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Author | null' is not assignable to type 'Author'.\n  Type 'null' is not assignable to type 'Author'.\n\n\u001b[7m42\u001b[0m       post.author = author;\n\u001b[7m  \u001b[0m \u001b[91m      ~~~~~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:01:33.197056"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_7",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 68.68,
+        "dsl_time": 0.0,
+        "total_time": 68.68431548900116,
+        "input_tokens": 1944,
+        "output_tokens": 3029,
+        "total_tokens": 4973,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 745,
+        "phase1_output_tokens": 340,
+        "phase1_total_tokens": 1085,
+        "phase2_input_tokens": 1199,
+        "phase2_output_tokens": 2689,
+        "phase2_total_tokens": 3888
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 5,
+        "errors": [
+          {
+            "file": "src/category/category.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 21,
+            "column": 62,
+            "message": "No overload matches this call.",
+            "code": "TS2769"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 22,
+            "column": 5,
+            "message": "Type 'Product[]' is missing the following properties from type 'Product': id, name, price, stock, and 2 more.",
+            "code": "TS2740"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 30,
+            "column": 5,
+            "message": "Type 'Promise<Product | null>' is not assignable to type 'Promise<Product>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 36,
+            "column": 24,
+            "message": "Property 'category' does not exist on type 'UpdateProductDto'. Did you mean 'categoryId'?",
+            "code": "TS2551"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.\n  Type 'Category | nul",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.\n  Type 'Category | null' is not assignable to type 'Category'.\n    Type 'null' is not assignable to type 'Category'.\n\n\u001b[7m25\u001b[0m     return this.categoryRepository.findOne({ where: { id }, relations: ['products'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m21\u001b[0m:\u001b[93m62\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2769: \u001b[0mNo overload matches this call.\n  Overload 1 of 3, '(entityLikeArray: DeepPartial<Product>[]): Product[]', gave the following error.\n    Object literal may only specify known properties, and 'category' does not exist in type 'DeepPartial<Product>[]'.\n  Overload 2 of 3, '(entityLike: DeepPartial<Product>): Product', gave the following error.\n    Type 'Category | null' is not assignable to type 'DeepPartial<Category> | undefined'.\n      Type 'null' is not assignable to type 'DeepPartial<Category> | undefined'.\n\n\u001b[7m21\u001b[0m     const product = this.productRepository.create({ ...rest, category });\n\u001b[7m  \u001b[0m \u001b[91m                                                             ~~~~~~~~\u001b[0m\n\n  \u001b[96msrc/product/product.entity.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m3\u001b[0m\n    \u001b[7m22\u001b[0m   category: Category;\n    \u001b[7m  \u001b[0m \u001b[96m  ~~~~~~~~\u001b[0m\n    The expected type comes from property 'category' which is declared here on type 'DeepPartial<Product>'\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m22\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2740: \u001b[0mType 'Product[]' is missing the following properties from type 'Product': id, name, price, stock, and 2 more.\n\n\u001b[7m22\u001b[0m     return this.productRepository.save(product);\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m30\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Product | null>' is not assignable to type 'Promise<Product>'.\n  Type 'Product | null' is not assignable to type 'Product'.\n    Type 'null' is not assignable to type 'Product'.\n\n\u001b[7m30\u001b[0m     return this.productRepository.findOne({ where: { id } });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m36\u001b[0m:\u001b[93m24\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'category' does not exist on type 'UpdateProductDto'. Did you mean 'categoryId'?\n\n\u001b[7m36\u001b[0m       updateProductDto.category = category;\n\u001b[7m  \u001b[0m \u001b[91m                       ~~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:02:54.003605"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_8",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 67.8,
+        "dsl_time": 0.0,
+        "total_time": 67.80195287499373,
+        "input_tokens": 1940,
+        "output_tokens": 2826,
+        "total_tokens": 4766,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 761,
+        "phase1_output_tokens": 352,
+        "phase1_total_tokens": 1113,
+        "phase2_input_tokens": 1179,
+        "phase2_output_tokens": 2474,
+        "phase2_total_tokens": 3653
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 2,
+        "errors": [
+          {
+            "file": "src/owner/owner.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Owner | null>' is not assignable to type 'Promise<Owner>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/pet/pet.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Pet | null>' is not assignable to type 'Promise<Pet>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/owner/owner.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Owner | null>' is not assignable to type 'Promise<Owner>'.\n  Type 'Owner | null' is not assig",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/owner/owner.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Owner | null>' is not assignable to type 'Promise<Owner>'.\n  Type 'Owner | null' is not assignable to type 'Owner'.\n    Type 'null' is not assignable to type 'Owner'.\n\n\u001b[7m25\u001b[0m     return this.ownerRepository.findOne({ where: { id }, relations: ['pets'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/pet/pet.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Pet | null>' is not assignable to type 'Promise<Pet>'.\n  Type 'Pet | null' is not assignable to type 'Pet'.\n    Type 'null' is not assignable to type 'Pet'.\n\n\u001b[7m25\u001b[0m     return this.petRepository.findOne({ where: { id }, relations: ['owner'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:04:12.975405"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_9",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 78.15,
+        "dsl_time": 0.0,
+        "total_time": 78.15135700399696,
+        "input_tokens": 2065,
+        "output_tokens": 3286,
+        "total_tokens": 5351,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 772,
+        "phase1_output_tokens": 410,
+        "phase1_total_tokens": 1182,
+        "phase2_input_tokens": 1293,
+        "phase2_output_tokens": 2876,
+        "phase2_total_tokens": 4169
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/course/course.service.ts",
+            "line": 35,
+            "column": 5,
+            "message": "Type 'Promise<Course | null>' is not assignable to type 'Promise<Course>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/course/course.service.ts",
+            "line": 44,
+            "column": 23,
+            "message": "Property 'teacher' does not exist on type 'UpdateCourseDto'. Did you mean 'teacherId'?",
+            "code": "TS2551"
+          },
+          {
+            "file": "src/teacher/teacher.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Teacher | null>' is not assignable to type 'Promise<Teacher>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/course/course.service.ts\u001b[0m:\u001b[93m35\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Course | null>' is not assignable to type 'Promise<Course>'.\n  Type 'Course | null' is not ",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/course/course.service.ts\u001b[0m:\u001b[93m35\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Course | null>' is not assignable to type 'Promise<Course>'.\n  Type 'Course | null' is not assignable to type 'Course'.\n    Type 'null' is not assignable to type 'Course'.\n\n\u001b[7m35\u001b[0m     return this.courseRepository.findOne({ where: { id } });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/course/course.service.ts\u001b[0m:\u001b[93m44\u001b[0m:\u001b[93m23\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'teacher' does not exist on type 'UpdateCourseDto'. Did you mean 'teacherId'?\n\n\u001b[7m44\u001b[0m       updateCourseDto.teacher = teacher;\n\u001b[7m  \u001b[0m \u001b[91m                      ~~~~~~~\u001b[0m\n\u001b[96msrc/teacher/teacher.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Teacher | null>' is not assignable to type 'Promise<Teacher>'.\n  Type 'Teacher | null' is not assignable to type 'Teacher'.\n    Type 'null' is not assignable to type 'Teacher'.\n\n\u001b[7m25\u001b[0m     return this.teacherRepository.findOne({ where: { id }, relations: ['courses'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:05:42.024061"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_10",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 70.15,
+        "dsl_time": 0.0,
+        "total_time": 70.15082143899781,
+        "input_tokens": 2054,
+        "output_tokens": 3569,
+        "total_tokens": 5623,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 786,
+        "phase1_output_tokens": 415,
+        "phase1_total_tokens": 1201,
+        "phase2_input_tokens": 1268,
+        "phase2_output_tokens": 3154,
+        "phase2_total_tokens": 4422
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:07:09.787679"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 99.47,
+        "dsl_time": 0.0,
+        "total_time": 99.48698713799968,
+        "input_tokens": 2344,
+        "output_tokens": 4644,
+        "total_tokens": 6988,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 851,
+        "phase1_output_tokens": 551,
+        "phase1_total_tokens": 1402,
+        "phase2_input_tokens": 1493,
+        "phase2_output_tokens": 4093,
+        "phase2_total_tokens": 5586
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/category/category.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 42,
+            "column": 5,
+            "message": "Type 'Promise<Product | null>' is not assignable to type 'Promise<Product>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/review/review.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Review | null>' is not assignable to type 'Promise<Review>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.\n  Type 'Category | nul",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.\n  Type 'Category | null' is not assignable to type 'Category'.\n    Type 'null' is not assignable to type 'Category'.\n\n\u001b[7m25\u001b[0m     return this.categoryRepository.findOne({ where: { id }, relations: ['products'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m42\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Product | null>' is not assignable to type 'Promise<Product>'.\n  Type 'Product | null' is not assignable to type 'Product'.\n    Type 'null' is not assignable to type 'Product'.\n\n\u001b[7m42\u001b[0m     return this.productRepository.findOne({ where: { id }, relations: ['categories', 'reviews'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/review/review.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Review | null>' is not assignable to type 'Promise<Review>'.\n  Type 'Review | null' is not assignable to type 'Review'.\n    Type 'null' is not assignable to type 'Review'.\n\n\u001b[7m25\u001b[0m     return this.reviewRepository.findOne({ where: { id }, relations: ['product'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:09:01.745091"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_12",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 92.24000000000001,
+        "dsl_time": 0.0,
+        "total_time": 92.23636630100373,
+        "input_tokens": 2528,
+        "output_tokens": 4979,
+        "total_tokens": 7507,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 895,
+        "phase1_output_tokens": 660,
+        "phase1_total_tokens": 1555,
+        "phase2_input_tokens": 1633,
+        "phase2_output_tokens": 4319,
+        "phase2_total_tokens": 5952
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 2,
+        "errors": [
+          {
+            "file": "src/task/dto/create-task.dto.ts",
+            "line": 34,
+            "column": 4,
+            "message": "Cannot find name 'IsNumber'. Did you mean 'Number'?",
+            "code": "TS2552"
+          },
+          {
+            "file": "src/task/task.service.ts",
+            "line": 45,
+            "column": 11,
+            "message": "Property 'project' does not exist on type 'UpdateTaskDto'. Did you mean 'projectId'?",
+            "code": "TS2551"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/task/dto/create-task.dto.ts\u001b[0m:\u001b[93m34\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m34\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/task/dto/create-task.dto.ts\u001b[0m:\u001b[93m34\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2552: \u001b[0mCannot find name 'IsNumber'. Did you mean 'Number'?\n\n\u001b[7m34\u001b[0m   @IsNumber()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~~~~\u001b[0m\n\n  \u001b[96mnode_modules/typescript/lib/lib.es5.d.ts\u001b[0m:\u001b[93m619\u001b[0m:\u001b[93m13\u001b[0m\n    \u001b[7m619\u001b[0m declare var Number: NumberConstructor;\n    \u001b[7m   \u001b[0m \u001b[96m            ~~~~~~\u001b[0m\n    'Number' is declared here.\n\u001b[96msrc/task/task.service.ts\u001b[0m:\u001b[93m45\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'project' does not exist on type 'UpdateTaskDto'. Did you mean 'projectId'?\n\n\u001b[7m45\u001b[0m       dto.project = project;\n\u001b[7m  \u001b[0m \u001b[91m          ~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:10:45.001069"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_13",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 101.64,
+        "dsl_time": 0.0,
+        "total_time": 101.64133805500023,
+        "input_tokens": 2484,
+        "output_tokens": 4961,
+        "total_tokens": 7445,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 877,
+        "phase1_output_tokens": 647,
+        "phase1_total_tokens": 1524,
+        "phase2_input_tokens": 1607,
+        "phase2_output_tokens": 4314,
+        "phase2_total_tokens": 5921
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 5,
+        "errors": [
+          {
+            "file": "src/appointment/appointment.service.ts",
+            "line": 38,
+            "column": 5,
+            "message": "Type 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/appointment/dto/create-appointment.dto.ts",
+            "line": 27,
+            "column": 4,
+            "message": "Cannot find name 'IsInt'.",
+            "code": "TS2304"
+          },
+          {
+            "file": "src/appointment/dto/create-appointment.dto.ts",
+            "line": 31,
+            "column": 4,
+            "message": "Cannot find name 'IsInt'.",
+            "code": "TS2304"
+          },
+          {
+            "file": "src/doctor/doctor.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Doctor | null>' is not assignable to type 'Promise<Doctor>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/patient/patient.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Patient | null>' is not assignable to type 'Promise<Patient>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/appointment/appointment.service.ts\u001b[0m:\u001b[93m38\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.\n  Type 'Ap",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/appointment/appointment.service.ts\u001b[0m:\u001b[93m38\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.\n  Type 'Appointment | null' is not assignable to type 'Appointment'.\n    Type 'null' is not assignable to type 'Appointment'.\n\n\u001b[7m38\u001b[0m     return this.appointmentRepository.findOne({ where: { id }, relations: ['doctor', 'patient'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/appointment/dto/create-appointment.dto.ts\u001b[0m:\u001b[93m27\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'IsInt'.\n\n\u001b[7m27\u001b[0m   @IsInt()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~\u001b[0m\n\u001b[96msrc/appointment/dto/create-appointment.dto.ts\u001b[0m:\u001b[93m31\u001b[0m:\u001b[93m4\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2304: \u001b[0mCannot find name 'IsInt'.\n\n\u001b[7m31\u001b[0m   @IsInt()\n\u001b[7m  \u001b[0m \u001b[91m   ~~~~~\u001b[0m\n\u001b[96msrc/doctor/doctor.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Doctor | null>' is not assignable to type 'Promise<Doctor>'.\n  Type 'Doctor | null' is not assignable to type 'Doctor'.\n    Type 'null' is not assignable to type 'Doctor'.\n\n\u001b[7m25\u001b[0m     return this.doctorRepository.findOne({ where: { id }, relations: ['appointments'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/patient/patient.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Patient | null>' is not assignable to type 'Promise<Patient>'.\n  Type 'Patient | null' is not assignable to type 'Patient'.\n    Type 'null' is not assignable to type 'Patient'.\n\n\u001b[7m25\u001b[0m     return this.patientRepository.findOne({ where: { id }, relations: ['appointments'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:12:37.749307"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_14",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 89.97,
+        "dsl_time": 0.0,
+        "total_time": 89.9753186720045,
+        "input_tokens": 2391,
+        "output_tokens": 5063,
+        "total_tokens": 7454,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 866,
+        "phase1_output_tokens": 559,
+        "phase1_total_tokens": 1425,
+        "phase2_input_tokens": 1525,
+        "phase2_output_tokens": 4504,
+        "phase2_total_tokens": 6029
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 4,
+        "errors": [
+          {
+            "file": "src/author/author.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Author | null>' is not assignable to type 'Promise<Author>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/book/book.service.ts",
+            "line": 46,
+            "column": 5,
+            "message": "Type 'Promise<Book | null>' is not assignable to type 'Promise<Book>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/loan/loan.service.ts",
+            "line": 31,
+            "column": 5,
+            "message": "Type 'Promise<Loan | null>' is not assignable to type 'Promise<Loan>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/loan/loan.service.ts",
+            "line": 39,
+            "column": 16,
+            "message": "Property 'book' does not exist on type '{ borrowerName?: string | undefined; borrowDate?: string | undefined; returnDate?: string | undefined; status?: LoanStatus | undefined; }'.",
+            "code": "TS2339"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/author/author.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Author | null>' is not assignable to type 'Promise<Author>'.\n  Type 'Author | null' is not ",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/author/author.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Author | null>' is not assignable to type 'Promise<Author>'.\n  Type 'Author | null' is not assignable to type 'Author'.\n    Type 'null' is not assignable to type 'Author'.\n\n\u001b[7m25\u001b[0m     return this.authorRepository.findOne({ where: { id }, relations: ['books'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/book/book.service.ts\u001b[0m:\u001b[93m46\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Book | null>' is not assignable to type 'Promise<Book>'.\n  Type 'Book | null' is not assignable to type 'Book'.\n    Type 'null' is not assignable to type 'Book'.\n\n\u001b[7m46\u001b[0m     return this.bookRepository.findOne({ where: { id }, relations: ['authors', 'loans'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/loan/loan.service.ts\u001b[0m:\u001b[93m31\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Loan | null>' is not assignable to type 'Promise<Loan>'.\n  Type 'Loan | null' is not assignable to type 'Loan'.\n    Type 'null' is not assignable to type 'Loan'.\n\n\u001b[7m31\u001b[0m     return this.loanRepository.findOne({ where: { id }, relations: ['book'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/loan/loan.service.ts\u001b[0m:\u001b[93m39\u001b[0m:\u001b[93m16\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2339: \u001b[0mProperty 'book' does not exist on type '{ borrowerName?: string | undefined; borrowDate?: string | undefined; returnDate?: string | undefined; status?: LoanStatus | undefined; }'.\n\n\u001b[7m39\u001b[0m       loanData.book = book;\n\u001b[7m  \u001b[0m \u001b[91m               ~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:14:20.059935"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_15",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_125539_ebc5f18a",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 102.1,
+        "dsl_time": 0.0,
+        "total_time": 102.1046239579955,
+        "input_tokens": 2476,
+        "output_tokens": 5315,
+        "total_tokens": 7791,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 890,
+        "phase1_output_tokens": 620,
+        "phase1_total_tokens": 1510,
+        "phase2_input_tokens": 1586,
+        "phase2_output_tokens": 4695,
+        "phase2_total_tokens": 6281
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 40,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:16:13.811382"
+  }
+]

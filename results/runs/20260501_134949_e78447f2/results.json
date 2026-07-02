@@ -1,0 +1,844 @@
+[
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_1",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 40.330000000000005,
+        "dsl_time": 0.0,
+        "total_time": 40.500140382995596,
+        "input_tokens": 1706,
+        "output_tokens": 1727,
+        "total_tokens": 3433,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 249,
+        "phase1_total_tokens": 945,
+        "phase2_input_tokens": 1010,
+        "phase2_output_tokens": 1478,
+        "phase2_total_tokens": 2488
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:50:48.271406"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_2",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 45.07,
+        "dsl_time": 0.0,
+        "total_time": 45.07389759599755,
+        "input_tokens": 1756,
+        "output_tokens": 1817,
+        "total_tokens": 3573,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 712,
+        "phase1_output_tokens": 235,
+        "phase1_total_tokens": 947,
+        "phase2_input_tokens": 1044,
+        "phase2_output_tokens": 1582,
+        "phase2_total_tokens": 2626
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:51:50.988411"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_3",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 35.48,
+        "dsl_time": 0.0,
+        "total_time": 35.61811079000472,
+        "input_tokens": 1669,
+        "output_tokens": 1801,
+        "total_tokens": 3470,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 688,
+        "phase1_output_tokens": 226,
+        "phase1_total_tokens": 914,
+        "phase2_input_tokens": 981,
+        "phase2_output_tokens": 1575,
+        "phase2_total_tokens": 2556
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:54:39.622645"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_4",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 42.49,
+        "dsl_time": 0.0,
+        "total_time": 42.489044396999816,
+        "input_tokens": 1676,
+        "output_tokens": 1796,
+        "total_tokens": 3472,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 689,
+        "phase1_output_tokens": 197,
+        "phase1_total_tokens": 886,
+        "phase2_input_tokens": 987,
+        "phase2_output_tokens": 1599,
+        "phase2_total_tokens": 2586
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:55:39.948750"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_5",
+    "tier": "simple",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 45.72,
+        "dsl_time": 0.0,
+        "total_time": 45.72355245400104,
+        "input_tokens": 1710,
+        "output_tokens": 1924,
+        "total_tokens": 3634,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 696,
+        "phase1_output_tokens": 222,
+        "phase1_total_tokens": 918,
+        "phase2_input_tokens": 1014,
+        "phase2_output_tokens": 1702,
+        "phase2_total_tokens": 2716
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 16,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:56:37.469398"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_6",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 74.09,
+        "dsl_time": 0.0,
+        "total_time": 74.0978159389997,
+        "input_tokens": 1968,
+        "output_tokens": 3311,
+        "total_tokens": 5279,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 749,
+        "phase1_output_tokens": 384,
+        "phase1_total_tokens": 1133,
+        "phase2_input_tokens": 1219,
+        "phase2_output_tokens": 2927,
+        "phase2_total_tokens": 4146
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T15:58:10.209490"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_7",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 71.94,
+        "dsl_time": 0.0,
+        "total_time": 71.94539775099838,
+        "input_tokens": 1949,
+        "output_tokens": 3123,
+        "total_tokens": 5072,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 745,
+        "phase1_output_tokens": 360,
+        "phase1_total_tokens": 1105,
+        "phase2_input_tokens": 1204,
+        "phase2_output_tokens": 2763,
+        "phase2_total_tokens": 3967
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/category/category.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 35,
+            "column": 5,
+            "message": "Type 'Promise<Product | null>' is not assignable to type 'Promise<Product>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/product/product.service.ts",
+            "line": 44,
+            "column": 24,
+            "message": "Property 'category' does not exist on type 'UpdateProductDto'. Did you mean 'categoryId'?",
+            "code": "TS2551"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.\n  Type 'Category | nul",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/category/category.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Category | null>' is not assignable to type 'Promise<Category>'.\n  Type 'Category | null' is not assignable to type 'Category'.\n    Type 'null' is not assignable to type 'Category'.\n\n\u001b[7m25\u001b[0m     return this.categoryRepository.findOne({ where: { id }, relations: ['products'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m35\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Product | null>' is not assignable to type 'Promise<Product>'.\n  Type 'Product | null' is not assignable to type 'Product'.\n    Type 'null' is not assignable to type 'Product'.\n\n\u001b[7m35\u001b[0m     return this.productRepository.findOne({ where: { id }, relations: ['category'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m44\u001b[0m:\u001b[93m24\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'category' does not exist on type 'UpdateProductDto'. Did you mean 'categoryId'?\n\n\u001b[7m44\u001b[0m       updateProductDto.category = category;\n\u001b[7m  \u001b[0m \u001b[91m                       ~~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T15:59:33.469897"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_8",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 68.44,
+        "dsl_time": 0.0,
+        "total_time": 68.4388680070042,
+        "input_tokens": 2005,
+        "output_tokens": 3284,
+        "total_tokens": 5289,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 761,
+        "phase1_output_tokens": 398,
+        "phase1_total_tokens": 1159,
+        "phase2_input_tokens": 1244,
+        "phase2_output_tokens": 2886,
+        "phase2_total_tokens": 4130
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T16:00:54.149556"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_9",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 78.88,
+        "dsl_time": 0.0,
+        "total_time": 78.88075817999925,
+        "input_tokens": 2068,
+        "output_tokens": 3597,
+        "total_tokens": 5665,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 772,
+        "phase1_output_tokens": 441,
+        "phase1_total_tokens": 1213,
+        "phase2_input_tokens": 1296,
+        "phase2_output_tokens": 3156,
+        "phase2_total_tokens": 4452
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 28,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/course/course.service.ts",
+            "line": 37,
+            "column": 5,
+            "message": "Type 'Promise<Course | null>' is not assignable to type 'Promise<Course>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/course/course.service.ts",
+            "line": 46,
+            "column": 23,
+            "message": "Property 'teacher' does not exist on type 'UpdateCourseDto'. Did you mean 'teacherId'?",
+            "code": "TS2551"
+          },
+          {
+            "file": "src/teacher/teacher.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Teacher | null>' is not assignable to type 'Promise<Teacher>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/course/course.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Course | null>' is not assignable to type 'Promise<Course>'.\n  Type 'Course | null' is not ",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/course/course.service.ts\u001b[0m:\u001b[93m37\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Course | null>' is not assignable to type 'Promise<Course>'.\n  Type 'Course | null' is not assignable to type 'Course'.\n    Type 'null' is not assignable to type 'Course'.\n\n\u001b[7m37\u001b[0m     return this.courseRepository.findOne({ where: { id }, relations: ['teacher'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/course/course.service.ts\u001b[0m:\u001b[93m46\u001b[0m:\u001b[93m23\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'teacher' does not exist on type 'UpdateCourseDto'. Did you mean 'teacherId'?\n\n\u001b[7m46\u001b[0m       updateCourseDto.teacher = teacher;\n\u001b[7m  \u001b[0m \u001b[91m                      ~~~~~~~\u001b[0m\n\u001b[96msrc/teacher/teacher.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Teacher | null>' is not assignable to type 'Promise<Teacher>'.\n  Type 'Teacher | null' is not assignable to type 'Teacher'.\n    Type 'null' is not assignable to type 'Teacher'.\n\n\u001b[7m25\u001b[0m     return this.teacherRepository.findOne({ where: { id }, relations: ['courses'] });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T16:02:24.179604"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_10",
+    "tier": "medium",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 72.98,
+        "dsl_time": 0.0,
+        "total_time": 72.97767082000064,
+        "input_tokens": 2058,
+        "output_tokens": 3691,
+        "total_tokens": 5749,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 786,
+        "phase1_output_tokens": 434,
+        "phase1_total_tokens": 1220,
+        "phase2_input_tokens": 1272,
+        "phase2_output_tokens": 3257,
+        "phase2_total_tokens": 4529
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 28,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T16:03:55.910480"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_11",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 100.50999999999999,
+        "dsl_time": 0.0,
+        "total_time": 100.50737101199775,
+        "input_tokens": 2343,
+        "output_tokens": 4886,
+        "total_tokens": 7229,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 851,
+        "phase1_output_tokens": 604,
+        "phase1_total_tokens": 1455,
+        "phase2_input_tokens": 1492,
+        "phase2_output_tokens": 4282,
+        "phase2_total_tokens": 5774
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/product/product.service.ts",
+            "line": 3,
+            "column": 55,
+            "message": "'\"typeorm\"' has no exported member named 'FindConditions'. Did you mean 'FindOptions'?",
+            "code": "TS2724"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2724: \u001b[0m'\"typeorm\"' has no exported member named 'FindConditions'. Did you mean 'FindOptions'?\n\n\u001b[7m3\u001b[0m impor",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/product/product.service.ts\u001b[0m:\u001b[93m3\u001b[0m:\u001b[93m55\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2724: \u001b[0m'\"typeorm\"' has no exported member named 'FindConditions'. Did you mean 'FindOptions'?\n\n\u001b[7m3\u001b[0m import { Repository, FindManyOptions, FindOneOptions, FindConditions } from 'typeorm';\n\u001b[7m \u001b[0m \u001b[91m                                                      ~~~~~~~~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T16:05:47.824682"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_12",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 132.52,
+        "dsl_time": 0.0,
+        "total_time": 132.5313253639979,
+        "input_tokens": 2702,
+        "output_tokens": 5622,
+        "total_tokens": 8324,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 895,
+        "phase1_output_tokens": 815,
+        "phase1_total_tokens": 1710,
+        "phase2_input_tokens": 1807,
+        "phase2_output_tokens": 4807,
+        "phase2_total_tokens": 6614
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 42,
+        "error_count": 1,
+        "errors": [
+          {
+            "file": "src/task/task.service.ts",
+            "line": 48,
+            "column": 11,
+            "message": "Property 'project' does not exist on type 'UpdateTaskDto'. Did you mean 'projectId'?",
+            "code": "TS2551"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/task/task.service.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'project' does not exist on type 'UpdateTaskDto'. Did you mean 'projectId'?\n\n\u001b[7m48\u001b[0m       dto.p",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/task/task.service.ts\u001b[0m:\u001b[93m48\u001b[0m:\u001b[93m11\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2551: \u001b[0mProperty 'project' does not exist on type 'UpdateTaskDto'. Did you mean 'projectId'?\n\n\u001b[7m48\u001b[0m       dto.project = project;\n\u001b[7m  \u001b[0m \u001b[91m          ~~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T16:08:11.806942"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_13",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 103.07,
+        "dsl_time": 0.0,
+        "total_time": 103.08084768299886,
+        "input_tokens": 2482,
+        "output_tokens": 5205,
+        "total_tokens": 7687,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 877,
+        "phase1_output_tokens": 631,
+        "phase1_total_tokens": 1508,
+        "phase2_input_tokens": 1605,
+        "phase2_output_tokens": 4574,
+        "phase2_total_tokens": 6179
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": false,
+        "total_files": 40,
+        "error_count": 3,
+        "errors": [
+          {
+            "file": "src/appointment/appointment.service.ts",
+            "line": 52,
+            "column": 5,
+            "message": "Type 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/doctor/doctor.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Doctor | null>' is not assignable to type 'Promise<Doctor>'.",
+            "code": "TS2322"
+          },
+          {
+            "file": "src/patient/patient.service.ts",
+            "line": 25,
+            "column": 5,
+            "message": "Type 'Promise<Patient | null>' is not assignable to type 'Promise<Patient>'.",
+            "code": "TS2322"
+          }
+        ]
+      },
+      "runtime": {
+        "valid": false,
+        "install_success": true,
+        "build_success": false,
+        "start_success": false,
+        "errors": {
+          "build": {
+            "stage": "build",
+            "message": "npm run build failed: \u001b[96msrc/appointment/appointment.service.ts\u001b[0m:\u001b[93m52\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.\n  Type 'Ap",
+            "code": "BUILD_FAILED"
+          },
+          "start": {
+            "stage": "start",
+            "message": "Application crashed: \u001b[96msrc/appointment/appointment.service.ts\u001b[0m:\u001b[93m52\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Appointment | null>' is not assignable to type 'Promise<Appointment>'.\n  Type 'Appointment | null' is not assignable to type 'Appointment'.\n    Type 'null' is not assignable to type 'Appointment'.\n\n\u001b[7m52\u001b[0m     return this.appointmentRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/doctor/doctor.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Doctor | null>' is not assignable to type 'Promise<Doctor>'.\n  Type 'Doctor | null' is not assignable to type 'Doctor'.\n    Type 'null' is not assignable to type 'Doctor'.\n\n\u001b[7m25\u001b[0m     return this.doctorRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\u001b[96msrc/patient/patient.service.ts\u001b[0m:\u001b[93m25\u001b[0m:\u001b[93m5\u001b[0m - \u001b[91merror\u001b[0m\u001b[90m TS2322: \u001b[0mType 'Promise<Patient | null>' is not assignable to type 'Promise<Patient>'.\n  Type 'Patient | null' is not assignable to type 'Patient'.\n    Type 'null' is not assignable to type 'Patient'.\n\n\u001b[7m25\u001b[0m     return this.patientRepository.findOneBy({ id });\n\u001b[7m  \u001b[0m \u001b[91m    ~~~~~~\u001b[0m\n\n",
+            "code": "START_CRASHED"
+          }
+        }
+      },
+      "overall_valid": false
+    },
+    "timestamp": "2026-05-01T16:10:07.080374"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_14",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 113.99,
+        "dsl_time": 0.0,
+        "total_time": 113.99813834299857,
+        "input_tokens": 2391,
+        "output_tokens": 5385,
+        "total_tokens": 7776,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 866,
+        "phase1_output_tokens": 552,
+        "phase1_total_tokens": 1418,
+        "phase2_input_tokens": 1525,
+        "phase2_output_tokens": 4833,
+        "phase2_total_tokens": 6358
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 40,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T16:12:12.995953"
+  },
+  {
+    "provider": "openrouter",
+    "model_name": "openai/gpt-oss-20b:free",
+    "approach": "mixed",
+    "test_case": "TEST_CASE_15",
+    "tier": "complex",
+    "prompt_version": "full-app-scaffold-v1",
+    "prompt_hash": "96a41c775f",
+    "run_id": "20260501_134949_e78447f2",
+    "generation": {
+      "success": true,
+      "metrics": {
+        "llm_time": 104.61,
+        "dsl_time": 0.0,
+        "total_time": 104.60914640500414,
+        "input_tokens": 2476,
+        "output_tokens": 5431,
+        "total_tokens": 7907,
+        "provider_id": "openrouter",
+        "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+        "model_name": "openai/gpt-oss-20b:free",
+        "phase1_input_tokens": 890,
+        "phase1_output_tokens": 615,
+        "phase1_total_tokens": 1505,
+        "phase2_input_tokens": 1586,
+        "phase2_output_tokens": 4816,
+        "phase2_total_tokens": 6402
+      }
+    },
+    "validation": {
+      "syntactic": {
+        "valid": true,
+        "total_files": 40,
+        "error_count": 0,
+        "errors": []
+      },
+      "runtime": {
+        "valid": true,
+        "install_success": true,
+        "build_success": true,
+        "start_success": true,
+        "errors": {}
+      },
+      "overall_valid": true
+    },
+    "timestamp": "2026-05-01T16:14:09.622417"
+  }
+]

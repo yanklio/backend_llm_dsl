@@ -1,0 +1,47 @@
+{
+  "provider": "openrouter",
+  "model_name": "openai/gpt-oss-20b:free",
+  "approach": "mixed",
+  "test_case": "TEST_CASE_15",
+  "tier": "complex",
+  "prompt_version": "full-app-scaffold-v1",
+  "prompt_hash": "96a41c775f",
+  "run_id": "20260501_134949_e78447f2",
+  "generation": {
+    "success": true,
+    "metrics": {
+      "llm_time": 104.61,
+      "dsl_time": 0.0,
+      "total_time": 104.60914640500414,
+      "input_tokens": 2476,
+      "output_tokens": 5431,
+      "total_tokens": 7907,
+      "provider_id": "openrouter",
+      "provider": "OpenRouter (openai/gpt-oss-20b:free)",
+      "model_name": "openai/gpt-oss-20b:free",
+      "phase1_input_tokens": 890,
+      "phase1_output_tokens": 615,
+      "phase1_total_tokens": 1505,
+      "phase2_input_tokens": 1586,
+      "phase2_output_tokens": 4816,
+      "phase2_total_tokens": 6402
+    }
+  },
+  "validation": {
+    "syntactic": {
+      "valid": true,
+      "total_files": 40,
+      "error_count": 0,
+      "errors": []
+    },
+    "runtime": {
+      "valid": true,
+      "install_success": true,
+      "build_success": true,
+      "start_success": true,
+      "errors": {}
+    },
+    "overall_valid": true
+  },
+  "timestamp": "2026-05-01T16:14:09.622417"
+}

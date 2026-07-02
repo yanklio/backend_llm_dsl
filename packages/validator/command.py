@@ -18,6 +18,11 @@ PORT_PID_COMMANDS = [
     ["fuser"],
 ]
 
+PORT_PID_COMMANDS = [
+    ["lsof", "-ti"],
+    ["fuser"],
+]
+
 
 class SubprocessResult:
     """Result of a subprocess execution."""
