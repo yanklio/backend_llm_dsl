@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from src.shared.config import (
+from packages.shared.config import (
     AppConfig,
     LLMConfig,
     LogConfig,
@@ -13,7 +13,7 @@ from src.shared.config import (
     get_config,
     reset_config,
 )
-from src.shared.exceptions import ConfigurationException
+from packages.shared.exceptions import ConfigurationException
 
 
 class TestLLMConfig:
@@ -29,12 +29,7 @@ class TestLLMConfig:
 
     def test_custom_values(self):
         """Test setting custom values."""
-        config = LLMConfig(
-            timeout=60,
-            retry_attempts=5,
-            temperature=0.5,
-            fallback_enabled=False
-        )
+        config = LLMConfig(timeout=60, retry_attempts=5, temperature=0.5, fallback_enabled=False)
         assert config.timeout == 60
         assert config.retry_attempts == 5
         assert config.temperature == 0.5

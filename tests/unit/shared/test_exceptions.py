@@ -1,7 +1,6 @@
 """Tests for custom exception hierarchy."""
 
-
-from src.shared.exceptions import (
+from packages.shared.exceptions import (
     ConfigurationException,
     DSLGeneratorException,
     JSONParseException,
@@ -59,30 +58,19 @@ class TestLLMExceptions:
 
     def test_llm_provider_exception(self):
         """Test LLMProviderException."""
-        exc = LLMProviderException(
-            "Provider initialization failed",
-            code="LLM001",
-            context={"provider": "groq"}
-        )
+        exc = LLMProviderException("Provider initialization failed", code="LLM001", context={"provider": "groq"})
         assert "Provider initialization failed" in str(exc)
         assert exc.context["provider"] == "groq"
 
     def test_llm_timeout_exception(self):
         """Test LLMTimeoutException."""
-        exc = LLMTimeoutException(
-            "Request timed out after 120s",
-            code="LLM002",
-            context={"timeout": 120}
-        )
+        exc = LLMTimeoutException("Request timed out after 120s", code="LLM002", context={"timeout": 120})
         assert isinstance(exc, LLMException)
         assert exc.context["timeout"] == 120
 
     def test_llm_connection_exception(self):
         """Test LLMConnectionException."""
-        exc = LLMConnectionException(
-            "Connection refused",
-            code="LLM003"
-        )
+        exc = LLMConnectionException("Connection refused", code="LLM003")
         assert isinstance(exc, LLMException)
 
 
@@ -97,9 +85,7 @@ class TestValidationExceptions:
     def test_validation_timeout_exception(self):
         """Test ValidationTimeoutException."""
         exc = ValidationTimeoutException(
-            "npm install timed out",
-            code="VAL001",
-            context={"command": "npm install", "timeout": 180}
+            "npm install timed out", code="VAL001", context={"command": "npm install", "timeout": 180}
         )
         assert isinstance(exc, ValidationException)
         assert exc.context["command"] == "npm install"
@@ -116,9 +102,7 @@ class TestTemplateExceptions:
     def test_template_not_found_exception(self):
         """Test TemplateNotFoundException."""
         exc = TemplateNotFoundException(
-            "Template not found: entity.ts.j2",
-            code="TEMPLATE002",
-            context={"template_name": "entity.ts.j2"}
+            "Template not found: entity.ts.j2", code="TEMPLATE002", context={"template_name": "entity.ts.j2"}
         )
         assert isinstance(exc, TemplateException)
         assert "entity.ts.j2" in str(exc)
@@ -128,7 +112,7 @@ class TestTemplateExceptions:
         exc = TemplateRenderException(
             "Failed to render template",
             code="TEMPLATE004",
-            context={"template_name": "test.j2", "error": "Missing variable"}
+            context={"template_name": "test.j2", "error": "Missing variable"},
         )
         assert isinstance(exc, TemplateException)
 
@@ -138,20 +122,12 @@ class TestOtherExceptions:
 
     def test_configuration_exception(self):
         """Test ConfigurationException."""
-        exc = ConfigurationException(
-            "Missing API key",
-            code="CONFIG001",
-            context={"key": "GROQ_API_KEY"}
-        )
+        exc = ConfigurationException("Missing API key", code="CONFIG001", context={"key": "GROQ_API_KEY"})
         assert isinstance(exc, DSLGeneratorException)
         assert exc.context["key"] == "GROQ_API_KEY"
 
     def test_json_parse_exception(self):
         """Test JSONParseException."""
-        exc = JSONParseException(
-            "Failed to parse JSON",
-            code="JSON001",
-            context={"content": '{"invalid": }'}
-        )
+        exc = JSONParseException("Failed to parse JSON", code="JSON001", context={"content": '{"invalid": }'})
         assert isinstance(exc, DSLGeneratorException)
         assert exc.context["content"] == '{"invalid": }'

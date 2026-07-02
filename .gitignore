@@ -2,9 +2,23 @@
 nest_project/
 **/nest_project/
 **/node_modules/
-tests/test_cases/
 tests/metrics_output/
 metrics_output/
+
+# experiment outputs
+results/analytics/
+results/archives/
+results/runs/
+results/test_results.json
+results/experiments_debug.log
+
+# generated & development artifacts
+blueprint.yaml
+mixed_blueprint.yaml
+TEXTUAL_DSL_ACHIEVED_RESULT.md
+outputs/
+generated/
+**/*.egg-info/
 
 # Python virtual environments
 thesis_env/
@@ -21,11 +35,11 @@ __pycache__/
 # IDE files
 .vscode/
 .idea/
-.github/
 
 # testing
 .coverage
 htmlcov/
 *.pyc
-tests/test_results_copy.json
-tests/test_single_case_copy.py
+out/
+dist/
+node_modules/

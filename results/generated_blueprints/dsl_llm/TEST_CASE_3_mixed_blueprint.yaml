@@ -1,0 +1,29 @@
+root:
+  name: TodoApp
+  database:
+    type: sqlite
+    database: ./data/todo.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Todo
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: title
+          type: string
+          required: true
+          validation: {maxLength: 200}
+        - name: done
+          type: boolean
+          required: true
+          default: false
+        - name: dueDate
+          type: date
+          required: false
+      relations: []

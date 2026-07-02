@@ -86,9 +86,7 @@ def create_nest_project(nest_project_path: Path) -> bool:
         print("Error: nest new command timed out")
         return False
     except FileNotFoundError:
-        print(
-            "Error: nest CLI not found. Please ensure @nestjs/cli is installed globally"
-        )
+        print("Error: nest CLI not found. Please ensure @nestjs/cli is installed globally")
         print("Install it with: npm install -g @nestjs/cli")
         return False
     except Exception as e:
@@ -290,9 +288,7 @@ def main() -> None:
     print("\n2. Installing npm dependencies...")
     if not install_dependencies(nest_project_path):
         print("\n✗ npm install failed")
-        print(
-            "You can try running 'npm install --legacy-peer-deps' manually in nest_project/"
-        )
+        print("You can try running 'npm install --legacy-peer-deps' manually in nest_project/")
         sys.exit(1)
 
     print("\n" + "=" * 70)

@@ -1,0 +1,133 @@
+root:
+  name: ProjectManagement
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
+  features:
+    cors: true
+    swagger: true
+modules:
+- name: User
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 100
+    - name: email
+      type: string
+      required: true
+      unique: true
+      validation:
+        isEmail: true
+    - name: role
+      type: enum
+      required: true
+      enumValues:
+      - ADMIN
+      - MANAGER
+      - DEVELOPER
+      - VIEWER
+      default: DEVELOPER
+    relations:
+    - type: ManyToMany
+      model: Project
+      field: projects
+      required: true
+      inverseField: users
+- name: Project
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      validation:
+        minLength: 3
+        maxLength: 150
+    - name: description
+      type: string
+      required: true
+      validation:
+        maxLength: 500
+    - name: status
+      type: enum
+      required: true
+      enumValues:
+      - PLANNING
+      - ACTIVE
+      - ON_HOLD
+      - COMPLETED
+      default: PLANNING
+    - name: startDate
+      type: date
+      required: true
+    relations:
+    - type: ManyToMany
+      model: User
+      field: users
+      required: true
+      inverseField: projects
+    - type: OneToMany
+      model: Task
+      field: tasks
+      required: true
+      inverseField: project
+- name: Task
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: title
+      type: string
+      required: true
+      validation:
+        minLength: 3
+        maxLength: 200
+    - name: description
+      type: string
+      required: true
+      validation:
+        maxLength: 1000
+    - name: priority
+      type: enum
+      required: true
+      enumValues:
+      - LOW
+      - MEDIUM
+      - HIGH
+      - CRITICAL
+      default: MEDIUM
+    - name: completed
+      type: boolean
+      required: true
+      default: 'false'
+    - name: dueDate
+      type: date
+      required: true
+    relations:
+    - type: ManyToOne
+      model: Project
+      field: project
+      required: true
+      inverseField: tasks
+      onDelete: CASCADE

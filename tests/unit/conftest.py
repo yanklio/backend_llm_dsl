@@ -70,10 +70,7 @@ def jinja_env(sample_template_dir: Path) -> Environment:
         Configured Jinja2 Environment
     """
     return Environment(
-        loader=FileSystemLoader(str(sample_template_dir)),
-        autoescape=False,
-        trim_blocks=True,
-        lstrip_blocks=True
+        loader=FileSystemLoader(str(sample_template_dir)), autoescape=False, trim_blocks=True, lstrip_blocks=True
     )
 
 
@@ -90,11 +87,11 @@ def sample_module_data() -> dict:
             "fields": [
                 {"name": "id", "type": "number"},
                 {"name": "email", "type": "string"},
-                {"name": "name", "type": "string"}
+                {"name": "name", "type": "string"},
             ]
         },
         "authProtected": True,
-        "relatedEntities": []
+        "relatedEntities": [],
     }
 
 
@@ -104,7 +101,8 @@ def reset_config():
 
     This ensures tests don't interfere with each other through shared state.
     """
-    from src.shared.config import reset_config
+    from packages.shared.config import reset_config
+
     reset_config()
     yield
     reset_config()

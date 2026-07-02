@@ -1,0 +1,33 @@
+root:
+  name: UserApp
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
+  features:
+    cors: true
+    swagger: true
+modules:
+- name: User
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: email
+      type: string
+      required: true
+      unique: true
+      validation:
+        isEmail: true
+    - name: name
+      type: string
+      required: true
+      validation:
+        minLength: 1
+        maxLength: 100
+    relations: []

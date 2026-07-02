@@ -1,0 +1,85 @@
+root:
+  name: HRManagement
+  database:
+    type: sqlite
+    database: ./data/hr.db
+    synchronize: true
+    logging: false
+
+  features:
+    cors: true
+    swagger: true
+
+modules:
+  - name: Department
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 100, unique: true}
+        - name: budget
+          type: number
+          required: false
+          validation: {min: 0}
+      relations:
+        - type: OneToMany
+          model: Employee
+          field: employees
+          description: Employees belonging to this department
+  - name: Employee
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: firstName
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 50}
+        - name: lastName
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 50}
+        - name: email
+          type: string
+          required: true
+          validation: {unique: true, format: email}
+        - name: hireDate
+          type: date
+          required: true
+        - name: salary
+          type: number
+          required: true
+          validation: {min: 0}
+        - name: status
+          type: enum
+          required: true
+          enum: [active, on_leave, terminated]
+          default: active
+      relations:
+        - type: ManyToOne
+          model: Department
+          field: department
+          description: The department this employee belongs to
+        - type: ManyToMany
+          model: Skill
+          field: skills
+          description: Skills possessed by the employee
+  - name: Skill
+    generate: [controller, service, module, entity, dto]
+    entity:
+      fields:
+        - name: name
+          type: string
+          required: true
+          validation: {minLength: 2, maxLength: 80, unique: true}
+        - name: level
+          type: enum
+          required: true
+          enum: [beginner, intermediate, advanced, expert]
+          default: beginner
+      relations:
+        - type: ManyToMany
+          model: Employee
+          field: employees
+          description: Employees who have this skill
