@@ -87,7 +87,7 @@ def _run_with_timing(
     try:
         operation(metrics)
         return {"success": True, "metrics": _finish_metrics(metrics, start_time)}
-    except (GenerationPipelineError, ValueError, RuntimeError, OSError) as exc:
+    except (ValueError, RuntimeError, OSError) as exc:
         return {
             "success": False,
             "error": str(exc),

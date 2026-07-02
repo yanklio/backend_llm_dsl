@@ -82,27 +82,37 @@ class TestSetupJinjaEnv:
 class TestEnsureOutputDir:
     """Verify _ensure_output_dir function."""
 
-    def test_creates_directory(self, temp_dir):
-        output_path = temp_dir / "new_project"
-        result = _ensure_output_dir(str(output_path))
-        assert result == output_path
-        assert output_path.exists()
+    def test_creates_directory(self, temp_dir, monkeypatch):
+        monkeypatch.chdir(temp_dir)
+        result = _ensure_output_dir("new_project")
+        assert result == (temp_dir / "new_project").resolve()
+        assert result.exists()
 
-    def test_existing_directory(self, temp_dir):
+    def test_existing_directory(self, temp_dir, monkeypatch):
+        monkeypatch.chdir(temp_dir)
         existing = temp_dir / "existing"
         existing.mkdir()
-        result = _ensure_output_dir(str(existing))
-        assert result == existing
+        result = _ensure_output_dir("existing")
+        assert result == existing.resolve()
         assert existing.exists()
 
-    def test_default_path(self, temp_dir):
-        with patch("packages.generator_nestjs.generate.Path") as MockPath:
-            mock_path = MagicMock()
-            mock_path.exists.return_value = False
-            MockPath.return_value = mock_path
-            _ensure_output_dir(None)
-            MockPath.assert_called_once_with("nest_project")
-            mock_path.mkdir.assert_called_once_with(parents=True, exist_ok=True)
+    def test_default_path(self, temp_dir, monkeypatch):
+        monkeypatch.chdir(temp_dir)
+        result = _ensure_output_dir(None)
+        assert result == (temp_dir / "nest_project").resolve()
+        assert result.exists()
+
+    def test_rejects_absolute_output_dir(self, temp_dir):
+        with pytest.raises(ConfigurationException) as exc_info:
+            _ensure_output_dir(temp_dir / "absolute")
+
+        assert exc_info.value.code == "CONFIG005"
+
+    def test_rejects_parent_directory_output_dir(self):
+        with pytest.raises(ConfigurationException) as exc_info:
+            _ensure_output_dir("../escaped")
+
+        assert exc_info.value.code == "CONFIG005"
 
 
 class TestEnrichModulesWithRelations:

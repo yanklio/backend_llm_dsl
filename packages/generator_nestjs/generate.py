@@ -30,6 +30,27 @@ def _reject_unsafe_path_component(value: str, field_name: str) -> None:
         )
 
 
+def _resolve_safe_output_dir(output_dir: str | Path | None = None) -> Path:
+    """Resolve a user-provided output directory under the current working tree."""
+    requested = Path(output_dir or "nest_project")
+    if requested.is_absolute() or ".." in requested.parts:
+        raise ConfigurationException(
+            f"Unsafe output directory: {requested}",
+            code="CONFIG005",
+            context={"output_dir": str(requested)},
+        )
+
+    project_root = Path.cwd().resolve()
+    resolved = (project_root / requested).resolve()
+    if project_root != resolved and project_root not in resolved.parents:
+        raise ConfigurationException(
+            f"Output directory escapes project root: {requested}",
+            code="CONFIG005",
+            context={"output_dir": str(requested)},
+        )
+    return resolved
+
+
 def _validate_generated_paths(modules_data: list[dict[str, Any]]) -> None:
     """Validate blueprint-derived file path components before rendering files."""
     for module_data in modules_data:
@@ -56,8 +77,8 @@ def _setup_jinja_env() -> Environment:
 
 
 def _ensure_output_dir(output_dir: str | Path | None = None) -> Path:
-    """Ensure the output directory exists."""
-    base_output_dir = Path(output_dir or "nest_project")
+    """Ensure a safe output directory exists under the current working tree."""
+    base_output_dir = _resolve_safe_output_dir(output_dir)
     base_output_dir.mkdir(parents=True, exist_ok=True)
     return base_output_dir
 
@@ -99,13 +120,13 @@ def generate_from_blueprint(blueprint: dict[str, Any], output_dir: str | Path) -
     """Generate a NestJS project from an in-memory canonical blueprint."""
     data = coerce_blueprint(blueprint)
     env = _setup_jinja_env()
-    base_output_dir = _ensure_output_dir(output_dir)
     root_config = data.get("root", {})
     modules_data = data.get("modules", [])
     if not modules_data:
         logger.warn("No modules defined in blueprint!")
         return
     _validate_generated_paths(modules_data)
+    base_output_dir = _ensure_output_dir(output_dir)
     relations_map = handle_relations(modules_data)
     _enrich_modules_with_relations(modules_data, relations_map)
     generate_root_module(root_config, modules_data, env, base_output_dir)

@@ -45,9 +45,11 @@ module Users for User
     }
 
 
-def test_generator_accepts_dsl_input(temp_dir: Path) -> None:
+def test_generator_accepts_dsl_input(temp_dir: Path, monkeypatch) -> None:
     """Existing generator accepts textual DSL files through the blueprint reader."""
-    generate_project("docs/examples/textual_dsl/simple.dsl", str(temp_dir))
+    source_path = Path("docs/examples/textual_dsl/simple.dsl").resolve()
+    monkeypatch.chdir(temp_dir)
+    generate_project(str(source_path), "generated")
 
-    assert (temp_dir / "src" / "user" / "user.module.ts").exists()
-    assert (temp_dir / "src" / "user" / "entities" / "user.entity.ts").exists()
+    assert (temp_dir / "generated" / "src" / "user" / "user.module.ts").exists()
+    assert (temp_dir / "generated" / "src" / "user" / "entities" / "user.entity.ts").exists()
