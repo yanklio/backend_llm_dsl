@@ -82,29 +82,23 @@ class TestSetupJinjaEnv:
 class TestEnsureOutputDir:
     """Verify _ensure_output_dir function."""
 
-    def test_creates_directory(self, temp_dir, monkeypatch):
-        monkeypatch.chdir(temp_dir)
-        result = _ensure_output_dir("new_project")
-        assert result == (temp_dir / "new_project").resolve()
-        assert result.exists()
+    def test_creates_directory(self):
+        with patch("packages.generator_nestjs.generate.Path.mkdir") as mock_mkdir:
+            result = _ensure_output_dir("new_project")
 
-    def test_existing_directory(self, temp_dir, monkeypatch):
-        monkeypatch.chdir(temp_dir)
-        existing = temp_dir / "existing"
-        existing.mkdir()
-        result = _ensure_output_dir("existing")
-        assert result == existing.resolve()
-        assert existing.exists()
+        assert result == (Path.cwd() / "new_project").resolve()
+        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
-    def test_default_path(self, temp_dir, monkeypatch):
-        monkeypatch.chdir(temp_dir)
-        result = _ensure_output_dir(None)
-        assert result == (temp_dir / "nest_project").resolve()
-        assert result.exists()
+    def test_default_path(self):
+        with patch("packages.generator_nestjs.generate.Path.mkdir") as mock_mkdir:
+            result = _ensure_output_dir(None)
 
-    def test_rejects_absolute_output_dir(self, temp_dir):
+        assert result == (Path.cwd() / "nest_project").resolve()
+        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+
+    def test_rejects_absolute_output_dir(self):
         with pytest.raises(ConfigurationException) as exc_info:
-            _ensure_output_dir(temp_dir / "absolute")
+            _ensure_output_dir(Path("/unsafe/absolute"))
 
         assert exc_info.value.code == "CONFIG005"
 
@@ -227,36 +221,36 @@ class TestRelatedEntitiesForModule:
 class TestGeneratedPathSafety:
     """Verify blueprint-controlled file path components cannot escape output dir."""
 
-    def test_rejects_parent_directory_module_name(self, temp_dir):
+    def test_rejects_parent_directory_module_name(self):
         blueprint = {
             "root": {"name": "Unsafe"},
             "modules": [{"name": "../Evil", "generate": ["module"], "entity": {"fields": []}}],
         }
 
         with pytest.raises(ConfigurationException) as exc_info:
-            generate_from_blueprint(blueprint, temp_dir)
+            generate_from_blueprint(blueprint, "unused-output")
 
         assert exc_info.value.code == "CONFIG005"
 
-    def test_rejects_absolute_generate_key(self, temp_dir):
+    def test_rejects_absolute_generate_key(self):
         blueprint = {
             "root": {"name": "Unsafe"},
-            "modules": [{"name": "User", "generate": ["/tmp/pwned"], "entity": {"fields": []}}],
+            "modules": [{"name": "User", "generate": ["/unsafe/pwned"], "entity": {"fields": []}}],
         }
 
         with pytest.raises(ConfigurationException) as exc_info:
-            generate_from_blueprint(blueprint, temp_dir)
+            generate_from_blueprint(blueprint, "unused-output")
 
         assert exc_info.value.code == "CONFIG005"
 
-    def test_rejects_nested_generate_key(self, temp_dir):
+    def test_rejects_nested_generate_key(self):
         blueprint = {
             "root": {"name": "Unsafe"},
             "modules": [{"name": "User", "generate": ["../controller"], "entity": {"fields": []}}],
         }
 
         with pytest.raises(ConfigurationException) as exc_info:
-            generate_from_blueprint(blueprint, temp_dir)
+            generate_from_blueprint(blueprint, "unused-output")
 
         assert exc_info.value.code == "CONFIG005"
 
