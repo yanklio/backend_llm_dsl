@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from apps.cli import build_parser, cmd_generate, cmd_generate_mixed, cmd_generate_raw, main
+from apps.cli.main import build_parser, cmd_generate, cmd_generate_mixed, cmd_generate_raw, main
 
 
 class TestBuildParser:
@@ -95,7 +95,7 @@ class TestCmdGenerate:
         with (
             patch("apps.cli.main.natural_language_to_yaml") as mock_nl,
             patch("apps.cli.main.save_blueprint"),
-            patch("apps.cli.main.dsl_generate_main", side_effect=Exception("fail")),
+            patch("apps.cli.main.dsl_generate_main", side_effect=RuntimeError("fail")),
             patch("apps.cli.main.logger"),
         ):
             mock_nl.return_value = result

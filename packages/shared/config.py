@@ -4,56 +4,56 @@ Provides centralized, type-safe configuration using Pydantic with support
 for environment variables. Eliminates hardcoded values throughout the codebase.
 """
 
+import os
 from pathlib import Path
-from typing import Optional
+from typing import Any, ClassVar, Optional
 
-from pydantic import Field
-
-try:
-    from pydantic_settings import BaseSettings, SettingsConfigDict
-except ModuleNotFoundError:
-    import os
-    from typing import Any
-
-    from pydantic import BaseModel
-
-    class BaseSettings(BaseModel):
-        def __init__(self, **data: Any) -> None:
-            prefix = getattr(self, "model_config", {}).get("env_prefix", "")
-            values = dict(data)
-            for name, field in self.__class__.model_fields.items():
-                env_name = f"{prefix}{name}".upper()
-                if name not in values and env_name in os.environ:
-                    raw = os.environ[env_name]
-                    annotation = field.annotation
-                    if annotation is bool:
-                        values[name] = raw.lower() in {"1", "true", "yes", "on"}
-                    elif annotation is int:
-                        values[name] = int(raw)
-                    elif annotation is float:
-                        values[name] = float(raw)
-                    else:
-                        values[name] = raw
-            super().__init__(**values)
-
-    def SettingsConfigDict(**kwargs: Any) -> dict[str, Any]:
-        return kwargs
+from pydantic import BaseModel, Field
 
 
-def _settings_config(prefix: str) -> SettingsConfigDict:
+def _coerce_env_value(raw_value: str, annotation: object) -> object:
+    """Coerce an environment string to the annotated field type."""
+    if annotation is bool:
+        return raw_value.lower() in {"1", "true", "yes", "on"}
+    if annotation is int:
+        return int(raw_value)
+    if annotation is float:
+        return float(raw_value)
+    if annotation is Path:
+        return Path(raw_value)
+    return raw_value
+
+
+class EnvSettings(BaseModel):
+    """Minimal environment-backed settings base used by project config classes."""
+
+    model_config = {"extra": "ignore"}
+
+    @classmethod
+    def env_prefix(cls) -> str:
+        """Return the environment prefix for a settings class."""
+        return str(cls.__dict__.get("_env_prefix", ""))
+
+    def __init__(self, **data: Any) -> None:
+        """Initialize settings with values from explicit data or environment."""
+        values = dict(data)
+        prefix = self.env_prefix()
+        for name, field in self.__class__.model_fields.items():
+            env_name = f"{prefix}{name}".upper()
+            if name not in values and env_name in os.environ:
+                values[name] = _coerce_env_value(os.environ[env_name], field.annotation)
+        super().__init__(**values)
+
+
+def _settings_config(prefix: str) -> dict[str, str]:
     """Build the shared settings configuration for a section."""
-    return SettingsConfigDict(
-        env_prefix=prefix,
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
+    return {"env_prefix": prefix}
 
 
 SUB_CONFIG_FIELDS = ["llm", "validation", "template", "log"]
 
 
-class LLMConfig(BaseSettings):
+class LLMConfig(EnvSettings):
     """Configuration for LLM providers and API calls.
 
     Attributes:
@@ -68,10 +68,10 @@ class LLMConfig(BaseSettings):
     temperature: float = Field(default=0.1, ge=0.0, le=2.0)
     fallback_enabled: bool = Field(default=True)
 
-    model_config = _settings_config("LLM_")
+    _env_prefix: ClassVar[str] = "LLM_"
 
 
-class ValidationConfig(BaseSettings):
+class ValidationConfig(EnvSettings):
     """Configuration for code validation (npm, tsc, runtime).
 
     Attributes:
@@ -90,10 +90,10 @@ class ValidationConfig(BaseSettings):
     port_wait_time: int = Field(default=5, ge=1, le=30)
     port_check_retries: int = Field(default=10, ge=1, le=50)
 
-    model_config = _settings_config("VALIDATION_")
+    _env_prefix: ClassVar[str] = "VALIDATION_"
 
 
-class TemplateConfig(BaseSettings):
+class TemplateConfig(EnvSettings):
     """Configuration for Jinja2 template rendering.
 
     Attributes:
@@ -108,7 +108,7 @@ class TemplateConfig(BaseSettings):
     trim_blocks: bool = Field(default=True)
     lstrip_blocks: bool = Field(default=True)
 
-    model_config = _settings_config("TEMPLATE_")
+    _env_prefix: ClassVar[str] = "TEMPLATE_"
 
     def get_templates_path(self) -> Path:
         """Get the absolute path to templates directory.
@@ -131,7 +131,7 @@ class TemplateConfig(BaseSettings):
         return templates_path
 
 
-class LogConfig(BaseSettings):
+class LogConfig(EnvSettings):
     """Configuration for logging.
 
     Attributes:
@@ -146,10 +146,10 @@ class LogConfig(BaseSettings):
     format: str = Field(default="%(message)s")
     show_timestamps: bool = Field(default=False)
 
-    model_config = _settings_config("LOG_")
+    _env_prefix: ClassVar[str] = "LOG_"
 
 
-class AppConfig(BaseSettings):
+class AppConfig(EnvSettings):
     """Main application configuration.
 
     Aggregates all configuration sections and provides a single entry point.
@@ -168,7 +168,7 @@ class AppConfig(BaseSettings):
     log: LogConfig = Field(default_factory=LogConfig)
     debug: bool = Field(default=False)
 
-    model_config = _settings_config("APP_")
+    _env_prefix: ClassVar[str] = "APP_"
 
     def __init__(self, **data):
         """Initialize app config.

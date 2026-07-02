@@ -4,8 +4,13 @@ import time
 from pathlib import Path
 from typing import Any, Callable
 
+import yaml
+
+from packages.dsl_core.compiler import compile_textual_dsl
 from packages.generator_nestjs.generate import generate_from_file
-from packages.llm_providers import GenerationResult
+from packages.llm_providers import GenerationResult, LLMClient
+from packages.llm_providers.core.prompts import TextualPromptVariant, build_textual_generation_messages
+from packages.llm_providers.core.response_parser import clean_llm_response
 from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml
 from packages.llm_providers.generators.mixed_generate import mixed_generate, save_mixed_files
 from packages.llm_providers.generators.raw_generate import generate_code_files, save_files
@@ -22,6 +27,10 @@ MIXED_PHASE_METRIC_FIELDS = (
     "phase2_output_tokens",
     "phase2_total_tokens",
 )
+
+
+class GenerationPipelineError(RuntimeError):
+    """Raised when an experiment generation pipeline returns a failure result."""
 
 
 def _base_metrics(provider: str) -> dict[str, Any]:
@@ -78,7 +87,7 @@ def _run_with_timing(
     try:
         operation(metrics)
         return {"success": True, "metrics": _finish_metrics(metrics, start_time)}
-    except Exception as exc:
+    except (GenerationPipelineError, ValueError, RuntimeError, OSError) as exc:
         return {
             "success": False,
             "error": str(exc),
@@ -104,6 +113,9 @@ def run_dsl_approach(
 
         with open(blueprint_path, "w") as file_handle:
             file_handle.write(result.content)
+        metrics["artifact_blueprint_path"] = str(blueprint_path)
+        metrics["raw_response"] = result.raw_content or result.content
+        metrics["cleaned_response"] = result.content
 
         dsl_start = time.perf_counter()
         with SuppressOutput():
@@ -128,6 +140,8 @@ def run_raw_approach(
             save_files(files, str(project_path))
 
         _apply_generation_metrics(metrics, result)
+        metrics["raw_response"] = result.raw_content or result.content
+        metrics["cleaned_response"] = result.content
 
     return _run_with_timing(provider, operation)
 
@@ -154,9 +168,12 @@ def run_mixed_approach(
             if result["success"]:
                 save_mixed_files(result["files"], str(project_path))
             else:
-                raise Exception(result.get("error", "Unknown mixed generation error"))
+                raise GenerationPipelineError(result.get("error", "Unknown mixed generation error"))
 
         _apply_mixed_metrics(metrics, result["statistics"])
+        metrics["artifact_blueprint_path"] = str(blueprint_path)
+        metrics["phase1_raw_response"] = result.get("phase1_raw_response", result.get("blueprint", ""))
+        metrics["phase2_raw_response"] = result.get("code_response", "")
 
     return _run_with_timing(provider, operation)
 
@@ -174,14 +191,6 @@ def run_textual_gen_approach(
     Deterministic compiler converts DSL -> YAML blueprint.
     Jinja2 generator converts blueprint -> NestJS code.
     """
-    from packages.dsl_core.compiler import compile_textual_dsl
-    from packages.llm_providers import LLMClient
-    from packages.llm_providers.core.prompts import (
-        TextualPromptVariant,
-        build_textual_generation_messages,
-    )
-    from packages.llm_providers.core.response_parser import clean_llm_response
-
     blueprint_path = blueprint_path_for(test_case_name, "_textual_gen_blueprint")
     blueprint_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -191,6 +200,7 @@ def run_textual_gen_approach(
 
         with SuppressOutput():
             result = client.generate(messages)
+        result.raw_content = result.content
         result.content = clean_llm_response(result.content)
 
         _apply_generation_metrics(metrics, result)
@@ -199,9 +209,11 @@ def run_textual_gen_approach(
             blueprint = compile_textual_dsl(result.content)
 
         with open(blueprint_path, "w") as f:
-            import yaml
-
             yaml.safe_dump(blueprint, f, sort_keys=False)
+        metrics["artifact_blueprint_path"] = str(blueprint_path)
+        metrics["raw_response"] = result.raw_content or result.content
+        metrics["cleaned_response"] = result.content
+        metrics["textual_dsl"] = result.content
 
         dsl_start = time.perf_counter()
         with SuppressOutput():

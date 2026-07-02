@@ -1,6 +1,7 @@
 """CLI and orchestration for benchmark experiment runs."""
 
 import argparse
+import shutil
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -16,7 +17,7 @@ from packages.llm_providers.evaluation.prompt_alignment import (
 from .approaches import APPROACH_RUNNERS
 from .io import SuppressOutput, load_results, load_test_cases, save_json, save_results
 from .metadata import build_run_metadata, record_identity, resume_key
-from .paths import NEST_PROJECT_DIR, RESULTS_FILE, RUNS_DIR
+from .paths import NEST_PROJECT_DIR, RUNS_DIR
 from .project import clean_project, ensure_base_project, validate_project
 
 
@@ -133,7 +134,7 @@ def _run_prompt_alignment(
                 provider=provider,
                 model_name=model_name,
             )
-    except Exception as exc:
+    except (RuntimeError, ValueError, OSError) as exc:
         return _empty_prompt_alignment(
             provider=provider,
             model_name=model_name,
@@ -193,11 +194,9 @@ def _save_record(
     *,
     run_dir: Path,
     run_results: list[dict[str, Any]],
-    legacy_results: list[dict[str, Any]],
 ) -> None:
-    """Persist one record to both the immutable run folder and legacy aggregate file."""
+    """Persist one record to the immutable run folder only."""
     run_results.append(record)
-    legacy_results.append(record)
     save_json(_record_file(run_dir, record["test_case"], record["approach"], record["repetition"]), record)
     save_results(run_results, _run_results_file(run_dir))
     save_json(run_dir / "latest.json", {"results": str(_run_results_file(run_dir))})
@@ -205,6 +204,25 @@ def _save_record(
 
 def _copytree_ignore(_dir: str, names: list[str]) -> set[str]:
     return {name for name in names if name in {"node_modules", "dist", ".coverage"}}
+
+
+def _write_if_present(path: Path, value: object | None) -> None:
+    """Write an artifact file when a value is available."""
+    if value is not None:
+        path.write_text(str(value))
+
+
+def _write_generation_artifacts(generation_dir: Path, generation: dict[str, Any]) -> None:
+    """Write normalized generation artifacts captured by approach runners."""
+    metrics = generation.get("metrics", {})
+    _write_if_present(generation_dir / "raw-response.txt", metrics.get("raw_response"))
+    _write_if_present(generation_dir / "cleaned-response.txt", metrics.get("cleaned_response"))
+    _write_if_present(generation_dir / "textual.dsl", metrics.get("textual_dsl"))
+    _write_if_present(generation_dir / "phase-1-raw-response.txt", metrics.get("phase1_raw_response"))
+    _write_if_present(generation_dir / "phase-2-raw-response.txt", metrics.get("phase2_raw_response"))
+    blueprint_path = metrics.get("artifact_blueprint_path")
+    if blueprint_path and Path(str(blueprint_path)).exists():
+        shutil.copyfile(str(blueprint_path), generation_dir / "blueprint.yaml")
 
 
 def _save_artifacts(
@@ -215,8 +233,6 @@ def _save_artifacts(
     prompt_alignment: dict[str, Any] | None,
 ) -> None:
     """Persist best-effort artifacts for a case/approach/repetition."""
-    import shutil
-
     generation_dir = artifact_dir / "generation"
     logs_dir = artifact_dir / "logs"
     generation_dir.mkdir(parents=True, exist_ok=True)
@@ -225,6 +241,7 @@ def _save_artifacts(
     save_json(artifact_dir / "validation.json", validation)
     save_json(artifact_dir / "judge.json", prompt_alignment or {"enabled": False})
     save_json(artifact_dir / "record.json", generation)
+    _write_generation_artifacts(generation_dir, generation)
     (logs_dir / "generation.log").write_text(generation.get("error", ""))
     (logs_dir / "validation.log").write_text(str(validation))
     if NEST_PROJECT_DIR.exists():
@@ -262,7 +279,6 @@ def _run_case(
     run_metadata: dict[str, Any],
     run_dir: Path,
     run_results: list[dict[str, Any]],
-    legacy_results: list[dict[str, Any]],
     judge_enabled: bool,
     judge_provider: str,
     judge_model: str,
@@ -305,7 +321,6 @@ def _run_case(
         record,
         run_dir=run_dir,
         run_results=run_results,
-        legacy_results=legacy_results,
     )
 
 
@@ -338,7 +353,6 @@ def run_experiments(
     NEST_PROJECT_DIR.mkdir(exist_ok=True)
 
     run_results = load_results(_run_results_file(run_dir))
-    legacy_results = load_results(RESULTS_FILE)
     completed_runs = _completed_run_keys(run_results)
 
     _print_run_header(len(test_cases))
@@ -367,7 +381,6 @@ def run_experiments(
                     run_metadata,
                     run_dir,
                     run_results,
-                    legacy_results,
                     judge_enabled,
                     judge_provider,
                     judge_model,
@@ -376,7 +389,7 @@ def run_experiments(
 
     print("-" * 70)
     print(f"Run results saved to {_run_results_file(run_dir)}")
-    print(f"Legacy aggregate results updated at {RESULTS_FILE}")
+    print("Timestamped run directory is authoritative; legacy aggregate was not updated.")
 
 
 def main() -> None:

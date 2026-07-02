@@ -34,6 +34,7 @@ def natural_language_to_yaml(description: str, provider: str = "openrouter") -> 
     ]
 
     result = client.generate(messages)
+    result.raw_content = result.content
     result.content = clean_llm_response(result.content)
     return result
 

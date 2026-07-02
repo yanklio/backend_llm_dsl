@@ -162,6 +162,9 @@ def mixed_generate(
             "success": True,
             "files": files,
             "blueprint": blueprint_yaml,
+            "phase1_raw_response": blueprint_result.raw_content or blueprint_yaml,
+            "code_response": code_result.content,
+            "cleaned_code_response": cleaned_content,
             "statistics": _build_mixed_statistics(blueprint_result, code_result),
         }
     except Exception as e:
@@ -171,6 +174,9 @@ def mixed_generate(
             "success": False,
             "error": str(e),
             "blueprint": blueprint_yaml,
+            "phase1_raw_response": blueprint_result.raw_content or blueprint_yaml,
+            "code_response": code_result.content,
+            "cleaned_code_response": cleaned_content,
             "phase1_result": blueprint_result,
         }
 

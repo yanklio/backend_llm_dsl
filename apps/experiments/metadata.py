@@ -61,7 +61,7 @@ def prompt_hash_for(approach: str) -> str:
 def _command_output(command: list[str]) -> str:
     try:
         return subprocess.check_output(command, text=True, stderr=subprocess.DEVNULL).strip()
-    except Exception:
+    except (OSError, subprocess.SubprocessError):
         return "unknown"
 
 

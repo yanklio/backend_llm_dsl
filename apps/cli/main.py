@@ -5,10 +5,13 @@ from pathlib import Path
 
 import yaml
 
+from apps.experiments.export_analytics import main as export_analytics_main
 from apps.experiments.runner import run_experiments
 from packages.dsl_core.compiler import compile_file
 from packages.generator_nestjs.generate import generate_from_file
 from packages.generator_nestjs.generate import main as dsl_generate_main
+from packages.llm_providers.generators import mixed_generate as mixed_generator
+from packages.llm_providers.generators import raw_generate as raw_generator
 from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml, save_blueprint
 from packages.llm_providers.generators.output import log_generation_statistics
 from packages.shared import logger
@@ -21,25 +24,21 @@ def cmd_generate(args: argparse.Namespace) -> None:
     save_blueprint(result.content, args.blueprint)
     try:
         dsl_generate_main(args.blueprint, args.project)
-    except Exception as exc:
+    except RuntimeError as exc:
         logger.error(f"Code generation failed: {exc}")
         raise SystemExit(1) from exc
 
 
 def cmd_generate_raw(args: argparse.Namespace) -> None:
     """Backward-compatible raw pipeline command."""
-    from packages.llm_providers.generators.raw_generate import generate_code_files, save_files
-
-    result, files = generate_code_files(args.description, args.project, provider=args.model)
+    result, files = raw_generator.generate_code_files(args.description, args.project, provider=args.model)
     log_generation_statistics(result)
-    save_files(files, args.project)
+    raw_generator.save_files(files, args.project)
 
 
 def cmd_generate_mixed(args: argparse.Namespace) -> None:
     """Backward-compatible mixed pipeline command."""
-    from packages.llm_providers.generators.mixed_generate import mixed_generate, save_mixed_files
-
-    result = mixed_generate(
+    result = mixed_generator.mixed_generate(
         description=args.description,
         output_dir=args.project,
         blueprint_path=args.blueprint,
@@ -48,7 +47,7 @@ def cmd_generate_mixed(args: argparse.Namespace) -> None:
     if not result["success"]:
         logger.error(f"Generation failed: {result.get('error')}")
         raise SystemExit(1)
-    save_mixed_files(result["files"], args.project)
+    mixed_generator.save_mixed_files(result["files"], args.project)
 
 
 def cmd_compile(args: argparse.Namespace) -> None:
@@ -77,6 +76,23 @@ def cmd_generate_prompt(args: argparse.Namespace) -> None:
     result = natural_language_to_yaml(args.requirement, provider=args.provider)
     log_generation_statistics(result)
     save_blueprint(result.content, args.output)
+
+
+def cmd_experiments_run(args: argparse.Namespace) -> None:
+    """Run thesis experiments from parsed CLI arguments."""
+    run_experiments(
+        approach=args.approach,
+        provider=args.provider,
+        case_id=args.case_id,
+        limit=args.limit,
+        repetitions=args.repetitions,
+        judge_enabled=args.judge,
+    )
+
+
+def cmd_experiments_export(_args: argparse.Namespace) -> None:
+    """Delegate to the analytics export CLI."""
+    export_analytics_main()
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -134,18 +150,9 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--limit", type=int, default=None)
     run_parser.add_argument("--repetitions", type=int, default=1)
     run_parser.add_argument("--judge", action="store_true")
-    run_parser.set_defaults(
-        func=lambda args: run_experiments(
-            approach=args.approach,
-            provider=args.provider,
-            case_id=args.case_id,
-            limit=args.limit,
-            repetitions=args.repetitions,
-            judge_enabled=args.judge,
-        )
-    )
+    run_parser.set_defaults(func=cmd_experiments_run)
     export_parser = experiment_subparsers.add_parser("export")
-    export_parser.set_defaults(func=lambda _args: __import__("apps.experiments.export_analytics"))
+    export_parser.set_defaults(func=cmd_experiments_export)
     return parser
 
 

@@ -32,6 +32,7 @@ class GenerationResult:
         output_tokens: Number of output tokens (if available)
         total_tokens: Total tokens used (if available)
         model_name: Name of the model used (if available)
+        raw_content: Original provider response before parser cleanup (if changed)
     """
 
     content: str
@@ -41,6 +42,7 @@ class GenerationResult:
     output_tokens: Optional[int] = None
     total_tokens: Optional[int] = None
     model_name: Optional[str] = None
+    raw_content: Optional[str] = None
 
 
 class BaseProvider(ABC):
