@@ -4,21 +4,11 @@ import re
 from pathlib import Path
 from typing import Optional
 
-<<<<<<<< HEAD:packages/validator/syntax.py
 from packages.validator.command import run_command
 from packages.validator.error_types import ErrorCodes, ValidationError, create_error
 
 TSC_TIMEOUT_SECONDS = 60
 TYPESCRIPT_ERROR_PATTERN = re.compile(r"^(?P<file>.+)\((?P<line>\d+),(?P<column>\d+)\): error (?P<error>.+)$")
-========
-from src.validators.command import run_command
-from src.validators.error_types import ErrorCodes, ValidationError, create_error
-
-TSC_TIMEOUT_SECONDS = 60
-TYPESCRIPT_ERROR_PATTERN = re.compile(
-    r"^(?P<file>.+)\((?P<line>\d+),(?P<column>\d+)\): error (?P<error>.+)$"
-)
->>>>>>>> origin/main:src/validators/syntax.py
 
 
 def _format_syntactic_error(error: ValidationError) -> dict[str, object]:

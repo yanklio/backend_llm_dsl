@@ -11,11 +11,7 @@ from typing import Any, Optional
 
 from langchain_core.messages import BaseMessage
 
-<<<<<<<< HEAD:packages/llm_providers/providers/base.py
 from packages.llm_providers.core.response_parser import clean_llm_response
-========
-from src.llm.response_parser import clean_llm_response
->>>>>>>> origin/main:packages/llm_providers/generators/providers/base.py
 
 TOKEN_USAGE_KEYS = {
     "input_tokens": ("prompt_tokens", "input_tokens"),
@@ -54,16 +50,12 @@ class BaseProvider(ABC):
 
     MODEL_NAME = "unknown"
 
-<<<<<<<< HEAD:packages/llm_providers/providers/base.py
     def __init__(
         self,
         temperature: float = 0.1,
         timeout: int = 120,
         model_name: Optional[str] = None,
     ):
-========
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
->>>>>>>> origin/main:packages/llm_providers/generators/providers/base.py
         """Initialize the provider.
 
         Args:
@@ -90,11 +82,7 @@ class BaseProvider(ABC):
     @property
     def model_name(self) -> str:
         """Exact model identifier used by this provider."""
-<<<<<<<< HEAD:packages/llm_providers/providers/base.py
         return self._model_name
-========
-        return self.MODEL_NAME
->>>>>>>> origin/main:packages/llm_providers/generators/providers/base.py
 
     @abstractmethod
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:

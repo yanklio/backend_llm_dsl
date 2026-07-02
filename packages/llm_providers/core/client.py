@@ -17,11 +17,7 @@ load_dotenv()
 
 def _provider_registry() -> dict[str, type[BaseProvider]]:
     """Return the mapping of provider IDs to provider classes."""
-<<<<<<<< HEAD:packages/llm_providers/core/client.py
     from ..providers import GeminiProvider, GroqProvider, OllamaProvider, OpenRouterProvider
-========
-    from .providers import GeminiProvider, GroqProvider, OllamaProvider, OpenRouterProvider
->>>>>>>> origin/main:packages/llm_providers/generators/client.py
 
     return {
         "gemini": GeminiProvider,
@@ -31,7 +27,6 @@ def _provider_registry() -> dict[str, type[BaseProvider]]:
     }
 
 
-<<<<<<<< HEAD:packages/llm_providers/core/client.py
 def get_default_model_name(provider_id: str) -> str:
     """Return the default model name for a provider, or 'unknown'."""
     providers = _provider_registry()
@@ -46,9 +41,6 @@ def get_provider(
     timeout: int,
     model_name: Optional[str] = None,
 ) -> BaseProvider:
-========
-def get_provider(provider_id: str, temperature: float, timeout: int) -> BaseProvider:
->>>>>>>> origin/main:packages/llm_providers/generators/client.py
     """Get provider by ID."""
     providers = _provider_registry()
 
@@ -58,11 +50,7 @@ def get_provider(provider_id: str, temperature: float, timeout: int) -> BaseProv
             code="LLM001",
         )
 
-<<<<<<<< HEAD:packages/llm_providers/core/client.py
     return providers[provider_id](temperature, timeout, model_name=model_name)
-========
-    return providers[provider_id](temperature, timeout)
->>>>>>>> origin/main:packages/llm_providers/generators/client.py
 
 
 class LLMClient:

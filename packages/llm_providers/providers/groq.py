@@ -16,16 +16,12 @@ class GroqProvider(BaseProvider):
 
     MODEL_NAME = "llama-3.3-70b-versatile"
 
-<<<<<<<< HEAD:packages/llm_providers/providers/groq.py
     def __init__(
         self,
         temperature: float = 0.1,
         timeout: int = 120,
         model_name: str | None = None,
     ):
-========
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
->>>>>>>> origin/main:packages/llm_providers/generators/providers/groq.py
         """Initialize Groq provider.
 
         Args:
@@ -42,11 +38,7 @@ class GroqProvider(BaseProvider):
             raise ValueError("GROQ_API_KEY not found")
 
         self.llm = ChatGroq(
-<<<<<<<< HEAD:packages/llm_providers/providers/groq.py
             model=self.model_name,
-========
-            model=self.MODEL_NAME,
->>>>>>>> origin/main:packages/llm_providers/generators/providers/groq.py
             api_key=api_key,
             temperature=temperature,
             timeout=timeout,
@@ -61,11 +53,7 @@ class GroqProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-<<<<<<<< HEAD:packages/llm_providers/providers/groq.py
         return f"Groq ({self.model_name})"
-========
-        return f"Groq ({self.MODEL_NAME})"
->>>>>>>> origin/main:packages/llm_providers/generators/providers/groq.py
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Groq."""

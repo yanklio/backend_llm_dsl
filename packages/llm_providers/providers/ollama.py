@@ -15,16 +15,12 @@ class OllamaProvider(BaseProvider):
 
     MODEL_NAME = "llama3.1"
 
-<<<<<<<< HEAD:packages/llm_providers/providers/ollama.py
     def __init__(
         self,
         temperature: float = 0.1,
         timeout: int = 120,
         model_name: str | None = None,
     ):
-========
-    def __init__(self, temperature: float = 0.1, timeout: int = 120):
->>>>>>>> origin/main:packages/llm_providers/generators/providers/ollama.py
         """Initialize Ollama provider.
 
         Args:
@@ -44,11 +40,7 @@ class OllamaProvider(BaseProvider):
             raise ConnectionError("Ollama is not running on localhost:11434")
 
         self.llm = ChatOllama(
-<<<<<<<< HEAD:packages/llm_providers/providers/ollama.py
             model=self.model_name,
-========
-            model=self.MODEL_NAME,
->>>>>>>> origin/main:packages/llm_providers/generators/providers/ollama.py
             temperature=temperature,
             timeout=timeout,
         )
@@ -61,11 +53,7 @@ class OllamaProvider(BaseProvider):
     @property
     def name(self) -> str:
         """Human-readable provider name."""
-<<<<<<<< HEAD:packages/llm_providers/providers/ollama.py
         return f"Ollama ({self.model_name})"
-========
-        return f"Ollama ({self.MODEL_NAME})"
->>>>>>>> origin/main:packages/llm_providers/generators/providers/ollama.py
 
     def generate(self, messages: list[BaseMessage]) -> GenerationResult:
         """Generate content using Ollama."""
