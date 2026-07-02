@@ -10,8 +10,8 @@ from packages.generator_nestjs.generate import main as generate_project
 
 def test_emitter_matches_simple_blueprint_snapshot() -> None:
     """Simple DSL compiles to the expected existing YAML blueprint shape."""
-    source_path = Path("examples/textual_dsl/simple.dsl")
-    expected_path = Path("examples/textual_dsl/simple.blueprint.yaml")
+    source_path = Path("docs/examples/textual_dsl/simple.dsl")
+    expected_path = Path("docs/examples/textual_dsl/simple.blueprint.yaml")
 
     actual = compile_file(source_path)
     expected = yaml.safe_load(expected_path.read_text())
@@ -47,7 +47,7 @@ module Users for User
 
 def test_generator_accepts_dsl_input(temp_dir: Path) -> None:
     """Existing generator accepts textual DSL files through the blueprint reader."""
-    generate_project("examples/textual_dsl/simple.dsl", str(temp_dir))
+    generate_project("docs/examples/textual_dsl/simple.dsl", str(temp_dir))
 
     assert (temp_dir / "src" / "user" / "user.module.ts").exists()
     assert (temp_dir / "src" / "user" / "entities" / "user.entity.ts").exists()

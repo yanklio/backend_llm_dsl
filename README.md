@@ -24,9 +24,9 @@ Final textual ablation approaches are `textual-gen-baseline`, `textual-gen-spec`
 
 ```bash
 pip install -e .
-nestforge compile examples/textual_dsl/simple.dsl --output blueprint.yaml
-nestforge validate examples/textual_dsl/simple.dsl
-nestforge generate-file examples/textual_dsl/simple.dsl --output generated/
+nestforge compile docs/examples/textual_dsl/simple.dsl --output blueprint.yaml
+nestforge validate docs/examples/textual_dsl/simple.dsl
+nestforge generate-file docs/examples/textual_dsl/simple.dsl --output generated/
 nestforge generate-prompt "Create a blog API" --approach dsl --provider openrouter --model openai/gpt-oss-20b:free
 nestforge experiments run --approach all --provider openrouter --repetitions 1
 nestforge experiments export

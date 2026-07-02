@@ -13,6 +13,7 @@ from packages.generator_nestjs.generate import (
     _read_blueprint,
     _related_entities_for_module,
     _setup_jinja_env,
+    generate_from_blueprint,
     main,
 )
 from packages.shared.exceptions import ConfigurationException
@@ -211,6 +212,43 @@ class TestRelatedEntitiesForModule:
         }
         result = _related_entities_for_module("Post", relations_map)
         assert result == ["User"]
+
+
+class TestGeneratedPathSafety:
+    """Verify blueprint-controlled file path components cannot escape output dir."""
+
+    def test_rejects_parent_directory_module_name(self, temp_dir):
+        blueprint = {
+            "root": {"name": "Unsafe"},
+            "modules": [{"name": "../Evil", "generate": ["module"], "entity": {"fields": []}}],
+        }
+
+        with pytest.raises(ConfigurationException) as exc_info:
+            generate_from_blueprint(blueprint, temp_dir)
+
+        assert exc_info.value.code == "CONFIG005"
+
+    def test_rejects_absolute_generate_key(self, temp_dir):
+        blueprint = {
+            "root": {"name": "Unsafe"},
+            "modules": [{"name": "User", "generate": ["/tmp/pwned"], "entity": {"fields": []}}],
+        }
+
+        with pytest.raises(ConfigurationException) as exc_info:
+            generate_from_blueprint(blueprint, temp_dir)
+
+        assert exc_info.value.code == "CONFIG005"
+
+    def test_rejects_nested_generate_key(self, temp_dir):
+        blueprint = {
+            "root": {"name": "Unsafe"},
+            "modules": [{"name": "User", "generate": ["../controller"], "entity": {"fields": []}}],
+        }
+
+        with pytest.raises(ConfigurationException) as exc_info:
+            generate_from_blueprint(blueprint, temp_dir)
+
+        assert exc_info.value.code == "CONFIG005"
 
 
 class TestMain:

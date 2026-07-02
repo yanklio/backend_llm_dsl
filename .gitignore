@@ -17,6 +17,7 @@ blueprint.yaml
 mixed_blueprint.yaml
 TEXTUAL_DSL_ACHIEVED_RESULT.md
 outputs/
+generated/
 **/*.egg-info/
 
 # Python virtual environments

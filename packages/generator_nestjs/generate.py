@@ -8,6 +8,7 @@ from jinja2 import Environment, FileSystemLoader
 
 from packages.blueprint import coerce_blueprint, load_blueprint
 from packages.dsl_core.compiler import compile_file
+from packages.shared.exceptions import ConfigurationException
 from packages.shared.logger import logger
 
 from .core.modules.module import generate_module
@@ -16,6 +17,26 @@ from .core.root import generate_root_module
 from .utils.ts_types import to_ts_type
 
 RELATION_COPY_FIELDS = ["inverseField", "joinTable", "joinColumn"]
+
+
+def _reject_unsafe_path_component(value: str, field_name: str) -> None:
+    """Reject blueprint values that could escape the selected output directory."""
+    candidate = Path(value)
+    if not value or "\\" in value or candidate.is_absolute() or candidate.name != value or value in {".", ".."}:
+        raise ConfigurationException(
+            f"Unsafe generated path component for {field_name}: {value}",
+            code="CONFIG005",
+            context={field_name: value},
+        )
+
+
+def _validate_generated_paths(modules_data: list[dict[str, Any]]) -> None:
+    """Validate blueprint-derived file path components before rendering files."""
+    for module_data in modules_data:
+        module_name = str(module_data.get("name", ""))
+        _reject_unsafe_path_component(module_name.lower(), "module.name")
+        for file_key in module_data.get("generate", []):
+            _reject_unsafe_path_component(str(file_key), "module.generate")
 
 
 def _read_blueprint(blueprint_file: str | Path) -> dict[str, Any]:
@@ -84,6 +105,7 @@ def generate_from_blueprint(blueprint: dict[str, Any], output_dir: str | Path) -
     if not modules_data:
         logger.warn("No modules defined in blueprint!")
         return
+    _validate_generated_paths(modules_data)
     relations_map = handle_relations(modules_data)
     _enrich_modules_with_relations(modules_data, relations_map)
     generate_root_module(root_config, modules_data, env, base_output_dir)

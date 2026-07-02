@@ -59,7 +59,7 @@ class TestCmdGenerate:
     """Tests for cmd_generate function (DSL pipeline)."""
 
     def test_success(self):
-        args = MagicMock(description="test app", blueprint="bp.yaml", project="./out", model="gemini")
+        args = MagicMock(description="test app", blueprint="blueprint.yaml", project="./generated", model="gemini")
         result = SimpleNamespace(
             content="yaml_content",
             provider="gemini",
@@ -79,11 +79,11 @@ class TestCmdGenerate:
             cmd_generate(args)
 
         mock_nl.assert_called_once_with("test app", provider="gemini")
-        mock_save.assert_called_once_with("yaml_content", "bp.yaml")
-        mock_gen.assert_called_once_with("bp.yaml", "./out")
+        mock_save.assert_called_once_with("yaml_content", "blueprint.yaml")
+        mock_gen.assert_called_once_with("blueprint.yaml", "./generated")
 
     def test_generation_failure_exits(self):
-        args = MagicMock(description="test", blueprint="bp.yaml", project="./out", model="gemini")
+        args = MagicMock(description="test", blueprint="blueprint.yaml", project="./generated", model="gemini")
         result = SimpleNamespace(
             content="yaml",
             provider="gemini",
@@ -108,7 +108,7 @@ class TestCmdGenerateRaw:
     """Tests for cmd_generate_raw function."""
 
     def test_success(self):
-        args = MagicMock(description="test", project="./out", model="groq")
+        args = MagicMock(description="test", project="./generated", model="groq")
         gen_result = SimpleNamespace(
             content="code",
             provider="groq",
@@ -126,15 +126,15 @@ class TestCmdGenerateRaw:
             mock_gen.return_value = (gen_result, {"file.ts": "content"})
             cmd_generate_raw(args)
 
-        mock_gen.assert_called_once_with("test", "./out", provider="groq")
-        mock_save.assert_called_once_with({"file.ts": "content"}, "./out")
+        mock_gen.assert_called_once_with("test", "./generated", provider="groq")
+        mock_save.assert_called_once_with({"file.ts": "content"}, "./generated")
 
 
 class TestCmdGenerateMixed:
     """Tests for cmd_generate_mixed function."""
 
     def test_success(self):
-        args = MagicMock(description="test", blueprint="bp.yaml", project="./out", model="openrouter")
+        args = MagicMock(description="test", blueprint="blueprint.yaml", project="./generated", model="openrouter")
         with (
             patch("packages.llm_providers.generators.mixed_generate.mixed_generate") as mock_mixed,
             patch("packages.llm_providers.generators.mixed_generate.save_mixed_files") as mock_save,
@@ -145,14 +145,14 @@ class TestCmdGenerateMixed:
 
         mock_mixed.assert_called_once_with(
             description="test",
-            output_dir="./out",
-            blueprint_path="bp.yaml",
+            output_dir="./generated",
+            blueprint_path="blueprint.yaml",
             primary_model="openrouter",
         )
-        mock_save.assert_called_once_with({"f.ts": "c"}, "./out")
+        mock_save.assert_called_once_with({"f.ts": "c"}, "./generated")
 
     def test_failure_exits(self):
-        args = MagicMock(description="test", blueprint="bp.yaml", project="./out", model="openrouter")
+        args = MagicMock(description="test", blueprint="blueprint.yaml", project="./generated", model="openrouter")
         with (
             patch("packages.llm_providers.generators.mixed_generate.mixed_generate") as mock_mixed,
             patch("apps.cli.main.logger"),
