@@ -126,13 +126,12 @@ def run_dsl_approach(
 
 
 def run_raw_approach(
-    test_case_name: str,
+    _test_case_name: str,
     test_case_data: dict[str, Any],
     project_path: Path,
     provider: str = "openrouter",
 ) -> dict[str, Any]:
     """Run the raw-code experiment pipeline for one test case."""
-    del test_case_name
 
     def operation(metrics: dict[str, Any]) -> None:
         with SuppressOutput():
@@ -223,19 +222,34 @@ def run_textual_gen_approach(
     return _run_with_timing(provider, operation)
 
 
-def run_textual_gen_baseline_approach(*args: Any, **kwargs: Any) -> dict[str, Any]:
+def run_textual_gen_baseline_approach(
+    test_case_name: str,
+    test_case_data: dict[str, Any],
+    project_path: Path,
+    provider: str = "openrouter",
+) -> dict[str, Any]:
     """Run baseline textual generation."""
-    return run_textual_gen_approach(*args, variant="baseline", **kwargs)
+    return run_textual_gen_approach(test_case_name, test_case_data, project_path, provider=provider, variant="baseline")
 
 
-def run_textual_gen_spec_approach(*args: Any, **kwargs: Any) -> dict[str, Any]:
+def run_textual_gen_spec_approach(
+    test_case_name: str,
+    test_case_data: dict[str, Any],
+    project_path: Path,
+    provider: str = "openrouter",
+) -> dict[str, Any]:
     """Run specification textual generation."""
-    return run_textual_gen_approach(*args, variant="spec", **kwargs)
+    return run_textual_gen_approach(test_case_name, test_case_data, project_path, provider=provider, variant="spec")
 
 
-def run_textual_gen_fewshot_approach(*args: Any, **kwargs: Any) -> dict[str, Any]:
+def run_textual_gen_fewshot_approach(
+    test_case_name: str,
+    test_case_data: dict[str, Any],
+    project_path: Path,
+    provider: str = "openrouter",
+) -> dict[str, Any]:
     """Run few-shot textual generation."""
-    return run_textual_gen_approach(*args, variant="fewshot", **kwargs)
+    return run_textual_gen_approach(test_case_name, test_case_data, project_path, provider=provider, variant="fewshot")
 
 
 APPROACH_RUNNERS = {

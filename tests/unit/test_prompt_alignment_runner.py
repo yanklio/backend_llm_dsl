@@ -16,6 +16,7 @@ def test_build_result_record_includes_prompt_alignment_when_present() -> None:
         {"success": True, "metrics": {}},
         {"overall_valid": True},
         "run-1",
+        1,
         alignment,
     )
 

@@ -50,19 +50,16 @@ def _build_result_record(
     generation: dict[str, Any],
     validation: dict[str, Any],
     run_id: str,
-    repetition: int | dict[str, Any] = 1,
+    repetition: int = 1,
     prompt_alignment: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Create the persisted result payload for one run."""
-    if isinstance(repetition, dict) and prompt_alignment is None:
-        prompt_alignment = repetition
-        repetition = 1
     identity = record_identity(
         provider=provider,
         approach=approach,
         test_case=case_name,
         tier=tier,
-        repetition=int(repetition),
+        repetition=repetition,
     )
     record = {
         **identity,

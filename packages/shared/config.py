@@ -45,11 +45,6 @@ class EnvSettings(BaseModel):
         super().__init__(**values)
 
 
-def _settings_config(prefix: str) -> dict[str, str]:
-    """Build the shared settings configuration for a section."""
-    return {"env_prefix": prefix}
-
-
 SUB_CONFIG_FIELDS = ["llm", "validation", "template", "log"]
 
 
