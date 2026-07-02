@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.cli import build_parser, cmd_generate, cmd_generate_mixed, cmd_generate_raw, main
+from apps.cli import build_parser, cmd_generate, cmd_generate_mixed, cmd_generate_raw, main
 
 
 class TestBuildParser:
@@ -69,11 +69,11 @@ class TestCmdGenerate:
             output_tokens=5,
         )
         with (
-            patch("src.cli.natural_language_to_yaml") as mock_nl,
-            patch("src.cli.save_blueprint") as mock_save,
-            patch("src.cli.dsl_generate_main") as mock_gen,
-            patch("src.cli.log_generation_statistics"),
-            patch("src.cli.logger"),
+            patch("apps.cli.main.natural_language_to_yaml") as mock_nl,
+            patch("apps.cli.main.save_blueprint") as mock_save,
+            patch("apps.cli.main.dsl_generate_main") as mock_gen,
+            patch("apps.cli.main.log_generation_statistics"),
+            patch("apps.cli.main.logger"),
         ):
             mock_nl.return_value = result
             cmd_generate(args)
@@ -93,10 +93,10 @@ class TestCmdGenerate:
             output_tokens=5,
         )
         with (
-            patch("src.cli.natural_language_to_yaml") as mock_nl,
-            patch("src.cli.save_blueprint"),
-            patch("src.cli.dsl_generate_main", side_effect=Exception("fail")),
-            patch("src.cli.logger"),
+            patch("apps.cli.main.natural_language_to_yaml") as mock_nl,
+            patch("apps.cli.main.save_blueprint"),
+            patch("apps.cli.main.dsl_generate_main", side_effect=Exception("fail")),
+            patch("apps.cli.main.logger"),
         ):
             mock_nl.return_value = result
             with pytest.raises(SystemExit) as exc:
@@ -118,10 +118,10 @@ class TestCmdGenerateRaw:
             output_tokens=3,
         )
         with (
-            patch("src.llm.raw_generate.generate_code_files") as mock_gen,
-            patch("src.llm.raw_generate.save_files") as mock_save,
-            patch("src.cli.log_generation_statistics"),
-            patch("src.cli.logger"),
+            patch("packages.llm_providers.generators.raw_generate.generate_code_files") as mock_gen,
+            patch("packages.llm_providers.generators.raw_generate.save_files") as mock_save,
+            patch("apps.cli.main.log_generation_statistics"),
+            patch("apps.cli.main.logger"),
         ):
             mock_gen.return_value = (gen_result, {"file.ts": "content"})
             cmd_generate_raw(args)
@@ -136,9 +136,9 @@ class TestCmdGenerateMixed:
     def test_success(self):
         args = MagicMock(description="test", blueprint="bp.yaml", project="./out", model="openrouter")
         with (
-            patch("src.llm.mixed_generate.mixed_generate") as mock_mixed,
-            patch("src.llm.mixed_generate.save_mixed_files") as mock_save,
-            patch("src.cli.logger"),
+            patch("packages.llm_providers.generators.mixed_generate.mixed_generate") as mock_mixed,
+            patch("packages.llm_providers.generators.mixed_generate.save_mixed_files") as mock_save,
+            patch("apps.cli.main.logger"),
         ):
             mock_mixed.return_value = {"success": True, "files": {"f.ts": "c"}}
             cmd_generate_mixed(args)
@@ -154,8 +154,8 @@ class TestCmdGenerateMixed:
     def test_failure_exits(self):
         args = MagicMock(description="test", blueprint="bp.yaml", project="./out", model="openrouter")
         with (
-            patch("src.llm.mixed_generate.mixed_generate") as mock_mixed,
-            patch("src.cli.logger"),
+            patch("packages.llm_providers.generators.mixed_generate.mixed_generate") as mock_mixed,
+            patch("apps.cli.main.logger"),
         ):
             mock_mixed.return_value = {"success": False, "error": "something went wrong"}
             with pytest.raises(SystemExit) as exc:
@@ -169,8 +169,8 @@ class TestMain:
     def test_dispatch_dsl(self, monkeypatch):
         monkeypatch.setattr(sys, "argv", ["prog", "dsl", "my app"])
         with (
-            patch("src.cli.cmd_generate") as mock_cmd,
-            patch("src.cli.build_parser", wraps=build_parser),
+            patch("apps.cli.main.cmd_generate") as mock_cmd,
+            patch("apps.cli.main.build_parser", wraps=build_parser),
         ):
             main()
         mock_cmd.assert_called_once()
@@ -178,8 +178,8 @@ class TestMain:
     def test_dispatch_raw(self, monkeypatch):
         monkeypatch.setattr(sys, "argv", ["prog", "raw", "my app"])
         with (
-            patch("src.cli.cmd_generate_raw") as mock_cmd,
-            patch("src.cli.build_parser", wraps=build_parser),
+            patch("apps.cli.main.cmd_generate_raw") as mock_cmd,
+            patch("apps.cli.main.build_parser", wraps=build_parser),
         ):
             main()
         mock_cmd.assert_called_once()
@@ -187,8 +187,8 @@ class TestMain:
     def test_dispatch_mixed(self, monkeypatch):
         monkeypatch.setattr(sys, "argv", ["prog", "mixed", "my app"])
         with (
-            patch("src.cli.cmd_generate_mixed") as mock_cmd,
-            patch("src.cli.build_parser", wraps=build_parser),
+            patch("apps.cli.main.cmd_generate_mixed") as mock_cmd,
+            patch("apps.cli.main.build_parser", wraps=build_parser),
         ):
             main()
         mock_cmd.assert_called_once()

@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.llm.prompt_alignment import (
+from packages.llm_providers.evaluation.prompt_alignment import (
     collect_generated_typescript,
     parse_alignment_response,
 )

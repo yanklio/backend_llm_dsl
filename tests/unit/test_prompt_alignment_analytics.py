@@ -1,6 +1,6 @@
 """Tests for prompt-alignment analytics export fields."""
 
-from src.experiments.export_analytics import _flatten_record, _group_rows
+from apps.experiments.export_analytics import _flatten_record, _group_rows
 
 
 def _record_with_alignment(score: int) -> dict:

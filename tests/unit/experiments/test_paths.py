@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from src.experiments.paths import (
+from apps.experiments.paths import (
     ANALYTICS_DIR,
     BASE_NEST_PROJECT_DIR,
     DEBUG_LOG_FILE,

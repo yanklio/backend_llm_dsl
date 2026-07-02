@@ -2,7 +2,7 @@ root:
   name: UserManagement
   database:
     type: sqlite
-    database: ./data/app.db
+    database: ./data/users.db
     synchronize: true
     logging: false
 
@@ -18,13 +18,9 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {minLength: 5, maxLength: 255}
+          validation: {format: email}
         - name: name
           type: string
           required: true
           validation: {minLength: 1, maxLength: 100}
-        - name: createdAt
-          type: Date
-          required: true
-          default: now
       relations: []

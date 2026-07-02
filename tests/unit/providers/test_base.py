@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.llm.providers.base import (
+from packages.llm_providers.providers.base import (
     TOKEN_USAGE_KEYS,
     BaseProvider,
     GenerationResult,
@@ -65,38 +65,38 @@ class TestBaseProviderAbstract:
 class TestConcreteProvider:
     """Tests for BaseProvider functionality via ConcreteProvider."""
 
-    @patch("src.llm.providers.base.clean_llm_response")
+    @patch("packages.llm_providers.providers.base.clean_llm_response")
     def test_name_property(self, _mock_clean):
         """Name property returns the provider display name."""
         provider = ConcreteProvider(temperature=0.5, timeout=30)
         assert provider.name == "Test Provider"
 
-    @patch("src.llm.providers.base.clean_llm_response")
+    @patch("packages.llm_providers.providers.base.clean_llm_response")
     def test_model_name_default(self, _mock_clean):
         """model_name defaults to the class MODEL_NAME."""
         provider = ConcreteProvider()
         assert provider.model_name == "test-model"
 
-    @patch("src.llm.providers.base.clean_llm_response")
+    @patch("packages.llm_providers.providers.base.clean_llm_response")
     def test_model_name_override(self, _mock_clean):
         """model_name can be overridden via constructor."""
         provider = ConcreteProvider(model_name="custom-name")
         assert provider.model_name == "custom-name"
 
-    @patch("src.llm.providers.base.clean_llm_response")
+    @patch("packages.llm_providers.providers.base.clean_llm_response")
     def test_id_property(self, _mock_clean):
         """Id property returns the provider identifier."""
         provider = ConcreteProvider()
         assert provider.id == "test"
 
-    @patch("src.llm.providers.base.clean_llm_response")
+    @patch("packages.llm_providers.providers.base.clean_llm_response")
     def test_llm_attribute_set(self, _mock_clean):
         """Concrete provider has an llm attribute (proxy for _get_model)."""
         provider = ConcreteProvider()
         assert hasattr(provider, "llm")
 
-    @patch("src.llm.providers.base.clean_llm_response", return_value="cleaned")
-    @patch("src.llm.providers.base.time.perf_counter", side_effect=[1.0, 3.5])
+    @patch("packages.llm_providers.providers.base.clean_llm_response", return_value="cleaned")
+    @patch("packages.llm_providers.providers.base.time.perf_counter", side_effect=[1.0, 3.5])
     def test_track_generation_with_response_metadata(
         self,
         mock_time,
@@ -129,8 +129,8 @@ class TestConcreteProvider:
         assert result.total_tokens == 15
         assert result.model_name == "test-model"
 
-    @patch("src.llm.providers.base.clean_llm_response", return_value="cleaned")
-    @patch("src.llm.providers.base.time.perf_counter", side_effect=[10.0, 10.2])
+    @patch("packages.llm_providers.providers.base.clean_llm_response", return_value="cleaned")
+    @patch("packages.llm_providers.providers.base.time.perf_counter", side_effect=[10.0, 10.2])
     def test_track_generation_with_usage_metadata(
         self,
         mock_time,
@@ -157,8 +157,8 @@ class TestConcreteProvider:
         assert result.output_tokens == 14
         assert result.total_tokens == 21
 
-    @patch("src.llm.providers.base.clean_llm_response", return_value="cleaned")
-    @patch("src.llm.providers.base.time.perf_counter", side_effect=[0.0, 0.5])
+    @patch("packages.llm_providers.providers.base.clean_llm_response", return_value="cleaned")
+    @patch("packages.llm_providers.providers.base.time.perf_counter", side_effect=[0.0, 0.5])
     def test_track_generation_no_token_metadata(
         self,
         mock_time,
@@ -180,8 +180,8 @@ class TestConcreteProvider:
         assert result.output_tokens is None
         assert result.total_tokens is None
 
-    @patch("src.llm.providers.base.clean_llm_response", return_value="cleaned")
-    @patch("src.llm.providers.base.time.perf_counter", side_effect=[0.0, 0.5])
+    @patch("packages.llm_providers.providers.base.clean_llm_response", return_value="cleaned")
+    @patch("packages.llm_providers.providers.base.time.perf_counter", side_effect=[0.0, 0.5])
     def test_generate_delegates_to_track_generation(
         self,
         mock_time,

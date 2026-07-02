@@ -1,8 +1,8 @@
 root:
-  name: ProductCatalog
+  name: CategoryProductManagement
   database:
     type: sqlite
-    database: ./data/catalog.db
+    database: ./data/app.db
     synchronize: true
     logging: false
 

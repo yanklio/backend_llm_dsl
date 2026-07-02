@@ -2,7 +2,7 @@ root:
   name: ProjectManagement
   database:
     type: sqlite
-    database: ./data/app.db
+    database: ./data/project.db
     synchronize: true
     logging: false
 
@@ -94,33 +94,3 @@ modules:
           field: project
           description: Project this task belongs to
           cascadeDelete: true
-          required: true
-  - name: Filter
-    generate: [dto]
-    entity:
-      fields:
-        - name: title
-          type: string
-          required: false
-        - name: priority
-          type: enum
-          required: false
-          enum: [low, medium, high, critical]
-        - name: limit
-          type: number
-          required: false
-          default: 10
-        - name: page
-          type: number
-          required: false
-          default: 1
-        - name: sortBy
-          type: enum
-          required: false
-          enum: [title, priority, dueDate]
-          default: title
-        - name: sortOrder
-          type: enum
-          required: false
-          enum: [asc, desc]
-          default: asc

@@ -1,6 +1,6 @@
 """Tests for DSL engine relation processing."""
 
-from src.dsl.core.modules.relation import (
+from packages.generator_nestjs.core.modules.relation import (
     RELATION_DEFAULTS,
     RELATION_FLAG_RULES,
     _apply_inverse_fields,

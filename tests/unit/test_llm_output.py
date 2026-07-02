@@ -2,8 +2,8 @@
 
 from unittest.mock import patch
 
-from src.llm import GenerationResult
-from src.llm.output import (
+from packages.llm_providers import GenerationResult
+from packages.llm_providers.generators.output import (
     RUN_INSTRUCTIONS,
     log_generation_statistics,
     log_json_parse_failure,
@@ -29,8 +29,8 @@ class TestParseGeneratedFiles:
             duration_seconds=1.0,
         )
         with (
-            patch("src.llm.output.clean_llm_response") as mock_clean,
-            patch("src.llm.output.try_parse_json") as mock_parse,
+            patch("packages.llm_providers.generators.output.clean_llm_response") as mock_clean,
+            patch("packages.llm_providers.generators.output.try_parse_json") as mock_parse,
         ):
             mock_clean.return_value = '{"files": {"a.ts": "code"}}'
             mock_parse.return_value = {"files": {"a.ts": "code"}}
@@ -47,8 +47,8 @@ class TestLogJsonParseFailure:
     def test_logs_error_and_writes_debug_file(self):
         error = ValueError("bad json")
         with (
-            patch("src.llm.output.Path") as mock_path,
-            patch("src.llm.output.logger") as mock_logger,
+            patch("packages.llm_providers.generators.output.Path") as mock_path,
+            patch("packages.llm_providers.generators.output.logger") as mock_logger,
         ):
             mock_instance = mock_path.return_value
             log_json_parse_failure("some content", error)
@@ -69,7 +69,7 @@ class TestLogGenerationStatistics:
             input_tokens=50,
             output_tokens=50,
         )
-        with patch("src.llm.output.logger") as mock_logger:
+        with patch("packages.llm_providers.generators.output.logger") as mock_logger:
             log_generation_statistics(result)
 
         mock_logger.info.assert_any_call("=== Generation Statistics ===")
@@ -83,7 +83,7 @@ class TestLogGenerationStatistics:
             provider="gemini",
             duration_seconds=0.5,
         )
-        with patch("src.llm.output.logger") as mock_logger:
+        with patch("packages.llm_providers.generators.output.logger") as mock_logger:
             log_generation_statistics(result)
 
         mock_logger.info.assert_any_call("=== Generation Statistics ===")
@@ -96,7 +96,7 @@ class TestLogRunInstructions:
     """Tests for log_run_instructions function."""
 
     def test_logs_cd_and_npm_instructions(self):
-        with patch("src.llm.output.logger") as mock_logger:
+        with patch("packages.llm_providers.generators.output.logger") as mock_logger:
             log_run_instructions("./my_project")
 
         mock_logger.success.assert_called_once_with("Done! Run with:")

@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.dsl.generate import (
+from packages.generator_nestjs.generate import (
     RELATION_COPY_FIELDS,
     _copy_relation_metadata,
     _enrich_modules_with_relations,
@@ -15,7 +15,7 @@ from src.dsl.generate import (
     _setup_jinja_env,
     main,
 )
-from src.shared.exceptions import ConfigurationException
+from packages.shared.exceptions import ConfigurationException
 
 
 class TestConstants:
@@ -39,7 +39,7 @@ class TestReadBlueprint:
     def test_dsl_file(self, temp_dir):
         blueprint_file = temp_dir / "blueprint.dsl"
         blueprint_file.write_text("some dsl content")
-        with patch("src.dsl.generate.compile_file") as mock_compile:
+        with patch("packages.generator_nestjs.generate.compile_file") as mock_compile:
             mock_compile.return_value = {"root": {"name": "FromDSL"}, "modules": []}
             result = _read_blueprint(str(blueprint_file))
         mock_compile.assert_called_once_with(str(blueprint_file))
@@ -95,7 +95,7 @@ class TestEnsureOutputDir:
         assert existing.exists()
 
     def test_default_path(self, temp_dir):
-        with patch("src.dsl.generate.Path") as MockPath:
+        with patch("packages.generator_nestjs.generate.Path") as MockPath:
             mock_path = MagicMock()
             mock_path.exists.return_value = False
             MockPath.return_value = mock_path
@@ -224,14 +224,14 @@ class TestMain:
             {"name": "Post", "entity": {"fields": []}},
         ]
         with (
-            patch("src.dsl.generate._read_blueprint") as mock_read,
-            patch("src.dsl.generate._setup_jinja_env") as mock_env_setup,
-            patch("src.dsl.generate._ensure_output_dir") as mock_ensure_dir,
-            patch("src.dsl.generate.handle_relations") as mock_relations,
-            patch("src.dsl.generate._enrich_modules_with_relations") as mock_enrich,
-            patch("src.dsl.generate.generate_root_module") as mock_root,
-            patch("src.dsl.generate.generate_module") as mock_mod,
-            patch("src.dsl.generate.logger"),
+            patch("packages.generator_nestjs.generate._read_blueprint") as mock_read,
+            patch("packages.generator_nestjs.generate._setup_jinja_env") as mock_env_setup,
+            patch("packages.generator_nestjs.generate._ensure_output_dir") as mock_ensure_dir,
+            patch("packages.generator_nestjs.generate.handle_relations") as mock_relations,
+            patch("packages.generator_nestjs.generate._enrich_modules_with_relations") as mock_enrich,
+            patch("packages.generator_nestjs.generate.generate_root_module") as mock_root,
+            patch("packages.generator_nestjs.generate.generate_module") as mock_mod,
+            patch("packages.generator_nestjs.generate.logger"),
         ):
             mock_read.return_value = {"root": {"name": "Test"}, "modules": modules}
             mock_env_setup.return_value = MagicMock()
@@ -250,10 +250,10 @@ class TestMain:
     def test_empty_modules_logs_warning(self, temp_dir):
         blueprint = str(temp_dir / "blueprint.yaml")
         with (
-            patch("src.dsl.generate._read_blueprint") as mock_read,
-            patch("src.dsl.generate._setup_jinja_env"),
-            patch("src.dsl.generate._ensure_output_dir"),
-            patch("src.dsl.generate.logger") as mock_logger,
+            patch("packages.generator_nestjs.generate._read_blueprint") as mock_read,
+            patch("packages.generator_nestjs.generate._setup_jinja_env"),
+            patch("packages.generator_nestjs.generate._ensure_output_dir"),
+            patch("packages.generator_nestjs.generate.logger") as mock_logger,
         ):
             mock_read.return_value = {"root": {}, "modules": []}
             main(blueprint)

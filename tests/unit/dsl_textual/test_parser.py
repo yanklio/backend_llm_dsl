@@ -2,8 +2,8 @@
 
 import pytest
 
-from src.dsl.textual.errors import ParseError
-from src.dsl.textual.parser import parse
+from packages.dsl_core.errors import ParseError
+from packages.dsl_core.parser import parse
 
 SIMPLE_SOURCE = """
 app UserManagement {

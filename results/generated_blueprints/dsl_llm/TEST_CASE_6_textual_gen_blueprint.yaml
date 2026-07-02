@@ -41,6 +41,7 @@ modules:
       field: posts
       required: true
       inverseField: author
+      onDelete: CASCADE
 - name: Post
   generate:
   - controller

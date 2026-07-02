@@ -1,5 +1,5 @@
 root:
-  name: PetAdministration
+  name: CustomerOrderManagement
   database:
     type: sqlite
     database: ./data/app.db
@@ -31,7 +31,7 @@ modules:
         - type: OneToMany
           model: Order
           field: orders
-          description: A list of orders belonging to this customer
+          description: Orders placed by this customer
   - name: Order
     generate: [controller, service, module, entity, dto]
     entity:
@@ -52,5 +52,5 @@ modules:
         - type: ManyToOne
           model: Customer
           field: customer
-          description: The customer who placed this order
+          description: The customer who placed the order
           cascade: delete

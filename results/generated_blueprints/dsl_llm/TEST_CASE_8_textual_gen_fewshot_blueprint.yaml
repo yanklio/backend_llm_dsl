@@ -1,0 +1,77 @@
+root:
+  name: CustomerOrderApp
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
+  features:
+    cors: true
+    swagger: true
+modules:
+- name: Customer
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 100
+    - name: email
+      type: string
+      required: true
+      unique: true
+      validation:
+        isEmail: true
+    - name: phone
+      type: string
+      required: true
+      validation:
+        maxLength: 20
+    relations:
+    - type: OneToMany
+      model: Order
+      field: orders
+      required: true
+      inverseField: customer
+- name: Order
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: totalPrice
+      type: number
+      required: true
+      validation:
+        min: 0
+    - name: status
+      type: enum
+      required: true
+      enumValues:
+      - PENDING
+      - CONFIRMED
+      - SHIPPED
+      - DELIVERED
+      - CANCELLED
+      default: PENDING
+    - name: orderDate
+      type: date
+      required: true
+    relations:
+    - type: ManyToOne
+      model: Customer
+      field: customer
+      required: true
+      inverseField: orders
+      onDelete: CASCADE

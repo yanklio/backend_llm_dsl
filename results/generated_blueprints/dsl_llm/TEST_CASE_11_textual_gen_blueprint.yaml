@@ -31,7 +31,7 @@ modules:
       validation:
         maxLength: 300
     relations:
-    - type: OneToMany
+    - type: ManyToMany
       model: Product
       field: products
       required: true
@@ -66,7 +66,7 @@ modules:
       required: true
       default: 'true'
     relations:
-    - type: OneToMany
+    - type: ManyToMany
       model: Category
       field: categories
       required: true
@@ -76,6 +76,7 @@ modules:
       field: reviews
       required: true
       inverseField: product
+      onDelete: CASCADE
 - name: Review
   generate:
   - controller

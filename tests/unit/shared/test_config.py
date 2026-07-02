@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from src.shared.config import (
+from packages.shared.config import (
     AppConfig,
     LLMConfig,
     LogConfig,
@@ -13,7 +13,7 @@ from src.shared.config import (
     get_config,
     reset_config,
 )
-from src.shared.exceptions import ConfigurationException
+from packages.shared.exceptions import ConfigurationException
 
 
 class TestLLMConfig:

@@ -2,8 +2,8 @@
 
 import pytest
 
-from src.dsl.textual.errors import LexError
-from src.dsl.textual.lexer import TokenType, tokenize
+from packages.dsl_core.errors import LexError
+from packages.dsl_core.lexer import TokenType, tokenize
 
 
 def test_lexer_tokenizes_module_header() -> None:

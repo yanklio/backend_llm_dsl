@@ -2,7 +2,7 @@
 
 from types import SimpleNamespace
 
-from src.llm.mixed_generate import _build_mixed_statistics
+from packages.llm_providers.generators.mixed_generate import _build_mixed_statistics
 
 
 def test_build_mixed_statistics_combines_phase_metrics() -> None:

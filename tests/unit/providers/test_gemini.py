@@ -11,7 +11,7 @@ class TestGeminiProviderModelName:
     """Tests for the MODEL_NAME constant."""
 
     def test_model_name_constant(self):
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         assert GeminiProvider.MODEL_NAME == MODEL_NAME
 
@@ -19,11 +19,11 @@ class TestGeminiProviderModelName:
 class TestGeminiProviderInit:
     """Tests for GeminiProvider construction."""
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_instantiation_with_defaults(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         provider = GeminiProvider()
         assert provider.temperature == 0.1
@@ -35,11 +35,11 @@ class TestGeminiProviderInit:
             timeout=120,
         )
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_instantiation_with_custom_values(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         provider = GeminiProvider(temperature=0.7, timeout=45)
         assert provider.temperature == 0.7
@@ -50,11 +50,11 @@ class TestGeminiProviderInit:
             timeout=45,
         )
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_model_name_override(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         provider = GeminiProvider(model_name="custom-model")
         assert provider.model_name == "custom-model"
@@ -64,11 +64,11 @@ class TestGeminiProviderInit:
             timeout=120,
         )
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_missing_api_key_raises_value_error(self, mock_chat, mock_getenv):
         mock_getenv.return_value = None
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         with pytest.raises(ValueError, match="GOOGLE_API_KEY not found"):
             GeminiProvider()
@@ -77,29 +77,29 @@ class TestGeminiProviderInit:
 class TestGeminiProviderInheritance:
     """Tests for GeminiProvider class hierarchy."""
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_inherits_from_base_provider(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.base import BaseProvider
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.base import BaseProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         assert issubclass(GeminiProvider, BaseProvider)
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_id_property(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         provider = GeminiProvider()
         assert provider.id == "gemini"
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_name_property(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         provider = GeminiProvider()
         assert provider.name == f"Google Gemini ({MODEL_NAME})"
@@ -108,11 +108,11 @@ class TestGeminiProviderInheritance:
 class TestGeminiProviderLlm:
     """Tests for GeminiProvider.llm attribute."""
 
-    @patch("src.llm.providers.gemini.os.getenv")
-    @patch("src.llm.providers.gemini.ChatGoogleGenerativeAI")
+    @patch("packages.llm_providers.providers.gemini.os.getenv")
+    @patch("packages.llm_providers.providers.gemini.ChatGoogleGenerativeAI")
     def test_llm_set_from_chat_constructor(self, mock_chat, mock_getenv):
         mock_getenv.return_value = "fake-key"
-        from src.llm.providers.gemini import GeminiProvider
+        from packages.llm_providers.providers.gemini import GeminiProvider
 
         provider = GeminiProvider()
         assert provider.llm is mock_chat.return_value

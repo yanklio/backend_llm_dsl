@@ -18,7 +18,6 @@ modules:
         - name: name
           type: string
           required: true
-          unique: true
           validation: {minLength: 2, maxLength: 50}
         - name: description
           type: string

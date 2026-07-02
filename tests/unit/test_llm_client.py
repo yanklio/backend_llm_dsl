@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.llm.client import LLMClient, _provider_registry, get_default_model_name, get_provider
-from src.shared.exceptions import LLMException
+from packages.llm_providers.core.client import LLMClient, _provider_registry, get_default_model_name, get_provider
+from packages.shared.exceptions import LLMException
 
 
 class TestProviderRegistry:
@@ -33,7 +33,7 @@ class TestGetDefaultModelName:
         "openrouter": "openai/gpt-oss-20b:free",
     }
 
-    @patch("src.llm.client._provider_registry")
+    @patch("packages.llm_providers.core.client._provider_registry")
     def test_returns_model_name_for_valid_provider(self, mock_registry):
         """get_default_model_name returns MODEL_NAME from the provider class."""
         mock_class = MagicMock()
@@ -41,13 +41,13 @@ class TestGetDefaultModelName:
         mock_registry.return_value = {"gemini": mock_class}
         assert get_default_model_name("gemini") == "test-model-v1"
 
-    @patch("src.llm.client._provider_registry")
+    @patch("packages.llm_providers.core.client._provider_registry")
     def test_returns_unknown_for_invalid_provider(self, mock_registry):
         """get_default_model_name returns 'unknown' for unrecognised provider."""
         mock_registry.return_value = {"gemini": MagicMock()}
         assert get_default_model_name("nonexistent") == "unknown"
 
-    @patch("src.llm.client._provider_registry")
+    @patch("packages.llm_providers.core.client._provider_registry")
     def test_returns_model_name_for_each_provider(self, mock_registry):
         """Verify each known provider returns its own MODEL_NAME."""
         mock_registry.return_value = {
@@ -60,7 +60,7 @@ class TestGetDefaultModelName:
 class TestGetProvider:
     """Tests for get_provider()."""
 
-    @patch("src.llm.client._provider_registry")
+    @patch("packages.llm_providers.core.client._provider_registry")
     def test_returns_provider_instance(self, mock_registry):
         """get_provider constructs and returns the correct provider."""
         mock_class = MagicMock()
@@ -70,7 +70,7 @@ class TestGetProvider:
         mock_class.assert_called_once_with(0.3, 60, model_name=None)
         assert result is mock_class.return_value
 
-    @patch("src.llm.client._provider_registry")
+    @patch("packages.llm_providers.core.client._provider_registry")
     def test_raises_llm_exception_for_invalid_provider(self, mock_registry):
         """get_provider raises LLM001 for unknown provider ID."""
         mock_registry.return_value = {"gemini": MagicMock()}
@@ -78,7 +78,7 @@ class TestGetProvider:
             get_provider("bad_provider", 0.1, 120)
         assert exc_info.value.code == "LLM001"
 
-    @patch("src.llm.client._provider_registry")
+    @patch("packages.llm_providers.core.client._provider_registry")
     def test_passes_model_name_override(self, mock_registry):
         """get_provider passes model_name to the provider constructor."""
         mock_class = MagicMock()
@@ -91,9 +91,9 @@ class TestGetProvider:
 class TestLLMClientInit:
     """Tests for LLMClient.__init__()."""
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_uses_config_values_by_default(self, mock_get_config, mock_get_provider, mock_logger):
         """Default constructor reads temperature/timeout from config."""
         mock_get_config.return_value.llm.temperature = 0.42
@@ -104,9 +104,9 @@ class TestLLMClientInit:
         assert client.provider_id == "openrouter"
         mock_get_provider.assert_called_once_with("openrouter", 0.42, 99, model_name=None)
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_custom_temperature_and_timeout(self, mock_get_config, mock_get_provider, mock_logger):
         """Constructor uses explicit temperature/timeout over config."""
         mock_get_config.return_value.llm.temperature = 0.1
@@ -115,9 +115,9 @@ class TestLLMClientInit:
         assert client.temperature == 0.9
         assert client.timeout == 30
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_custom_provider_id(self, mock_get_config, mock_get_provider, mock_logger):
         """Constructor accepts a different provider_id."""
         client = LLMClient(provider_id="groq")
@@ -125,9 +125,9 @@ class TestLLMClientInit:
         args, kwargs = mock_get_provider.call_args
         assert args[0] == "groq"
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_custom_model_name(self, mock_get_config, mock_get_provider, mock_logger):
         """Constructor passes model_name to get_provider."""
         LLMClient(model_name="my-custom-model")
@@ -138,9 +138,9 @@ class TestLLMClientInit:
             model_name="my-custom-model",
         )
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_raises_for_invalid_provider(self, mock_get_config, mock_get_provider, mock_logger):
         """__init__ propagates LLMException from get_provider."""
         mock_get_provider.side_effect = LLMException("bad provider", code="LLM001")
@@ -152,9 +152,9 @@ class TestLLMClientInit:
 class TestLLMClientGenerate:
     """Tests for LLMClient.generate()."""
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_generate_returns_generation_result(self, mock_get_config, mock_get_provider, mock_logger):
         """generate() returns the result from provider.generate()."""
         mock_provider = MagicMock()
@@ -171,9 +171,9 @@ class TestLLMClientGenerate:
         mock_provider.generate.assert_called_once_with(messages)
         assert result is mock_result
 
-    @patch("src.llm.client.logger")
-    @patch("src.llm.client.get_provider")
-    @patch("src.llm.client.get_config")
+    @patch("packages.llm_providers.core.client.logger")
+    @patch("packages.llm_providers.core.client.get_provider")
+    @patch("packages.llm_providers.core.client.get_config")
     def test_reraises_provider_error_as_llm_exception(self, mock_get_config, mock_get_provider, mock_logger):
         """When provider.generate raises, client.generate raises LLM002."""
         mock_provider = MagicMock()

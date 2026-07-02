@@ -22,8 +22,8 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {isEmail: true}
           unique: true
+          validation: {format: email}
         - name: bio
           type: string
           required: false

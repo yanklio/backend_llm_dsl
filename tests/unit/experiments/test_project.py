@@ -1,6 +1,6 @@
 """Smoke tests for experiment project module."""
 
-from src.experiments.project import (
+from apps.experiments.project import (
     BASE_PROJECT_FILES,
     CLEAN_DIRS,
     _runtime_exception_result,
@@ -80,7 +80,7 @@ class TestEnsureBaseProject:
     """Verify ensure_base_project file copying."""
 
     def test_when_base_dir_missing_does_nothing(self, temp_dir, monkeypatch):
-        monkeypatch.setattr("src.experiments.project.BASE_NEST_PROJECT_DIR", temp_dir / "nonexistent")
+        monkeypatch.setattr("apps.experiments.project.BASE_NEST_PROJECT_DIR", temp_dir / "nonexistent")
         ensure_base_project(temp_dir)
 
     def test_when_base_dir_exists_copies_base_files(self, temp_dir, monkeypatch):
@@ -90,7 +90,7 @@ class TestEnsureBaseProject:
         (base_dir / "tsconfig.json").write_text('{"compilerOptions": {}}')
         (base_dir / "random.txt").write_text("should not copy")
 
-        monkeypatch.setattr("src.experiments.project.BASE_NEST_PROJECT_DIR", base_dir)
+        monkeypatch.setattr("apps.experiments.project.BASE_NEST_PROJECT_DIR", base_dir)
 
         dest_dir = temp_dir / "project"
         dest_dir.mkdir()

@@ -3,7 +3,7 @@
 import json
 from unittest.mock import patch
 
-from src.llm.file_writer import (
+from packages.llm_providers.generators.file_writer import (
     _has_many_literal_escapes,
     prepare_file_content,
     save_generated_files,
@@ -50,7 +50,7 @@ class TestPrepareFileContent:
 
     def test_escaped_string_is_unescaped(self):
         content = "line1\\nline2\\nline3"
-        with patch("src.llm.file_writer.logger"):
+        with patch("packages.llm_providers.generators.file_writer.logger"):
             result = prepare_file_content(content, "file.ts")
         assert result == "line1\nline2\nline3"
 

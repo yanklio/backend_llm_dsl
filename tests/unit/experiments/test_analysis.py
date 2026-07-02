@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.experiments.analysis import (
+from apps.experiments.analysis import (
     _count_statuses,
     _group_results,
     _metric_means,
@@ -275,7 +275,7 @@ class TestAnalyze:
     """Verify analyze entry point."""
 
     def test_with_results(self, capsys, monkeypatch):
-        monkeypatch.setattr("src.experiments.analysis.load_results", lambda _: SAMPLE_RESULTS)
+        monkeypatch.setattr("apps.experiments.analysis.load_results", lambda _: SAMPLE_RESULTS)
         analyze()
         captured = capsys.readouterr()
         assert "Analysis of 4 experiments" in captured.out
@@ -283,7 +283,7 @@ class TestAnalyze:
         assert "RAW METHOD" in captured.out
 
     def test_empty_results(self, capsys, monkeypatch):
-        monkeypatch.setattr("src.experiments.analysis.load_results", lambda _: [])
+        monkeypatch.setattr("apps.experiments.analysis.load_results", lambda _: [])
         analyze()
         captured = capsys.readouterr()
         assert "No results found" in captured.out
@@ -298,7 +298,7 @@ class TestAnalyze:
             captured_path = path
             return []
 
-        monkeypatch.setattr("src.experiments.analysis.load_results", mock_load)
+        monkeypatch.setattr("apps.experiments.analysis.load_results", mock_load)
         custom_path = Path("/custom/results.json")
         analyze(custom_path)
         assert captured_path == custom_path
@@ -313,7 +313,7 @@ class TestMain:
         def mock_analyze(path):
             captured.append(path)
 
-        monkeypatch.setattr("src.experiments.analysis.analyze", mock_analyze)
+        monkeypatch.setattr("apps.experiments.analysis.analyze", mock_analyze)
         monkeypatch.setattr("sys.argv", ["analysis.py", "--results", "/tmp/test.json"])
         main()
         assert len(captured) == 1
@@ -325,7 +325,7 @@ class TestMain:
         def mock_analyze(path):
             captured.append(path)
 
-        monkeypatch.setattr("src.experiments.analysis.analyze", mock_analyze)
+        monkeypatch.setattr("apps.experiments.analysis.analyze", mock_analyze)
         monkeypatch.setattr("sys.argv", ["analysis.py"])
         main()
         assert len(captured) == 1

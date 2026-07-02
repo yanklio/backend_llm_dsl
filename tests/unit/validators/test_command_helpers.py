@@ -2,7 +2,7 @@
 
 import subprocess
 
-from src.validators.command import (
+from packages.validator.command import (
     SubprocessResult,
     check_process_running,
     is_port_in_use,

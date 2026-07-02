@@ -1,7 +1,7 @@
 """Tests for prompt-alignment experiment record integration."""
 
-from src.experiments.runner import _build_result_record, _run_prompt_alignment
-from src.llm.prompt_alignment import DEFAULT_ALIGNMENT_MODEL
+from apps.experiments.runner import _build_result_record, _run_prompt_alignment
+from packages.llm_providers.evaluation.prompt_alignment import DEFAULT_ALIGNMENT_MODEL
 
 
 def test_build_result_record_includes_prompt_alignment_when_present() -> None:

@@ -1,6 +1,6 @@
 """Tests for custom exception hierarchy."""
 
-from src.shared.exceptions import (
+from packages.shared.exceptions import (
     ConfigurationException,
     DSLGeneratorException,
     JSONParseException,

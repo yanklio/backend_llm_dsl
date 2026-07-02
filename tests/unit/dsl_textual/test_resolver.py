@@ -2,9 +2,9 @@
 
 import pytest
 
-from src.dsl.textual.errors import ResolveError
-from src.dsl.textual.parser import parse
-from src.dsl.textual.resolver import resolve
+from packages.dsl_core.errors import ResolveError
+from packages.dsl_core.parser import parse
+from packages.dsl_core.resolver import resolve
 
 
 def test_resolver_accepts_simple_program() -> None:

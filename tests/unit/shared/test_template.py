@@ -3,11 +3,11 @@
 import pytest
 from jinja2 import Environment, FileSystemLoader
 
-from src.shared.exceptions import (
+from packages.shared.exceptions import (
     TemplateNotFoundException,
     TemplateRenderException,
 )
-from src.shared.template import (
+from packages.shared.template import (
     TemplateRenderer,
     render_single_template,
 )

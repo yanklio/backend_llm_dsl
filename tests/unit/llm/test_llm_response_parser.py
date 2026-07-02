@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.llm.response_parser import (
+from packages.llm_providers.core.response_parser import (
     _apply_repair_strategies,
     _build_closing_repair_strategies,
     _contains_thinking_marker,
@@ -18,7 +18,7 @@ from src.llm.response_parser import (
     clean_llm_response,
     try_parse_json,
 )
-from src.shared.exceptions import JSONParseException
+from packages.shared.exceptions import JSONParseException
 
 
 class TestCleanLlmResponse:

@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.llm.dsl_generate import DSL_REQUEST_TEMPLATE, natural_language_to_yaml, save_blueprint
+from packages.llm_providers.generators.dsl_generate import DSL_REQUEST_TEMPLATE, natural_language_to_yaml, save_blueprint
 
 
 class TestConstants:
@@ -29,8 +29,8 @@ class TestNaturalLanguageToYaml:
             output_tokens=5,
         )
         with (
-            patch("src.llm.dsl_generate.LLMClient") as MockClient,
-            patch("src.llm.dsl_generate.clean_llm_response") as mock_clean,
+            patch("packages.llm_providers.generators.dsl_generate.LLMClient") as MockClient,
+            patch("packages.llm_providers.generators.dsl_generate.clean_llm_response") as mock_clean,
         ):
             mock_instance = MagicMock()
             mock_instance.generate.return_value = mock_result
@@ -57,8 +57,8 @@ class TestNaturalLanguageToYaml:
             output_tokens=5,
         )
         with (
-            patch("src.llm.dsl_generate.LLMClient") as MockClient,
-            patch("src.llm.dsl_generate.clean_llm_response") as mock_clean,
+            patch("packages.llm_providers.generators.dsl_generate.LLMClient") as MockClient,
+            patch("packages.llm_providers.generators.dsl_generate.clean_llm_response") as mock_clean,
         ):
             mock_instance = MagicMock()
             mock_instance.generate.return_value = mock_result
@@ -80,8 +80,8 @@ class TestNaturalLanguageToYaml:
             output_tokens=5,
         )
         with (
-            patch("src.llm.dsl_generate.LLMClient") as MockClient,
-            patch("src.llm.dsl_generate.clean_llm_response") as mock_clean,
+            patch("packages.llm_providers.generators.dsl_generate.LLMClient") as MockClient,
+            patch("packages.llm_providers.generators.dsl_generate.clean_llm_response") as mock_clean,
         ):
             mock_instance = MagicMock()
             mock_instance.generate.return_value = mock_result
@@ -122,13 +122,13 @@ class TestMain:
             output_tokens=3,
         )
         with (
-            patch("src.llm.dsl_generate.natural_language_to_yaml") as mock_nl,
-            patch("src.llm.dsl_generate.save_blueprint") as mock_save,
-            patch("src.llm.dsl_generate.log_generation_statistics"),
-            patch("src.llm.dsl_generate.logger"),
+            patch("packages.llm_providers.generators.dsl_generate.natural_language_to_yaml") as mock_nl,
+            patch("packages.llm_providers.generators.dsl_generate.save_blueprint") as mock_save,
+            patch("packages.llm_providers.generators.dsl_generate.log_generation_statistics"),
+            patch("packages.llm_providers.generators.dsl_generate.logger"),
         ):
             mock_nl.return_value = result
-            from src.llm.dsl_generate import main
+            from packages.llm_providers.generators.dsl_generate import main
 
             main()
 
@@ -138,10 +138,10 @@ class TestMain:
     def test_exits_on_exception(self, monkeypatch):
         monkeypatch.setattr(sys, "argv", ["prog", "my api"])
         with (
-            patch("src.llm.dsl_generate.natural_language_to_yaml", side_effect=Exception("fail")),
-            patch("src.llm.dsl_generate.logger"),
+            patch("packages.llm_providers.generators.dsl_generate.natural_language_to_yaml", side_effect=Exception("fail")),
+            patch("packages.llm_providers.generators.dsl_generate.logger"),
         ):
-            from src.llm.dsl_generate import main
+            from packages.llm_providers.generators.dsl_generate import main
 
             with pytest.raises(SystemExit) as exc:
                 main()

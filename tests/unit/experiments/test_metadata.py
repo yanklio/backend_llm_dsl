@@ -1,6 +1,6 @@
 """Smoke tests for experiment metadata module."""
 
-from src.experiments.metadata import (
+from apps.experiments.metadata import (
     APPROACH_PROMPT_SOURCES,
     PROMPT_VERSION,
     PROVIDER_MODELS,

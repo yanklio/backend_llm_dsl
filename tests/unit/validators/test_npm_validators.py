@@ -3,9 +3,9 @@
 import subprocess
 from unittest.mock import Mock, patch
 
-from src.validators.command import SubprocessResult
-from src.validators.error_types import ErrorCodes
-from src.validators.runtime import (
+from packages.validator.command import SubprocessResult
+from packages.validator.error_types import ErrorCodes
+from packages.validator.runtime import (
     _run_npm_build,
     _run_npm_install,
     _run_npm_start,
@@ -16,7 +16,7 @@ from src.validators.runtime import (
 class TestNpmInstall:
     """Tests for npm install validation."""
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_successful_install(self, mock_run_command, temp_dir):
         """Test successful npm install."""
         mock_run_command.return_value = SubprocessResult(
@@ -27,7 +27,7 @@ class TestNpmInstall:
         assert result["success"] is True
         assert "error" not in result
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_install_failure(self, mock_run_command, temp_dir):
         """Test npm install failure."""
         mock_run_command.return_value = SubprocessResult(
@@ -39,7 +39,7 @@ class TestNpmInstall:
         assert "error" in result
         assert result["error"]["code"] == ErrorCodes.INSTALL_FAILED
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_install_timeout(self, mock_run_command, temp_dir):
         """Test npm install timeout."""
         mock_run_command.return_value = SubprocessResult(
@@ -52,7 +52,7 @@ class TestNpmInstall:
         assert result["error"]["code"] == ErrorCodes.INSTALL_TIMEOUT
         assert "timeout" in result["error"]["message"].lower()
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_npm_not_found(self, mock_run_command, temp_dir):
         """Test npm command not found."""
         mock_run_command.return_value = SubprocessResult(
@@ -68,7 +68,7 @@ class TestNpmInstall:
 class TestNpmBuild:
     """Tests for npm build validation."""
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_successful_build(self, mock_run_command, temp_dir):
         """Test successful npm build."""
         mock_run_command.return_value = SubprocessResult(
@@ -79,7 +79,7 @@ class TestNpmBuild:
         assert result["success"] is True
         assert "error" not in result
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_build_failure(self, mock_run_command, temp_dir):
         """Test npm build failure."""
         mock_run_command.return_value = SubprocessResult(
@@ -91,7 +91,7 @@ class TestNpmBuild:
         assert "error" in result
         assert result["error"]["code"] == ErrorCodes.BUILD_FAILED
 
-    @patch("src.validators.runtime.run_command")
+    @patch("packages.validator.runtime.run_command")
     def test_build_timeout(self, mock_run_command, temp_dir):
         """Test npm build timeout."""
         mock_run_command.return_value = SubprocessResult(
@@ -107,9 +107,9 @@ class TestNpmBuild:
 class TestNpmStart:
     """Tests for npm start validation."""
 
-    @patch("src.validators.runtime.terminate_process")
-    @patch("src.validators.runtime.check_process_running")
-    @patch("src.validators.runtime.start_process")
+    @patch("packages.validator.runtime.terminate_process")
+    @patch("packages.validator.runtime.check_process_running")
+    @patch("packages.validator.runtime.start_process")
     def test_successful_start(self, mock_start, mock_check, mock_terminate, temp_dir):
         """Test successful application start."""
         mock_process = Mock()
@@ -121,8 +121,8 @@ class TestNpmStart:
         assert "error" not in result
         mock_terminate.assert_called_once()
 
-    @patch("src.validators.runtime.check_process_running")
-    @patch("src.validators.runtime.start_process")
+    @patch("packages.validator.runtime.check_process_running")
+    @patch("packages.validator.runtime.start_process")
     def test_start_crashed(self, mock_start, mock_check, temp_dir):
         """Test application crashes on start."""
         mock_process = Mock()
@@ -135,7 +135,7 @@ class TestNpmStart:
         assert result["error"]["code"] == ErrorCodes.START_CRASHED
         assert "crashed" in result["error"]["message"].lower()
 
-    @patch("src.validators.runtime.start_process")
+    @patch("packages.validator.runtime.start_process")
     def test_start_subprocess_error(self, mock_start, temp_dir):
         """Test subprocess error during start."""
         mock_start.side_effect = subprocess.SubprocessError("Process failed to start")
@@ -145,8 +145,8 @@ class TestNpmStart:
         assert "error" in result
         assert result["error"]["code"] == ErrorCodes.START_ERROR
 
-    @patch("src.validators.runtime.check_process_running")
-    @patch("src.validators.runtime.start_process")
+    @patch("packages.validator.runtime.check_process_running")
+    @patch("packages.validator.runtime.start_process")
     def test_start_no_terminate(self, mock_start, mock_check, temp_dir):
         """Test starting without terminating process."""
         mock_process = Mock()
@@ -162,9 +162,9 @@ class TestNpmStart:
 class TestCheckBaseNpm:
     """Tests for integrated npm checks."""
 
-    @patch("src.validators.runtime._run_npm_start")
-    @patch("src.validators.runtime._run_npm_build")
-    @patch("src.validators.runtime._run_npm_install")
+    @patch("packages.validator.runtime._run_npm_start")
+    @patch("packages.validator.runtime._run_npm_build")
+    @patch("packages.validator.runtime._run_npm_install")
     def test_all_checks_pass(self, mock_install, mock_build, mock_start, temp_dir):
         """Test when all npm checks pass."""
         mock_install.return_value = {"success": True}
@@ -177,9 +177,9 @@ class TestCheckBaseNpm:
         assert result["start_success"] is True
         assert result["errors"] == {}
 
-    @patch("src.validators.runtime._run_npm_start")
-    @patch("src.validators.runtime._run_npm_build")
-    @patch("src.validators.runtime._run_npm_install")
+    @patch("packages.validator.runtime._run_npm_start")
+    @patch("packages.validator.runtime._run_npm_build")
+    @patch("packages.validator.runtime._run_npm_install")
     def test_install_fails(self, mock_install, mock_build, mock_start, temp_dir):
         """Test when npm install fails."""
         mock_install.return_value = {
@@ -194,9 +194,9 @@ class TestCheckBaseNpm:
         assert "install" in result["errors"]
         assert result["errors"]["install"]["code"] == ErrorCodes.INSTALL_FAILED
 
-    @patch("src.validators.runtime._run_npm_start")
-    @patch("src.validators.runtime._run_npm_build")
-    @patch("src.validators.runtime._run_npm_install")
+    @patch("packages.validator.runtime._run_npm_start")
+    @patch("packages.validator.runtime._run_npm_build")
+    @patch("packages.validator.runtime._run_npm_install")
     def test_multiple_failures(self, mock_install, mock_build, mock_start, temp_dir):
         """Test when multiple npm commands fail."""
         mock_install.return_value = {

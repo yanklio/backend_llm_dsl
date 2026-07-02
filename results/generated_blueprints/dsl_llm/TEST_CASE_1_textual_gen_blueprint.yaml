@@ -2,7 +2,7 @@ root:
   name: UserApp
   database:
     type: sqlite
-    database: ./data/user.db
+    database: ./data/app.db
     synchronize: true
     logging: false
   features:
@@ -24,8 +24,6 @@ modules:
       unique: true
       validation:
         isEmail: true
-        minLength: 1
-        maxLength: 100
     - name: name
       type: string
       required: true

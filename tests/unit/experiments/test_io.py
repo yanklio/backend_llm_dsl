@@ -2,7 +2,7 @@
 
 import json
 
-from src.experiments.io import (
+from apps.experiments.io import (
     SuppressOutput,
     load_results,
     save_json,

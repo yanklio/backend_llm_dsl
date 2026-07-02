@@ -101,7 +101,7 @@ def reset_config():
 
     This ensures tests don't interfere with each other through shared state.
     """
-    from src.shared.config import reset_config
+    from packages.shared.config import reset_config
 
     reset_config()
     yield
