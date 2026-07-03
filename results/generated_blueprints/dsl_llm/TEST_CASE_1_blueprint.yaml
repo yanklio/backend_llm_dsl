@@ -18,10 +18,9 @@ modules:
         - name: email
           type: string
           required: true
+          validation: {format: email}
         - name: name
           type: string
           required: true
-        - name: createdAt
-          type: date
-          required: true
+          validation: {minLength: 1, maxLength: 100}
       relations: []

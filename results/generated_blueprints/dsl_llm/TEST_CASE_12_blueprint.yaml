@@ -22,8 +22,8 @@ modules:
         - name: email
           type: string
           required: true
-          unique: true
           validation: {format: email}
+          unique: true
         - name: role
           type: enum
           required: true

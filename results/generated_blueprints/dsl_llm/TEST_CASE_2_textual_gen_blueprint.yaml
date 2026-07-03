@@ -1,0 +1,42 @@
+root:
+  name: ProductApp
+  database:
+    type: sqlite
+    database: ./data/product.db
+    synchronize: true
+    logging: false
+  features:
+    cors: true
+    swagger: true
+modules:
+- name: Product
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 100
+    - name: price
+      type: number
+      required: true
+      validation:
+        min: 0
+    - name: description
+      type: string
+      required: true
+      validation:
+        maxLength: 500
+    - name: stock
+      type: number
+      required: true
+      validation:
+        min: 0
+    relations: []

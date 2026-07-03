@@ -84,21 +84,8 @@ modules:
         - type: ManyToOne
           model: Doctor
           field: doctor
-          description: Doctor for the appointment
+          description: The doctor for this appointment
         - type: ManyToOne
           model: Patient
           field: patient
-          description: Patient for the appointment
-    dto:
-      filters:
-        - name: status
-          type: enum
-          enum: [scheduled, in_progress, completed, cancelled]
-        - name: appointmentDate
-          type: date
-        - name: limit
-          type: number
-          default: 10
-        - name: page
-          type: number
-          default: 1
+          description: The patient for this appointment

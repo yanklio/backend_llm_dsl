@@ -77,4 +77,4 @@ modules:
         - type: ManyToOne
           model: Product
           field: product
-          description: Product this review belongs to
+          description: The product this review belongs to

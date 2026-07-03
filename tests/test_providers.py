@@ -2,13 +2,8 @@
 """Script to verify provider configuration."""
 
 import argparse
-import sys
-from pathlib import Path
 
-# Add parent directory to path for shared imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from src.llm.dsl_generate import natural_language_to_yaml
+from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml
 
 
 def main():
@@ -40,7 +35,7 @@ def main():
             print(f"Input tokens: {result.input_tokens}")
             print(f"Output tokens: {result.output_tokens}")
             print(f"Total amount of tokens: {result.total_tokens}")
-            
+
     except Exception as e:
         print(f"\n❌ FAILED: {e}")
 
@@ -48,6 +43,7 @@ def main():
     print("  python tests/test_providers.py -m groq")
     print("  python tests/test_providers.py -m gemini")
     print("  python tests/test_providers.py -m ollama")
+
 
 if __name__ == "__main__":
     main()

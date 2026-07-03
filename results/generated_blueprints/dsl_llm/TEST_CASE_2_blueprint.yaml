@@ -2,7 +2,7 @@ root:
   name: ProductManagement
   database:
     type: sqlite
-    database: ./data/products.db
+    database: ./data/app.db
     synchronize: true
     logging: false
 

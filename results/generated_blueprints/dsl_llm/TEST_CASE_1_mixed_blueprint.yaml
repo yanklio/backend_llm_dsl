@@ -23,8 +23,3 @@ modules:
           type: string
           required: true
           validation: {minLength: 1, maxLength: 100}
-        - name: createdAt
-          type: Date
-          required: true
-          default: now
-      relations: []

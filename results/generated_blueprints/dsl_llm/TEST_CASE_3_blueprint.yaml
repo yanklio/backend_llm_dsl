@@ -29,4 +29,5 @@ modules:
         - name: createdAt
           type: date
           required: true
+          default: now
       relations: []

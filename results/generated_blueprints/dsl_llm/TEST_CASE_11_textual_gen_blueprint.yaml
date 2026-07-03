@@ -1,0 +1,111 @@
+root:
+  name: ECommerceApp
+  database:
+    type: sqlite
+    database: ./data/ecommerce.db
+    synchronize: true
+    logging: false
+  features:
+    cors: true
+    swagger: true
+modules:
+- name: Category
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      unique: true
+      validation:
+        minLength: 2
+        maxLength: 80
+    - name: description
+      type: string
+      required: true
+      validation:
+        maxLength: 300
+    relations:
+    - type: ManyToMany
+      model: Product
+      field: products
+      required: true
+      inverseField: categories
+- name: Product
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 150
+    - name: price
+      type: number
+      required: true
+      validation:
+        min: 0
+    - name: description
+      type: string
+      required: true
+      validation:
+        maxLength: 1000
+    - name: inStock
+      type: boolean
+      required: true
+      default: 'true'
+    relations:
+    - type: ManyToMany
+      model: Category
+      field: categories
+      required: true
+      inverseField: products
+    - type: OneToMany
+      model: Review
+      field: reviews
+      required: true
+      inverseField: product
+      onDelete: CASCADE
+- name: Review
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: rating
+      type: number
+      required: true
+      validation:
+        min: 1
+        max: 5
+    - name: comment
+      type: string
+      required: true
+      validation:
+        maxLength: 500
+    - name: reviewerName
+      type: string
+      required: true
+      validation:
+        maxLength: 100
+    relations:
+    - type: ManyToOne
+      model: Product
+      field: product
+      required: true
+      inverseField: reviews
+      onDelete: CASCADE
