@@ -19,6 +19,7 @@ __all__ = [
     "TemplateRenderException",
     "ConfigurationException",
     "JSONParseException",
+    "FileWriteException",
 ]
 
 
@@ -156,5 +157,11 @@ class JSONParseException(DSLGeneratorException):
 
     Raised when JSON content cannot be parsed even after attempting repairs.
     """
+
+    pass
+
+
+class FileWriteException(DSLGeneratorException):
+    """Exception for unsafe or failed generated file writes."""
 
     pass

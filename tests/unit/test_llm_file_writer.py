@@ -1,13 +1,18 @@
 """Tests for LLM file writer helpers."""
 
 import json
+import os
 from unittest.mock import patch
+
+import pytest
 
 from packages.llm_providers.generators.file_writer import (
     _has_many_literal_escapes,
     prepare_file_content,
+    resolve_generated_file_path,
     save_generated_files,
 )
+from packages.shared.exceptions import FileWriteException
 
 
 class TestHasManyLiteralEscapes:
@@ -81,8 +86,43 @@ class TestSaveGeneratedFiles:
         count = save_generated_files({}, str(temp_dir))
         assert count == 0
 
-    def test_partial_failure_still_counts_successes(self, temp_dir):
+    def test_partial_failure_raises(self, temp_dir):
         files = {"ok.txt": "good", "bad.txt": None}
-        count = save_generated_files(files, str(temp_dir))
+        with pytest.raises(FileWriteException):
+            save_generated_files(files, str(temp_dir))
+
+    def test_resolves_src_module_path(self, temp_dir):
+        resolved = resolve_generated_file_path(temp_dir, "src/user/user.module.ts")
+        assert resolved == (temp_dir / "src/user/user.module.ts").resolve()
+
+    def test_rejects_parent_traversal(self, temp_dir):
+        with pytest.raises(FileWriteException):
+            resolve_generated_file_path(temp_dir, "../../outside.txt")
+
+    def test_rejects_absolute_child_path(self, temp_dir):
+        with pytest.raises(FileWriteException):
+            resolve_generated_file_path(temp_dir, "/tmp/outside.txt")
+
+    def test_rejects_nested_parent_traversal(self, temp_dir):
+        with pytest.raises(FileWriteException):
+            resolve_generated_file_path(temp_dir, "src/user/../../../outside.txt")
+
+    def test_allows_valid_nested_path(self, temp_dir):
+        count = save_generated_files({"src/user/dto/create-user.dto.ts": "content"}, str(temp_dir))
         assert count == 1
-        assert (temp_dir / "ok.txt").read_text() == "good"
+        assert (temp_dir / "src/user/dto/create-user.dto.ts").read_text() == "content"
+
+    def test_rejects_symlink_escape_when_supported(self, temp_dir):
+        outside = temp_dir.parent / f"outside-{temp_dir.name}"
+        outside.mkdir()
+        link = temp_dir / "link"
+        try:
+            link.symlink_to(outside, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            pytest.skip("symlinks are not supported")
+
+        if not os.path.islink(link):
+            pytest.skip("symlink creation failed")
+
+        with pytest.raises(FileWriteException):
+            resolve_generated_file_path(temp_dir, "link/escaped.txt")
