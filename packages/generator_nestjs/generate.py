@@ -17,6 +17,7 @@ from .core.root import generate_root_module
 from .utils.ts_types import to_ts_type
 
 RELATION_COPY_FIELDS = ["inverseField", "joinTable", "joinColumn"]
+ROOT_REQUIRED_FILES = ["app.module.ts", "main.ts", "app.controller.ts", "app.service.ts"]
 
 
 def _reject_unsafe_path_component(value: str, field_name: str) -> None:
@@ -31,9 +32,9 @@ def _reject_unsafe_path_component(value: str, field_name: str) -> None:
 
 
 def _resolve_safe_output_dir(output_dir: str | Path | None = None) -> Path:
-    """Resolve a user-provided output directory under the current working tree."""
+    """Resolve a user-provided absolute or relative output directory."""
     requested = Path(output_dir or "nest_project")
-    if requested.is_absolute() or ".." in requested.parts:
+    if ".." in requested.parts:
         raise ConfigurationException(
             f"Unsafe output directory: {requested}",
             code="CONFIG005",
@@ -41,8 +42,8 @@ def _resolve_safe_output_dir(output_dir: str | Path | None = None) -> Path:
         )
 
     project_root = Path.cwd().resolve()
-    resolved = (project_root / requested).resolve()
-    if project_root != resolved and project_root not in resolved.parents:
+    resolved = requested.resolve() if requested.is_absolute() else (project_root / requested).resolve()
+    if not requested.is_absolute() and project_root != resolved and project_root not in resolved.parents:
         raise ConfigurationException(
             f"Output directory escapes project root: {requested}",
             code="CONFIG005",
@@ -58,6 +59,41 @@ def _validate_generated_paths(modules_data: list[dict[str, Any]]) -> None:
         _reject_unsafe_path_component(module_name.lower(), "module.name")
         for file_key in module_data.get("generate", []):
             _reject_unsafe_path_component(str(file_key), "module.generate")
+
+
+def _required_generated_files(data: dict[str, Any], output_dir: Path) -> list[Path]:
+    """Return deterministic files that must exist after rendering."""
+    src_dir = output_dir / "src"
+    required = [src_dir / file_name for file_name in ROOT_REQUIRED_FILES]
+    if "database" in data.get("root", {}):
+        required.append(src_dir / "database.config.ts")
+    for module_data in data.get("modules", []):
+        module_lower = str(module_data["name"]).lower()
+        module_dir = src_dir / module_lower
+        for file_key in module_data.get("generate", []):
+            if file_key == "dto":
+                required.extend(
+                    [
+                        module_dir / "dto" / f"create-{module_lower}.dto.ts",
+                        module_dir / "dto" / f"update-{module_lower}.dto.ts",
+                    ]
+                )
+            elif file_key == "entity":
+                required.append(module_dir / "entities" / f"{module_lower}.entity.ts")
+            else:
+                required.append(module_dir / f"{module_lower}.{file_key}.ts")
+    return required
+
+
+def _assert_required_files_exist(paths: list[Path]) -> None:
+    """Fail generation if any requested deterministic file is missing."""
+    missing = [str(path) for path in paths if not path.exists()]
+    if missing:
+        raise ConfigurationException(
+            f"Generation incomplete; missing requested files: {', '.join(missing)}",
+            code="CONFIG006",
+            context={"missing_files": missing},
+        )
 
 
 def _read_blueprint(blueprint_file: str | Path) -> dict[str, Any]:
@@ -133,6 +169,7 @@ def generate_from_blueprint(blueprint: dict[str, Any], output_dir: str | Path) -
     src_dir = base_output_dir / "src"
     for module_data in modules_data:
         generate_module(module_data, env, src_dir)
+    _assert_required_files_exist(_required_generated_files(data, base_output_dir))
     logger.success(f"✓ Generation Complete! ({len(modules_data)} modules)")
 
 

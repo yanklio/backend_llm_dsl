@@ -16,7 +16,7 @@ from packages.generator_nestjs.generate import (
     generate_from_blueprint,
     main,
 )
-from packages.shared.exceptions import ConfigurationException
+from packages.shared.exceptions import ConfigurationException, TemplateRenderException
 
 
 class TestConstants:
@@ -96,11 +96,13 @@ class TestEnsureOutputDir:
         assert result == (Path.cwd() / "nest_project").resolve()
         mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
-    def test_rejects_absolute_output_dir(self):
-        with pytest.raises(ConfigurationException) as exc_info:
-            _ensure_output_dir(Path("/unsafe/absolute"))
+    def test_allows_absolute_output_dir(self):
+        absolute_path = Path.cwd() / "absolute-output"
+        with patch("packages.generator_nestjs.generate.Path.mkdir") as mock_mkdir:
+            result = _ensure_output_dir(absolute_path)
 
-        assert exc_info.value.code == "CONFIG005"
+        assert result == absolute_path.resolve()
+        mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
     def test_rejects_parent_directory_output_dir(self):
         with pytest.raises(ConfigurationException) as exc_info:
@@ -273,6 +275,7 @@ class TestMain:
             patch("packages.generator_nestjs.generate._enrich_modules_with_relations") as mock_enrich,
             patch("packages.generator_nestjs.generate.generate_root_module") as mock_root,
             patch("packages.generator_nestjs.generate.generate_module") as mock_mod,
+            patch("packages.generator_nestjs.generate._assert_required_files_exist") as mock_assert_files,
             patch("packages.generator_nestjs.generate.logger"),
         ):
             mock_read.return_value = {"root": {"name": "Test"}, "modules": modules}
@@ -288,6 +291,38 @@ class TestMain:
         mock_enrich.assert_called_once_with(modules, mock_relations.return_value)
         mock_root.assert_called_once()
         assert mock_mod.call_count == 2
+        mock_assert_files.assert_called_once()
+
+    def test_template_render_failure_propagates(self, temp_dir):
+        blueprint = str(temp_dir / "blueprint.yaml")
+        output_dir = str(temp_dir / "output")
+        modules = [{"name": "User", "entity": {"fields": []}}]
+        with (
+            patch("packages.generator_nestjs.generate._read_blueprint") as mock_read,
+            patch("packages.generator_nestjs.generate._setup_jinja_env") as mock_env_setup,
+            patch("packages.generator_nestjs.generate._ensure_output_dir") as mock_ensure_dir,
+            patch("packages.generator_nestjs.generate.handle_relations", return_value={}),
+            patch("packages.generator_nestjs.generate._enrich_modules_with_relations"),
+            patch(
+                "packages.generator_nestjs.generate.generate_root_module",
+                side_effect=TemplateRenderException("render failed"),
+            ),
+        ):
+            mock_read.return_value = {"root": {"name": "Test"}, "modules": modules}
+            mock_env_setup.return_value = MagicMock()
+            mock_ensure_dir.return_value = Path(output_dir)
+
+            with pytest.raises(TemplateRenderException):
+                main(blueprint, output_dir)
+
+    def test_missing_requested_file_fails_generation(self, temp_dir):
+        missing = temp_dir / "src" / "app.module.ts"
+        with pytest.raises(ConfigurationException) as exc_info:
+            from packages.generator_nestjs.generate import _assert_required_files_exist
+
+            _assert_required_files_exist([missing])
+
+        assert exc_info.value.code == "CONFIG006"
 
     def test_empty_modules_logs_warning(self, temp_dir):
         blueprint = str(temp_dir / "blueprint.yaml")
