@@ -27,8 +27,11 @@ pip install -e .
 nestforge compile docs/examples/textual_dsl/simple.dsl --output blueprint.yaml
 nestforge validate docs/examples/textual_dsl/simple.dsl
 nestforge generate-file docs/examples/textual_dsl/simple.dsl --output generated/
+nestforge --provider openrouter --model openai/gpt-oss-20b:free dsl "Create a blog API"
+nestforge --provider openrouter --model openai/gpt-oss-20b:free raw "Create a blog API"
+nestforge --provider openrouter --model openai/gpt-oss-20b:free mixed "Create a blog API"
 nestforge generate-prompt "Create a blog API" --approach dsl --provider openrouter --model openai/gpt-oss-20b:free
-nestforge experiments run --approach all --provider openrouter --repetitions 1
+nestforge experiments run --approach all --provider openrouter --model openai/gpt-oss-20b:free --repetitions 1
 nestforge experiments export
 ```
 

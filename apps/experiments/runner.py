@@ -52,6 +52,7 @@ def _build_result_record(
     run_id: str,
     repetition: int = 1,
     prompt_alignment: dict[str, Any] | None = None,
+    model_name: str | None = None,
 ) -> dict[str, Any]:
     """Create the persisted result payload for one run."""
     identity = record_identity(
@@ -60,6 +61,7 @@ def _build_result_record(
         test_case=case_name,
         tier=tier,
         repetition=repetition,
+        model_name=model_name,
     )
     record = {
         **identity,
@@ -273,6 +275,7 @@ def _run_case(
     tier: str,
     current_approach: str,
     provider: str,
+    model_name: str | None,
     run_metadata: dict[str, Any],
     run_dir: Path,
     run_results: list[dict[str, Any]],
@@ -288,6 +291,7 @@ def _run_case(
         case_data,
         NEST_PROJECT_DIR,
         provider=provider,
+        model_name=model_name,
     )
 
     validation, status = _validate_generation(generation)
@@ -311,6 +315,7 @@ def _run_case(
         run_metadata["run_id"],
         repetition,
         prompt_alignment,
+        model_name,
     )
     artifact_dir = _artifact_dir(run_dir, case_name, current_approach, repetition)
     _save_artifacts(artifact_dir, case_data, generation, validation, prompt_alignment)
@@ -324,6 +329,7 @@ def _run_case(
 def run_experiments(
     approach: str = "all",
     provider: str = "openrouter",
+    model_name: str | None = None,
     case_id: str | None = None,
     limit: int | None = None,
     judge_enabled: bool = False,
@@ -334,7 +340,14 @@ def run_experiments(
     """Execute generation experiments across the configured test cases."""
     approaches_to_run = _selected_approaches(approach)
     print(f"Using provider: {provider}")
-    run_metadata = build_run_metadata(provider, approaches_to_run, repetitions)
+    test_cases = _selected_test_cases(load_test_cases(), case_id, limit)
+    run_metadata = build_run_metadata(
+        provider,
+        approaches_to_run,
+        repetitions,
+        case_ids=list(test_cases.keys()),
+        model_name=model_name,
+    )
     run_metadata["prompt_alignment"] = {
         "enabled": judge_enabled,
         "provider": judge_provider if judge_enabled else None,
@@ -346,7 +359,6 @@ def run_experiments(
     print(f"Run ID: {run_metadata['run_id']}")
     print(f"Run directory: {run_dir}")
 
-    test_cases = _selected_test_cases(load_test_cases(), case_id, limit)
     NEST_PROJECT_DIR.mkdir(exist_ok=True)
 
     run_results = load_results(_run_results_file(run_dir))
@@ -364,6 +376,7 @@ def run_experiments(
                     test_case=case_name,
                     tier=tier,
                     repetition=repetition,
+                    model_name=model_name,
                 )
                 if resume_key(current_identity) in completed_runs:
                     print(f"Skipping {case_name} ({current_approach}) rep-{repetition} - already completed")
@@ -375,6 +388,7 @@ def run_experiments(
                     tier,
                     current_approach,
                     provider,
+                    model_name,
                     run_metadata,
                     run_dir,
                     run_results,
@@ -403,6 +417,11 @@ def main() -> None:
         choices=["groq", "gemini", "openrouter", "ollama"],
         default="openrouter",
         help="LLM provider to use (default: openrouter)",
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="Exact model override for generation",
     )
     parser.add_argument(
         "--case",
@@ -437,6 +456,7 @@ def main() -> None:
     run_experiments(
         approach=args.approach,
         provider=args.provider,
+        model_name=args.model,
         case_id=args.case_id,
         limit=args.limit,
         judge_enabled=args.judge,

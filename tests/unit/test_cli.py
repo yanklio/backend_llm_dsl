@@ -78,7 +78,7 @@ class TestCmdGenerate:
             mock_nl.return_value = result
             cmd_generate(args)
 
-        mock_nl.assert_called_once_with("test app", provider="gemini")
+        mock_nl.assert_called_once_with("test app", provider="openrouter", model_name="gemini")
         mock_save.assert_called_once_with("yaml_content", "blueprint.yaml")
         mock_gen.assert_called_once_with("blueprint.yaml", "./generated")
 
@@ -126,7 +126,7 @@ class TestCmdGenerateRaw:
             mock_gen.return_value = (gen_result, {"file.ts": "content"})
             cmd_generate_raw(args)
 
-        mock_gen.assert_called_once_with("test", "./generated", provider="groq")
+        mock_gen.assert_called_once_with("test", "./generated", provider="openrouter", model_name="groq")
         mock_save.assert_called_once_with({"file.ts": "content"}, "./generated")
 
 
@@ -147,7 +147,8 @@ class TestCmdGenerateMixed:
             description="test",
             output_dir="./generated",
             blueprint_path="blueprint.yaml",
-            primary_model="openrouter",
+            provider="openrouter",
+            model_name="openrouter",
         )
         mock_save.assert_called_once_with({"f.ts": "c"}, "./generated")
 
