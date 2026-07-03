@@ -22,6 +22,7 @@ from packages.llm_providers.generators.output import (
     log_json_parse_failure,
     log_run_instructions,
 )
+from packages.llm_providers.generators.raw_generate import EXPERIMENT_GENERATION_TEMPERATURE
 from packages.shared import logger
 
 load_dotenv()
@@ -120,6 +121,8 @@ def mixed_generate(
     output_dir: str = "./nest_project",
     blueprint_path: str = "./mixed_blueprint.yaml",
     primary_model: str | None = None,
+    provider: str | None = None,
+    model_name: str | None = None,
 ) -> dict[str, Any]:
     """Generate NestJS code using the mixed approach.
 
@@ -131,13 +134,16 @@ def mixed_generate(
         output_dir (str): Directory to save generated files.
         blueprint_path (str): Path to save the intermediate blueprint.
         primary_model (str | None): Preferred LLM provider.
+        provider (str | None): Provider ID override; preferred over primary_model.
+        model_name (str | None): Optional exact provider model override.
 
     Returns:
         dict[str, Any]: Dictionary with generation results and statistics.
     """
     logger.start("Phase 1: Generating blueprint from description...")
 
-    blueprint_result = natural_language_to_yaml(description, primary_model)
+    provider_id = provider or primary_model or "openrouter"
+    blueprint_result = natural_language_to_yaml(description, provider=provider_id, model_name=model_name)
     blueprint_yaml = blueprint_result.content
 
     save_blueprint(blueprint_yaml, blueprint_path)
@@ -145,8 +151,11 @@ def mixed_generate(
 
     logger.start("Phase 2: Generating code with blueprint context...")
 
-    provider = primary_model or "openrouter"
-    client = LLMClient(provider_id=provider, temperature=0.2)
+    client = LLMClient(
+        provider_id=provider_id,
+        temperature=EXPERIMENT_GENERATION_TEMPERATURE,
+        model_name=model_name,
+    )
 
     user_prompt = _create_mixed_prompt(blueprint_yaml, description)
     messages = [SystemMessage(content=RAW_CODE_SYSTEM_PROMPT), HumanMessage(content=user_prompt)]
@@ -163,7 +172,7 @@ def mixed_generate(
             "files": files,
             "blueprint": blueprint_yaml,
             "phase1_raw_response": blueprint_result.raw_content or blueprint_yaml,
-            "code_response": code_result.content,
+            "code_response": code_result.raw_content or code_result.content,
             "cleaned_code_response": cleaned_content,
             "statistics": _build_mixed_statistics(blueprint_result, code_result),
         }
@@ -175,9 +184,10 @@ def mixed_generate(
             "error": str(e),
             "blueprint": blueprint_yaml,
             "phase1_raw_response": blueprint_result.raw_content or blueprint_yaml,
-            "code_response": code_result.content,
+            "code_response": code_result.raw_content or code_result.content,
             "cleaned_code_response": cleaned_content,
             "phase1_result": blueprint_result,
+            "statistics": _build_mixed_statistics(blueprint_result, code_result),
         }
 
 

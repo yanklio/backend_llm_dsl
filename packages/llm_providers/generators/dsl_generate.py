@@ -16,17 +16,22 @@ load_dotenv()
 DSL_REQUEST_TEMPLATE = "Create a NestJS application for: {description}"
 
 
-def natural_language_to_yaml(description: str, provider: str = "openrouter") -> GenerationResult:
+def natural_language_to_yaml(
+    description: str,
+    provider: str = "openrouter",
+    model_name: str | None = None,
+) -> GenerationResult:
     """Convert natural language to YAML blueprint using LLM.
 
     Args:
         description (str): Plain English description of the desired NestJS application.
         provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: openrouter.
+        model_name (str | None): Optional exact provider model override.
 
     Returns:
         GenerationResult: The generated YAML content and metadata.
     """
-    client = LLMClient(provider_id=provider, temperature=0.1)
+    client = LLMClient(provider_id=provider or "openrouter", temperature=0.1, model_name=model_name)
 
     messages = [
         SystemMessage(content=SYSTEM_PROMPT),
@@ -34,7 +39,6 @@ def natural_language_to_yaml(description: str, provider: str = "openrouter") -> 
     ]
 
     result = client.generate(messages)
-    result.raw_content = result.content
     result.content = clean_llm_response(result.content)
     return result
 
@@ -84,7 +88,7 @@ def main() -> None:
         logger.info(f"Preferred Model: {args.model}")
 
     try:
-        result = natural_language_to_yaml(args.description, args.model)
+        result = natural_language_to_yaml(args.description, provider=args.model or "openrouter")
         log_generation_statistics(result)
         save_blueprint(result.content, args.blueprint)
 

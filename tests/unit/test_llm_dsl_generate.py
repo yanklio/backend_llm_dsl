@@ -43,7 +43,7 @@ class TestNaturalLanguageToYaml:
 
             result = natural_language_to_yaml("test app", "gemini")
 
-        MockClient.assert_called_once_with(provider_id="gemini", temperature=0.1)
+        MockClient.assert_called_once_with(provider_id="gemini", temperature=0.1, model_name=None)
         call_args = mock_instance.generate.call_args[0][0]
         assert len(call_args) == 2
         assert call_args[0].type == "system"
@@ -94,7 +94,7 @@ class TestNaturalLanguageToYaml:
 
             natural_language_to_yaml("test app")
 
-        MockClient.assert_called_once_with(provider_id="openrouter", temperature=0.1)
+        MockClient.assert_called_once_with(provider_id="openrouter", temperature=0.1, model_name=None)
 
 
 class TestSaveBlueprint:
@@ -136,7 +136,7 @@ class TestMain:
 
             main()
 
-        mock_nl.assert_called_once_with("my api", "groq")
+        mock_nl.assert_called_once_with("my api", provider="groq")
         mock_save.assert_called_once_with("yaml", "out.yaml")
 
     def test_exits_on_exception(self, monkeypatch):
