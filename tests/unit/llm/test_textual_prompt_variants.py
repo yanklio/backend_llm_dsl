@@ -51,3 +51,9 @@ def test_raw_prompt_requires_null_safe_find_one() -> None:
     assert "findOne/findOneBy can return null" in RAW_CODE_SYSTEM_PROMPT
     assert "NotFoundException" in RAW_CODE_SYSTEM_PROMPT
     assert "COMPILE-SAFE SERVICE EXAMPLE" in RAW_CODE_SYSTEM_PROMPT
+
+
+def test_raw_prompt_uses_requested_update_method() -> None:
+    """Raw and mixed file-map prompt should not bias updates toward PATCH."""
+    assert "use @Put(':id') for update" in RAW_CODE_SYSTEM_PROMPT
+    assert "Do not use @Patch(':id')" in RAW_CODE_SYSTEM_PROMPT

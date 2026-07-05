@@ -1,13 +1,15 @@
 root:
-  name: ProductService
+  name: ProductAdministration
   database:
     type: sqlite
     database: ./data/app.db
     synchronize: true
     logging: false
+
   features:
     cors: true
     swagger: true
+
 modules:
   - name: Product
     generate: [controller, service, module, entity, dto]

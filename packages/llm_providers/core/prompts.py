@@ -132,7 +132,10 @@ DTO CONVENTIONS:
 
 CONTROLLER CONVENTIONS:
 - Use @Controller('entityname') (lowercase plural)
-- @Get(), @Get(':id'), @Post(), @Patch(':id'), @Delete(':id')
+- Use the HTTP methods requested by the user prompt or benchmark endpoint list.
+- If the prompt says CRUD or lists PUT endpoints, use @Put(':id') for update.
+- Do not use @Patch(':id') instead of an explicitly requested PUT endpoint.
+- Common CRUD endpoints: @Get(), @Get(':id'), @Post(), @Put(':id'), @Delete(':id')
 - Use @Body(), @Param(), @ParseIntPipe appropriately
 
 SERVICE CONVENTIONS:
@@ -194,19 +197,28 @@ Return ONLY one valid JSON object with this exact shape:
 }
 
 Score meaning:
-0 = no meaningful alignment with the prompt; generated code is unrelated or unusable for the requested scope
-1 = very poor alignment; only a small part of the requested domain or API is recognizable
-2 = partial alignment; some requested entities/endpoints/fields are present, but major explicit requirements are missing
-3 = moderate alignment; the main requested idea is present, but at least one important entity, relation, endpoint, or constraint is missing or wrong
-4 = exact prompt alignment; explicit prompt requirements are covered, with no meaningful production-supporting additions beyond the requested scope
-5 = prompt alignment plus useful production-supporting additions; explicit prompt requirements are covered and extras such as Swagger setup, CORS, validation pipes, health endpoints, timestamps, or PATCH aliases are acceptable when they do not conflict with the prompt
+0 = unrelated output or no usable source files for the requested scope
+1 = very poor alignment; only one small part of the requested domain is recognizable
+2 = partial alignment; main entities or CRUD surface are incomplete, or multiple major explicit requirements are missing
+3 = moderate alignment; the main app is recognizable and mostly complete, but one important requirement is missing/wrong, or several field constraints/defaults are missing
+4 = strong alignment; all entities, relations, and required endpoints are present, with only minor omissions such as one optional-field marker, one non-critical validation constraint, or one harmless naming mismatch
+5 = exact alignment; all explicit prompt requirements are covered, including requested methods, fields, constraints/defaults, relations, and endpoints. Harmless production additions such as Swagger, CORS, validation pipes, timestamps, or health endpoints are acceptable.
+
+Scoring calibration:
+- Do not give 3 automatically. Use 4 for near-misses and 2 for broad/incomplete implementations.
+- Missing an explicitly requested endpoint method, such as PUT when only PATCH exists, is important and usually caps the score at 3.
+- Missing a relation between requested entities is important and usually caps the score at 3.
+- Missing several validations/default values usually caps the score at 3.
+- Missing only one optional marker or one non-critical validation can still be 4.
+- If the code contains a validator import but the decorator is not applied to the relevant field, that requirement is missing.
+- If a DTO cannot express a requested relation during create/update, treat that relation support as missing even if entity decorators exist.
 
 Rules:
 - alignment_score must be an integer from 0 to 5.
 - missing_requirements must list prompt requirements that are absent from the code.
 - extra_features must list only unrequested features that conflict with the prompt, replace requested behavior, or materially change the requested scope.
 - Do not penalize harmless production-supporting extras when all explicit prompt requirements are covered.
-- rationale must be concise and mention only prompt-alignment evidence.
+- rationale must be concise and mention concrete code evidence, such as decorators, DTO fields, relation fields, or controller methods.
 - Do not include markdown, explanations outside JSON, or additional keys."""
 
 

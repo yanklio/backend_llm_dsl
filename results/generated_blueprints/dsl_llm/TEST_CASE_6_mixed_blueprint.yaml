@@ -2,12 +2,14 @@ root:
   name: BlogPlatform
   database:
     type: sqlite
-    database: ./data/blog.db
+    database: ./data/app.db
     synchronize: true
     logging: false
+
   features:
     cors: true
     swagger: true
+
 modules:
   - name: Author
     generate: [controller, service, module, entity, dto]
@@ -20,7 +22,7 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {unique: true, format: email}
+          validation: {format: email, unique: true}
         - name: bio
           type: string
           required: false
@@ -29,7 +31,7 @@ modules:
         - type: OneToMany
           model: Post
           field: posts
-          description: A list of posts written by this author
+          description: A list of posts belonging to this author
   - name: Post
     generate: [controller, service, module, entity, dto]
     entity:
@@ -43,7 +45,7 @@ modules:
           required: true
         - name: published
           type: boolean
-          required: true
+          required: false
           default: false
       relations:
         - type: ManyToOne

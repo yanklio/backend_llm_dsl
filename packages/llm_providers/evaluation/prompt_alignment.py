@@ -12,7 +12,7 @@ from packages.llm_providers.core.response_parser import clean_llm_response, try_
 
 DEFAULT_ALIGNMENT_PROVIDER = "openrouter"
 DEFAULT_ALIGNMENT_MODEL = "openai/gpt-oss-120b:free"
-PROMPT_ALIGNMENT_VERSION = "prompt-alignment-v1"
+PROMPT_ALIGNMENT_VERSION = "prompt-alignment-v2"
 
 PROMPT_ALIGNMENT_REQUEST_TEMPLATE = """=== USER REQUIREMENT ===
 {requirement}

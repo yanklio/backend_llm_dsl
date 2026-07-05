@@ -13,6 +13,7 @@ from packages.llm_providers.evaluation.prompt_alignment import (
     evaluate_prompt_alignment,
     prompt_alignment_prompt_hash,
 )
+from packages.shared.exceptions import JSONParseException
 
 from .approaches import APPROACH_RUNNERS
 from .io import SuppressOutput, load_results, load_test_cases, save_json, save_results
@@ -133,7 +134,7 @@ def _run_prompt_alignment(
                 provider=provider,
                 model_name=model_name,
             )
-    except (RuntimeError, ValueError, OSError) as exc:
+    except (JSONParseException, RuntimeError, ValueError, OSError) as exc:
         return _empty_prompt_alignment(
             provider=provider,
             model_name=model_name,
