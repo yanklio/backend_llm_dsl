@@ -1,8 +1,8 @@
 root:
-  name: BlogApp
+  name: BlogPlatform
   database:
     type: sqlite
-    database: ./data/blog.db
+    database: ./data/app.db
     synchronize: true
     logging: false
   features:
@@ -41,7 +41,6 @@ modules:
       field: posts
       required: true
       inverseField: author
-      onDelete: CASCADE
 - name: Post
   generate:
   - controller
@@ -70,4 +69,3 @@ modules:
       field: author
       required: true
       inverseField: posts
-      onDelete: CASCADE

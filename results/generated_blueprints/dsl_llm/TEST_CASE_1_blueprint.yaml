@@ -2,14 +2,12 @@ root:
   name: UserManagement
   database:
     type: sqlite
-    database: ./data/users.db
+    database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: User
     generate: [controller, service, module, entity, dto]
@@ -23,4 +21,3 @@ modules:
           type: string
           required: true
           validation: {minLength: 1, maxLength: 100}
-      relations: []

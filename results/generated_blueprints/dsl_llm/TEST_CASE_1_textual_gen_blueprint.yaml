@@ -1,5 +1,5 @@
 root:
-  name: UserApp
+  name: UserManager
   database:
     type: sqlite
     database: ./data/app.db
@@ -27,7 +27,4 @@ modules:
     - name: name
       type: string
       required: true
-      validation:
-        minLength: 1
-        maxLength: 100
     relations: []

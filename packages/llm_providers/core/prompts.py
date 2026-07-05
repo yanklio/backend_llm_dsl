@@ -139,6 +139,22 @@ SERVICE CONVENTIONS:
 - Use @Injectable()
 - Inject repository: @InjectRepository(Entity) + constructor
 - Methods: create(), findAll(), findOne(id), update(id, dto), remove(id)
+- TypeORM findOne/findOneBy can return null. If findOne(id) is typed as Promise<Entity>,
+  it MUST check for null and throw NotFoundException before returning.
+- Import NotFoundException from @nestjs/common when using null checks.
+- update(id, dto) should call findOne(id), merge dto fields, and save the entity.
+- remove(id) should call findOne(id) before deleting/removing the entity.
+- Do NOT return Repository.findOne(), Repository.findOneBy(), or this.findOne(id)
+  from a Promise<Entity> method unless the null case has already been handled.
+
+COMPILE-SAFE SERVICE EXAMPLE:
+async findOne(id: number): Promise<User> {
+  const user = await this.userRepository.findOneBy({ id });
+  if (!user) {
+    throw new NotFoundException(`User with id ${id} not found`);
+  }
+  return user;
+}
 
 MODULE CONVENTIONS:
 - Use @Module()
@@ -324,7 +340,18 @@ def build_textual_generation_messages(
     if variant == TextualPromptVariant.BASELINE:
         system = (
             "Generate a textual DSL specification for the requested NestJS backend. "
-            "Return DSL source only. Use entities, fields, relations, and modules."
+            "Return DSL source only. Use entities, fields, relations, and modules. "
+            "Use only this compact grammar with newlines between declarations: "
+            'app AppName { database: sqlite @path("./data/app.db") features: [cors, swagger] } '
+            "entity EntityName { fieldName: string @required @unique @email } "
+            "relations use fields like posts: Post[] @OneToMany(inverse: author) "
+            "or author: Author @ManyToOne(inverse: posts). "
+            "module ModuleName for EntityName. "
+            "Never use semicolons because semicolon is not valid DSL syntax. "
+            "Do not use TypeScript, NestJS, service, controller, DTO, import, provider, "
+            "or TypeOrmModule syntax. "
+            "Do not create id, createdAt, or updatedAt fields. "
+            "No markdown or explanations."
         )
     elif variant == TextualPromptVariant.SPEC:
         system = TEXTUAL_DSL_SPEC_REFERENCE

@@ -1,8 +1,8 @@
 root:
-  name: ProductApp
+  name: ProductService
   database:
     type: sqlite
-    database: ./data/product.db
+    database: ./data/app.db
     synchronize: true
     logging: false
   features:
