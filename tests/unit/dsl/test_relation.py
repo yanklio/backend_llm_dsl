@@ -8,6 +8,26 @@ from packages.generator_nestjs.core.modules.relation import (
     _filter_valid_relations,
     handle_relations,
 )
+from packages.generator_nestjs.generate import _setup_jinja_env
+
+
+def _module(name, relations=None):
+    return {"name": name, "entity": {"fields": [], "relations": relations or []}}
+
+
+def _render_entity(module_name, relations):
+    env = _setup_jinja_env()
+    template = env.get_template("entity.ts.j2")
+    return template.render(module=module_name, entity={"fields": [], "relations": relations})
+
+
+def _enriched_relations(modules):
+    relations = handle_relations(modules)
+    for module in modules:
+        module_name = module["name"]
+        for relation in module["entity"].get("relations", []):
+            relation.update(relations[(module_name, relation["model"])])
+    return relations
 
 
 class TestConstants:
@@ -52,23 +72,41 @@ class TestHandleRelations:
         assert result[("Post", "User")]["type"] == "ManyToOne"
         assert result[("Post", "User")]["field"] == "user"
 
-    def test_many_to_many_join_table_on_lower_index(self):
+    def test_unidirectional_many_to_many_source_declared_first(self):
         modules = [
-            {"name": "User", "entity": {"fields": []}},
-            {"name": "Role", "entity": {"fields": []}},
+            _module("User", [{"type": "ManyToMany", "model": "Role", "field": "roles"}]),
+            _module("Role"),
         ]
-        modules[0]["entity"]["relations"] = [{"type": "ManyToMany", "model": "Role", "field": "roles"}]
-        result = handle_relations(modules)
+        result = _enriched_relations(modules)
         assert result[("User", "Role")].get("joinTable") is True
+        assert "@JoinTable()" in _render_entity("User", modules[0]["entity"]["relations"])
 
-    def test_one_to_one_join_column_on_higher_index(self):
+    def test_unidirectional_many_to_many_source_declared_second(self):
         modules = [
-            {"name": "User", "entity": {"fields": []}},
-            {"name": "Profile", "entity": {"fields": []}},
+            _module("Role"),
+            _module("User", [{"type": "ManyToMany", "model": "Role", "field": "roles"}]),
         ]
-        modules[1]["entity"]["relations"] = [{"type": "OneToOne", "model": "User", "field": "user"}]
-        result = handle_relations(modules)
-        assert result[("Profile", "User")].get("joinColumn") is True
+        result = _enriched_relations(modules)
+        assert result[("User", "Role")].get("joinTable") is True
+        assert "@JoinTable()" in _render_entity("User", modules[1]["entity"]["relations"])
+
+    def test_unidirectional_one_to_one_source_declared_first(self):
+        modules = [
+            _module("User", [{"type": "OneToOne", "model": "Profile", "field": "profile"}]),
+            _module("Profile"),
+        ]
+        result = _enriched_relations(modules)
+        assert result[("User", "Profile")].get("joinColumn") is True
+        assert "@JoinColumn()" in _render_entity("User", modules[0]["entity"]["relations"])
+
+    def test_unidirectional_one_to_one_source_declared_second(self):
+        modules = [
+            _module("Profile"),
+            _module("User", [{"type": "OneToOne", "model": "Profile", "field": "profile"}]),
+        ]
+        result = _enriched_relations(modules)
+        assert result[("User", "Profile")].get("joinColumn") is True
+        assert "@JoinColumn()" in _render_entity("User", modules[1]["entity"]["relations"])
 
     def test_relation_to_nonexistent_module_filtered(self, capsys):
         modules = [
@@ -136,6 +174,54 @@ class TestHandleRelations:
         assert "joinTable" not in result[("A", "B")]
         assert "joinColumn" not in result[("A", "B")]
 
+    def test_bidirectional_many_to_many_user_role_order(self):
+        modules = [
+            _module("User", [{"type": "ManyToMany", "model": "Role", "field": "roles"}]),
+            _module("Role", [{"type": "ManyToMany", "model": "User", "field": "users"}]),
+        ]
+        result = _enriched_relations(modules)
+
+        assert result[("Role", "User")].get("joinTable") is True
+        assert "joinTable" not in result[("User", "Role")]
+        assert "@JoinTable()" in _render_entity("Role", modules[1]["entity"]["relations"])
+        assert "@JoinTable()" not in _render_entity("User", modules[0]["entity"]["relations"])
+
+    def test_bidirectional_many_to_many_role_user_order(self):
+        modules = [
+            _module("Role", [{"type": "ManyToMany", "model": "User", "field": "users"}]),
+            _module("User", [{"type": "ManyToMany", "model": "Role", "field": "roles"}]),
+        ]
+        result = _enriched_relations(modules)
+
+        assert result[("Role", "User")].get("joinTable") is True
+        assert "joinTable" not in result[("User", "Role")]
+        assert "@JoinTable()" in _render_entity("Role", modules[0]["entity"]["relations"])
+        assert "@JoinTable()" not in _render_entity("User", modules[1]["entity"]["relations"])
+
+    def test_bidirectional_one_to_one_user_profile_order(self):
+        modules = [
+            _module("User", [{"type": "OneToOne", "model": "Profile", "field": "profile"}]),
+            _module("Profile", [{"type": "OneToOne", "model": "User", "field": "user"}]),
+        ]
+        result = _enriched_relations(modules)
+
+        assert result[("Profile", "User")].get("joinColumn") is True
+        assert "joinColumn" not in result[("User", "Profile")]
+        assert "@JoinColumn()" in _render_entity("Profile", modules[1]["entity"]["relations"])
+        assert "@JoinColumn()" not in _render_entity("User", modules[0]["entity"]["relations"])
+
+    def test_bidirectional_one_to_one_profile_user_order(self):
+        modules = [
+            _module("Profile", [{"type": "OneToOne", "model": "User", "field": "user"}]),
+            _module("User", [{"type": "OneToOne", "model": "Profile", "field": "profile"}]),
+        ]
+        result = _enriched_relations(modules)
+
+        assert result[("Profile", "User")].get("joinColumn") is True
+        assert "joinColumn" not in result[("User", "Profile")]
+        assert "@JoinColumn()" in _render_entity("Profile", modules[0]["entity"]["relations"])
+        assert "@JoinColumn()" not in _render_entity("User", modules[1]["entity"]["relations"])
+
 
 class TestBuildRelationData:
     """Verify _build_relation_data payload construction."""
@@ -150,7 +236,7 @@ class TestBuildRelationData:
         positions = {"User": 0, "Role": 1}
         relation = {"type": "ManyToMany", "model": "Role", "field": "roles"}
         result = _build_relation_data("User", "Role", relation, positions)
-        assert result.get("joinTable") is True
+        assert "joinTable" not in result
 
     def test_many_to_many_source_higher_than_related(self):
         positions = {"User": 0, "Role": 1}
@@ -162,7 +248,7 @@ class TestBuildRelationData:
         positions = {"User": 0, "Profile": 1}
         relation = {"type": "OneToOne", "model": "User", "field": "user"}
         result = _build_relation_data("Profile", "User", relation, positions)
-        assert result.get("joinColumn") is True
+        assert "joinColumn" not in result
 
     def test_one_to_one_source_lower_than_related(self):
         positions = {"User": 0, "Profile": 1}
