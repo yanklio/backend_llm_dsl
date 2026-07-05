@@ -2,13 +2,12 @@ root:
   name: BlogPlatform
   database:
     type: sqlite
-    database: ./data/app.db
+    database: ./data/blog.db
     synchronize: true
     logging: false
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Author
     generate: [controller, service, module, entity, dto]
@@ -44,7 +43,7 @@ modules:
           required: true
         - name: published
           type: boolean
-          required: false
+          required: true
           default: false
       relations:
         - type: ManyToOne
