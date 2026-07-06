@@ -28,3 +28,26 @@ def test_lexer_rejects_unknown_character() -> None:
         tokenize("entity User { email: string $ }")
 
     assert "Unknown character '$'" in str(error.value)
+
+
+def test_lexer_tokenizes_negative_numbers() -> None:
+    """Negative integer and decimal values are number tokens."""
+    tokens = tokenize("@min(-20) @min(-0.5)")
+
+    numbers = [token.value for token in tokens if token.type == TokenType.NUMBER]
+    assert numbers == ["-20", "-0.5"]
+
+
+def test_lexer_still_tokenizes_arrow() -> None:
+    """The relation arrow remains distinct from signed numbers."""
+    tokens = tokenize("User -> Post")
+
+    assert [token.type for token in tokens[:3]] == [TokenType.IDENT, TokenType.ARROW, TokenType.IDENT]
+
+
+def test_lexer_rejects_standalone_minus() -> None:
+    """Standalone '-' is malformed."""
+    with pytest.raises(LexError) as error:
+        tokenize("entity Reading { temperature: number @min(-) }")
+
+    assert "Expected '>' or digit after '-'" in str(error.value)

@@ -2,90 +2,87 @@ root:
   name: MedicalClinic
   database:
     type: sqlite
-    database: ./data/clinic.db
+    database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
-modules:
-  - name: Doctor
-    generate: [controller, service, module, entity, dto]
-    entity:
-      fields:
-        - name: firstName
-          type: string
-          required: true
-          validation: {minLength: 2, maxLength: 50}
-        - name: lastName
-          type: string
-          required: true
-          validation: {minLength: 2, maxLength: 50}
-        - name: specialization
-          type: string
-          required: true
-          validation: {maxLength: 100}
-        - name: email
-          type: string
-          required: true
-          validation: {unique: true, format: email}
-      relations:
-        - type: OneToMany
-          model: Appointment
-          field: appointments
-          description: Appointments scheduled with this doctor
-  - name: Patient
-    generate: [controller, service, module, entity, dto]
-    entity:
-      fields:
-        - name: firstName
-          type: string
-          required: true
-          validation: {minLength: 2, maxLength: 50}
-        - name: lastName
-          type: string
-          required: true
-          validation: {minLength: 2, maxLength: 50}
-        - name: dateOfBirth
-          type: date
-          required: true
-        - name: phone
-          type: string
-          required: false
-          validation: {maxLength: 20}
-      relations:
-        - type: OneToMany
-          model: Appointment
-          field: appointments
-          description: Appointments associated with this patient
-  - name: Appointment
-    generate: [controller, service, module, entity, dto]
-    entity:
-      fields:
-        - name: appointmentDate
-          type: date
-          required: true
-        - name: reason
-          type: string
-          required: true
-          validation: {maxLength: 300}
-        - name: status
-          type: enum
-          required: true
-          enum: [scheduled, in_progress, completed, cancelled]
-          default: scheduled
-        - name: notes
-          type: string
-          required: false
-          validation: {maxLength: 1000}
-      relations:
-        - type: ManyToOne
-          model: Doctor
-          field: doctor
-          description: The doctor for this appointment
-        - type: ManyToOne
-          model: Patient
-          field: patient
-          description: The patient for this appointment
+  modules:
+    - name: Doctor
+      generate: [controller, service, module, entity, dto]
+      entity:
+        fields:
+          - name: firstName
+            type: string
+            required: true
+            validation: {minLength: 2, maxLength: 50}
+          - name: lastName
+            type: string
+            required: true
+            validation: {minLength: 2, maxLength: 50}
+          - name: specialization
+            type: string
+            required: true
+            validation: {maxLength: 100}
+          - name: email
+            type: string
+            required: true
+            validation: {format: email, unique: true}
+        relations:
+          - type: OneToMany
+            model: Appointment
+            field: appointments
+            description: A list of appointments for this doctor
+    - name: Patient
+      generate: [controller, service, module, entity, dto]
+      entity:
+        fields:
+          - name: firstName
+            type: string
+            required: true
+            validation: {minLength: 2, maxLength: 50}
+          - name: lastName
+            type: string
+            required: true
+            validation: {minLength: 2, maxLength: 50}
+          - name: dateOfBirth
+            type: date
+            required: true
+          - name: phone
+            type: string
+            required: false
+            validation: {maxLength: 20}
+        relations:
+          - type: OneToMany
+            model: Appointment
+            field: appointments
+            description: A list of appointments for this patient
+    - name: Appointment
+      generate: [controller, service, module, entity, dto]
+      entity:
+        fields:
+          - name: appointmentDate
+            type: date
+            required: true
+          - name: reason
+            type: string
+            required: true
+            validation: {maxLength: 300}
+          - name: status
+            type: enum
+            required: true
+            validation: {enum: [scheduled, in_progress, completed, cancelled], default: scheduled}
+          - name: notes
+            type: string
+            required: false
+            validation: {maxLength: 1000}
+        relations:
+          - type: ManyToOne
+            model: Doctor
+            field: doctor
+            description: The doctor for this appointment
+          - type: ManyToOne
+            model: Patient
+            field: patient
+            description: The patient for this appointment

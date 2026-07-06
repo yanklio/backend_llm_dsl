@@ -2,7 +2,9 @@
 
 import pytest
 
+from packages.llm_providers.core.prompts import PROMPT_ALIGNMENT_SYSTEM_PROMPT
 from packages.llm_providers.evaluation.prompt_alignment import (
+    PROMPT_ALIGNMENT_VERSION,
     collect_generated_typescript,
     parse_alignment_response,
 )
@@ -35,6 +37,14 @@ def test_parse_alignment_response_rejects_out_of_range_score() -> None:
         parse_alignment_response(
             '{"alignment_score": 6, "missing_requirements": [], "extra_features": [], "rationale": ""}'
         )
+
+
+def test_prompt_alignment_v2_calibrates_middle_scores() -> None:
+    """Judge prompt should distinguish near-misses from broad omissions."""
+    assert PROMPT_ALIGNMENT_VERSION == "prompt-alignment-v2"
+    assert "Do not give 3 automatically" in PROMPT_ALIGNMENT_SYSTEM_PROMPT
+    assert "Use 4 for near-misses and 2 for broad/incomplete implementations" in PROMPT_ALIGNMENT_SYSTEM_PROMPT
+    assert "validator import but the decorator is not applied" in PROMPT_ALIGNMENT_SYSTEM_PROMPT
 
 
 def test_collect_generated_typescript_reads_src_files(temp_dir) -> None:

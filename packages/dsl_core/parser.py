@@ -21,6 +21,24 @@ TOP_LEVEL_TOKENS = {
     TokenType.MODULE,
     TokenType.ENUM,
 }
+NAME_TOKENS = (
+    TokenType.IDENT,
+    TokenType.APP,
+    TokenType.MODULE,
+    TokenType.ENTITY,
+    TokenType.DTO,
+    TokenType.ENUM,
+    TokenType.TYPE,
+    TokenType.FOR,
+    TokenType.ROUTE,
+    TokenType.DATABASE,
+    TokenType.FEATURES,
+    TokenType.GET,
+    TokenType.POST,
+    TokenType.PATCH,
+    TokenType.PUT,
+    TokenType.DELETE,
+)
 
 
 class Parser:
@@ -129,14 +147,13 @@ class Parser:
 
         fields = []
         while not self._at(TokenType.RBRACE):
-            self._reject_nested_declaration()
             fields.append(self._parse_field())
 
         self._consume(TokenType.RBRACE, f"Expected '}}' after {block_name} block")
         return fields
 
     def _parse_field(self) -> FieldNode:
-        name = self._consume(TokenType.IDENT, "Expected field name")
+        name = self._consume_name("Expected field name")
         required = not self._match(TokenType.QUESTION)
 
         self._consume(TokenType.COLON, "Expected ':' after field name")
@@ -162,7 +179,7 @@ class Parser:
     def _parse_annotations(self) -> list[AnnotationNode]:
         annotations = []
         while self._match(TokenType.AT):
-            name = self._consume(TokenType.IDENT, "Expected annotation name")
+            name = self._consume_name("Expected annotation name")
             args = self._parse_annotation_arguments()
             annotations.append(AnnotationNode(name.value, args, name.location))
         return annotations
@@ -192,8 +209,11 @@ class Parser:
         return args
 
     def _parse_annotation_value(self) -> Any:
-        if self._match(TokenType.STRING, TokenType.IDENT):
+        if self._at(TokenType.STRING):
+            self._advance()
             return self._previous().value
+        if self._at_any(NAME_TOKENS):
+            return self._consume_name("Expected annotation value").value
         if self._match(TokenType.NUMBER):
             value = self._previous().value
             return float(value) if "." in value else int(value)
@@ -221,6 +241,12 @@ class Parser:
 
     def _consume_identifier(self, message: str) -> str:
         return self._consume(TokenType.IDENT, message).value
+
+    def _consume_name(self, message: str) -> Token:
+        token = self._peek()
+        if token.type in NAME_TOKENS:
+            return self._advance()
+        raise self._error(token, message)
 
     def _match(self, *types: TokenType) -> bool:
         if not self._at_any(types):

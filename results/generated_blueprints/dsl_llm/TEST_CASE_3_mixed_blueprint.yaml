@@ -5,11 +5,9 @@ root:
     database: ./data/todo.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Todo
     generate: [controller, service, module, entity, dto]
@@ -26,4 +24,3 @@ modules:
         - name: dueDate
           type: date
           required: false
-      relations: []

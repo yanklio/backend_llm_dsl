@@ -10,6 +10,7 @@ from apps.experiments.runner import run_experiments
 from packages.dsl_core.compiler import compile_file
 from packages.generator_nestjs.generate import generate_from_file
 from packages.generator_nestjs.generate import main as dsl_generate_main
+from packages.llm_providers.evaluation.prompt_alignment import DEFAULT_ALIGNMENT_MODEL, DEFAULT_ALIGNMENT_PROVIDER
 from packages.llm_providers.generators import mixed_generate as mixed_generator
 from packages.llm_providers.generators import raw_generate as raw_generator
 from packages.llm_providers.generators.dsl_generate import natural_language_to_yaml, save_blueprint
@@ -17,9 +18,19 @@ from packages.llm_providers.generators.output import log_generation_statistics
 from packages.shared import logger
 
 
+def _optional_arg(args: argparse.Namespace, name: str, default: str | None = None) -> str | None:
+    """Return a parsed string arg, ignoring MagicMock defaults in direct unit calls."""
+    value = getattr(args, name, default)
+    return value if isinstance(value, str) else default
+
+
 def cmd_generate(args: argparse.Namespace) -> None:
     """Backward-compatible DSL pipeline command."""
-    result = natural_language_to_yaml(args.description, provider=args.model)
+    result = natural_language_to_yaml(
+        args.description,
+        provider=_optional_arg(args, "provider", "openrouter"),
+        model_name=_optional_arg(args, "model"),
+    )
     log_generation_statistics(result)
     save_blueprint(result.content, args.blueprint)
     try:
@@ -31,7 +42,12 @@ def cmd_generate(args: argparse.Namespace) -> None:
 
 def cmd_generate_raw(args: argparse.Namespace) -> None:
     """Backward-compatible raw pipeline command."""
-    result, files = raw_generator.generate_code_files(args.description, args.project, provider=args.model)
+    result, files = raw_generator.generate_code_files(
+        args.description,
+        args.project,
+        provider=_optional_arg(args, "provider", "openrouter"),
+        model_name=_optional_arg(args, "model"),
+    )
     log_generation_statistics(result)
     raw_generator.save_files(files, args.project)
 
@@ -42,7 +58,8 @@ def cmd_generate_mixed(args: argparse.Namespace) -> None:
         description=args.description,
         output_dir=args.project,
         blueprint_path=args.blueprint,
-        primary_model=args.model,
+        provider=_optional_arg(args, "provider", "openrouter"),
+        model_name=_optional_arg(args, "model"),
     )
     if not result["success"]:
         logger.error(f"Generation failed: {result.get('error')}")
@@ -73,7 +90,11 @@ def cmd_generate_file(args: argparse.Namespace) -> None:
 
 def cmd_generate_prompt(args: argparse.Namespace) -> None:
     """Generate a YAML blueprint from a natural-language requirement."""
-    result = natural_language_to_yaml(args.requirement, provider=args.provider)
+    result = natural_language_to_yaml(
+        args.requirement,
+        provider=_optional_arg(args, "provider", "openrouter"),
+        model_name=_optional_arg(args, "model"),
+    )
     log_generation_statistics(result)
     save_blueprint(result.content, args.output)
 
@@ -83,10 +104,13 @@ def cmd_experiments_run(args: argparse.Namespace) -> None:
     run_experiments(
         approach=args.approach,
         provider=args.provider,
+        model_name=args.model,
         case_id=args.case_id,
         limit=args.limit,
         repetitions=args.repetitions,
         judge_enabled=args.judge,
+        judge_provider=args.judge_provider,
+        judge_model=args.judge_model,
     )
 
 
@@ -98,7 +122,8 @@ def cmd_experiments_export(_args: argparse.Namespace) -> None:
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
     parser = argparse.ArgumentParser(description="Generate runnable NestJS application scaffolds.")
-    parser.add_argument("-m", "--model", default=None, help="LLM provider")
+    parser.add_argument("--provider", default="openrouter", help="LLM provider")
+    parser.add_argument("--model", default=None, help="Exact model override")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     dsl_parser = subparsers.add_parser("dsl")
@@ -150,6 +175,8 @@ def build_parser() -> argparse.ArgumentParser:
     run_parser.add_argument("--limit", type=int, default=None)
     run_parser.add_argument("--repetitions", type=int, default=1)
     run_parser.add_argument("--judge", action="store_true")
+    run_parser.add_argument("--judge-provider", default=DEFAULT_ALIGNMENT_PROVIDER)
+    run_parser.add_argument("--judge-model", default=DEFAULT_ALIGNMENT_MODEL)
     run_parser.set_defaults(func=cmd_experiments_run)
     export_parser = experiment_subparsers.add_parser("export")
     export_parser.set_defaults(func=cmd_experiments_export)

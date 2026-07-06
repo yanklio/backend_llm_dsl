@@ -1,5 +1,5 @@
 root:
-  name: CategoryProductManagement
+  name: Shop
   database:
     type: sqlite
     database: ./data/app.db
@@ -48,4 +48,4 @@ modules:
         - type: ManyToOne
           model: Category
           field: category
-          description: The category this product belongs to
+          description: The category of this product

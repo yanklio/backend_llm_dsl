@@ -5,7 +5,6 @@ root:
     database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
@@ -22,8 +21,7 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {format: email}
-          unique: true
+          validation: {unique: true, email: true}
         - name: role
           type: enum
           required: true
@@ -33,7 +31,7 @@ modules:
         - type: ManyToMany
           model: Project
           field: projects
-          description: Projects the user is assigned to
+          description: Projects the user is part of
   - name: Project
     generate: [controller, service, module, entity, dto]
     entity:
@@ -58,12 +56,11 @@ modules:
         - type: ManyToMany
           model: User
           field: users
-          description: Users assigned to this project
+          description: Users involved in the project
         - type: OneToMany
           model: Task
           field: tasks
-          description: Tasks belonging to this project
-          cascade: true
+          description: Tasks belonging to the project
   - name: Task
     generate: [controller, service, module, entity, dto]
     entity:
@@ -93,4 +90,4 @@ modules:
           model: Project
           field: project
           description: The project this task belongs to
-          cascadeDelete: true
+          cascade: delete

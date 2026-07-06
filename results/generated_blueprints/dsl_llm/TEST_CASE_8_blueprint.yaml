@@ -5,11 +5,9 @@ root:
     database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Customer
     generate: [controller, service, module, entity, dto]
@@ -22,7 +20,7 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {unique: true, format: email}
+          validation: {email: true}
         - name: phone
           type: string
           required: false
@@ -31,7 +29,7 @@ modules:
         - type: OneToMany
           model: Order
           field: orders
-          description: Orders placed by this customer
+          description: A list of orders placed by this customer
   - name: Order
     generate: [controller, service, module, entity, dto]
     entity:
@@ -52,5 +50,5 @@ modules:
         - type: ManyToOne
           model: Customer
           field: customer
-          description: The customer who placed the order
-          cascade: delete
+          description: The customer who placed this order
+          cascade: true

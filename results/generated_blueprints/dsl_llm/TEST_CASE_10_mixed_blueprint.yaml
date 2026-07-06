@@ -2,7 +2,7 @@ root:
   name: WarehouseInventory
   database:
     type: sqlite
-    database: ./data/warehouse.db
+    database: ./data/app.db
     synchronize: true
     logging: false
 
@@ -19,6 +19,7 @@ modules:
           type: string
           required: true
           validation: {minLength: 1, maxLength: 50}
+          unique: true
         - name: floor
           type: number
           required: true
@@ -36,6 +37,7 @@ modules:
           type: string
           required: true
           validation: {maxLength: 30}
+          unique: true
         - name: name
           type: string
           required: true

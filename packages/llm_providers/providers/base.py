@@ -118,14 +118,17 @@ class BaseProvider(ABC):
             for field_name, candidate_keys in TOKEN_USAGE_KEYS.items()
         }
 
+        raw_content = str(response.content)
+
         return GenerationResult(
-            content=clean_llm_response(str(response.content)),
+            content=clean_llm_response(raw_content),
             provider=self.name,
             duration_seconds=duration_seconds,
             input_tokens=token_stats["input_tokens"],
             output_tokens=token_stats["output_tokens"],
             total_tokens=token_stats["total_tokens"],
             model_name=self.model_name,
+            raw_content=raw_content,
         )
 
 

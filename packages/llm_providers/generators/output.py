@@ -11,8 +11,9 @@ RUN_INSTRUCTIONS = ["npm install", "npm run start:dev"]
 
 def parse_generated_files(result: GenerationResult) -> tuple[GenerationResult, dict]:
     """Clean and parse an LLM JSON file-map response."""
-    result.raw_content = result.content
+    raw_content = result.raw_content or result.content
     cleaned_content = clean_llm_response(result.content)
+    result.raw_content = raw_content
     result.content = cleaned_content
     return result, try_parse_json(cleaned_content)
 

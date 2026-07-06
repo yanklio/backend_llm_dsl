@@ -1,7 +1,10 @@
 """CLI and orchestration for benchmark experiment runs."""
 
 import argparse
+import multiprocessing as mp
+import queue
 import shutil
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -13,12 +16,20 @@ from packages.llm_providers.evaluation.prompt_alignment import (
     evaluate_prompt_alignment,
     prompt_alignment_prompt_hash,
 )
+from packages.shared.exceptions import JSONParseException
 
 from .approaches import APPROACH_RUNNERS
 from .io import SuppressOutput, load_results, load_test_cases, save_json, save_results
 from .metadata import build_run_metadata, record_identity, resume_key
 from .paths import NEST_PROJECT_DIR, RUNS_DIR
 from .project import clean_project, ensure_base_project, validate_project
+
+DEFAULT_GENERATION_TIMEOUT_SECONDS = 240
+DEFAULT_JUDGE_TIMEOUT_SECONDS = 120
+
+
+class ExperimentTimeoutError(TimeoutError):
+    """Raised when an experiment step exceeds its wall-clock timeout."""
 
 
 def _selected_approaches(approach: str) -> list[str]:
@@ -37,6 +48,90 @@ def _print_run_header(test_cases_count: int) -> None:
     print("-" * 70)
 
 
+def _process_target(
+    result_queue: mp.Queue,
+    target,
+    args: tuple[Any, ...],
+    kwargs: dict[str, Any],
+) -> None:
+    """Execute a target function in a child process and serialize its result."""
+    try:
+        result_queue.put(("ok", target(*args, **kwargs)))
+    except Exception as exc:
+        result_queue.put(("error", str(exc)))
+
+
+def _run_in_process(
+    *,
+    label: str,
+    timeout_seconds: int,
+    target,
+    args: tuple[Any, ...] = (),
+    kwargs: dict[str, Any] | None = None,
+) -> tuple[bool, Any]:
+    """Run a blocking benchmark step in a child process with hard timeout."""
+    context = mp.get_context("fork")
+    result_queue = context.Queue()
+    process = context.Process(
+        target=_process_target,
+        args=(result_queue, target, args, kwargs or {}),
+    )
+    process.start()
+    process.join(timeout_seconds if timeout_seconds > 0 else None)
+
+    if process.is_alive():
+        process.terminate()
+        process.join(5)
+        if process.is_alive():
+            process.kill()
+            process.join()
+        return False, f"{label} timed out after {timeout_seconds}s"
+
+    try:
+        status, payload = result_queue.get_nowait()
+    except queue.Empty:
+        return False, f"{label} exited without returning a result"
+
+    if status == "ok":
+        return True, payload
+    return False, payload
+
+
+def _evaluate_prompt_alignment_payload(
+    *,
+    case_data: dict[str, Any],
+    provider: str,
+    model_name: str,
+) -> dict[str, Any]:
+    """Run prompt alignment in a process-safe top-level function."""
+    with SuppressOutput():
+        return evaluate_prompt_alignment(
+            requirement=case_data["requirement"],
+            endpoints=case_data.get("endpoints", []),
+            project_dir=NEST_PROJECT_DIR,
+            provider=provider,
+            model_name=model_name,
+        )
+
+
+def _run_approach_payload(
+    *,
+    case_name: str,
+    case_data: dict[str, Any],
+    current_approach: str,
+    provider: str,
+    model_name: str | None,
+) -> dict[str, Any]:
+    """Run a generation approach in a process-safe top-level function."""
+    return APPROACH_RUNNERS[current_approach](
+        case_name,
+        case_data,
+        NEST_PROJECT_DIR,
+        provider=provider,
+        model_name=model_name,
+    )
+
+
 def _completed_run_keys(results: list[dict[str, Any]]) -> set[tuple[str, ...]]:
     """Build the resume keys for completed experiment runs."""
     return {resume_key(result) for result in results}
@@ -52,6 +147,7 @@ def _build_result_record(
     run_id: str,
     repetition: int = 1,
     prompt_alignment: dict[str, Any] | None = None,
+    model_name: str | None = None,
 ) -> dict[str, Any]:
     """Create the persisted result payload for one run."""
     identity = record_identity(
@@ -60,6 +156,7 @@ def _build_result_record(
         test_case=case_name,
         tier=tier,
         repetition=repetition,
+        model_name=model_name,
     )
     record = {
         **identity,
@@ -113,6 +210,7 @@ def _run_prompt_alignment(
     generation: dict[str, Any],
     provider: str,
     model_name: str,
+    timeout_seconds: int = DEFAULT_JUDGE_TIMEOUT_SECONDS,
 ) -> dict[str, Any]:
     """Run prompt-alignment judging without changing validation status."""
     if not generation["success"]:
@@ -123,20 +221,117 @@ def _run_prompt_alignment(
         )
 
     try:
-        with SuppressOutput():
-            return evaluate_prompt_alignment(
-                requirement=case_data["requirement"],
-                endpoints=case_data.get("endpoints", []),
-                project_dir=NEST_PROJECT_DIR,
-                provider=provider,
-                model_name=model_name,
-            )
-    except (RuntimeError, ValueError, OSError) as exc:
+        success, payload = _run_in_process(
+            label="prompt alignment",
+            timeout_seconds=timeout_seconds,
+            target=_evaluate_prompt_alignment_payload,
+            kwargs={
+                "case_data": case_data,
+                "provider": provider,
+                "model_name": model_name,
+            },
+        )
+        if success:
+            return payload
+        raise ExperimentTimeoutError(payload)
+    except (ExperimentTimeoutError, JSONParseException, Exception) as exc:
         return _empty_prompt_alignment(
             provider=provider,
             model_name=model_name,
             error=str(exc),
         )
+
+
+def _timeout_generation_result(
+    *,
+    provider: str,
+    model_name: str | None,
+    timeout_seconds: int,
+    started_at: float,
+) -> dict[str, Any]:
+    """Create a generation failure payload for a hard timeout."""
+    return {
+        "success": False,
+        "error": f"generation timed out after {timeout_seconds}s",
+        "stage": "timeout",
+        "metrics": {
+            "llm_time": 0.0,
+            "dsl_time": 0.0,
+            "total_time": time.perf_counter() - started_at,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "provider_id": provider,
+            "provider": provider,
+            "model_name": model_name,
+        },
+    }
+
+
+def _failed_generation_result(
+    *,
+    provider: str,
+    model_name: str | None,
+    error: str,
+    started_at: float,
+) -> dict[str, Any]:
+    """Create a generation failure payload for an uncaught provider error."""
+    return {
+        "success": False,
+        "error": error,
+        "stage": "generator",
+        "metrics": {
+            "llm_time": 0.0,
+            "dsl_time": 0.0,
+            "total_time": time.perf_counter() - started_at,
+            "input_tokens": 0,
+            "output_tokens": 0,
+            "total_tokens": 0,
+            "provider_id": provider,
+            "provider": provider,
+            "model_name": model_name,
+        },
+    }
+
+
+def _run_generation_with_timeout(
+    *,
+    case_name: str,
+    case_data: dict[str, Any],
+    current_approach: str,
+    provider: str,
+    model_name: str | None,
+    timeout_seconds: int,
+) -> dict[str, Any]:
+    """Run one generation approach with a hard wall-clock timeout."""
+    started_at = time.perf_counter()
+    success, payload = _run_in_process(
+        label=f"{current_approach} generation",
+        timeout_seconds=timeout_seconds,
+        target=_run_approach_payload,
+        kwargs={
+            "case_name": case_name,
+            "case_data": case_data,
+            "current_approach": current_approach,
+            "provider": provider,
+            "model_name": model_name,
+        },
+    )
+    if success:
+        return payload
+    if "timed out" in str(payload):
+        return _timeout_generation_result(
+            provider=provider,
+            model_name=model_name,
+            timeout_seconds=timeout_seconds,
+            started_at=started_at,
+        )
+    return _failed_generation_result(
+        provider=provider,
+        model_name=model_name,
+        error=str(payload),
+        started_at=started_at,
+    )
 
 
 def _print_run_result(
@@ -273,21 +468,26 @@ def _run_case(
     tier: str,
     current_approach: str,
     provider: str,
+    model_name: str | None,
     run_metadata: dict[str, Any],
     run_dir: Path,
     run_results: list[dict[str, Any]],
     judge_enabled: bool,
     judge_provider: str,
     judge_model: str,
+    generation_timeout: int,
+    judge_timeout: int,
     repetition: int,
 ) -> None:
     """Run, validate, print, and persist one experiment case."""
     _prepare_project()
-    generation = APPROACH_RUNNERS[current_approach](
-        case_name,
-        case_data,
-        NEST_PROJECT_DIR,
+    generation = _run_generation_with_timeout(
+        case_name=case_name,
+        case_data=case_data,
+        current_approach=current_approach,
         provider=provider,
+        model_name=model_name,
+        timeout_seconds=generation_timeout,
     )
 
     validation, status = _validate_generation(generation)
@@ -299,6 +499,7 @@ def _run_case(
             generation=generation,
             provider=judge_provider,
             model_name=judge_model,
+            timeout_seconds=judge_timeout,
         )
 
     record = _build_result_record(
@@ -311,6 +512,7 @@ def _run_case(
         run_metadata["run_id"],
         repetition,
         prompt_alignment,
+        model_name,
     )
     artifact_dir = _artifact_dir(run_dir, case_name, current_approach, repetition)
     _save_artifacts(artifact_dir, case_data, generation, validation, prompt_alignment)
@@ -324,17 +526,27 @@ def _run_case(
 def run_experiments(
     approach: str = "all",
     provider: str = "openrouter",
+    model_name: str | None = None,
     case_id: str | None = None,
     limit: int | None = None,
     judge_enabled: bool = False,
     judge_provider: str = DEFAULT_ALIGNMENT_PROVIDER,
     judge_model: str = DEFAULT_ALIGNMENT_MODEL,
     repetitions: int = 1,
+    generation_timeout: int = DEFAULT_GENERATION_TIMEOUT_SECONDS,
+    judge_timeout: int = DEFAULT_JUDGE_TIMEOUT_SECONDS,
 ) -> None:
     """Execute generation experiments across the configured test cases."""
     approaches_to_run = _selected_approaches(approach)
     print(f"Using provider: {provider}")
-    run_metadata = build_run_metadata(provider, approaches_to_run, repetitions)
+    test_cases = _selected_test_cases(load_test_cases(), case_id, limit)
+    run_metadata = build_run_metadata(
+        provider,
+        approaches_to_run,
+        repetitions,
+        case_ids=list(test_cases.keys()),
+        model_name=model_name,
+    )
     run_metadata["prompt_alignment"] = {
         "enabled": judge_enabled,
         "provider": judge_provider if judge_enabled else None,
@@ -346,7 +558,6 @@ def run_experiments(
     print(f"Run ID: {run_metadata['run_id']}")
     print(f"Run directory: {run_dir}")
 
-    test_cases = _selected_test_cases(load_test_cases(), case_id, limit)
     NEST_PROJECT_DIR.mkdir(exist_ok=True)
 
     run_results = load_results(_run_results_file(run_dir))
@@ -364,6 +575,7 @@ def run_experiments(
                     test_case=case_name,
                     tier=tier,
                     repetition=repetition,
+                    model_name=model_name,
                 )
                 if resume_key(current_identity) in completed_runs:
                     print(f"Skipping {case_name} ({current_approach}) rep-{repetition} - already completed")
@@ -375,12 +587,15 @@ def run_experiments(
                     tier,
                     current_approach,
                     provider,
+                    model_name,
                     run_metadata,
                     run_dir,
                     run_results,
                     judge_enabled,
                     judge_provider,
                     judge_model,
+                    generation_timeout,
+                    judge_timeout,
                     repetition,
                 )
 
@@ -403,6 +618,11 @@ def main() -> None:
         choices=["groq", "gemini", "openrouter", "ollama"],
         default="openrouter",
         help="LLM provider to use (default: openrouter)",
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help="Exact model override for generation",
     )
     parser.add_argument(
         "--case",
@@ -433,16 +653,31 @@ def main() -> None:
         help="Exact model for prompt-alignment judging",
     )
     parser.add_argument("--repetitions", type=int, default=1)
+    parser.add_argument(
+        "--generation-timeout",
+        type=int,
+        default=DEFAULT_GENERATION_TIMEOUT_SECONDS,
+        help="Hard wall-clock timeout in seconds for each generation cell; use 0 to disable",
+    )
+    parser.add_argument(
+        "--judge-timeout",
+        type=int,
+        default=DEFAULT_JUDGE_TIMEOUT_SECONDS,
+        help="Hard wall-clock timeout in seconds for each prompt-alignment judge call; use 0 to disable",
+    )
     args = parser.parse_args()
     run_experiments(
         approach=args.approach,
         provider=args.provider,
+        model_name=args.model,
         case_id=args.case_id,
         limit=args.limit,
         judge_enabled=args.judge,
         judge_provider=args.judge_provider,
         judge_model=args.judge_model,
         repetitions=args.repetitions,
+        generation_timeout=args.generation_timeout,
+        judge_timeout=args.judge_timeout,
     )
 
 

@@ -1,5 +1,5 @@
 root:
-  name: BlogPlatform
+  name: CustomerOrderService
   database:
     type: sqlite
     database: ./data/app.db
@@ -9,7 +9,7 @@ root:
     cors: true
     swagger: true
 modules:
-- name: Author
+- name: Customer
   generate:
   - controller
   - service
@@ -30,18 +30,18 @@ modules:
       unique: true
       validation:
         isEmail: true
-    - name: bio
+    - name: phone
       type: string
       required: true
       validation:
-        maxLength: 500
+        maxLength: 20
     relations:
     - type: OneToMany
-      model: Post
-      field: posts
+      model: Order
+      field: orders
       required: true
-      inverseField: author
-- name: Post
+      inverseField: customer
+- name: Order
   generate:
   - controller
   - service
@@ -50,22 +50,28 @@ modules:
   - dto
   entity:
     fields:
-    - name: title
-      type: string
+    - name: totalPrice
+      type: number
       required: true
       validation:
-        minLength: 5
-        maxLength: 200
-    - name: content
-      type: string
+        min: 0
+    - name: status
+      type: enum
       required: true
-    - name: published
-      type: boolean
+      enumValues:
+      - PENDING
+      - CONFIRMED
+      - SHIPPED
+      - DELIVERED
+      - CANCELLED
+      default: PENDING
+    - name: orderDate
+      type: date
       required: true
-      default: 'false'
     relations:
     - type: ManyToOne
-      model: Author
-      field: author
+      model: Customer
+      field: customer
       required: true
-      inverseField: posts
+      inverseField: orders
+      onDelete: cascade

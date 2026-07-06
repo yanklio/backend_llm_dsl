@@ -112,12 +112,17 @@ class Lexer:
                 tokens.append(self._string())
             elif char.isalpha() or char == "_":
                 tokens.append(self._identifier())
-            elif char.isdigit():
+            elif char.isdigit() or (char == "-" and self._peek_next().isdigit()):
                 tokens.append(self._number())
             elif char == "-" and self._peek_next() == ">":
                 tokens.append(self._make_token(TokenType.ARROW, "->"))
                 self._advance()
                 self._advance()
+            elif char == "-":
+                raise LexError(
+                    "Expected '>' or digit after '-'",
+                    SourceLocation(self.line, self.column),
+                )
             elif char in SINGLE_CHAR_TOKENS:
                 token_type = SINGLE_CHAR_TOKENS[char]
                 tokens.append(self._make_token(token_type, char))
@@ -144,6 +149,8 @@ class Lexer:
         start_index = self.index
         start_line = self.line
         start_column = self.column
+        if self._peek() == "-":
+            self._advance()
         while not self._is_at_end() and self._peek().isdigit():
             self._advance()
         if not self._is_at_end() and self._peek() == ".":

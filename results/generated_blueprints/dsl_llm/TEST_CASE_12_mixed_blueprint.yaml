@@ -2,14 +2,12 @@ root:
   name: ProjectManagement
   database:
     type: sqlite
-    database: ./data/project.db
+    database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: User
     generate: [controller, service, module, entity, dto]
@@ -22,12 +20,11 @@ modules:
         - name: email
           type: string
           required: true
-          unique: true
-          validation: {format: email}
+          validation: {unique: true, format: email}
         - name: role
           type: enum
           required: true
-          enum: [admin, manager, developer, viewer]
+          values: [admin, manager, developer, viewer]
           default: developer
       relations:
         - type: ManyToMany
@@ -49,7 +46,7 @@ modules:
         - name: status
           type: enum
           required: true
-          enum: [planning, active, on_hold, completed]
+          values: [planning, active, on_hold, completed]
           default: planning
         - name: startDate
           type: date
@@ -63,7 +60,6 @@ modules:
           model: Task
           field: tasks
           description: Tasks belonging to this project
-          cascade: true
   - name: Task
     generate: [controller, service, module, entity, dto]
     entity:
@@ -79,7 +75,7 @@ modules:
         - name: priority
           type: enum
           required: true
-          enum: [low, medium, high, critical]
+          values: [low, medium, high, critical]
           default: medium
         - name: completed
           type: boolean
@@ -92,5 +88,6 @@ modules:
         - type: ManyToOne
           model: Project
           field: project
-          description: Project this task belongs to
-          cascadeDelete: true
+          description: The project this task belongs to
+          cascade: true
+          onDelete: CASCADE

@@ -5,7 +5,6 @@ root:
     database: ./data/warehouse.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
@@ -18,8 +17,7 @@ modules:
         - name: name
           type: string
           required: true
-          unique: true
-          validation: {minLength: 1, maxLength: 50}
+          validation: {minLength: 1, maxLength: 50, unique: true}
         - name: floor
           type: number
           required: true
@@ -36,8 +34,7 @@ modules:
         - name: sku
           type: string
           required: true
-          unique: true
-          validation: {maxLength: 30}
+          validation: {maxLength: 30, unique: true}
         - name: name
           type: string
           required: true
@@ -54,4 +51,4 @@ modules:
         - type: ManyToOne
           model: Section
           field: section
-          description: Section where the item is stored
+          description: The section where the item is stored

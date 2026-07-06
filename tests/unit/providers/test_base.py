@@ -128,6 +128,7 @@ class TestConcreteProvider:
         assert result.output_tokens == 10
         assert result.total_tokens == 15
         assert result.model_name == "test-model"
+        assert result.raw_content == "raw output"
 
     @patch("packages.llm_providers.providers.base.clean_llm_response", return_value="cleaned")
     @patch("packages.llm_providers.providers.base.time.perf_counter", side_effect=[10.0, 10.2])

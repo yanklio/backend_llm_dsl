@@ -2,14 +2,12 @@ root:
   name: EventManagement
   database:
     type: sqlite
-    database: ./data/events.db
+    database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Event
     generate: [controller, service, module, entity, dto]
@@ -30,8 +28,3 @@ modules:
           required: true
           enum: [draft, published, cancelled]
           default: draft
-        - name: createdAt
-          type: date
-          required: true
-          default: now
-      relations: []

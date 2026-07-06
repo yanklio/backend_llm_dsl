@@ -2,7 +2,7 @@ root:
   name: TodoApp
   database:
     type: sqlite
-    database: ./data/todo.db
+    database: ./data/app.db
     synchronize: true
     logging: false
   features:

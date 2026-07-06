@@ -43,7 +43,7 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {unique: true, format: email}
+          validation: {unique: true, email: true}
         - name: hireDate
           type: date
           required: true
@@ -54,13 +54,13 @@ modules:
         - name: status
           type: enum
           required: true
-          enum: [active, on_leave, terminated]
+          enumValues: [active, on_leave, terminated]
           default: active
       relations:
         - type: ManyToOne
           model: Department
           field: department
-          description: The department this employee belongs to
+          description: Department the employee belongs to
         - type: ManyToMany
           model: Skill
           field: skills
@@ -76,10 +76,10 @@ modules:
         - name: level
           type: enum
           required: true
-          enum: [beginner, intermediate, advanced, expert]
+          enumValues: [beginner, intermediate, advanced, expert]
           default: beginner
       relations:
         - type: ManyToMany
           model: Employee
           field: employees
-          description: Employees who have this skill
+          description: Employees that have this skill

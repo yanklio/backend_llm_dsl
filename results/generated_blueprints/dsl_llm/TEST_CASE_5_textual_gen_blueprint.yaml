@@ -1,5 +1,5 @@
 root:
-  name: UserManagement
+  name: EventManager
   database:
     type: sqlite
     database: ./data/app.db
@@ -9,7 +9,7 @@ root:
     cors: true
     swagger: true
 modules:
-- name: User
+- name: Event
   generate:
   - controller
   - service
@@ -18,13 +18,23 @@ modules:
   - dto
   entity:
     fields:
-    - name: email
+    - name: title
       type: string
       required: true
-      unique: true
       validation:
-        isEmail: true
-    - name: name
+        maxLength: 200
+    - name: location
       type: string
       required: true
+    - name: startDate
+      type: date
+      required: true
+    - name: status
+      type: enum
+      required: true
+      enumValues:
+      - DRAFT
+      - PUBLISHED
+      - CANCELLED
+      default: DRAFT
     relations: []

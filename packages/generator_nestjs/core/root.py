@@ -72,6 +72,7 @@ def _generate_file(
         renderer.render_template(template_name, template_data, output_path)
     except TemplateException as e:
         logger.error(f"Could not generate {output_filename}: {e}")
+        raise
 
 
 def generate_root_module(

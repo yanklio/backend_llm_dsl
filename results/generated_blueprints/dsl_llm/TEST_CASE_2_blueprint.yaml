@@ -1,5 +1,5 @@
 root:
-  name: ProductManagement
+  name: ProductAdministration
   database:
     type: sqlite
     database: ./data/app.db

@@ -2,7 +2,7 @@ root:
   name: SchoolAdministration
   database:
     type: sqlite
-    database: ./data/school.db
+    database: ./data/app.db
     synchronize: true
     logging: false
 
@@ -26,7 +26,7 @@ modules:
         - name: email
           type: string
           required: true
-          validation: {unique: true, format: email}
+          validation: {email: true, unique: true}
         - name: subject
           type: string
           required: true
@@ -35,7 +35,7 @@ modules:
         - type: OneToMany
           model: Course
           field: courses
-          description: Courses taught by this teacher
+          description: A list of courses taught by this teacher
   - name: Course
     generate: [controller, service, module, entity, dto]
     entity:
@@ -56,4 +56,4 @@ modules:
         - type: ManyToOne
           model: Teacher
           field: teacher
-          description: The teacher responsible for this course
+          description: The teacher of this course

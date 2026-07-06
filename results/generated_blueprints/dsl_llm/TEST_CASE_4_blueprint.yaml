@@ -1,8 +1,8 @@
 root:
-  name: NoteManagement
+  name: NoteApp
   database:
     type: sqlite
-    database: ./data/notes.db
+    database: ./data/app.db
     synchronize: true
     logging: false
 
@@ -26,4 +26,3 @@ modules:
           type: boolean
           required: false
           default: false
-      relations: []

@@ -10,11 +10,11 @@ from packages.llm_providers.core.client import get_default_model_name
 from packages.llm_providers.core.prompts import (
     RAW_CODE_SYSTEM_PROMPT,
     SYSTEM_PROMPT,
-    TEXTUAL_DSL_SPEC_REFERENCE,
-    TEXTUAL_FEWSHOT_EXAMPLES,
+    TextualPromptVariant,
+    build_textual_generation_messages,
 )
 from packages.llm_providers.generators.mixed_generate import MIXED_REQUEST_TEMPLATE
-from packages.llm_providers.generators.raw_generate import RAW_REQUEST_TEMPLATE
+from packages.llm_providers.generators.raw_generate import EXPERIMENT_GENERATION_TEMPERATURE, _build_raw_prompt
 
 PROMPT_VERSION = "full-app-scaffold-v1"
 PROMPT_VERSIONS = {
@@ -27,14 +27,9 @@ PROMPT_VERSIONS = {
 }
 PROVIDER_IDS = ["gemini", "groq", "ollama", "openrouter"]
 PROVIDER_MODELS = {pid: get_default_model_name(pid) for pid in PROVIDER_IDS}
-APPROACH_PROMPT_SOURCES = {
-    "dsl": [SYSTEM_PROMPT],
-    "raw": [RAW_CODE_SYSTEM_PROMPT, RAW_REQUEST_TEMPLATE],
-    "mixed": [SYSTEM_PROMPT, RAW_CODE_SYSTEM_PROMPT, MIXED_REQUEST_TEMPLATE],
-    "textual-gen-baseline": ["Generate a textual DSL specification for the requested NestJS backend."],
-    "textual-gen-spec": [TEXTUAL_DSL_SPEC_REFERENCE],
-    "textual-gen-fewshot": [TEXTUAL_DSL_SPEC_REFERENCE, TEXTUAL_FEWSHOT_EXAMPLES],
-}
+PLACEHOLDER_REQUIREMENT = "<benchmark-requirement>"
+PLACEHOLDER_CONTEXT = "<existing-project-context>"
+PLACEHOLDER_BLUEPRINT = "<generated-blueprint-yaml>"
 
 
 def short_hash(value: str, length: int = 10) -> str:
@@ -54,8 +49,57 @@ def prompt_version_for(approach: str) -> str:
 
 def prompt_hash_for(approach: str) -> str:
     """Return a stable hash of prompt text used by one approach."""
-    prompt_text = "\n---PROMPT-PART---\n".join(APPROACH_PROMPT_SOURCES[approach])
+    prompt_text = _prompt_text_for_hash(approach)
     return short_hash(f"{prompt_version_for(approach)}\n{prompt_text}")
+
+
+def _serialize_messages(messages: list[Any]) -> str:
+    """Serialize actual model messages in stable order for hashing."""
+    return "\n---MESSAGE---\n".join(f"{message.__class__.__name__}:\n{message.content}" for message in messages)
+
+
+def _prompt_text_for_hash(approach: str) -> str:
+    """Build the actual message text shape sent for one approach."""
+    from langchain_core.messages import HumanMessage, SystemMessage
+
+    if approach == "dsl":
+        from packages.llm_providers.generators.dsl_generate import DSL_REQUEST_TEMPLATE
+
+        return _serialize_messages(
+            [
+                SystemMessage(content=SYSTEM_PROMPT),
+                HumanMessage(content=DSL_REQUEST_TEMPLATE.format(description=PLACEHOLDER_REQUIREMENT)),
+            ]
+        )
+    if approach == "raw":
+        return _serialize_messages(
+            [
+                SystemMessage(content=RAW_CODE_SYSTEM_PROMPT),
+                HumanMessage(content=_build_raw_prompt(PLACEHOLDER_CONTEXT, PLACEHOLDER_REQUIREMENT)),
+            ]
+        )
+    if approach == "mixed":
+        return _serialize_messages(
+            [
+                SystemMessage(content=SYSTEM_PROMPT),
+                HumanMessage(content=f"Create a NestJS application for: {PLACEHOLDER_REQUIREMENT}"),
+                SystemMessage(content=RAW_CODE_SYSTEM_PROMPT),
+                HumanMessage(
+                    content=MIXED_REQUEST_TEMPLATE.format(
+                        description=PLACEHOLDER_REQUIREMENT,
+                        blueprint_yaml=PLACEHOLDER_BLUEPRINT,
+                    )
+                ),
+            ]
+        )
+    variant_by_approach = {
+        "textual-gen-baseline": TextualPromptVariant.BASELINE,
+        "textual-gen-spec": TextualPromptVariant.SPEC,
+        "textual-gen-fewshot": TextualPromptVariant.FEWSHOT,
+    }
+    return _serialize_messages(
+        build_textual_generation_messages(PLACEHOLDER_REQUIREMENT, variant_by_approach[approach])
+    )
 
 
 def _command_output(command: list[str]) -> str:
@@ -77,6 +121,7 @@ def build_run_metadata(
     approaches: list[str],
     repetitions: int = 1,
     case_ids: list[str] | None = None,
+    model_name: str | None = None,
 ) -> dict[str, Any]:
     """Build metadata saved alongside every experiment run."""
     created_at = datetime.now(timezone.utc).isoformat()
@@ -86,8 +131,8 @@ def build_run_metadata(
         "git_commit": _command_output(["git", "rev-parse", "HEAD"]),
         "working_tree_dirty": bool(_command_output(["git", "status", "--porcelain"])),
         "provider": provider,
-        "model_name": model_name_for_provider(provider),
-        "temperature": 0.1,
+        "model_name": model_name or model_name_for_provider(provider),
+        "temperature": EXPERIMENT_GENERATION_TEMPERATURE,
         "repetitions": repetitions,
         "approaches": approaches,
         "selected_test_cases": case_ids or [],
@@ -106,11 +151,12 @@ def record_identity(
     test_case: str,
     tier: str,
     repetition: int = 1,
+    model_name: str | None = None,
 ) -> dict[str, Any]:
     """Build identity metadata used for result records and resume keys."""
     return {
         "provider": provider,
-        "model_name": model_name_for_provider(provider),
+        "model_name": model_name or model_name_for_provider(provider),
         "approach": approach,
         "test_case": test_case,
         "tier": tier,

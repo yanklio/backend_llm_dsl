@@ -1,15 +1,13 @@
 root:
-  name: PetAdministration
+  name: ProductCatalog
   database:
     type: sqlite
     database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Category
     generate: [controller, service, module, entity, dto]
@@ -18,7 +16,7 @@ modules:
         - name: name
           type: string
           required: true
-          validation: {minLength: 2, maxLength: 50}
+          validation: {minLength: 2, maxLength: 50, unique: true}
         - name: description
           type: string
           required: false
@@ -48,4 +46,4 @@ modules:
         - type: ManyToOne
           model: Category
           field: category
-          description: The category this product belongs to
+          description: The category of this product

@@ -1,7 +1,6 @@
 """Smoke tests for experiment metadata module."""
 
 from apps.experiments.metadata import (
-    APPROACH_PROMPT_SOURCES,
     PROMPT_VERSION,
     PROVIDER_MODELS,
     build_run_metadata,
@@ -11,6 +10,7 @@ from apps.experiments.metadata import (
     resume_key,
     short_hash,
 )
+from packages.llm_providers.core import prompts
 
 
 class TestMetadataConstants:
@@ -24,11 +24,6 @@ class TestMetadataConstants:
         for pid in ["gemini", "groq", "ollama", "openrouter"]:
             assert pid in PROVIDER_MODELS
             assert isinstance(PROVIDER_MODELS[pid], str)
-
-    def test_approach_prompt_sources_has_all_keys(self):
-        for approach in ["dsl", "raw", "mixed"]:
-            assert approach in APPROACH_PROMPT_SOURCES
-            assert len(APPROACH_PROMPT_SOURCES[approach]) > 0
 
 
 class TestMetadataFunctions:
@@ -55,12 +50,26 @@ class TestMetadataFunctions:
         result = prompt_hash_for("dsl")
         assert isinstance(result, str)
 
+    def test_prompt_hash_changes_when_actual_prompt_changes(self, monkeypatch):
+        before = prompt_hash_for("textual-gen-spec")
+        monkeypatch.setattr(prompts, "TEXTUAL_DSL_SPEC_REFERENCE", "changed prompt text")
+        after = prompt_hash_for("textual-gen-spec")
+        assert after != before
+
     def test_build_run_metadata(self):
         meta = build_run_metadata("openrouter", ["dsl", "raw"])
         assert meta["provider"] == "openrouter"
         assert meta["approaches"] == ["dsl", "raw"]
         assert "run_id" in meta
         assert "prompt_hashes" in meta
+
+    def test_build_run_metadata_records_selected_cases(self):
+        meta = build_run_metadata("openrouter", ["dsl"], case_ids=["TEST_CASE_2"])
+        assert meta["selected_test_cases"] == ["TEST_CASE_2"]
+
+    def test_build_run_metadata_records_model_override(self):
+        meta = build_run_metadata("openrouter", ["dsl"], model_name="custom/model")
+        assert meta["model_name"] == "custom/model"
 
     def test_record_identity(self):
         identity = record_identity(

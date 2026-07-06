@@ -90,11 +90,16 @@ def _handle_started_process(
 
 def _run_stage_checks(project_path: Path) -> dict[str, dict[str, Any]]:
     """Execute install, build, and start checks in order."""
-    return {
-        "install": _run_npm_install(project_path),
-        "build": _run_npm_build(project_path),
-        "start": _run_npm_start(project_path),
-    }
+    install = _run_npm_install(project_path)
+    if not install["success"]:
+        skipped = _success_result(skipped=True)
+        return {"install": install, "build": skipped, "start": skipped}
+
+    build = _run_npm_build(project_path)
+    if not build["success"]:
+        return {"install": install, "build": build, "start": _success_result(skipped=True)}
+
+    return {"install": install, "build": build, "start": _run_npm_start(project_path)}
 
 
 def validate_runtime(project_path: Path) -> dict[str, Any]:
@@ -133,9 +138,9 @@ def check_base_npm(project_path: Path) -> dict[str, Any]:
     errors = {stage_name: result["error"] for stage_name, result in stage_results.items() if "error" in result}
 
     return {
-        "install_success": stage_results["install"]["success"],
-        "build_success": stage_results["build"]["success"],
-        "start_success": stage_results["start"]["success"],
+        "install_success": stage_results["install"]["success"] and not stage_results["install"].get("skipped", False),
+        "build_success": stage_results["build"]["success"] and not stage_results["build"].get("skipped", False),
+        "start_success": stage_results["start"]["success"] and not stage_results["start"].get("skipped", False),
         "errors": errors,
     }
 

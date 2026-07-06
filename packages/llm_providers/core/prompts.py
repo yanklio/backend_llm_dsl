@@ -132,13 +132,32 @@ DTO CONVENTIONS:
 
 CONTROLLER CONVENTIONS:
 - Use @Controller('entityname') (lowercase plural)
-- @Get(), @Get(':id'), @Post(), @Patch(':id'), @Delete(':id')
+- Use the HTTP methods requested by the user prompt or benchmark endpoint list.
+- If the prompt says CRUD or lists PUT endpoints, use @Put(':id') for update.
+- Do not use @Patch(':id') instead of an explicitly requested PUT endpoint.
+- Common CRUD endpoints: @Get(), @Get(':id'), @Post(), @Put(':id'), @Delete(':id')
 - Use @Body(), @Param(), @ParseIntPipe appropriately
 
 SERVICE CONVENTIONS:
 - Use @Injectable()
 - Inject repository: @InjectRepository(Entity) + constructor
 - Methods: create(), findAll(), findOne(id), update(id, dto), remove(id)
+- TypeORM findOne/findOneBy can return null. If findOne(id) is typed as Promise<Entity>,
+  it MUST check for null and throw NotFoundException before returning.
+- Import NotFoundException from @nestjs/common when using null checks.
+- update(id, dto) should call findOne(id), merge dto fields, and save the entity.
+- remove(id) should call findOne(id) before deleting/removing the entity.
+- Do NOT return Repository.findOne(), Repository.findOneBy(), or this.findOne(id)
+  from a Promise<Entity> method unless the null case has already been handled.
+
+COMPILE-SAFE SERVICE EXAMPLE:
+async findOne(id: number): Promise<User> {
+  const user = await this.userRepository.findOneBy({ id });
+  if (!user) {
+    throw new NotFoundException(`User with id ${id} not found`);
+  }
+  return user;
+}
 
 MODULE CONVENTIONS:
 - Use @Module()
@@ -178,77 +197,29 @@ Return ONLY one valid JSON object with this exact shape:
 }
 
 Score meaning:
-0 = no meaningful alignment with the prompt; generated code is unrelated or unusable for the requested scope
-1 = very poor alignment; only a small part of the requested domain or API is recognizable
-2 = partial alignment; some requested entities/endpoints/fields are present, but major explicit requirements are missing
-3 = moderate alignment; the main requested idea is present, but at least one important entity, relation, endpoint, or constraint is missing or wrong
-4 = exact prompt alignment; explicit prompt requirements are covered, with no meaningful production-supporting additions beyond the requested scope
-5 = prompt alignment plus useful production-supporting additions; explicit prompt requirements are covered and extras such as Swagger setup, CORS, validation pipes, health endpoints, timestamps, or PATCH aliases are acceptable when they do not conflict with the prompt
+0 = unrelated output or no usable source files for the requested scope
+1 = very poor alignment; only one small part of the requested domain is recognizable
+2 = partial alignment; main entities or CRUD surface are incomplete, or multiple major explicit requirements are missing
+3 = moderate alignment; the main app is recognizable and mostly complete, but one important requirement is missing/wrong, or several field constraints/defaults are missing
+4 = strong alignment; all entities, relations, and required endpoints are present, with only minor omissions such as one optional-field marker, one non-critical validation constraint, or one harmless naming mismatch
+5 = exact alignment; all explicit prompt requirements are covered, including requested methods, fields, constraints/defaults, relations, and endpoints. Harmless production additions such as Swagger, CORS, validation pipes, timestamps, or health endpoints are acceptable.
+
+Scoring calibration:
+- Do not give 3 automatically. Use 4 for near-misses and 2 for broad/incomplete implementations.
+- Missing an explicitly requested endpoint method, such as PUT when only PATCH exists, is important and usually caps the score at 3.
+- Missing a relation between requested entities is important and usually caps the score at 3.
+- Missing several validations/default values usually caps the score at 3.
+- Missing only one optional marker or one non-critical validation can still be 4.
+- If the code contains a validator import but the decorator is not applied to the relevant field, that requirement is missing.
+- If a DTO cannot express a requested relation during create/update, treat that relation support as missing even if entity decorators exist.
 
 Rules:
 - alignment_score must be an integer from 0 to 5.
 - missing_requirements must list prompt requirements that are absent from the code.
 - extra_features must list only unrequested features that conflict with the prompt, replace requested behavior, or materially change the requested scope.
 - Do not penalize harmless production-supporting extras when all explicit prompt requirements are covered.
-- rationale must be concise and mention only prompt-alignment evidence.
+- rationale must be concise and mention concrete code evidence, such as decorators, DTO fields, relation fields, or controller methods.
 - Do not include markdown, explanations outside JSON, or additional keys."""
-
-
-TEXTUAL_GEN_SYSTEM_PROMPT = """You are a textual DSL code generator for NestJS applications.
-Output ONLY valid textual DSL source code that describes the NestJS application requested.
-The textual DSL will be compiled into a YAML blueprint and then used to generate NestJS TypeScript code.
-
-=== TEXTUAL DSL SYNTAX ===
-
-app AppName {
-  database: sqlite @path("./data/app.db")
-  features: [cors, swagger]
-}
-
-enum StatusName {
-  VALUE1
-  VALUE2
-}
-
-type CustomType {
-  field: type @required @min(0)
-}
-
-entity EntityName {
-  fieldName: type @required @unique @email @minLength(1) @maxLength(100)
-  relatedItems: RelatedEntity[] @OneToMany(inverse: fieldOnRelated)
-  parent: RelatedEntity @ManyToOne(inverse: childrenField) @onDelete(CASCADE)
-}
-
-dto CreateDtoName for EntityName {
-  field1
-  field2
-}
-
-module PluralName for EntityName {
-  route GET /pluralname -> EntityName[]
-  route POST /pluralname -> EntityName
-  route PATCH /pluralname/:id -> EntityName
-  route DELETE /pluralname/:id -> void
-}
-
-=== RULES ===
-1. ONE entity per logical data model - do not create separate entities for services/controllers
-2. Entity name in PascalCase (User, Post, Product)
-3. Available field types: string, number, boolean, date, enum (name), type (name), EntityName (for relations)
-4. Array notation EntityName[] means OneToMany side of relation
-5. EntityName without brackets means ManyToOne side
-6. @OneToMany(inverse: fieldName) - fieldName is the ManyToOne field on the related entity
-7. @ManyToOne(inverse: fieldName) - fieldName is the OneToMany array on the related entity
-8. Available annotations: @required, @unique, @email, @minLength(N), @maxLength(N), @min(N), @max(N), @default("value"), @onDelete(CASCADE)
-9. Do NOT create id, createdAt, updatedAt fields (they are auto-generated)
-10. Module name is the entity name pluralized (User -> Users, Post -> Posts)
-11. Route plural matches module name
-12. Route return type is EntityName[] for list, EntityName for single, void for delete
-13. DTO should list fields from the entity that are needed for creation
-
-Output ONLY raw textual DSL source code, no explanations, no markdown.
-"""  # noqa: E501
 
 
 class TextualPromptVariant(str, Enum):
@@ -381,7 +352,18 @@ def build_textual_generation_messages(
     if variant == TextualPromptVariant.BASELINE:
         system = (
             "Generate a textual DSL specification for the requested NestJS backend. "
-            "Return DSL source only. Use entities, fields, relations, and modules."
+            "Return DSL source only. Use entities, fields, relations, and modules. "
+            "Use only this compact grammar with newlines between declarations: "
+            'app AppName { database: sqlite @path("./data/app.db") features: [cors, swagger] } '
+            "entity EntityName { fieldName: string @required @unique @email } "
+            "relations use fields like posts: Post[] @OneToMany(inverse: author) "
+            "or author: Author @ManyToOne(inverse: posts). "
+            "module ModuleName for EntityName. "
+            "Never use semicolons because semicolon is not valid DSL syntax. "
+            "Do not use TypeScript, NestJS, service, controller, DTO, import, provider, "
+            "or TypeOrmModule syntax. "
+            "Do not create id, createdAt, or updatedAt fields. "
+            "No markdown or explanations."
         )
     elif variant == TextualPromptVariant.SPEC:
         system = TEXTUAL_DSL_SPEC_REFERENCE

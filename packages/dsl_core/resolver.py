@@ -126,6 +126,13 @@ class Resolver:
                         field.location,
                         "RESOLVE_E009",
                     )
+                if inverse.type_name != entity.name:
+                    self._raise(
+                        f"inverse relation {target.name}.{inverse.name} targets "
+                        f"{inverse.type_name}, expected {entity.name}",
+                        field.location,
+                        "RESOLVE_E010",
+                    )
 
     def _relation_name(self, field: FieldNode) -> str | None:
         for annotation in field.annotations:

@@ -17,6 +17,8 @@ from packages.llm_providers.generators.output import (
 )
 from packages.shared import logger
 
+EXPERIMENT_GENERATION_TEMPERATURE = 0.1
+
 load_dotenv()
 
 
@@ -31,6 +33,15 @@ Include root bootstrap files `src/main.ts` and `src/app.module.ts`.
 Configure the app so `npm run build` and `npm run start` can work in the provided Nest scaffold.
 Every file must have FULL implementation - no placeholders or TODOs.
 Make it production-ready and runnable."""
+
+
+class GeneratedFilesParseError(ValueError):
+    """Raised when the LLM response cannot be parsed as a generated file map."""
+
+    def __init__(self, message: str, result: GenerationResult) -> None:
+        """Initialize with the generation result whose metrics must be preserved."""
+        self.result = result
+        super().__init__(message)
 
 
 def read_project_context(project_dir: str) -> str:
@@ -80,10 +91,11 @@ def generate_code_files(
     description: str,
     project_dir: str = "./nest_project",
     provider: str = "openrouter",
+    model_name: str | None = None,
 ) -> tuple[GenerationResult, dict[str, Any]]:
     """Generate and parse a complete NestJS file map from natural language."""
     existing_context = read_project_context(project_dir)
-    client = LLMClient(provider_id=provider, temperature=0.2)
+    client = LLMClient(provider_id=provider, temperature=EXPERIMENT_GENERATION_TEMPERATURE, model_name=model_name)
 
     messages = [
         SystemMessage(content=RAW_CODE_SYSTEM_PROMPT),
@@ -99,11 +111,14 @@ def generate_code_files(
         return result, files
     except Exception as e:
         log_json_parse_failure(result.content, e)
-        raise ValueError(f"Invalid JSON response from LLM: {str(e)}")
+        raise GeneratedFilesParseError(f"Invalid JSON response from LLM: {str(e)}", result) from e
 
 
 def natural_language_to_code(
-    description: str, project_dir: str = "./nest_project", provider: str = "openrouter"
+    description: str,
+    project_dir: str = "./nest_project",
+    provider: str = "openrouter",
+    model_name: str | None = None,
 ) -> GenerationResult:
     """Generate code from simple description - vibe coder style.
 
@@ -111,11 +126,12 @@ def natural_language_to_code(
         description (str): Plain English description of the desired application.
         project_dir (str): Directory path where the project files should be generated.
         provider (str): Provider to use (gemini, groq, ollama, openrouter). Default: openrouter.
+        model_name (str | None): Optional exact provider model override.
 
     Returns:
         GenerationResult: The generated code content and metadata.
     """
-    result, _ = generate_code_files(description, project_dir, provider)
+    result, _ = generate_code_files(description, project_dir, provider, model_name=model_name)
     return result
 
 
@@ -158,7 +174,7 @@ def main() -> None:
         logger.info(f"Preferred Model: {args.model}")
 
     try:
-        result, files = generate_code_files(args.description, args.output, args.model)
+        result, files = generate_code_files(args.description, args.output, provider=args.model or "openrouter")
         log_generation_statistics(result)
         save_files(files, args.output)
         log_run_instructions(args.output)

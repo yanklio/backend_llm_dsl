@@ -193,12 +193,14 @@ class TestCheckBaseNpm:
         assert result["install_success"] is False
         assert "install" in result["errors"]
         assert result["errors"]["install"]["code"] == ErrorCodes.INSTALL_FAILED
+        mock_build.assert_not_called()
+        mock_start.assert_not_called()
 
     @patch("packages.validator.runtime._run_npm_start")
     @patch("packages.validator.runtime._run_npm_build")
     @patch("packages.validator.runtime._run_npm_install")
-    def test_multiple_failures(self, mock_install, mock_build, mock_start, temp_dir):
-        """Test when multiple npm commands fail."""
+    def test_install_failure_short_circuits_later_stages(self, mock_install, mock_build, mock_start, temp_dir):
+        """Test that build and start are not run after install fails."""
         mock_install.return_value = {
             "success": False,
             "error": {"stage": "install", "message": "Install failed", "code": ErrorCodes.INSTALL_FAILED},
@@ -213,4 +215,25 @@ class TestCheckBaseNpm:
         assert result["install_success"] is False
         assert result["build_success"] is False
         assert "install" in result["errors"]
+        assert "build" not in result["errors"]
+        mock_build.assert_not_called()
+        mock_start.assert_not_called()
+
+    @patch("packages.validator.runtime._run_npm_start")
+    @patch("packages.validator.runtime._run_npm_build")
+    @patch("packages.validator.runtime._run_npm_install")
+    def test_build_failure_short_circuits_start(self, mock_install, mock_build, mock_start, temp_dir):
+        """Test that start is not run after build fails."""
+        mock_install.return_value = {"success": True}
+        mock_build.return_value = {
+            "success": False,
+            "error": {"stage": "build", "message": "Build failed", "code": ErrorCodes.BUILD_FAILED},
+        }
+        mock_start.return_value = {"success": True}
+
+        result = check_base_npm(temp_dir)
+        assert result["install_success"] is True
+        assert result["build_success"] is False
+        assert result["start_success"] is False
         assert "build" in result["errors"]
+        mock_start.assert_not_called()

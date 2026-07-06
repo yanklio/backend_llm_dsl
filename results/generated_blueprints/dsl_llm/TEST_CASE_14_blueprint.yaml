@@ -5,11 +5,9 @@ root:
     database: ./data/library.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Author
     generate: [controller, service, module, entity, dto]
@@ -39,8 +37,7 @@ modules:
         - name: isbn
           type: string
           required: true
-          unique: true
-          validation: {maxLength: 20}
+          validation: {maxLength: 20, unique: true}
         - name: publishedYear
           type: number
           required: true
@@ -74,8 +71,8 @@ modules:
           required: false
         - name: status
           type: enum
-          required: true
           enum: [active, returned, overdue]
+          required: true
           default: active
       relations:
         - type: ManyToOne

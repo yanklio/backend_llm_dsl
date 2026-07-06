@@ -1,5 +1,5 @@
 root:
-  name: BlogPlatform
+  name: WarehouseInventory
   database:
     type: sqlite
     database: ./data/app.db
@@ -9,7 +9,7 @@ root:
     cors: true
     swagger: true
 modules:
-- name: Author
+- name: Section
   generate:
   - controller
   - service
@@ -21,27 +21,23 @@ modules:
     - name: name
       type: string
       required: true
-      validation:
-        minLength: 2
-        maxLength: 100
-    - name: email
-      type: string
-      required: true
       unique: true
       validation:
-        isEmail: true
-    - name: bio
-      type: string
+        minLength: 1
+        maxLength: 50
+    - name: floor
+      type: number
       required: true
       validation:
-        maxLength: 500
+        min: 1
+        max: 20
     relations:
     - type: OneToMany
-      model: Post
-      field: posts
+      model: Item
+      field: items
       required: true
-      inverseField: author
-- name: Post
+      inverseField: section
+- name: Item
   generate:
   - controller
   - service
@@ -50,22 +46,31 @@ modules:
   - dto
   entity:
     fields:
-    - name: title
+    - name: sku
+      type: string
+      required: true
+      unique: true
+      validation:
+        maxLength: 30
+    - name: name
       type: string
       required: true
       validation:
-        minLength: 5
-        maxLength: 200
-    - name: content
-      type: string
+        minLength: 2
+        maxLength: 100
+    - name: quantity
+      type: number
       required: true
-    - name: published
-      type: boolean
+      validation:
+        min: 0
+    - name: weight
+      type: number
       required: true
-      default: 'false'
+      validation:
+        min: 0
     relations:
     - type: ManyToOne
-      model: Author
-      field: author
+      model: Section
+      field: section
       required: true
-      inverseField: posts
+      inverseField: items

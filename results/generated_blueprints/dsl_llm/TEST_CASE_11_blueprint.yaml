@@ -2,14 +2,12 @@ root:
   name: ECommercePlatform
   database:
     type: sqlite
-    database: ./data/ecommerce.db
+    database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Category
     generate: [controller, service, module, entity, dto]
@@ -18,8 +16,8 @@ modules:
         - name: name
           type: string
           required: true
-          unique: true
           validation: {minLength: 2, maxLength: 80}
+          unique: true
         - name: description
           type: string
           required: false
@@ -28,7 +26,7 @@ modules:
         - type: ManyToMany
           model: Product
           field: products
-          description: Products belonging to this category
+          description: A list of products belonging to this category
   - name: Product
     generate: [controller, service, module, entity, dto]
     entity:

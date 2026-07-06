@@ -1,15 +1,13 @@
 root:
-  name: NoteManagement
+  name: NoteApp
   database:
     type: sqlite
     database: ./data/notes.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Note
     generate: [controller, service, module, entity, dto]

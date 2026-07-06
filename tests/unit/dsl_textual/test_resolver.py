@@ -106,3 +106,42 @@ entity Post { authors: User[] @ManyToMany(inverse: posts) }
         resolve(program)
 
     assert error.value.code == "RESOLVE_E009"
+
+
+def test_resolver_accepts_valid_inverse_pair() -> None:
+    """Inverse relation fields must point back to the source entity."""
+    program = parse("""
+entity User { posts: Post[] @OneToMany(inverse: author) }
+entity Post { author: User @ManyToOne(inverse: posts) }
+""")
+
+    resolved = resolve(program)
+
+    assert "User" in resolved.entities
+
+
+def test_resolver_rejects_inverse_targeting_wrong_entity() -> None:
+    """Existing compatible inverse fields must still target the source entity."""
+    program = parse("""
+entity User { posts: Post[] @OneToMany(inverse: author) }
+entity Post { author: Company @ManyToOne(inverse: posts) }
+entity Company { posts: Post[] @OneToMany(inverse: author) }
+""")
+
+    with pytest.raises(ResolveError) as error:
+        resolve(program)
+
+    assert error.value.code == "RESOLVE_E010"
+    assert "expected User" in str(error.value)
+
+
+def test_resolver_accepts_unidirectional_relation() -> None:
+    """Relations without inverse fields remain valid."""
+    program = parse("""
+entity User { posts: Post[] @OneToMany }
+entity Post { title: string }
+""")
+
+    resolved = resolve(program)
+
+    assert "Post" in resolved.entities

@@ -1,5 +1,5 @@
 root:
-  name: MyApp
+  name: CategoryProductService
   database:
     type: sqlite
     database: ./data/app.db
@@ -67,4 +67,3 @@ modules:
       field: category
       required: true
       inverseField: products
-      onDelete: CASCADE

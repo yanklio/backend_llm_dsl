@@ -47,6 +47,7 @@ def handle_dto_file(template_data: dict[str, Any], dto_dir: Path, env: Environme
             )
         except TemplateException as e:
             logger.error(f"Failed to generate {label}: {e}")
+            raise
 
 
 def handle_entity_file(template_data: dict[str, Any], entities_dir: Path, env: Environment) -> None:
@@ -64,6 +65,7 @@ def handle_entity_file(template_data: dict[str, Any], entities_dir: Path, env: E
         renderer.render_template("entity.ts.j2", template_data, entities_dir / file_name)
     except TemplateException as e:
         logger.error(f"Failed to generate entity file: {e}")
+        raise
 
 
 def generate_module(module_data: dict[str, Any], env: Environment, base_output_dir: Path) -> None:
@@ -100,6 +102,7 @@ def generate_module(module_data: dict[str, Any], env: Environment, base_output_d
             renderer.render_template(template_name, template_data, module_dir / file_name)
         except TemplateException as e:
             logger.error(f"Failed to generate {file_key}: {e}")
+            raise
 
     logger.end(f"{module_name} module generated")
 

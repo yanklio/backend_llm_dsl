@@ -1,5 +1,5 @@
 root:
-  name: UserManagement
+  name: NotesService
   database:
     type: sqlite
     database: ./data/app.db
@@ -9,7 +9,7 @@ root:
     cors: true
     swagger: true
 modules:
-- name: User
+- name: Note
   generate:
   - controller
   - service
@@ -18,13 +18,17 @@ modules:
   - dto
   entity:
     fields:
-    - name: email
+    - name: title
       type: string
       required: true
-      unique: true
       validation:
-        isEmail: true
-    - name: name
+        minLength: 1
+        maxLength: 150
+    - name: content
       type: string
       required: true
+    - name: pinned
+      type: boolean
+      required: true
+      default: 'false'
     relations: []

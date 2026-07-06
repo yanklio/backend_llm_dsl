@@ -1,5 +1,5 @@
 root:
-  name: BlogPlatform
+  name: SchoolManagement
   database:
     type: sqlite
     database: ./data/app.db
@@ -9,7 +9,45 @@ root:
     cors: true
     swagger: true
 modules:
-- name: Author
+- name: Teacher
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: firstName
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 50
+    - name: lastName
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 50
+    - name: email
+      type: string
+      required: true
+      unique: true
+      validation:
+        isEmail: true
+    - name: subject
+      type: string
+      required: true
+      validation:
+        maxLength: 100
+    relations:
+    - type: OneToMany
+      model: Course
+      field: courses
+      required: true
+      inverseField: teacher
+- name: Course
   generate:
   - controller
   - service
@@ -22,50 +60,22 @@ modules:
       type: string
       required: true
       validation:
-        minLength: 2
-        maxLength: 100
-    - name: email
-      type: string
-      required: true
-      unique: true
-      validation:
-        isEmail: true
-    - name: bio
+        minLength: 3
+        maxLength: 150
+    - name: description
       type: string
       required: true
       validation:
         maxLength: 500
-    relations:
-    - type: OneToMany
-      model: Post
-      field: posts
-      required: true
-      inverseField: author
-- name: Post
-  generate:
-  - controller
-  - service
-  - module
-  - entity
-  - dto
-  entity:
-    fields:
-    - name: title
-      type: string
+    - name: credits
+      type: number
       required: true
       validation:
-        minLength: 5
-        maxLength: 200
-    - name: content
-      type: string
-      required: true
-    - name: published
-      type: boolean
-      required: true
-      default: 'false'
+        min: 1
+        max: 10
     relations:
     - type: ManyToOne
-      model: Author
-      field: author
+      model: Teacher
+      field: teacher
       required: true
-      inverseField: posts
+      inverseField: courses

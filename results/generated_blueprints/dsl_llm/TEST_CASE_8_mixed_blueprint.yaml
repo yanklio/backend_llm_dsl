@@ -5,11 +5,9 @@ root:
     database: ./data/app.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Customer
     generate: [controller, service, module, entity, dto]
@@ -31,7 +29,7 @@ modules:
         - type: OneToMany
           model: Order
           field: orders
-          description: Orders placed by this customer
+          description: A list of orders belonging to this customer
   - name: Order
     generate: [controller, service, module, entity, dto]
     entity:
@@ -41,10 +39,9 @@ modules:
           required: true
           validation: {min: 0}
         - name: status
-          type: enum
+          type: string
           required: true
-          enum: [pending, confirmed, shipped, delivered, cancelled]
-          default: pending
+          validation: {enum: [pending, confirmed, shipped, delivered, cancelled], default: pending}
         - name: orderDate
           type: date
           required: true
@@ -52,5 +49,5 @@ modules:
         - type: ManyToOne
           model: Customer
           field: customer
-          description: The customer who placed the order
-          cascade: delete
+          description: The customer who placed this order
+          cascade: true

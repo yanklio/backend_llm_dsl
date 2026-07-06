@@ -5,11 +5,9 @@ root:
     database: ./data/library.db
     synchronize: true
     logging: false
-
   features:
     cors: true
     swagger: true
-
 modules:
   - name: Author
     generate: [controller, service, module, entity, dto]

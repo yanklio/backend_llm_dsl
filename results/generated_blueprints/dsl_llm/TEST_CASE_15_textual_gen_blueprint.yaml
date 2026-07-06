@@ -1,0 +1,123 @@
+root:
+  name: HRManagement
+  database:
+    type: sqlite
+    database: ./data/app.db
+    synchronize: true
+    logging: false
+  features:
+    cors: true
+    swagger: true
+modules:
+- name: Department
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      unique: true
+      validation:
+        minLength: 2
+        maxLength: 100
+    - name: budget
+      type: number
+      required: true
+      validation:
+        min: 0
+    relations:
+    - type: OneToMany
+      model: Employee
+      field: employees
+      required: true
+      inverseField: department
+- name: Employee
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: firstName
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 50
+    - name: lastName
+      type: string
+      required: true
+      validation:
+        minLength: 2
+        maxLength: 50
+    - name: email
+      type: string
+      required: true
+      unique: true
+      validation:
+        isEmail: true
+    - name: hireDate
+      type: date
+      required: true
+    - name: salary
+      type: number
+      required: true
+      validation:
+        min: 0
+    - name: status
+      type: enum
+      required: true
+      enumValues:
+      - ACTIVE
+      - ON_LEAVE
+      - TERMINATED
+      default: ACTIVE
+    relations:
+    - type: ManyToOne
+      model: Department
+      field: department
+      required: true
+      inverseField: employees
+    - type: ManyToMany
+      model: Skill
+      field: skills
+      required: true
+      inverseField: employees
+- name: Skill
+  generate:
+  - controller
+  - service
+  - module
+  - entity
+  - dto
+  entity:
+    fields:
+    - name: name
+      type: string
+      required: true
+      unique: true
+      validation:
+        minLength: 2
+        maxLength: 80
+    - name: level
+      type: enum
+      required: true
+      enumValues:
+      - BEGINNER
+      - INTERMEDIATE
+      - ADVANCED
+      - EXPERT
+      default: BEGINNER
+    relations:
+    - type: ManyToMany
+      model: Employee
+      field: employees
+      required: true
+      inverseField: skills
